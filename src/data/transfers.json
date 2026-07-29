@@ -1,0 +1,57 @@
+{
+  "destinations": [
+    {
+      "id": "playa-blanca",
+      "name": "Playa Blanca",
+      "slug": "playa-blanca",
+      "priceOneWay": 55,
+      "priceReturn": 100,
+      "duration": "35–45 min",
+      "distance": "≈ 35 km"
+    },
+    {
+      "id": "puerto-calero",
+      "name": "Puerto Calero",
+      "slug": "puerto-calero",
+      "priceOneWay": 45,
+      "priceReturn": 85,
+      "duration": "25–35 min",
+      "distance": "≈ 25 km"
+    },
+    {
+      "id": "puerto-del-carmen",
+      "name": "Puerto del Carmen",
+      "slug": "puerto-del-carmen",
+      "priceOneWay": 40,
+      "priceReturn": 75,
+      "duration": "20–30 min",
+      "distance": "≈ 18 km"
+    },
+    {
+      "id": "arrecife",
+      "name": "Arrecife",
+      "slug": "arrecife",
+      "priceOneWay": 30,
+      "priceReturn": 55,
+      "duration": "10–15 min",
+      "distance": "≈ 6 km"
+    },
+    {
+      "id": "costa-teguise",
+      "name": "Costa Teguise",
+      "slug": "costa-teguise",
+      "priceOneWay": 40,
+      "priceReturn": 75,
+      "duration": "20–25 min",
+      "distance": "≈ 15 km"
+    }
+  ],
+  "highlights": [
+    "Servicio 100% privado",
+    "Recibimiento en terminal con cartel con tu nombre",
+    "Vehículo climatizado",
+    "Seguimiento de vuelos",
+    "Tarifa fija: sin sorpresas",
+    "Disponible aeropuerto → hotel y hotel → aeropuerto"
+  ]
+}

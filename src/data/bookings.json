@@ -1,0 +1,87 @@
+[
+  {
+    "id": "BK-1001",
+    "createdAt": "2026-07-20T10:15:00.000Z",
+    "type": "tour",
+    "tourId": "grand-tour-grande",
+    "tourTitle": "Grand Tour Lanzarote — día completo (grupo grande)",
+    "date": "2026-08-05",
+    "adults": 2,
+    "children": 1,
+    "totalPrice": 251,
+    "paymentMethod": "pay_on_day",
+    "paymentStatus": "pay_on_day",
+    "status": "confirmed",
+    "customer": {
+      "name": "Laura Méndez",
+      "email": "laura.demo@email.com",
+      "phone": "+34 600 111 222",
+      "hotel": "Hotel Fariones, Puerto del Carmen"
+    }
+  },
+  {
+    "id": "BK-1002",
+    "createdAt": "2026-07-22T14:40:00.000Z",
+    "type": "tour",
+    "tourId": "ruta-sur-reducido",
+    "tourTitle": "Ruta Sur — Timanfaya (grupo reducido)",
+    "date": "2026-08-02",
+    "adults": 4,
+    "children": 0,
+    "totalPrice": 300,
+    "paymentMethod": "card",
+    "paymentStatus": "paid",
+    "status": "confirmed",
+    "customer": {
+      "name": "James Wilson",
+      "email": "james.demo@email.com",
+      "phone": "+44 7700 900123",
+      "hotel": "H10 Rubicón Palace, Playa Blanca"
+    }
+  },
+  {
+    "id": "BK-1003",
+    "createdAt": "2026-07-25T09:05:00.000Z",
+    "type": "transfer",
+    "tourTitle": "Traslado Aeropuerto → Costa Teguise",
+    "date": "2026-08-10",
+    "adults": 3,
+    "children": 0,
+    "totalPrice": 40,
+    "paymentMethod": "bizum",
+    "paymentStatus": "paid",
+    "status": "confirmed",
+    "customer": {
+      "name": "Carmen Ruiz",
+      "email": "carmen.demo@email.com",
+      "phone": "+34 612 333 444",
+      "flightNumber": "IB5432",
+      "hotel": "Barceló Lanzarote Active Resort"
+    },
+    "transfer": {
+      "destination": "Costa Teguise",
+      "direction": "airport_to_hotel"
+    }
+  },
+  {
+    "id": "BK-1004",
+    "createdAt": "2026-07-26T16:20:00.000Z",
+    "type": "tour",
+    "tourId": "tour-privado",
+    "tourTitle": "Tour privado con bus y guía oficial",
+    "date": "2026-08-12",
+    "adults": 6,
+    "children": 2,
+    "totalPrice": 700,
+    "paymentMethod": "card",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "customer": {
+      "name": "Sophie Martin",
+      "email": "sophie.demo@email.com",
+      "phone": "+33 6 12 34 56 78",
+      "cruiseShip": "MSC Orchestra",
+      "notes": "Escala crucero — regreso al puerto antes de las 16:30"
+    }
+  }
+]

@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f2f7fc;
+  --bg-deep: #123a5c;
+  --surface: #ffffff;
+  --ink: #16324a;
+  --ink-muted: #5a7388;
+  --ocean: #3d8ec9;
+  --ocean-deep: #2563a8;
+  --coral: #4aa3df;
+  --coral-hover: #2f8fd4;
+  --sand-line: #d4e4f2;
+  --rating: #3d8ec9;
+  --success: #2a9d8f;
+  --sky-soft: #e8f3fb;
+  --sky-mist: #dceef9;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-deep: var(--bg-deep);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ocean: var(--ocean);
+  --color-ocean-deep: var(--ocean-deep);
+  --color-coral: var(--coral);
+  --color-coral-hover: var(--coral-hover);
+  --color-sand-line: var(--sand-line);
+  --color-rating: var(--rating);
+  --color-success: var(--success);
+  --color-sky-soft: var(--sky-soft);
+  --color-sky-mist: var(--sky-mist);
+  --font-sans: var(--font-manrope);
+  --font-display: var(--font-fraunces);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(1200px 500px at 10% -10%, #dceef9 0%, transparent 55%),
+    radial-gradient(900px 400px at 90% 0%, #eaf5fc 0%, transparent 50%),
+    var(--bg);
+  color: var(--ink);
+  font-family: var(--font-manrope), system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-weight: 550;
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--ocean) 28%, white);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: scale(1.04) translateY(0);
+  }
+  to {
+    transform: scale(1.1) translateY(-2%);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.8s ease-out both;
+}
+
+.animate-fade-up-delay {
+  animation: fade-up 0.9s ease-out 0.15s both;
+}
+
+.animate-fade-up-delay-2 {
+  animation: fade-up 0.9s ease-out 0.3s both;
+}
+
+.hero-image {
+  animation: drift 18s ease-in-out alternate infinite;
+}
+
+.prose-blog p {
+  margin-bottom: 1.1rem;
+  line-height: 1.8;
+  color: var(--ink-muted);
+}
+
+.prose-blog strong {
+  color: var(--ink);
+}
+
+.sky-panel {
+  background: linear-gradient(160deg, #ffffff 0%, #eef6fc 100%);
+}

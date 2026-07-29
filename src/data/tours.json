@@ -1,0 +1,378 @@
+[
+  {
+    "id": "ruta-sur-reducido",
+    "slug": "ruta-sur-grupo-reducido",
+    "title": "Ruta Sur — Timanfaya y Montañas del Fuego (grupo reducido)",
+    "shortTitle": "Ruta Sur · Grupo reducido",
+    "category": "excursion",
+    "groupSize": "small",
+    "duration": "5 horas aprox.",
+    "durationHours": 5,
+    "priceAdult": 75,
+    "priceChild": 45,
+    "currency": "EUR",
+    "rating": 9.4,
+    "reviewCount": 128,
+    "image": "/images/tours/desert-1.jpg",
+    "gallery": [
+      "/images/tours/desert-1.jpg",
+      "/images/tours/canyon-1.jpg",
+      "/images/tours/wine-1.jpg"
+    ],
+    "summary": "Descubre Timanfaya, Los Hervideros, El Golfo, las Salinas y La Geria en un grupo íntimo de máximo 8 personas.",
+    "description": "Descubre el Parque Nacional de Timanfaya en un ambiente cercano y sin aglomeraciones. En el Islote de Hilario verás demostraciones geotérmicas en vivo y recorrerás la impresionante Ruta de los Volcanes. Continuamos por la costa de Timanfaya con paradas en Los Hervideros y El Golfo (Lago Verde), panorámica de las Salinas de Janubio y degustación en la zona vinícola de La Geria. Ideal si buscas un trato más personalizado y un ritmo más flexible.",
+    "highlights": [
+      "Grupo reducido: máximo 8 personas",
+      "Recogida en tu alojamiento",
+      "Guía oficial en un solo idioma",
+      "Entradas a Timanfaya incluidas",
+      "Cancelación gratis hasta 48h antes"
+    ],
+    "places": [
+      "Parque Nacional de Timanfaya",
+      "Los Hervideros",
+      "El Golfo y Lago Verde (Charco de los Clicos)",
+      "Echadero de camellos (opcional)",
+      "Panorámica de las Salinas de Janubio",
+      "La Geria"
+    ],
+    "included": [
+      "Transporte climatizado",
+      "Guía local oficial",
+      "Entradas al Parque Nacional de Timanfaya",
+      "Seguro turístico",
+      "Botella de agua"
+    ],
+    "notIncluded": [
+      "Paseo en camello (opcional, pago in situ)",
+      "Almuerzo"
+    ],
+    "recommendations": [
+      "Calzado cómodo",
+      "Cámara fotográfica",
+      "Chaqueta: en Timanfaya puede hacer frío o viento",
+      "Nota: hasta final de 2025 el acceso a Salinas y Hervideros puede estar cerrado al tráfico (se contempla panorámica)"
+    ],
+    "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes de la recogida. Con menos de 48 horas no se reembolsa el importe.",
+    "maxGroup": 8,
+    "languages": [
+      "Español",
+      "Inglés"
+    ],
+    "allowPayOnDay": false,
+    "allowCard": true,
+    "allowBizum": true,
+    "cruiseFriendly": true,
+    "featured": true
+  },
+  {
+    "id": "ruta-sur-grande",
+    "slug": "ruta-sur-grupo-grande",
+    "title": "Ruta Sur — Timanfaya y Montañas del Fuego (grupo grande)",
+    "shortTitle": "Ruta Sur · Grupo grande",
+    "category": "excursion",
+    "groupSize": "large",
+    "duration": "5 horas aprox.",
+    "durationHours": 5,
+    "priceAdult": 55,
+    "priceChild": 35,
+    "currency": "EUR",
+    "rating": 9.1,
+    "reviewCount": 312,
+    "image": "/images/tours/canyon-1.jpg",
+    "gallery": [
+      "/images/tours/canyon-1.jpg",
+      "/images/tours/desert-1.jpg",
+      "/images/tours/wine-1.jpg"
+    ],
+    "summary": "El mismo itinerario del sur de Lanzarote a un precio más accesible, en autobús con grupos de hasta 20 personas.",
+    "description": "Mismo recorrido que la Ruta Sur en grupo reducido: Timanfaya, demostraciones geotérmicas, Ruta de los Volcanes, Los Hervideros, El Golfo, Salinas y La Geria. Pensada para quienes priorizan el precio y no les importa compartir la experiencia en un grupo más amplio (hasta 20 personas). En ocasiones puede realizarse en dos idiomas.",
+    "highlights": [
+      "Mismo itinerario que el grupo reducido",
+      "Mejor precio por persona",
+      "Grupos de hasta 20 personas",
+      "Pago con tarjeta, Bizum o el día del tour",
+      "Entradas a Timanfaya incluidas"
+    ],
+    "places": [
+      "Parque Nacional de Timanfaya",
+      "Los Hervideros",
+      "El Golfo y Lago Verde",
+      "Echadero de camellos (opcional)",
+      "Panorámica de las Salinas",
+      "La Geria"
+    ],
+    "included": [
+      "Transporte climatizado",
+      "Guía local",
+      "Entradas al Parque Nacional de Timanfaya",
+      "Seguro turístico",
+      "Botella de agua"
+    ],
+    "notIncluded": [
+      "Paseo en camello (opcional)",
+      "Almuerzo"
+    ],
+    "recommendations": [
+      "Calzado cómodo y chaqueta",
+      "Grupos de hasta 20 personas; ocasionalmente dos idiomas"
+    ],
+    "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes de la recogida. Con menos de 48 horas no se reembolsa el importe.",
+    "maxGroup": 20,
+    "languages": [
+      "Español",
+      "Inglés"
+    ],
+    "allowPayOnDay": true,
+    "allowCard": true,
+    "allowBizum": true,
+    "cruiseFriendly": true,
+    "featured": true
+  },
+  {
+    "id": "grand-tour-reducido",
+    "slug": "grand-tour-grupo-reducido",
+    "title": "Grand Tour Lanzarote — día completo (grupo reducido)",
+    "shortTitle": "Grand Tour · Grupo reducido",
+    "category": "excursion",
+    "groupSize": "small",
+    "duration": "9 horas aprox.",
+    "durationHours": 9,
+    "priceAdult": 145,
+    "priceChild": 85,
+    "currency": "EUR",
+    "rating": 9.6,
+    "reviewCount": 96,
+    "image": "/images/tours/coast-1.jpg",
+    "gallery": [
+      "/images/tours/coast-1.jpg",
+      "/images/tours/beach-1.jpg",
+      "/images/tours/road-1.jpg"
+    ],
+    "summary": "Lo mejor de la isla en un día: Timanfaya, Jameos del Agua, Jardín de Cactus, El Golfo y La Geria. Máximo 8 personas.",
+    "description": "El Grand Tour combina lo esencial del sur y el norte de Lanzarote. Empezamos en Timanfaya con demostraciones geotérmicas y la Ruta de los Volcanes; seguimos por El Golfo y La Geria; y en el norte visitamos los Jameos del Agua y el Jardín de Cactus de César Manrique. En grupo reducido disfrutarás de más tiempo y atención personalizada.",
+    "highlights": [
+      "Día completo con entradas incluidas",
+      "Grupo reducido máx. 8 personas",
+      "Timanfaya + Jameos + Jardín de Cactus",
+      "Guía oficial exclusivo del grupo",
+      "Ideal para cruceristas con escala larga"
+    ],
+    "places": [
+      "Parque Nacional de Timanfaya",
+      "El Golfo y Lago Verde",
+      "La Geria",
+      "Jameos del Agua",
+      "Jardín de Cactus"
+    ],
+    "included": [
+      "Transporte climatizado",
+      "Guía oficial",
+      "Entrada a Timanfaya",
+      "Entrada a Jameos del Agua",
+      "Entrada al Jardín de Cactus",
+      "Seguro turístico",
+      "Botella de agua"
+    ],
+    "notIncluded": [
+      "Almuerzo",
+      "Paseo en camello (opcional)"
+    ],
+    "recommendations": [
+      "Día completo: prepara agua, protector solar y chaqueta",
+      "Calzado cómodo"
+    ],
+    "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes de la recogida. Con menos de 48 horas no se reembolsa el importe.",
+    "maxGroup": 8,
+    "languages": [
+      "Español",
+      "Inglés"
+    ],
+    "allowPayOnDay": false,
+    "allowCard": true,
+    "allowBizum": true,
+    "cruiseFriendly": true,
+    "featured": true
+  },
+  {
+    "id": "grand-tour-grande",
+    "slug": "grand-tour-grupo-grande",
+    "title": "Grand Tour Lanzarote — día completo (grupo grande)",
+    "shortTitle": "Grand Tour · Grupo grande",
+    "category": "excursion",
+    "groupSize": "large",
+    "duration": "9 horas aprox.",
+    "durationHours": 9,
+    "priceAdult": 96,
+    "priceChild": 59,
+    "currency": "EUR",
+    "rating": 9.3,
+    "reviewCount": 241,
+    "image": "/images/heroes/excursions.jpg",
+    "gallery": [
+      "/images/heroes/excursions.jpg",
+      "/images/tours/coast-1.jpg",
+      "/images/tours/road-1.jpg"
+    ],
+    "summary": "La excursión más completa de Lanzarote a precio competitivo: Timanfaya, Jameos, Jardín de Cactus y más.",
+    "description": "Misma esencia que el Grand Tour en grupo reducido, pensada para grupos más amplios (hasta 20 personas) con un precio más asequible. Incluye entradas a Timanfaya, Jameos del Agua y Jardín de Cactus, guía oficial y recogida en las principales zonas turísticas. Puedes pagar con tarjeta, Bizum o el día del tour.",
+    "highlights": [
+      "Entradas valoradas incluidas",
+      "Hasta 20 personas",
+      "Tarjeta, Bizum o pago el día del tour",
+      "Recogida en zonas turísticas",
+      "Cancelación gratis hasta 48h"
+    ],
+    "places": [
+      "Parque Nacional de Timanfaya",
+      "El Golfo y Lago Verde",
+      "La Geria",
+      "Jameos del Agua",
+      "Jardín de Cactus"
+    ],
+    "included": [
+      "Autobús moderno climatizado",
+      "Guía oficial",
+      "Entrada a Timanfaya",
+      "Entrada a Jameos del Agua",
+      "Entrada al Jardín de Cactus",
+      "Seguro turístico"
+    ],
+    "notIncluded": [
+      "Almuerzo",
+      "Paseo en camello",
+      "Bebidas"
+    ],
+    "recommendations": [
+      "Duración aprox. 9 horas desde la recogida",
+      "No recomendada para movilidad reducida en algunos centros"
+    ],
+    "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes de la recogida. Con menos de 48 horas no se reembolsa el importe.",
+    "maxGroup": 20,
+    "languages": [
+      "Español"
+    ],
+    "allowPayOnDay": true,
+    "allowCard": true,
+    "allowBizum": true,
+    "cruiseFriendly": true,
+    "featured": true
+  },
+  {
+    "id": "tour-privado",
+    "slug": "tour-privado-bus-guia",
+    "title": "Tour privado con bus y guía oficial",
+    "shortTitle": "Tour privado",
+    "category": "private",
+    "duration": "desde 5 horas",
+    "durationHours": 5,
+    "priceAdult": 700,
+    "priceChild": 0,
+    "currency": "EUR",
+    "rating": 9.8,
+    "reviewCount": 54,
+    "image": "/images/tours/road-1.jpg",
+    "gallery": [
+      "/images/tours/road-1.jpg",
+      "/images/tours/van-1.jpg",
+      "/images/home/private.jpg"
+    ],
+    "summary": "Itinerario a tu medida con guía oficial en exclusiva y minibus privado. Hasta 10 pasajeros. Ideal para familias y cruceros.",
+    "description": "Diseñamos la visita a tu ritmo: horarios e itinerario personalizados, sin prisas. Evitamos colas en centros turísticos y, en Timanfaya, podemos realizar la Ruta de los Volcanes en nuestro propio vehículo autorizado. Incluye minibus y guía oficial. Las entradas y el almuerzo no están incluidos. Cada hora extra: 100 €.",
+    "highlights": [
+      "Guía oficial en exclusiva",
+      "Recogida donde indiques",
+      "Itinerario flexible",
+      "Hasta 10 pasajeros",
+      "Acceso preferente en Timanfaya",
+      "Perfecto para cruceristas"
+    ],
+    "places": [
+      "Itinerario personalizado por toda Lanzarote"
+    ],
+    "included": [
+      "Minibus privado",
+      "Guía oficial"
+    ],
+    "notIncluded": [
+      "Entradas",
+      "Almuerzo",
+      "Horas extra (100 €/h)"
+    ],
+    "recommendations": [
+      "Duración base: 5 horas",
+      "Capacidad hasta 10 pasajeros",
+      "Cuéntanos tus intereses y diseñamos la ruta"
+    ],
+    "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes de la recogida. Con menos de 48 horas no se reembolsa el importe.",
+    "maxGroup": 10,
+    "languages": [
+      "Español",
+      "Inglés",
+      "Alemán",
+      "Francés"
+    ],
+    "allowPayOnDay": false,
+    "allowCard": true,
+    "allowBizum": true,
+    "cruiseFriendly": true,
+    "featured": true
+  },
+  {
+    "id": "minibus-disposicion",
+    "slug": "minibus-a-disposicion",
+    "title": "Minibus a disposición con conductor",
+    "shortTitle": "Minibus a disposición",
+    "category": "minibus",
+    "duration": "desde 4 horas",
+    "durationHours": 4,
+    "priceAdult": 280,
+    "priceChild": 0,
+    "currency": "EUR",
+    "rating": 9.5,
+    "reviewCount": 37,
+    "image": "/images/tours/bus-1.jpg",
+    "gallery": [
+      "/images/tours/bus-1.jpg",
+      "/images/tours/van-1.jpg",
+      "/images/home/minibus.jpg"
+    ],
+    "summary": "Alquila el microbús con conductor profesional durante las horas que necesites. Tú decides el recorrido.",
+    "description": "Solo el vehículo y un conductor profesional: ve donde te apetezca sin preocuparte del aparcamiento ni de la conducción. Una gran ventaja: en Timanfaya tienes acceso preferente y evitas colas de más de una hora en muchos casos. Ideal para grupos de amigos, familias o cruceristas que quieren libertad total.",
+    "highlights": [
+      "Conductor profesional",
+      "Tú eliges el itinerario",
+      "Acceso preferente en Timanfaya",
+      "Sin estrés de aparcamiento",
+      "Tarifa por horas"
+    ],
+    "places": [
+      "A tu elección por toda la isla"
+    ],
+    "included": [
+      "Minibus",
+      "Conductor profesional",
+      "Combustible"
+    ],
+    "notIncluded": [
+      "Guía oficial",
+      "Entradas",
+      "Peajes si los hubiera"
+    ],
+    "recommendations": [
+      "Mínimo 4 horas",
+      "Indícanos hora y zona de recogida",
+      "Podemos combinar con guía bajo presupuesto aparte"
+    ],
+    "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes de la recogida. Con menos de 48 horas no se reembolsa el importe.",
+    "maxGroup": 16,
+    "languages": [
+      "Español",
+      "Inglés"
+    ],
+    "allowPayOnDay": false,
+    "allowCard": true,
+    "allowBizum": true,
+    "cruiseFriendly": true
+  }
+]
