@@ -1,13 +1,17 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
+  Banknote,
+  BarChart3,
   BookOpen,
   Bus,
   CalendarDays,
   ExternalLink,
+  FileText,
   LayoutDashboard,
   LogOut,
   Map,
@@ -17,10 +21,13 @@ import {
 const nav = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/reservas", label: "Reservas", icon: CalendarDays },
+  { href: "/admin/cobros-efectivo", label: "Cobros efectivo", icon: Banknote },
+  { href: "/admin/facturas", label: "Facturas", icon: FileText },
+  { href: "/admin/estadisticas", label: "Estadísticas", icon: BarChart3 },
   { href: "/admin/excursiones", label: "Excursiones", icon: Map },
   { href: "/admin/traslados", label: "Traslados", icon: Bus },
   { href: "/admin/blog", label: "Blog", icon: BookOpen },
-  { href: "/admin/ajustes", label: "Ajustes web", icon: Settings },
+  { href: "/admin/ajustes", label: "Ajustes", icon: Settings },
 ];
 
 export default function AdminLayout({
@@ -57,13 +64,21 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-[#eef2f3]">
-      <aside className="hidden w-64 shrink-0 flex-col bg-bg-deep text-white md:flex">
+    <div className="flex min-h-screen bg-[#f3f4f6]">
+      <aside className="hidden w-64 shrink-0 flex-col bg-header text-white md:flex">
         <div className="border-b border-white/10 px-5 py-5">
-          <p className="font-display text-lg">Lanzarote Travels</p>
-          <p className="text-xs text-white/50">Panel de administración</p>
+          <div className="relative mb-2 h-10 w-[140px]">
+            <Image
+              src="/images/brand/logo.png"
+              alt="LET"
+              fill
+              className="object-contain object-left"
+              sizes="140px"
+            />
+          </div>
+          <p className="text-xs text-white/55">Panel de administración</p>
         </div>
-        <nav className="flex flex-1 flex-col gap-1 p-3">
+        <nav className="flex flex-1 flex-col gap-0.5 p-3">
           {nav.map((item) => {
             const active =
               item.href === "/admin"
@@ -73,10 +88,10 @@ export default function AdminLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-2 rounded-md px-3 py-2.5 text-sm ${
+                className={`flex items-center gap-2 rounded px-3 py-2.5 text-sm ${
                   active
-                    ? "bg-white/15 text-white"
-                    : "text-white/70 hover:bg-white/10 hover:text-white"
+                    ? "bg-ocean text-white"
+                    : "text-white/75 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 <item.icon className="h-4 w-4" />
@@ -87,7 +102,7 @@ export default function AdminLayout({
           <Link
             href="/"
             target="_blank"
-            className="mt-auto flex items-center gap-2 rounded-md px-3 py-2.5 text-sm text-white/50 hover:text-white"
+            className="mt-auto flex items-center gap-2 rounded px-3 py-2.5 text-sm text-white/50 hover:text-white"
           >
             <ExternalLink className="h-4 w-4" />
             Ver web pública
@@ -95,7 +110,7 @@ export default function AdminLayout({
           <button
             type="button"
             onClick={logout}
-            className="flex items-center gap-2 rounded-md px-3 py-2.5 text-left text-sm text-white/50 hover:text-white"
+            className="flex items-center gap-2 rounded px-3 py-2.5 text-left text-sm text-white/50 hover:text-white"
           >
             <LogOut className="h-4 w-4" />
             Cerrar sesión
@@ -110,7 +125,7 @@ export default function AdminLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className={`text-xs font-medium ${
+                className={`text-xs font-bold ${
                   pathname.startsWith(item.href) ? "text-ocean" : "text-ink-muted"
                 }`}
               >
@@ -126,7 +141,7 @@ export default function AdminLayout({
             </button>
           </div>
           <p className="hidden text-sm text-ink-muted md:block">
-            Gestiona reservas, excursiones, traslados, blog y textos de la web
+            LET · Reservas, facturas, cobros en efectivo, blog y estadísticas
           </p>
         </header>
         <div className="flex-1 p-4 md:p-6">{children}</div>

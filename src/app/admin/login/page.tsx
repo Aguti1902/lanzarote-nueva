@@ -25,7 +25,7 @@ export default function AdminLoginPage() {
         className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-xl ring-1 ring-sand-line"
       >
         <p className="font-display text-2xl text-ink">Administración</p>
-        <p className="mt-1 text-sm text-ink-muted">Lanzarote Travels</p>
+        <p className="mt-1 text-sm text-ink-muted">Lanzarote Experience Tours</p>
         <label className="mt-6 block">
           <span className="mb-1 block text-sm font-medium">Contraseña</span>
           <input

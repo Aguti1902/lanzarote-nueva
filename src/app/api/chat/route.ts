@@ -7,6 +7,8 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const messages = (body.messages || []) as ChatMessage[];
+    const locale =
+      typeof body.locale === "string" ? body.locale.slice(0, 5) : "es";
 
     if (!Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json(
@@ -28,7 +30,7 @@ export async function POST(request: Request) {
         content: m.content.trim().slice(0, 1500),
       }));
 
-    const { reply, mode } = await answerChat(cleaned);
+    const { reply, mode } = await answerChat(cleaned, locale);
     return NextResponse.json({ reply, mode });
   } catch {
     return NextResponse.json(

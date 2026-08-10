@@ -30,6 +30,7 @@ async function buildKnowledge(): Promise<string> {
       const pay = [
         t.allowCard && "tarjeta",
         t.allowBizum && "Bizum",
+        t.allowCard && "10% tarjeta + resto efectivo",
         t.allowPayOnDay && "pago el día del tour",
       ]
         .filter(Boolean)
@@ -77,7 +78,7 @@ function localReply(message: string, knowledge: string): string {
     /hola|buenas|hey|hello|buenos dias|buenas tardes|saludos/.test(q) &&
     q.length < 40
   ) {
-    return "¡Hola! Soy el asistente de Lanzarote Travels. Puedo ayudarte con excursiones (Ruta Sur, Grand Tour, privados), traslados al aeropuerto, precios, pagos y opciones para cruceristas. ¿Qué te interesa?";
+    return "¡Hola! Soy el asistente de Lanzarote Experience Tours. Puedo ayudarte con excursiones (Ruta Sur, Grand Tour, privados), traslados al aeropuerto, precios, pagos y opciones para cruceristas. ¿Qué te interesa?";
   }
 
   if (/gracias|thank/.test(q)) {
@@ -147,12 +148,20 @@ function localReply(message: string, knowledge: string): string {
   return "Puedo ayudarte con:\n• Excursiones (Ruta Sur, Grand Tour, privado, minibus)\n• Grupo reducido vs grupo grande\n• Traslados aeropuerto\n• Precios y formas de pago\n• Escalas de crucero\n\nPregúntame, por ejemplo: «¿Cuánto cuesta el Grand Tour en grupo grande?» o «Traslado a Playa Blanca».";
 }
 
+const langName: Record<string, string> = {
+  es: "español",
+  en: "English",
+  de: "Deutsch",
+};
+
 async function openaiReply(
   messages: ChatMessage[],
-  knowledge: string
+  knowledge: string,
+  locale: string
 ): Promise<string | null> {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) return null;
+  const language = langName[locale] || "español";
 
   try {
     const res = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -167,9 +176,9 @@ async function openaiReply(
         messages: [
           {
             role: "system",
-            content: `Eres el asistente de reservas de Lanzarote Travels. Responde en español, de forma breve, clara y amable (máx. 120 palabras salvo listas de precios). Usa solo esta información de la empresa. Si no sabes algo, invita a contactar o a reservar en la web. No inventes precios que no estén en el contexto. Incluye enlaces internos cuando ayuden (/excursiones, /traslados, /cruceristas).
+            content: `You are the booking assistant for Lanzarote Experience Tours. Reply in ${language}, briefly, clearly and kindly (max 120 words unless listing prices). Use only this company information. If unsure, invite the user to contact us or book on the website. Do not invent prices missing from the context. Include internal links when helpful (/${locale}/excursiones, /${locale}/traslados, /${locale}/cruceristas).
 
-CONTEXTO:
+CONTEXT:
 ${knowledge}`,
           },
           ...messages.slice(-10).map((m) => ({
@@ -188,20 +197,26 @@ ${knowledge}`,
   }
 }
 
-export async function answerChat(messages: ChatMessage[]): Promise<{
+export async function answerChat(
+  messages: ChatMessage[],
+  locale = "es"
+): Promise<{
   reply: string;
   mode: "openai" | "local";
 }> {
   const lastUser = [...messages].reverse().find((m) => m.role === "user");
   if (!lastUser?.content?.trim()) {
-    return {
-      reply: "Cuéntame en qué puedo ayudarte: excursiones, traslados o cruceros.",
-      mode: "local",
-    };
+    const empty =
+      locale === "en"
+        ? "Tell me how I can help: excursions, transfers or cruises."
+        : locale === "de"
+          ? "Sagen Sie mir, womit ich helfen kann: Ausflüge, Transfers oder Kreuzfahrten."
+          : "Cuéntame en qué puedo ayudarte: excursiones, traslados o cruceros.";
+    return { reply: empty, mode: "local" };
   }
 
   const knowledge = await buildKnowledge();
-  const ai = await openaiReply(messages, knowledge);
+  const ai = await openaiReply(messages, knowledge, locale);
   if (ai) return { reply: ai, mode: "openai" };
 
   return {

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "MSG-1",
+    "createdAt": "2026-08-08T10:12:00.000Z",
+    "name": "Carla Pons",
+    "email": "carla.demo@email.com",
+    "phone": "+34 600 111 000",
+    "message": "Hola, ¿hacéis recogida en Costa Teguise para el Grand Tour el 20 de agosto?"
+  },
+  {
+    "id": "MSG-2",
+    "createdAt": "2026-08-07T16:40:00.000Z",
+    "name": "Mark Evans",
+    "email": "mark.demo@email.com",
+    "phone": "+44 7700 222333",
+    "message": "We arrive on a cruise (MSC) on Aug 16. Do you have a private tour available?"
+  },
+  {
+    "id": "MSG-3",
+    "createdAt": "2026-08-05T09:05:00.000Z",
+    "name": "Ingrid Bauer",
+    "email": "ingrid.demo@email.com",
+    "phone": "+49 151 9998877",
+    "message": "Können wir die Weinroute für 4 Personen am 22.08. buchen?"
+  }
+]

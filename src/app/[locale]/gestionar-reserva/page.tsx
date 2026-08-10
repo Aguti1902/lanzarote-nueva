@@ -1,0 +1,149 @@
+"use client";
+
+import { FormEvent, useState } from "react";
+import Link from "next/link";
+import type { Booking } from "@/types";
+import { formatPrice } from "@/lib/format";
+import { PageHero } from "@/components/PageHero";
+import { useLocale } from "@/components/LocaleProvider";
+
+const inputClass =
+  "w-full rounded border border-sand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20";
+
+export default function GestionarReservaPage() {
+  const { dict, href } = useLocale();
+  const [bookingId, setBookingId] = useState("");
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [booking, setBooking] = useState<Booking | null>(null);
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setError("");
+    setBooking(null);
+    setLoading(true);
+    try {
+      const res = await fetch("/api/bookings/lookup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ booking_id: bookingId, email }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Error");
+      setBooking(data.booking as Booking);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <>
+      <PageHero
+        image="/images/heroes/excursions.jpg"
+        title={dict.manage.title}
+        subtitle={dict.manage.subtitle}
+        compact
+      />
+
+      <section className="mx-auto max-w-xl px-4 py-14 md:px-6">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4 rounded-lg bg-white p-6 ring-1 ring-sand-line"
+        >
+          <div>
+            <label className="mb-1 block text-sm font-bold">
+              {dict.manage.bookingId}
+            </label>
+            <input
+              className={inputClass}
+              value={bookingId}
+              onChange={(e) => setBookingId(e.target.value)}
+              placeholder="BK-1001"
+              required
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-bold">
+              {dict.common.email}
+            </label>
+            <input
+              type="email"
+              className={inputClass}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          {error && <p className="text-sm text-red-600">{error}</p>}
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-primary w-full justify-center disabled:opacity-60"
+          >
+            {loading ? dict.manage.searching : dict.manage.lookup}
+          </button>
+        </form>
+
+        {booking && (
+          <div className="mt-8 rounded-lg bg-white p-6 ring-1 ring-sand-line">
+            <h2 className="text-xl font-bold text-ink">
+              {dict.confirmation.locator} {booking.id}
+            </h2>
+            <dl className="mt-4 space-y-2 text-sm">
+              <div className="flex justify-between gap-4">
+                <dt className="text-ink-muted">{dict.manage.activity}</dt>
+                <dd className="text-right font-bold">{booking.tourTitle}</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-ink-muted">{dict.common.date}</dt>
+                <dd className="font-bold">{booking.date}</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-ink-muted">{dict.manage.people}</dt>
+                <dd className="font-bold">
+                  {booking.adults} {dict.common.adults}
+                  {booking.children > 0
+                    ? `, ${booking.children} ${dict.common.children}`
+                    : ""}
+                </dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-ink-muted">{dict.common.total}</dt>
+                <dd className="font-bold text-ocean">
+                  {formatPrice(booking.totalPrice)}
+                </dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-ink-muted">{dict.manage.status}</dt>
+                <dd className="font-bold uppercase">{booking.status}</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-ink-muted">{dict.manage.payment}</dt>
+                <dd className="font-bold">{booking.paymentStatus}</dd>
+              </div>
+            </dl>
+            <p className="mt-6 text-sm text-ink-muted">
+              {dict.manage.help}{" "}
+              <a
+                href="tel:+34646080585"
+                className="font-bold text-ocean hover:underline"
+              >
+                +34 646 08 05 85
+              </a>{" "}
+              ·{" "}
+              <Link
+                href={href("/contacto")}
+                className="font-bold text-ocean hover:underline"
+              >
+                {dict.nav.contact}
+              </Link>
+            </p>
+          </div>
+        )}
+      </section>
+    </>
+  );
+}

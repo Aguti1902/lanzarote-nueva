@@ -10,15 +10,6 @@
       "distance": "≈ 35 km"
     },
     {
-      "id": "puerto-calero",
-      "name": "Puerto Calero",
-      "slug": "puerto-calero",
-      "priceOneWay": 45,
-      "priceReturn": 85,
-      "duration": "25–35 min",
-      "distance": "≈ 25 km"
-    },
-    {
       "id": "puerto-del-carmen",
       "name": "Puerto del Carmen",
       "slug": "puerto-del-carmen",
@@ -26,6 +17,24 @@
       "priceReturn": 75,
       "duration": "20–30 min",
       "distance": "≈ 18 km"
+    },
+    {
+      "id": "costa-teguise",
+      "name": "Costa Teguise",
+      "slug": "costa-teguise",
+      "priceOneWay": 40,
+      "priceReturn": 75,
+      "duration": "20–25 min",
+      "distance": "≈ 15 km"
+    },
+    {
+      "id": "puerto-calero",
+      "name": "Puerto Calero",
+      "slug": "puerto-calero",
+      "priceOneWay": 45,
+      "priceReturn": 85,
+      "duration": "25–35 min",
+      "distance": "≈ 25 km"
     },
     {
       "id": "arrecife",
@@ -37,18 +46,99 @@
       "distance": "≈ 6 km"
     },
     {
-      "id": "costa-teguise",
-      "name": "Costa Teguise",
-      "slug": "costa-teguise",
+      "id": "la-santa",
+      "name": "La Santa",
+      "slug": "la-santa",
+      "priceOneWay": 50,
+      "priceReturn": 95,
+      "duration": "30–40 min",
+      "distance": "≈ 28 km"
+    },
+    {
+      "id": "charco-del-palo",
+      "name": "Charco del Palo",
+      "slug": "charco-del-palo",
+      "priceOneWay": 55,
+      "priceReturn": 100,
+      "duration": "35–45 min",
+      "distance": "≈ 32 km"
+    },
+    {
+      "id": "haria",
+      "name": "Haría",
+      "slug": "haria",
+      "priceOneWay": 55,
+      "priceReturn": 100,
+      "duration": "40–50 min",
+      "distance": "≈ 35 km"
+    },
+    {
+      "id": "orzola",
+      "name": "Órzola",
+      "slug": "orzola",
+      "priceOneWay": 60,
+      "priceReturn": 110,
+      "duration": "45–55 min",
+      "distance": "≈ 40 km"
+    },
+    {
+      "id": "famara",
+      "name": "Famara",
+      "slug": "famara",
+      "priceOneWay": 50,
+      "priceReturn": 95,
+      "duration": "30–40 min",
+      "distance": "≈ 28 km"
+    },
+    {
+      "id": "yaiza",
+      "name": "Yaiza",
+      "slug": "yaiza",
+      "priceOneWay": 50,
+      "priceReturn": 95,
+      "duration": "30–40 min",
+      "distance": "≈ 30 km"
+    },
+    {
+      "id": "tias",
+      "name": "Tías",
+      "slug": "tias",
       "priceOneWay": 40,
       "priceReturn": 75,
-      "duration": "20–25 min",
-      "distance": "≈ 15 km"
+      "duration": "20–30 min",
+      "distance": "≈ 16 km"
+    },
+    {
+      "id": "playa-honda",
+      "name": "Playa Honda",
+      "slug": "playa-honda",
+      "priceOneWay": 25,
+      "priceReturn": 45,
+      "duration": "10–15 min",
+      "distance": "≈ 5 km"
+    },
+    {
+      "id": "puerto-marmoles",
+      "name": "Puerto de Los Mármoles",
+      "slug": "puerto-los-marmoles",
+      "priceOneWay": 35,
+      "priceReturn": 65,
+      "duration": "15–20 min",
+      "distance": "≈ 8 km"
+    },
+    {
+      "id": "punta-mujeres",
+      "name": "Punta Mujeres",
+      "slug": "punta-mujeres",
+      "priceOneWay": 55,
+      "priceReturn": 100,
+      "duration": "40–50 min",
+      "distance": "≈ 34 km"
     }
   ],
   "highlights": [
     "Servicio 100% privado",
-    "Recibimiento en terminal con cartel con tu nombre",
+    "Recibimiento en terminal con cartel con su nombre",
     "Vehículo climatizado",
     "Seguimiento de vuelos",
     "Tarifa fija: sin sorpresas",

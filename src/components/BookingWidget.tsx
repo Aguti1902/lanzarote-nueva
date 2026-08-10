@@ -2,15 +2,20 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CreditCard, Banknote, Smartphone } from "lucide-react";
+import { CreditCard, Banknote, Percent, ShoppingCart, Smartphone } from "lucide-react";
 import type { PaymentMethod, Tour } from "@/types";
 import { formatPrice } from "@/lib/format";
+import { useCart } from "@/components/CartProvider";
+import { useLocale } from "@/components/LocaleProvider";
+import { splitPaymentAmounts } from "@/lib/payments";
 
 const inputClass =
-  "w-full rounded-lg border border-sand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20";
+  "w-full rounded border border-sand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20";
 
 export function BookingWidget({ tour }: { tour: Tour }) {
   const router = useRouter();
+  const { addItem } = useCart();
+  const { dict, href } = useLocale();
   const [date, setDate] = useState("");
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
@@ -26,6 +31,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [cartMsg, setCartMsg] = useState("");
 
   const isMinibus = tour.category === "minibus";
   const isPrivate = tour.category === "private";
@@ -36,34 +42,66 @@ export function BookingWidget({ tour }: { tour: Tour }) {
     return adults * tour.priceAdult + children * tour.priceChild;
   }, [adults, children, hours, isMinibus, isPrivate, tour]);
 
+  const paymentSplit = useMemo(
+    () => splitPaymentAmounts(total, paymentMethod),
+    [total, paymentMethod]
+  );
+
   const methods = (
     [
       {
         id: "card" as const,
-        label: "Tarjeta",
+        label: dict.booking.card,
         icon: <CreditCard className="h-4 w-4" />,
         show: tour.allowCard,
       },
       {
         id: "bizum" as const,
-        label: "Bizum",
+        label: dict.booking.bizum,
         icon: <Smartphone className="h-4 w-4" />,
         show: tour.allowBizum,
       },
       {
+        id: "deposit_10" as const,
+        label: dict.booking.deposit,
+        icon: <Percent className="h-4 w-4" />,
+        show: tour.allowCard,
+      },
+      {
         id: "pay_on_day" as const,
-        label: "Pago el día del tour",
+        label: dict.booking.payOnDay,
         icon: <Banknote className="h-4 w-4" />,
         show: tour.allowPayOnDay,
       },
     ] as const
   ).filter((m) => m.show);
 
+  function handleAddToCart() {
+    setError("");
+    setCartMsg("");
+    if (!date) {
+      setError(dict.booking.selectDate);
+      return;
+    }
+    addItem({
+      tourId: tour.id,
+      slug: tour.slug,
+      title: tour.title,
+      image: tour.image,
+      date,
+      adults: isPrivate || isMinibus ? 1 : adults,
+      children: isPrivate || isMinibus ? 0 : children,
+      priceAdult: isPrivate || isMinibus ? total : tour.priceAdult,
+      priceChild: isPrivate || isMinibus ? 0 : tour.priceChild,
+    });
+    setCartMsg(dict.booking.added);
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     if (!date || !name || !email || !phone) {
-      setError("Completa los campos obligatorios.");
+      setError(dict.booking.fillRequired);
       return;
     }
     setLoading(true);
@@ -80,15 +118,13 @@ export function BookingWidget({ tour }: { tour: Tour }) {
           children: isPrivate || isMinibus ? 0 : children,
           totalPrice: total,
           paymentMethod,
-          paymentStatus:
-            paymentMethod === "pay_on_day" ? "pay_on_day" : "paid",
           customer: { name, email, phone, hotel, cruiseShip, notes },
           minibus: isMinibus ? { hours } : undefined,
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error al reservar");
-      router.push(`/reserva/confirmacion?id=${data.booking.id}`);
+      router.push(`${href("/reserva/confirmacion")}?id=${data.booking.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al reservar");
     } finally {
@@ -97,21 +133,23 @@ export function BookingWidget({ tour }: { tour: Tour }) {
   }
 
   return (
-    <aside className="sticky top-24 rounded-xl bg-surface p-5 shadow-lg ring-1 ring-sand-line">
+    <aside className="sticky top-24 rounded-lg bg-white p-5 shadow-lg ring-1 ring-sand-line">
       <div className="mb-4 flex items-end justify-between border-b border-sand-line pb-4">
         <div>
-          <p className="text-sm text-ink-muted">Desde</p>
-          <p className="font-display text-3xl text-ink">
+          <p className="text-sm text-ink-muted">{dict.common.from}</p>
+          <p className="text-3xl font-bold text-ink">
             {formatPrice(tour.priceAdult)}
           </p>
         </div>
         <p className="text-sm text-ink-muted">
-          {isPrivate || isMinibus ? "por vehículo" : "por adulto"}
+          {isPrivate || isMinibus
+            ? dict.booking.perVehicle
+            : dict.booking.perAdult}
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-3">
-        <Field label="Fecha *">
+        <Field label={dict.booking.date}>
           <input
             type="date"
             required
@@ -135,7 +173,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
           </Field>
         ) : (
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Adultos">
+            <Field label={dict.common.adults}>
               <input
                 type="number"
                 min={1}
@@ -146,7 +184,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
               />
             </Field>
             {!isPrivate && (
-              <Field label="Niños">
+              <Field label={dict.common.children}>
                 <input
                   type="number"
                   min={0}
@@ -160,7 +198,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
           </div>
         )}
 
-        <Field label="Nombre completo *">
+        <Field label={dict.booking.name}>
           <input
             className={inputClass}
             value={name}
@@ -168,7 +206,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
             required
           />
         </Field>
-        <Field label="Email *">
+        <Field label={`${dict.common.email} *`}>
           <input
             type="email"
             className={inputClass}
@@ -177,7 +215,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
             required
           />
         </Field>
-        <Field label="Teléfono *">
+        <Field label={`${dict.common.phone} *`}>
           <input
             type="tel"
             className={inputClass}
@@ -186,22 +224,21 @@ export function BookingWidget({ tour }: { tour: Tour }) {
             required
           />
         </Field>
-        <Field label="Hotel / punto de recogida">
+        <Field label={dict.booking.hotel}>
           <input
             className={inputClass}
             value={hotel}
             onChange={(e) => setHotel(e.target.value)}
           />
         </Field>
-        <Field label="Barco de crucero (si aplica)">
+        <Field label={dict.booking.cruiseShip}>
           <input
             className={inputClass}
             value={cruiseShip}
             onChange={(e) => setCruiseShip(e.target.value)}
-            placeholder="Ej. MSC Orchestra"
           />
         </Field>
-        <Field label="Notas">
+        <Field label={dict.booking.notes}>
           <textarea
             className={`${inputClass} min-h-[72px] resize-y`}
             value={notes}
@@ -210,12 +247,14 @@ export function BookingWidget({ tour }: { tour: Tour }) {
         </Field>
 
         <div>
-          <p className="mb-2 text-sm font-medium text-ink">Método de pago</p>
+          <p className="mb-2 text-sm font-bold text-ink">
+            {dict.booking.paymentMethod}
+          </p>
           <div className="space-y-2">
             {methods.map((m) => (
               <label
                 key={m.id}
-                className={`flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2.5 text-sm transition ${
+                className={`flex cursor-pointer items-center gap-3 rounded border px-3 py-2.5 text-sm transition ${
                   paymentMethod === m.id
                     ? "border-ocean bg-ocean/5 text-ocean-deep"
                     : "border-sand-line hover:border-ocean/40"
@@ -233,38 +272,54 @@ export function BookingWidget({ tour }: { tour: Tour }) {
               </label>
             ))}
           </div>
-          {tour.groupSize === "large" && (
-            <p className="mt-2 text-xs text-ink-muted">
-              En grupo grande puedes pagar con tarjeta, Bizum o el día del tour
-              (efectivo/tarjeta in situ).
-            </p>
-          )}
-          {tour.groupSize === "small" && (
-            <p className="mt-2 text-xs text-ink-muted">
-              En grupo reducido se confirma con pago anticipado (tarjeta o
-              Bizum).
-            </p>
+        </div>
+
+        <div className="space-y-1 border-t border-sand-line pt-3">
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-ink-muted">{dict.common.total}</span>
+            <span className="text-2xl font-bold text-ink">
+              {formatPrice(total)}
+            </span>
+          </div>
+          {paymentMethod === "deposit_10" && (
+            <>
+              <div className="flex justify-between text-sm">
+                <span className="text-ink-muted">{dict.booking.payNow}</span>
+                <span className="font-bold text-ocean">
+                  {formatPrice(paymentSplit.amountPaidCard)}
+                </span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-ink-muted">{dict.booking.cashLater}</span>
+                <span className="font-bold">
+                  {formatPrice(paymentSplit.amountDueCash)}
+                </span>
+              </div>
+            </>
           )}
         </div>
 
-        <div className="flex items-center justify-between border-t border-sand-line pt-3">
-          <span className="text-sm text-ink-muted">Total</span>
-          <span className="text-2xl font-bold text-ink">
-            {formatPrice(total)}
-          </span>
-        </div>
+        {error && <p className="text-sm text-red-600">{error}</p>}
+        {cartMsg && <p className="text-sm text-success">{cartMsg}</p>}
 
-        {error && <p className="text-sm text-coral">{error}</p>}
+        <button
+          type="button"
+          onClick={handleAddToCart}
+          className="flex w-full items-center justify-center gap-2 rounded border border-ocean py-3 font-bold text-ocean transition hover:bg-ocean/5"
+        >
+          <ShoppingCart className="h-4 w-4" />
+          {dict.booking.addToCart}
+        </button>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-md bg-ocean py-3 font-semibold text-white transition hover:bg-ocean-deep disabled:opacity-60"
+          className="w-full rounded bg-ocean py-3 font-bold text-white transition hover:bg-ocean-deep disabled:opacity-60"
         >
-          {loading ? "Procesando…" : "Reservar ahora"}
+          {loading ? dict.common.processing : dict.booking.bookNow}
         </button>
         <p className="text-center text-xs text-ink-muted">
-          Cancelación gratis hasta 48 h antes
+          {dict.booking.cancelPolicy}
         </p>
       </form>
     </aside>
@@ -280,7 +335,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium text-ink">{label}</span>
+      <span className="mb-1 block text-sm font-bold text-ink">{label}</span>
       {children}
     </label>
   );

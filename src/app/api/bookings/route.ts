@@ -1,5 +1,14 @@
 import { NextResponse } from "next/server";
-import { addBooking, getBookings, updateBookingStatus } from "@/lib/bookings";
+import {
+  addBooking,
+  getBookings,
+  markCashCollected,
+  updateBookingStatus,
+} from "@/lib/bookings";
+import {
+  createCreditNoteForBooking,
+  createInvoiceForBooking,
+} from "@/lib/invoices";
 import type { BookingStatus, PaymentMethod } from "@/types";
 
 export async function GET() {
@@ -19,7 +28,6 @@ export async function POST(request: Request) {
       children,
       totalPrice,
       paymentMethod,
-      paymentStatus,
       customer,
       transfer,
       minibus,
@@ -41,14 +49,16 @@ export async function POST(request: Request) {
       children: Number(children) || 0,
       totalPrice: Number(totalPrice) || 0,
       paymentMethod: (paymentMethod as PaymentMethod) || "card",
-      paymentStatus: paymentStatus || "paid",
+      paymentStatus: "paid",
       customer,
       transfer,
       minibus,
       status: "confirmed",
     });
 
-    return NextResponse.json({ booking }, { status: 201 });
+    const invoice = await createInvoiceForBooking(booking);
+
+    return NextResponse.json({ booking, invoice }, { status: 201 });
   } catch {
     return NextResponse.json(
       { error: "No se pudo crear la reserva" },
@@ -60,15 +70,38 @@ export async function POST(request: Request) {
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
-    const { id, status } = body as { id: string; status: BookingStatus };
-    if (!id || !status) {
+    const { id, status, collectCash } = body as {
+      id: string;
+      status?: BookingStatus;
+      collectCash?: boolean;
+    };
+    if (!id) {
       return NextResponse.json({ error: "Datos inválidos" }, { status: 400 });
     }
+
+    if (collectCash) {
+      const booking = await markCashCollected(id);
+      if (!booking) {
+        return NextResponse.json({ error: "No encontrada" }, { status: 404 });
+      }
+      return NextResponse.json({ booking });
+    }
+
+    if (!status) {
+      return NextResponse.json({ error: "Datos inválidos" }, { status: 400 });
+    }
+
     const booking = await updateBookingStatus(id, status);
     if (!booking) {
       return NextResponse.json({ error: "No encontrada" }, { status: 404 });
     }
-    return NextResponse.json({ booking });
+
+    let creditNote = null;
+    if (status === "cancelled") {
+      creditNote = await createCreditNoteForBooking(booking);
+    }
+
+    return NextResponse.json({ booking, creditNote });
   } catch {
     return NextResponse.json({ error: "Error al actualizar" }, { status: 500 });
   }

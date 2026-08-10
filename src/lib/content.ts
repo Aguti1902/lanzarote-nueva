@@ -236,7 +236,7 @@ export async function createBlogPost(
     content: input.content,
     image: input.image || "/images/blog/cruise.jpg",
     date: input.date || new Date().toISOString().slice(0, 10),
-    author: input.author || "Equipo Lanzarote Travels",
+    author: input.author || "Equipo Lanzarote Experience Tours",
     tags: input.tags || [],
   };
   posts.unshift(post);
@@ -255,33 +255,37 @@ export async function deleteBlogPost(slug: string): Promise<boolean> {
 /* ── Settings ── */
 
 const defaultSettings: SiteSettings = {
-  brandName: "Lanzarote Travels",
-  tagline: "Excursiones & traslados",
-  phone: "+34 600 000 000",
-  email: "hola@lanzarotetravels.com",
-  hours: "Lunes–Domingo · 8:00–20:00",
-  homeHeadline: "Excursiones auténticas en la isla volcánica",
-  homeSubheadline:
-    "Grupo reducido o grupo grande, tours privados y traslados.",
+  brandName: "Lanzarote Experience Tours",
+  tagline: "LET us guide you",
+  phone: "+34 646 08 05 85",
+  email: "support@lanzaroteexperiencetours.com",
+  hours: "Contacto 24 / 7",
+  homeHeadline: "Lanzarote Experience Tours",
+  homeSubheadline: "LET us guide you",
   homeHeroImage: "/images/heroes/home.jpg",
-  aboutTitle: "Una forma cercana de descubrir Lanzarote",
-  aboutLead: "Somos una empresa local de Lanzarote.",
+  aboutTitle: "Lanzarote Experience Tours",
+  aboutLead:
+    "LET es una empresa familiar local que ofrece visitas guiadas en Lanzarote.",
   aboutText: "",
   aboutImage: "/images/heroes/about.jpg",
   aboutImageSecondary: "/images/heroes/about-2.jpg",
   aboutValues: "",
   aboutPromise: "",
-  excursionsTitle: "Excursiones en Lanzarote",
+  excursionsTitle: "Actividades y excursiones guiadas en Lanzarote",
   excursionsIntro: "",
   excursionsHeroImage: "/images/heroes/excursions.jpg",
   blogTitle: "Blog",
   blogIntro: "",
   blogHeroImage: "/images/heroes/blog.jpg",
-  cruiseHeadline: "Un día en tierra. La isla entera por descubrir.",
+  cruiseHeadline: "Excursiones para cruceros en las Islas Canarias",
   cruiseIntro: "",
   cruiseHeroImage: "/images/heroes/cruise.jpg",
   transferIntro: "",
   transferHeroImage: "/images/heroes/transfer.jpg",
+  companyLegalName: "Lanzarote Experience Tours S.L.U.",
+  companyTaxId: "",
+  companyAddress: "",
+  taxRate: 0,
 };
 
 export async function getSettings(): Promise<SiteSettings> {

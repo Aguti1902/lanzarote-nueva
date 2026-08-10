@@ -1,0 +1,1061 @@
+import type { Locale } from "./config";
+
+export type Dictionary = {
+  nav: {
+    about: string;
+    excursions: string;
+    transfers: string;
+    cruises: string;
+    houses: string;
+    contact: string;
+    cart: string;
+    manageBooking: string;
+  };
+  common: {
+    from: string;
+    book: string;
+    view: string;
+    seeAll: string;
+    loading: string;
+    send: string;
+    phone: string;
+    email: string;
+    continue: string;
+    backHome: string;
+    max: string;
+    adults: string;
+    children: string;
+    date: string;
+    total: string;
+    required: string;
+    processing: string;
+  };
+  home: {
+    ctaOffers: string;
+    ctaCruise: string;
+    marquee: string;
+    advantages: string[];
+    toursTitle: string;
+    toursKicker: string;
+    transfersKicker: string;
+    transfersTitle: string;
+    transfersCta: string;
+    cruisesKicker: string;
+    cruisesTitle: string;
+    cruisesCta: string;
+    agencyKicker: string;
+    agencyTitle: string;
+    agencyBody: string;
+    agencyCta: string;
+    islandKicker: string;
+    islandTitle: string;
+    islandBody: string;
+    islandCta: string;
+  };
+  footer: {
+    blurb: string;
+    explore: string;
+    contact247: string;
+    privacy: string;
+    terms: string;
+    rights: string;
+  };
+  excursions: {
+    title: string;
+    subtitle: string;
+    faqTitle: string;
+    cruiseHint: string;
+    cruiseLink: string;
+    faqs: { q: string; a: string }[];
+  };
+  transfers: {
+    title: string;
+    airportHotel: string;
+    hotelAirport: string;
+    roundTrip: string;
+    tableTitle: string;
+    destination: string;
+    duration: string;
+    oneWay: string;
+    return: string;
+    faqTitle: string;
+    faqs: { q: string; a: string }[];
+  };
+  cruises: {
+    title: string;
+    select: string;
+    pickup: string;
+    pickupText: string;
+    return: string;
+    returnText: string;
+    essentials: string;
+    essentialsText: string;
+    recommended: string;
+    recommendedText: string;
+    privateTitle: string;
+    privateText: string;
+  };
+  about: {
+    welcome: string;
+    mission: string;
+    missionText: string;
+    vision: string;
+    visionText: string;
+    values: string;
+    promise: string;
+    contact: string;
+    seeExcursions: string;
+  };
+  houses: {
+    title: string;
+    subtitle: string;
+    houseTitle: string;
+    houseBody: string;
+    features: string[];
+    cta: string;
+  };
+  contact: {
+    title: string;
+    subtitle: string;
+    formTitle: string;
+    infoTitle: string;
+    name: string;
+    message: string;
+    send: string;
+    sending: string;
+    success: string;
+    address: string;
+  };
+  cart: {
+    title: string;
+    empty: string;
+    seeExcursions: string;
+    hotel: string;
+    payment: string;
+    checkout: string;
+    remove: string;
+    now: string;
+    cashDay: string;
+  };
+  manage: {
+    title: string;
+    subtitle: string;
+    bookingId: string;
+    lookup: string;
+    searching: string;
+    activity: string;
+    people: string;
+    status: string;
+    payment: string;
+    help: string;
+  };
+  booking: {
+    date: string;
+    name: string;
+    hotel: string;
+    cruiseShip: string;
+    notes: string;
+    paymentMethod: string;
+    card: string;
+    bizum: string;
+    deposit: string;
+    payOnDay: string;
+    addToCart: string;
+    bookNow: string;
+    cancelPolicy: string;
+    selectDate: string;
+    fillRequired: string;
+    added: string;
+    payNow: string;
+    cashLater: string;
+    perAdult: string;
+    perVehicle: string;
+  };
+  transferForm: {
+    title: string;
+    subtitle: string;
+    destination: string;
+    route: string;
+    passengers: string;
+    flight: string;
+    hotelAddress: string;
+    payment: string;
+    confirm: string;
+  };
+  confirmation: {
+    title: string;
+    body: string;
+    locator: string;
+    service: string;
+    paidOnline: string;
+    cashPending: string;
+    invoice: string;
+  };
+  payments: {
+    card: string;
+    bizum: string;
+    pay_on_day: string;
+    deposit_10: string;
+  };
+  chat: {
+    title: string;
+    subtitle: string;
+    greeting: string;
+    placeholder: string;
+    writing: string;
+    suggestions: string[];
+    error: string;
+  };
+  contactWidget: {
+    title: string;
+    slug: string;
+    help: string;
+    questions: string;
+    whatsapp: string;
+    facebook: string;
+  };
+};
+
+const es: Dictionary = {
+  nav: {
+    about: "Sobre nosotros",
+    excursions: "Excursiones",
+    transfers: "Traslados",
+    cruises: "Cruceros",
+    houses: "Casas",
+    contact: "Contacto",
+    cart: "Carrito",
+    manageBooking: "Gestione su reserva",
+  },
+  common: {
+    from: "Desde",
+    book: "Reservar",
+    view: "Ver",
+    seeAll: "Ver todas",
+    loading: "Cargando…",
+    send: "Enviar",
+    phone: "Teléfono",
+    email: "Email",
+    continue: "Continuar",
+    backHome: "Volver al inicio",
+    max: "Máx.",
+    adults: "Adultos",
+    children: "Niños",
+    date: "Fecha",
+    total: "Total",
+    required: "Obligatorio",
+    processing: "Procesando…",
+  },
+  home: {
+    ctaOffers: "Ver nuestras ofertas",
+    ctaCruise: "Llegas en crucero",
+    marquee:
+      "Excursiones personalizadas · Empresa familiar de Lanzarote · Gracias por apoyar el comercio local · Grupos reducidos, solo en español",
+    advantages: [
+      "Mini-bus desinfectado con Ozono",
+      "Climatizado y WIFI gratis",
+      "Grupos máx. 14 personas",
+      "Solo en español",
+      "Recogida en su alojamiento",
+    ],
+    toursTitle: "Lanzarote tours",
+    toursKicker: "Experiencias",
+    transfersKicker: "Sin esperas",
+    transfersTitle: "Traslados privados en Lanzarote",
+    transfersCta: "Reservar traslado",
+    cruisesKicker: "Escalas",
+    cruisesTitle: "Excursiones para cruceros",
+    cruisesCta: "Ver opciones",
+    agencyKicker: "Empresa familiar",
+    agencyTitle: "Agencia de excursiones",
+    agencyBody:
+      "Vigilamos la calidad con grupos pequeños, minibuses propios y visitas solo en español.",
+    agencyCta: "Conocer LET",
+    islandKicker: "La isla",
+    islandTitle: "Aproveche al máximo su visita a Lanzarote",
+    islandBody:
+      "Reserva de la Biosfera, silencio, calma y un paisaje volcánico moldeado por César Manrique y Jesús Soto. Timanfaya, Cueva de los Verdes, Jardín de Cactus o Jameos del Agua: la isla se vive mejor con quien la conoce.",
+    islandCta: "Empezar a planificar",
+  },
+  footer: {
+    blurb:
+      "Empresa familiar local. Excursiones en grupos reducidos, solo en español, con nuestros propios minibuses.",
+    explore: "Explorar",
+    contact247: "Contacto 24/7",
+    privacy: "Privacidad",
+    terms: "Condiciones",
+    rights: "Todos los derechos reservados",
+  },
+  excursions: {
+    title: "Actividades y excursiones guiadas en Lanzarote",
+    subtitle:
+      "Excursiones, actividades y visitas guiadas para descubrir lo mejor de Lanzarote.",
+    faqTitle: "Preguntas frecuentes sobre nuestras excursiones en Lanzarote",
+    cruiseHint: "¿Llega en crucero?",
+    cruiseLink: "Vea las opciones para su escala",
+    faqs: [
+      {
+        q: "¿Cuándo recibiré el bono para la excursión?",
+        a: "Tras confirmar la reserva recibirá un email con el bono y los detalles de recogida.",
+      },
+      {
+        q: "¿Cuáles son las formas de pago disponibles?",
+        a: "Puede pagar con tarjeta, Bizum, 10% + efectivo o, en muchas actividades, el día del tour.",
+      },
+      {
+        q: "¿Dónde será el punto de encuentro?",
+        a: "Le recogemos en la puerta de su alojamiento. El punto exacto aparece en su bono.",
+      },
+      {
+        q: "¿Cuál es la política de cancelación?",
+        a: "Cancelación gratuita hasta 48 horas antes de la recogida.",
+      },
+      {
+        q: "¿Cuáles son los idiomas de las excursiones?",
+        a: "No mezclamos idiomas: nuestras excursiones se realizan solo en español.",
+      },
+    ],
+  },
+  transfers: {
+    title: "Traslados al aeropuerto de Lanzarote",
+    airportHotel: "Aeropuerto al hotel",
+    hotelAirport: "Hotel al aeropuerto",
+    roundTrip: "Ida y Vuelta",
+    tableTitle: "Traslados privados desde y hacia el aeropuerto de Lanzarote",
+    destination: "Destino",
+    duration: "Duración",
+    oneWay: "Ida",
+    return: "Ida y vuelta",
+    faqTitle: "Preguntas frecuentes sobre nuestros traslados en Lanzarote",
+    faqs: [
+      {
+        q: "¿Dónde encontraré a mi chófer?",
+        a: "Le esperamos en la terminal de llegadas con un cartel con su nombre.",
+      },
+      {
+        q: "¿Qué pasa si mi vuelo tiene un retraso?",
+        a: "Hacemos seguimiento de vuelos y adaptamos la recogida sin coste adicional.",
+      },
+      {
+        q: "¿Cómo funciona la política de cancelación?",
+        a: "Cancelación gratuita hasta 48 horas antes del servicio.",
+      },
+    ],
+  },
+  cruises: {
+    title: "Excursiones para cruceros en las Islas Canarias",
+    select: "Seleccione su excursión",
+    pickup: "Recogida en puerto",
+    pickupText:
+      "Le esperamos cerca del muelle. Indíquenos su barco y hora de desembarque.",
+    return: "Regreso a tiempo",
+    returnText:
+      "Adaptamos el itinerario a su all-aboard para que embarque con tranquilidad.",
+    essentials: "Lo imprescindible",
+    essentialsText:
+      "Timanfaya, El Golfo, Jameos… lo mejor de la isla en el tiempo de su escala.",
+    recommended: "Excursiones para cruceristas",
+    recommendedText:
+      "Experiencias únicas en cada escala, con grupos reducidos y solo en español.",
+    privateTitle: "¿Prefiere algo privado?",
+    privateText:
+      "La opción más flexible si viaja en familia o quiere un itinerario a medida.",
+  },
+  about: {
+    welcome: "¡Bienvenidos a Lanzarote!",
+    mission: "Misión",
+    missionText:
+      "Ofrecer visitas guiadas de calidad en Lanzarote, en grupos reducidos y solo en español.",
+    vision: "Visión",
+    visionText:
+      "Ser la referencia local en experiencias auténticas de Lanzarote.",
+    values: "Nuestros valores",
+    promise: "Nuestra promesa",
+    contact: "Contactar",
+    seeExcursions: "Ver excursiones",
+  },
+  houses: {
+    title: "Casas vacacionales en Lanzarote",
+    subtitle: "Alojamientos con encaje local para disfrutar la isla con calma.",
+    houseTitle: "Casa Cordel",
+    houseBody:
+      "Casa vacacional en Lanzarote pensada para quienes buscan tranquilidad y una base cómoda desde la que explorar la isla.",
+    features: [
+      "Ubicación tranquila en Lanzarote",
+      "Perfecta para familias y parejas",
+      "Compatible con recogidas de excursiones LET",
+    ],
+    cta: "Solicitar información",
+  },
+  contact: {
+    title: "¿Cómo podemos ayudarle?",
+    subtitle: "Estamos para resolver todas sus dudas. Contacto 24 / 7.",
+    formTitle: "Formulario de contacto",
+    infoTitle: "Información de contacto",
+    name: "Nombre",
+    message: "Mensaje",
+    send: "Enviar mensaje",
+    sending: "Enviando…",
+    success: "Mensaje enviado. Le contactaremos lo antes posible.",
+    address: "Calle Calderetas, 100\n35550 San Bartolomé - Lanzarote",
+  },
+  cart: {
+    title: "Actividades seleccionadas",
+    empty: "Su carrito está vacío.",
+    seeExcursions: "Ver excursiones",
+    hotel: "Hotel / alojamiento",
+    payment: "Método de pago",
+    checkout: "Finalizar reserva",
+    remove: "Eliminar",
+    now: "Ahora",
+    cashDay: "Efectivo",
+  },
+  manage: {
+    title: "Gestionar su reserva",
+    subtitle: "Introduzca su número de reserva y el email con el que compró.",
+    bookingId: "Número de reserva",
+    lookup: "Consultar reserva",
+    searching: "Buscando…",
+    activity: "Actividad",
+    people: "Personas",
+    status: "Estado",
+    payment: "Pago",
+    help: "¿Necesita cambios? Contáctenos.",
+  },
+  booking: {
+    date: "Fecha *",
+    name: "Nombre completo *",
+    hotel: "Hotel / punto de recogida",
+    cruiseShip: "Barco de crucero (si aplica)",
+    notes: "Notas",
+    paymentMethod: "Método de pago",
+    card: "Tarjeta (100%)",
+    bizum: "Bizum (100%)",
+    deposit: "10% tarjeta + resto efectivo",
+    payOnDay: "Pago el día del tour",
+    addToCart: "Añadir al carrito",
+    bookNow: "Reservar ahora",
+    cancelPolicy: "Cancelación gratis hasta 48 h antes",
+    selectDate: "Seleccione una fecha para añadir al carrito.",
+    fillRequired: "Complete los campos obligatorios.",
+    added: "Añadido al carrito.",
+    payNow: "Ahora (10% tarjeta)",
+    cashLater: "Efectivo el día",
+    perAdult: "por adulto",
+    perVehicle: "por vehículo",
+  },
+  transferForm: {
+    title: "Reservar traslado",
+    subtitle: "Privado · recibimiento con cartel con su nombre",
+    destination: "Destino *",
+    route: "Trayecto *",
+    passengers: "Pasajeros",
+    flight: "Nº de vuelo",
+    hotelAddress: "Hotel / dirección *",
+    payment: "Pago",
+    confirm: "Confirmar traslado",
+  },
+  confirmation: {
+    title: "¡Reserva recibida!",
+    body: "Le hemos enviado un email de confirmación. Nuestro equipo le contactará si necesita algún detalle adicional.",
+    locator: "Localizador",
+    service: "Servicio",
+    paidOnline: "Pagado (tarjeta/online)",
+    cashPending: "Pendiente en efectivo",
+    invoice: "Factura",
+  },
+  payments: {
+    card: "Tarjeta",
+    bizum: "Bizum",
+    pay_on_day: "Pago el día del tour",
+    deposit_10: "10% tarjeta + resto efectivo",
+  },
+  chat: {
+    title: "Asistente LET",
+    subtitle: "Excursiones, traslados y más",
+    greeting:
+      "¡Hola! Soy el asistente de Lanzarote Experience Tours. Pregúntame por excursiones, precios, traslados o si llega en crucero.",
+    placeholder: "Escriba su pregunta…",
+    writing: "Escribiendo…",
+    suggestions: [
+      "¿Timanfaya o Grand Tour?",
+      "Traslado a Playa Blanca",
+      "Vengo en crucero un día",
+      "¿Puedo pagar 10% y el resto en efectivo?",
+    ],
+    error:
+      "Ahora mismo no he podido responder. Pruebe de nuevo o llámenos al +34 646 08 05 85.",
+  },
+  contactWidget: {
+    title: "Lanzarote Experience Tours",
+    slug: "Contacto 24 / 7",
+    help: "¿Necesita ayuda? Estamos para resolver todas sus dudas.",
+    questions: "¿Preguntas?",
+    whatsapp: "WhatsApp",
+    facebook: "Facebook",
+  },
+};
+
+const en: Dictionary = {
+  nav: {
+    about: "About us",
+    excursions: "Excursions",
+    transfers: "Transfers",
+    cruises: "Cruises",
+    houses: "Homes",
+    contact: "Contact",
+    cart: "Cart",
+    manageBooking: "Manage booking",
+  },
+  common: {
+    from: "From",
+    book: "Book",
+    view: "View",
+    seeAll: "See all",
+    loading: "Loading…",
+    send: "Send",
+    phone: "Phone",
+    email: "Email",
+    continue: "Continue",
+    backHome: "Back to home",
+    max: "Max.",
+    adults: "Adults",
+    children: "Children",
+    date: "Date",
+    total: "Total",
+    required: "Required",
+    processing: "Processing…",
+  },
+  home: {
+    ctaOffers: "See our offers",
+    ctaCruise: "Arriving by cruise",
+    marquee:
+      "Tailored excursions · Family business from Lanzarote · Thank you for supporting local trade · Small groups, Spanish only",
+    advantages: [
+      "Ozone-disinfected mini-bus",
+      "Air-conditioned with free WIFI",
+      "Groups max. 14 people",
+      "Spanish language only",
+      "Hotel pick-up included",
+    ],
+    toursTitle: "Lanzarote tours",
+    toursKicker: "Experiences",
+    transfersKicker: "No waiting",
+    transfersTitle: "Private transfers in Lanzarote",
+    transfersCta: "Book a transfer",
+    cruisesKicker: "Port calls",
+    cruisesTitle: "Shore excursions",
+    cruisesCta: "See options",
+    agencyKicker: "Family business",
+    agencyTitle: "Excursion agency",
+    agencyBody:
+      "We protect quality with small groups, our own minibuses and Spanish-only tours.",
+    agencyCta: "Meet LET",
+    islandKicker: "The island",
+    islandTitle: "Make the most of your visit to Lanzarote",
+    islandBody:
+      "A Biosphere Reserve of silence, calm and volcanic landscapes shaped by César Manrique. Timanfaya, Cueva de los Verdes, Cactus Garden or Jameos del Agua: the island is better with those who know it.",
+    islandCta: "Start planning",
+  },
+  footer: {
+    blurb:
+      "Local family business. Small-group excursions in Spanish only, with our own minibuses.",
+    explore: "Explore",
+    contact247: "Contact 24/7",
+    privacy: "Privacy",
+    terms: "Terms",
+    rights: "All rights reserved",
+  },
+  excursions: {
+    title: "Guided activities and excursions in Lanzarote",
+    subtitle:
+      "Excursions and guided visits to discover the best of Lanzarote.",
+    faqTitle: "Frequently asked questions about our Lanzarote excursions",
+    cruiseHint: "Arriving by cruise?",
+    cruiseLink: "See options for your port call",
+    faqs: [
+      {
+        q: "When will I receive my excursion voucher?",
+        a: "After confirmation you will receive an email with the voucher and pick-up details.",
+      },
+      {
+        q: "Which payment methods are available?",
+        a: "Card, Bizum, 10% deposit + cash on the day, or pay on the day for many activities.",
+      },
+      {
+        q: "Where is the meeting point?",
+        a: "We pick you up at your accommodation. The exact point is on your voucher.",
+      },
+      {
+        q: "What is the cancellation policy?",
+        a: "Free cancellation up to 48 hours before pick-up.",
+      },
+      {
+        q: "Which languages are the tours in?",
+        a: "We do not mix languages: our excursions are in Spanish only.",
+      },
+    ],
+  },
+  transfers: {
+    title: "Lanzarote airport transfers",
+    airportHotel: "Airport to hotel",
+    hotelAirport: "Hotel to airport",
+    roundTrip: "Return",
+    tableTitle: "Private transfers to and from Lanzarote Airport",
+    destination: "Destination",
+    duration: "Duration",
+    oneWay: "One way",
+    return: "Return",
+    faqTitle: "Frequently asked questions about our transfers",
+    faqs: [
+      {
+        q: "Where will I find my driver?",
+        a: "We meet you in arrivals with a sign with your name.",
+      },
+      {
+        q: "What if my flight is delayed?",
+        a: "We track flights and adjust pick-up at no extra cost.",
+      },
+      {
+        q: "What is the cancellation policy?",
+        a: "Free cancellation up to 48 hours before the service.",
+      },
+    ],
+  },
+  cruises: {
+    title: "Shore excursions in the Canary Islands",
+    select: "Choose your excursion",
+    pickup: "Port pick-up",
+    pickupText: "We meet you near the pier. Tell us your ship and disembarkation time.",
+    return: "Back on time",
+    returnText: "We adapt the itinerary to your all-aboard time.",
+    essentials: "The essentials",
+    essentialsText:
+      "Timanfaya, El Golfo, Jameos… the best of the island in your time ashore.",
+    recommended: "Shore excursions",
+    recommendedText: "Unique experiences for every port call, in small Spanish-only groups.",
+    privateTitle: "Prefer something private?",
+    privateText: "The most flexible option for families or a custom itinerary.",
+  },
+  about: {
+    welcome: "Welcome to Lanzarote!",
+    mission: "Mission",
+    missionText:
+      "Deliver quality guided visits in Lanzarote, in small groups and Spanish only.",
+    vision: "Vision",
+    visionText: "Be the local reference for authentic Lanzarote experiences.",
+    values: "Our values",
+    promise: "Our promise",
+    contact: "Contact",
+    seeExcursions: "See excursions",
+  },
+  houses: {
+    title: "Holiday homes in Lanzarote",
+    subtitle: "Local stays to enjoy the island at your own pace.",
+    houseTitle: "Casa Cordel",
+    houseBody:
+      "A holiday home for those seeking calm and a comfortable base to explore Lanzarote.",
+    features: [
+      "Quiet location in Lanzarote",
+      "Ideal for families and couples",
+      "Compatible with LET excursion pick-ups",
+    ],
+    cta: "Request information",
+  },
+  contact: {
+    title: "How can we help you?",
+    subtitle: "We are here to answer all your questions. Contact 24 / 7.",
+    formTitle: "Contact form",
+    infoTitle: "Contact information",
+    name: "Name",
+    message: "Message",
+    send: "Send message",
+    sending: "Sending…",
+    success: "Message sent. We will contact you as soon as possible.",
+    address: "Calle Calderetas, 100\n35550 San Bartolomé - Lanzarote",
+  },
+  cart: {
+    title: "Selected activities",
+    empty: "Your cart is empty.",
+    seeExcursions: "See excursions",
+    hotel: "Hotel / accommodation",
+    payment: "Payment method",
+    checkout: "Complete booking",
+    remove: "Remove",
+    now: "Now",
+    cashDay: "Cash",
+  },
+  manage: {
+    title: "Manage your booking",
+    subtitle: "Enter your booking number and the email used to purchase.",
+    bookingId: "Booking number",
+    lookup: "Look up booking",
+    searching: "Searching…",
+    activity: "Activity",
+    people: "Guests",
+    status: "Status",
+    payment: "Payment",
+    help: "Need changes? Contact us.",
+  },
+  booking: {
+    date: "Date *",
+    name: "Full name *",
+    hotel: "Hotel / pick-up point",
+    cruiseShip: "Cruise ship (if applicable)",
+    notes: "Notes",
+    paymentMethod: "Payment method",
+    card: "Card (100%)",
+    bizum: "Bizum (100%)",
+    deposit: "10% card + cash balance",
+    payOnDay: "Pay on the day",
+    addToCart: "Add to cart",
+    bookNow: "Book now",
+    cancelPolicy: "Free cancellation up to 48 h before",
+    selectDate: "Please select a date to add to cart.",
+    fillRequired: "Please complete the required fields.",
+    added: "Added to cart.",
+    payNow: "Now (10% card)",
+    cashLater: "Cash on the day",
+    perAdult: "per adult",
+    perVehicle: "per vehicle",
+  },
+  transferForm: {
+    title: "Book a transfer",
+    subtitle: "Private · meet & greet with your name sign",
+    destination: "Destination *",
+    route: "Route *",
+    passengers: "Passengers",
+    flight: "Flight number",
+    hotelAddress: "Hotel / address *",
+    payment: "Payment",
+    confirm: "Confirm transfer",
+  },
+  confirmation: {
+    title: "Booking received!",
+    body: "We have sent a confirmation email. Our team will contact you if any detail is needed.",
+    locator: "Reference",
+    service: "Service",
+    paidOnline: "Paid (card/online)",
+    cashPending: "Cash due",
+    invoice: "Invoice",
+  },
+  payments: {
+    card: "Card",
+    bizum: "Bizum",
+    pay_on_day: "Pay on the day",
+    deposit_10: "10% card + cash balance",
+  },
+  chat: {
+    title: "LET Assistant",
+    subtitle: "Excursions, transfers and more",
+    greeting:
+      "Hi! I am the Lanzarote Experience Tours assistant. Ask me about excursions, prices, transfers or cruise calls.",
+    placeholder: "Type your question…",
+    writing: "Typing…",
+    suggestions: [
+      "Timanfaya or Grand Tour?",
+      "Transfer to Playa Blanca",
+      "I arrive by cruise for one day",
+      "Can I pay 10% and the rest in cash?",
+    ],
+    error:
+      "I could not reply right now. Please try again or call +34 646 08 05 85.",
+  },
+  contactWidget: {
+    title: "Lanzarote Experience Tours",
+    slug: "Contact 24 / 7",
+    help: "Need help? We are here to answer all your questions.",
+    questions: "Questions?",
+    whatsapp: "WhatsApp",
+    facebook: "Facebook",
+  },
+};
+
+const de: Dictionary = {
+  nav: {
+    about: "Über uns",
+    excursions: "Ausflüge",
+    transfers: "Transfers",
+    cruises: "Kreuzfahrten",
+    houses: "Häuser",
+    contact: "Kontakt",
+    cart: "Warenkorb",
+    manageBooking: "Buchung verwalten",
+  },
+  common: {
+    from: "Ab",
+    book: "Buchen",
+    view: "Ansehen",
+    seeAll: "Alle ansehen",
+    loading: "Laden…",
+    send: "Senden",
+    phone: "Telefon",
+    email: "E-Mail",
+    continue: "Weiter",
+    backHome: "Zur Startseite",
+    max: "Max.",
+    adults: "Erwachsene",
+    children: "Kinder",
+    date: "Datum",
+    total: "Gesamt",
+    required: "Pflichtfeld",
+    processing: "Wird verarbeitet…",
+  },
+  home: {
+    ctaOffers: "Unsere Angebote ansehen",
+    ctaCruise: "Mit dem Kreuzfahrtschiff",
+    marquee:
+      "Individuelle Ausflüge · Familienunternehmen aus Lanzarote · Danke für die Unterstützung lokaler Betriebe · Kleine Gruppen, nur auf Spanisch",
+    advantages: [
+      "Minibus mit Ozon desinfiziert",
+      "Klimatisiert mit gratis WIFI",
+      "Gruppen max. 14 Personen",
+      "Nur auf Spanisch",
+      "Abholung an Ihrer Unterkunft",
+    ],
+    toursTitle: "Lanzarote tours",
+    toursKicker: "Erlebnisse",
+    transfersKicker: "Ohne Warten",
+    transfersTitle: "Private Transfers auf Lanzarote",
+    transfersCta: "Transfer buchen",
+    cruisesKicker: "Hafenstopps",
+    cruisesTitle: "Landausflüge für Kreuzfahrten",
+    cruisesCta: "Optionen ansehen",
+    agencyKicker: "Familienunternehmen",
+    agencyTitle: "Ausflugsagentur",
+    agencyBody:
+      "Wir sichern Qualität mit kleinen Gruppen, eigenen Minibussen und Touren nur auf Spanisch.",
+    agencyCta: "LET kennenlernen",
+    islandKicker: "Die Insel",
+    islandTitle: "Holen Sie das Beste aus Ihrem Besuch auf Lanzarote",
+    islandBody:
+      "Biosphärenreservat, Stille, Ruhe und eine vulkanische Landschaft geprägt von César Manrique. Timanfaya, Cueva de los Verdes, Kakteengarten oder Jameos del Agua: die Insel erlebt man besser mit Kennern.",
+    islandCta: "Jetzt planen",
+  },
+  footer: {
+    blurb:
+      "Lokales Familienunternehmen. Ausflüge in kleinen Gruppen, nur auf Spanisch, mit eigenen Minibussen.",
+    explore: "Entdecken",
+    contact247: "Kontakt 24/7",
+    privacy: "Datenschutz",
+    terms: "Bedingungen",
+    rights: "Alle Rechte vorbehalten",
+  },
+  excursions: {
+    title: "Geführte Aktivitäten und Ausflüge auf Lanzarote",
+    subtitle:
+      "Ausflüge und Führungen, um das Beste von Lanzarote zu entdecken.",
+    faqTitle: "Häufige Fragen zu unseren Ausflügen auf Lanzarote",
+    cruiseHint: "Kommen Sie mit dem Kreuzfahrtschiff?",
+    cruiseLink: "Optionen für Ihren Hafenstopp ansehen",
+    faqs: [
+      {
+        q: "Wann erhalte ich meinen Ausflugsbon?",
+        a: "Nach der Bestätigung erhalten Sie eine E-Mail mit Bon und Abholungsdetails.",
+      },
+      {
+        q: "Welche Zahlungsmethoden gibt es?",
+        a: "Karte, Bizum, 10 % Anzahlung + Rest bar oder Zahlung am Tourtag.",
+      },
+      {
+        q: "Wo ist der Treffpunkt?",
+        a: "Wir holen Sie an Ihrer Unterkunft ab. Der genaue Punkt steht auf dem Bon.",
+      },
+      {
+        q: "Wie ist die Stornierungsregelung?",
+        a: "Kostenlose Stornierung bis 48 Stunden vor der Abholung.",
+      },
+      {
+        q: "In welchen Sprachen finden die Touren statt?",
+        a: "Wir mischen keine Sprachen: unsere Ausflüge sind nur auf Spanisch.",
+      },
+    ],
+  },
+  transfers: {
+    title: "Flughafentransfers Lanzarote",
+    airportHotel: "Flughafen zum Hotel",
+    hotelAirport: "Hotel zum Flughafen",
+    roundTrip: "Hin und zurück",
+    tableTitle: "Private Transfers vom und zum Flughafen Lanzarote",
+    destination: "Ziel",
+    duration: "Dauer",
+    oneWay: "Einfach",
+    return: "Hin und zurück",
+    faqTitle: "Häufige Fragen zu unseren Transfers",
+    faqs: [
+      {
+        q: "Wo finde ich meinen Fahrer?",
+        a: "Wir erwarten Sie in der Ankunftshalle mit einem Schild mit Ihrem Namen.",
+      },
+      {
+        q: "Was passiert bei Flugverspätung?",
+        a: "Wir verfolgen Flüge und passen die Abholung ohne Aufpreis an.",
+      },
+      {
+        q: "Wie ist die Stornierungsregelung?",
+        a: "Kostenlose Stornierung bis 48 Stunden vor dem Service.",
+      },
+    ],
+  },
+  cruises: {
+    title: "Landausflüge auf den Kanarischen Inseln",
+    select: "Wählen Sie Ihren Ausflug",
+    pickup: "Abholung am Hafen",
+    pickupText:
+      "Wir erwarten Sie nahe dem Pier. Nennen Sie uns Schiff und Ausschiffungszeit.",
+    return: "Pünktliche Rückkehr",
+    returnText: "Wir passen die Route an Ihre All-aboard-Zeit an.",
+    essentials: "Das Wesentliche",
+    essentialsText:
+      "Timanfaya, El Golfo, Jameos… das Beste der Insel in Ihrer Landzeit.",
+    recommended: "Landausflüge",
+    recommendedText:
+      "Einzigartige Erlebnisse für jeden Hafenstopp, in kleinen spanischsprachigen Gruppen.",
+    privateTitle: "Lieber privat?",
+    privateText:
+      "Die flexibelste Option für Familien oder eine individuelle Route.",
+  },
+  about: {
+    welcome: "Willkommen auf Lanzarote!",
+    mission: "Mission",
+    missionText:
+      "Hochwertige Führungen auf Lanzarote in kleinen Gruppen und nur auf Spanisch anbieten.",
+    vision: "Vision",
+    visionText:
+      "Die lokale Referenz für authentische Lanzarote-Erlebnisse sein.",
+    values: "Unsere Werte",
+    promise: "Unser Versprechen",
+    contact: "Kontakt",
+    seeExcursions: "Ausflüge ansehen",
+  },
+  houses: {
+    title: "Ferienhäuser auf Lanzarote",
+    subtitle: "Lokale Unterkünfte, um die Insel in Ruhe zu genießen.",
+    houseTitle: "Casa Cordel",
+    houseBody:
+      "Ein Ferienhaus für alle, die Ruhe und eine komfortable Basis zum Erkunden der Insel suchen.",
+    features: [
+      "Ruhige Lage auf Lanzarote",
+      "Ideal für Familien und Paare",
+      "Kompatibel mit LET-Abholungen",
+    ],
+    cta: "Informationen anfragen",
+  },
+  contact: {
+    title: "Wie können wir helfen?",
+    subtitle: "Wir beantworten gerne alle Fragen. Kontakt 24 / 7.",
+    formTitle: "Kontaktformular",
+    infoTitle: "Kontaktinformationen",
+    name: "Name",
+    message: "Nachricht",
+    send: "Nachricht senden",
+    sending: "Wird gesendet…",
+    success: "Nachricht gesendet. Wir melden uns so schnell wie möglich.",
+    address: "Calle Calderetas, 100\n35550 San Bartolomé - Lanzarote",
+  },
+  cart: {
+    title: "Ausgewählte Aktivitäten",
+    empty: "Ihr Warenkorb ist leer.",
+    seeExcursions: "Ausflüge ansehen",
+    hotel: "Hotel / Unterkunft",
+    payment: "Zahlungsmethode",
+    checkout: "Buchung abschließen",
+    remove: "Entfernen",
+    now: "Jetzt",
+    cashDay: "Bar",
+  },
+  manage: {
+    title: "Buchung verwalten",
+    subtitle: "Geben Sie Ihre Buchungsnummer und die verwendete E-Mail ein.",
+    bookingId: "Buchungsnummer",
+    lookup: "Buchung suchen",
+    searching: "Suche…",
+    activity: "Aktivität",
+    people: "Personen",
+    status: "Status",
+    payment: "Zahlung",
+    help: "Änderungen nötig? Kontaktieren Sie uns.",
+  },
+  booking: {
+    date: "Datum *",
+    name: "Vollständiger Name *",
+    hotel: "Hotel / Abholpunkt",
+    cruiseShip: "Kreuzfahrtschiff (falls zutreffend)",
+    notes: "Notizen",
+    paymentMethod: "Zahlungsmethode",
+    card: "Karte (100%)",
+    bizum: "Bizum (100%)",
+    deposit: "10% Karte + Rest bar",
+    payOnDay: "Zahlung am Tourtag",
+    addToCart: "In den Warenkorb",
+    bookNow: "Jetzt buchen",
+    cancelPolicy: "Kostenlose Stornierung bis 48 Std. vorher",
+    selectDate: "Bitte wählen Sie ein Datum für den Warenkorb.",
+    fillRequired: "Bitte füllen Sie die Pflichtfelder aus.",
+    added: "Zum Warenkorb hinzugefügt.",
+    payNow: "Jetzt (10% Karte)",
+    cashLater: "Bar am Tag",
+    perAdult: "pro Erwachsenem",
+    perVehicle: "pro Fahrzeug",
+  },
+  transferForm: {
+    title: "Transfer buchen",
+    subtitle: "Privat · Empfang mit Namensschild",
+    destination: "Ziel *",
+    route: "Strecke *",
+    passengers: "Passagiere",
+    flight: "Flugnummer",
+    hotelAddress: "Hotel / Adresse *",
+    payment: "Zahlung",
+    confirm: "Transfer bestätigen",
+  },
+  confirmation: {
+    title: "Buchung erhalten!",
+    body: "Wir haben eine Bestätigungs-E-Mail gesendet. Unser Team meldet sich bei Bedarf.",
+    locator: "Referenz",
+    service: "Service",
+    paidOnline: "Bezahlt (Karte/online)",
+    cashPending: "Bar noch offen",
+    invoice: "Rechnung",
+  },
+  payments: {
+    card: "Karte",
+    bizum: "Bizum",
+    pay_on_day: "Zahlung am Tourtag",
+    deposit_10: "10% Karte + Rest bar",
+  },
+  chat: {
+    title: "LET Assistent",
+    subtitle: "Ausflüge, Transfers und mehr",
+    greeting:
+      "Hallo! Ich bin der Assistent von Lanzarote Experience Tours. Fragen Sie mich zu Ausflügen, Preisen, Transfers oder Kreuzfahrten.",
+    placeholder: "Schreiben Sie Ihre Frage…",
+    writing: "Schreibt…",
+    suggestions: [
+      "Timanfaya oder Grand Tour?",
+      "Transfer nach Playa Blanca",
+      "Ich komme einen Tag mit dem Schiff",
+      "Kann ich 10% und den Rest bar zahlen?",
+    ],
+    error:
+      "Ich konnte gerade nicht antworten. Bitte erneut versuchen oder +34 646 08 05 85 anrufen.",
+  },
+  contactWidget: {
+    title: "Lanzarote Experience Tours",
+    slug: "Kontakt 24 / 7",
+    help: "Brauchen Sie Hilfe? Wir beantworten gerne alle Fragen.",
+    questions: "Fragen?",
+    whatsapp: "WhatsApp",
+    facebook: "Facebook",
+  },
+};
+
+const dictionaries: Record<Locale, Dictionary> = { es, en, de };
+
+export async function getDictionary(locale: Locale): Promise<Dictionary> {
+  return dictionaries[locale] ?? dictionaries.es;
+}
+
+export function getDictionarySync(locale: Locale): Dictionary {
+  return dictionaries[locale] ?? dictionaries.es;
+}

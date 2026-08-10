@@ -31,6 +31,10 @@ const empty: SiteSettings = {
   cruiseHeroImage: "",
   transferIntro: "",
   transferHeroImage: "",
+  companyLegalName: "",
+  companyTaxId: "",
+  companyAddress: "",
+  taxRate: 0,
 };
 
 export default function AdminAjustesPage() {
@@ -193,6 +197,29 @@ export default function AdminAjustesPage() {
           </Field>
           <Field label="URL imagen hero">
             <input className={adminInput} value={settings.transferHeroImage} onChange={(e) => set("transferHeroImage", e.target.value)} />
+          </Field>
+        </section>
+
+        <section className="grid gap-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line md:grid-cols-2">
+          <h2 className="font-display text-xl md:col-span-2">Datos fiscales (facturas)</h2>
+          <Field label="Razón social">
+            <input className={adminInput} value={settings.companyLegalName || ""} onChange={(e) => set("companyLegalName", e.target.value)} />
+          </Field>
+          <Field label="NIF / CIF">
+            <input className={adminInput} value={settings.companyTaxId || ""} onChange={(e) => set("companyTaxId", e.target.value)} />
+          </Field>
+          <Field label="Dirección fiscal" className="md:col-span-2">
+            <input className={adminInput} value={settings.companyAddress || ""} onChange={(e) => set("companyAddress", e.target.value)} />
+          </Field>
+          <Field label="% IVA">
+            <input
+              type="number"
+              min={0}
+              max={30}
+              className={adminInput}
+              value={settings.taxRate ?? 0}
+              onChange={(e) => set("taxRate", Number(e.target.value))}
+            />
           </Field>
         </section>
 

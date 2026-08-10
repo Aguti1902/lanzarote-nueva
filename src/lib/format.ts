@@ -25,6 +25,7 @@ export function paymentLabel(method: string): string {
     card: "Tarjeta",
     bizum: "Bizum",
     pay_on_day: "Pago el día del tour",
+    deposit_10: "10% tarjeta + resto efectivo",
   };
   return map[method] ?? method;
 }

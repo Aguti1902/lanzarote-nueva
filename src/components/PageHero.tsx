@@ -16,7 +16,7 @@ export function PageHero({
   return (
     <section
       className={`relative overflow-hidden bg-bg-deep text-white ${
-        compact ? "min-h-[42vh]" : "min-h-[52vh]"
+        compact ? "min-h-[40vh]" : "min-h-[56vh]"
       }`}
     >
       <Image
@@ -27,23 +27,23 @@ export function PageHero({
         className="hero-image object-cover"
         sizes="100vw"
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-bg-deep/75 via-bg-deep/40 to-bg-deep/10" />
-      <div className="absolute inset-0 bg-gradient-to-t from-bg-deep/55 via-transparent to-bg-deep/15" />
+      <div className="absolute inset-0 bg-gradient-to-r from-bg-deep/85 via-bg-deep/50 to-bg-deep/20" />
+      <div className="absolute inset-0 bg-gradient-to-t from-bg-deep/70 via-transparent to-bg-deep/30" />
       <div
         className={`relative mx-auto flex max-w-6xl flex-col justify-end px-4 md:px-6 ${
-          compact ? "min-h-[42vh] pb-10 pt-24" : "min-h-[52vh] pb-14 pt-28"
+          compact ? "min-h-[40vh] pb-12 pt-24" : "min-h-[56vh] pb-16 pt-28"
         }`}
       >
         {eyebrow && (
-          <p className="animate-fade-up mb-3 text-xs font-semibold tracking-[0.16em] text-sky-mist uppercase">
+          <p className="animate-fade-up mb-3 text-xs font-bold tracking-[0.18em] text-ocean uppercase">
             {eyebrow}
           </p>
         )}
-        <h1 className="animate-fade-up-delay max-w-3xl font-display text-4xl leading-tight md:text-5xl">
+        <h1 className="animate-fade-up-delay max-w-3xl font-display text-4xl font-extrabold tracking-tight md:text-6xl">
           {title}
         </h1>
         {subtitle && (
-          <p className="animate-fade-up-delay-2 mt-4 max-w-2xl text-base leading-relaxed text-white/85 md:text-lg">
+          <p className="animate-fade-up-delay-2 mt-4 max-w-2xl text-base leading-relaxed text-white/88 md:text-lg">
             {subtitle}
           </p>
         )}
