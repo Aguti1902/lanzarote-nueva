@@ -6,12 +6,20 @@ export function formatPrice(amount: number, currency = "EUR"): string {
   }).format(amount);
 }
 
-export function formatDate(iso: string): string {
-  return new Intl.DateTimeFormat("es-ES", {
+export function formatDate(iso: string, locale = "es-ES"): string {
+  const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(iso);
+  const value = dateOnly ? new Date(`${iso}T12:00:00`) : new Date(iso);
+  return new Intl.DateTimeFormat(locale, {
     day: "numeric",
     month: "long",
     year: "numeric",
-  }).format(new Date(iso));
+  }).format(value);
+}
+
+export function formatWeekday(iso: string, locale = "es-ES"): string {
+  const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(iso);
+  const value = dateOnly ? new Date(`${iso}T12:00:00`) : new Date(iso);
+  return new Intl.DateTimeFormat(locale, { weekday: "long" }).format(value);
 }
 
 export function groupSizeLabel(size?: "small" | "large"): string {

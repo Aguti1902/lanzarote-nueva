@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Anchor, Clock, MapPin, Ship } from "lucide-react";
+import { CruiseSchedule } from "@/components/CruiseSchedule";
 import { PageHero } from "@/components/PageHero";
 import { TourCard } from "@/components/TourCard";
-import { getCruiseTours, getSettings } from "@/lib/content";
+import { getCruiseCalls, getCruisesData, getCruiseTours, getSettings } from "@/lib/content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 
@@ -18,10 +19,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CruceristasPage({ params }: Props) {
   const locale = resolveLocale((await params).locale);
-  const [allCruise, settings, dict] = await Promise.all([
+  const [allCruise, settings, dict, cruiseData, cruiseCalls] = await Promise.all([
     getCruiseTours(),
     getSettings(),
     getDictionary(locale),
+    getCruisesData(),
+    getCruiseCalls({ publishedOnly: true }),
   ]);
   const tours = allCruise.filter((t) => t.category === "excursion");
   const privateTours = allCruise.filter((t) => t.category === "private");
@@ -73,28 +76,38 @@ export default async function CruceristasPage({ params }: Props) {
 
       <section className="border-y border-sand-line bg-sky-soft py-16">
         <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <h2 className="text-3xl font-bold md:text-4xl">
-            {dict.cruises.recommended}
-          </h2>
-          <p className="mt-2 max-w-2xl text-ink-muted">
-            {dict.cruises.recommendedText}
-          </p>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {tours.map((tour) => (
-              <TourCard key={tour.id} tour={tour} />
-            ))}
-          </div>
+          <CruiseSchedule
+            calls={cruiseCalls}
+            season={cruiseData.season}
+            port={cruiseData.port}
+          />
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-16 md:px-6">
+        <h2 className="text-3xl font-bold md:text-4xl">
+          {dict.cruises.recommended}
+        </h2>
+        <p className="mt-2 max-w-2xl text-ink-muted">
+          {dict.cruises.recommendedText}
+        </p>
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {tours.map((tour) => (
+            <TourCard key={tour.id} tour={tour} />
+          ))}
         </div>
       </section>
 
       {privateTours.length > 0 && (
-        <section className="mx-auto max-w-6xl px-4 py-16 md:px-6">
-          <h2 className="text-3xl font-bold">{dict.cruises.privateTitle}</h2>
-          <p className="mt-2 text-ink-muted">{dict.cruises.privateText}</p>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2">
-            {privateTours.map((tour) => (
-              <TourCard key={tour.id} tour={tour} />
-            ))}
+        <section className="border-t border-sand-line bg-sky-soft/40 py-16">
+          <div className="mx-auto max-w-6xl px-4 md:px-6">
+            <h2 className="text-3xl font-bold">{dict.cruises.privateTitle}</h2>
+            <p className="mt-2 text-ink-muted">{dict.cruises.privateText}</p>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2">
+              {privateTours.map((tour) => (
+                <TourCard key={tour.id} tour={tour} />
+              ))}
+            </div>
           </div>
         </section>
       )}

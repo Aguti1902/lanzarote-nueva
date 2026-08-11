@@ -1,4 +1,6 @@
 import {
+  getCruiseCalls,
+  getCruisesData,
   getSettings,
   getTours,
   getTransfersData,
@@ -18,10 +20,12 @@ function normalize(text: string): string {
 }
 
 async function buildKnowledge(): Promise<string> {
-  const [tours, transfers, settings] = await Promise.all([
+  const [tours, transfers, settings, cruiseData, cruiseCalls] = await Promise.all([
     getTours(),
     getTransfersData(),
     getSettings(),
+    getCruisesData(),
+    getCruiseCalls({ publishedOnly: true }),
   ]);
 
   const tourLines = tours
@@ -46,6 +50,14 @@ async function buildKnowledge(): Promise<string> {
     )
     .join("\n");
 
+  const upcomingCruises = cruiseCalls
+    .slice(0, 40)
+    .map(
+      (c) =>
+        `- ${c.date} ${c.shipName} (${c.company}): ${c.arrivalTime}-${c.departureTime}`
+    )
+    .join("\n");
+
   return `
 Empresa: ${settings.brandName}
 Teléfono: ${settings.phone}
@@ -62,6 +74,10 @@ Ventajas: ${transfers.highlights.join("; ")}
 CRUCERISTAS:
 ${settings.cruiseHeadline}
 ${settings.cruiseIntro}
+Calendario de escalas temporada ${cruiseData.season} en ${cruiseData.port} (${cruiseCalls.length} escalas).
+Próximas / ejemplo de escalas:
+${upcomingCruises}
+URL calendario: /cruceristas
 
 INFO CLAVE:
 - Grupo reducido: máx. 8 personas, pago anticipado con tarjeta o Bizum.
@@ -85,8 +101,8 @@ function localReply(message: string, knowledge: string): string {
     return "¡De nada! Si quieres, te ayudo a elegir entre grupo reducido, grupo grande, tour privado o un traslado. También puedes reservar desde la web.";
   }
 
-  if (/crucero|crucerista|barco|escala|puerto/.test(q)) {
-    return "Si llegas en crucero, te recogemos en el puerto y adaptamos horarios a tu escala. Las mismas rutas (Ruta Sur o Grand Tour) están en grupo reducido o grande, y también hay tour privado o minibus. Mira la página /cruceristas o dime cuántas horas tienes en tierra y te recomiendo una opción.";
+  if (/crucero|crucerista|barco|escala|puerto|calendario/.test(q)) {
+    return "Si llegas en crucero a Lanzarote (Puerto de Los Mármoles), te recogemos en el puerto y adaptamos horarios a tu escala. En /cruceristas verás el calendario de barcos de la temporada 2026-2027 y las excursiones recomendadas (Ruta Sur, Grand Tour, privado o minibus). Dime fecha o nombre del barco y te indico qué hay ese día.";
   }
 
   if (/traslad|aeropuerto|taxi|recogida|transfer|playa blanca|puerto del carmen|costa teguise|arrecife|puerto calero/.test(q)) {

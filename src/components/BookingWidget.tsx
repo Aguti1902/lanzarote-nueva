@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CreditCard, Banknote, Percent, ShoppingCart, Smartphone } from "lucide-react";
-import type { PaymentMethod, Tour } from "@/types";
+import type { CruiseCall, PaymentMethod, Tour } from "@/types";
 import { formatPrice } from "@/lib/format";
 import { useCart } from "@/components/CartProvider";
 import { useLocale } from "@/components/LocaleProvider";
@@ -32,9 +32,38 @@ export function BookingWidget({ tour }: { tour: Tour }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [cartMsg, setCartMsg] = useState("");
+  const [dayShips, setDayShips] = useState<CruiseCall[]>([]);
 
   const isMinibus = tour.category === "minibus";
   const isPrivate = tour.category === "private";
+
+  useEffect(() => {
+    if (!date || !tour.cruiseFriendly) {
+      return;
+    }
+    let cancelled = false;
+    fetch(`/api/cruises?published=1&from=${encodeURIComponent(date)}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (cancelled) return;
+        const ships = ((data.calls || []) as CruiseCall[]).filter(
+          (c) => c.date === date
+        );
+        setDayShips(ships);
+        setCruiseShip((current) => {
+          if (ships.length === 1 && !current.trim()) return ships[0].shipName;
+          return current;
+        });
+      })
+      .catch(() => {
+        if (!cancelled) setDayShips([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [date, tour.cruiseFriendly]);
+
+  const shipsForDate = date && tour.cruiseFriendly ? dayShips : [];
 
   const total = useMemo(() => {
     if (isMinibus) return tour.priceAdult + Math.max(0, hours - 4) * 60;
@@ -232,11 +261,53 @@ export function BookingWidget({ tour }: { tour: Tour }) {
           />
         </Field>
         <Field label={dict.booking.cruiseShip}>
-          <input
-            className={inputClass}
-            value={cruiseShip}
-            onChange={(e) => setCruiseShip(e.target.value)}
-          />
+          {shipsForDate.length > 0 ? (
+            <>
+              <select
+                className={inputClass}
+                value={
+                  shipsForDate.some((s) => s.shipName === cruiseShip)
+                    ? cruiseShip
+                    : cruiseShip
+                      ? "__other__"
+                      : ""
+                }
+                onChange={(e) => {
+                  if (e.target.value === "__other__") {
+                    setCruiseShip("");
+                    return;
+                  }
+                  setCruiseShip(e.target.value);
+                }}
+              >
+                <option value="">—</option>
+                {shipsForDate.map((s) => (
+                  <option key={s.id} value={s.shipName}>
+                    {s.shipName} ({s.arrivalTime}–{s.departureTime})
+                  </option>
+                ))}
+                <option value="__other__">Otro…</option>
+              </select>
+              {!shipsForDate.some((s) => s.shipName === cruiseShip) && (
+                <input
+                  className={`${inputClass} mt-2`}
+                  value={cruiseShip}
+                  onChange={(e) => setCruiseShip(e.target.value)}
+                  placeholder={dict.booking.cruiseShip}
+                />
+              )}
+              <p className="mt-1 text-xs text-ink-muted">
+                {dict.cruises.shipsToday}:{" "}
+                {shipsForDate.map((s) => s.shipName).join(", ")}
+              </p>
+            </>
+          ) : (
+            <input
+              className={inputClass}
+              value={cruiseShip}
+              onChange={(e) => setCruiseShip(e.target.value)}
+            />
+          )}
         </Field>
         <Field label={dict.booking.notes}>
           <textarea
