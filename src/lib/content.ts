@@ -2,6 +2,8 @@ import { promises as fs } from "fs";
 import path from "path";
 import type {
   BlogPost,
+  CruiseCall,
+  CruisesData,
   SiteSettings,
   Tour,
   TransferDestination,
@@ -249,6 +251,109 @@ export async function deleteBlogPost(slug: string): Promise<boolean> {
   const next = posts.filter((p) => p.slug !== slug);
   if (next.length === posts.length) return false;
   await saveBlogPosts(next);
+  return true;
+}
+
+/* ── Cruises (port calls) ── */
+
+const defaultCruisesData: CruisesData = {
+  season: "2026-2027",
+  port: "Puerto de Los Mármoles, Lanzarote",
+  source: "",
+  updatedAt: new Date().toISOString().slice(0, 10),
+  calls: [],
+};
+
+function sortCruiseCalls(calls: CruiseCall[]): CruiseCall[] {
+  return [...calls].sort((a, b) => {
+    const byDate = a.date.localeCompare(b.date);
+    if (byDate !== 0) return byDate;
+    return a.arrivalTime.localeCompare(b.arrivalTime);
+  });
+}
+
+export async function getCruisesData(): Promise<CruisesData> {
+  try {
+    const stored = await readJson<Partial<CruisesData>>("cruises.json");
+    return {
+      ...defaultCruisesData,
+      ...stored,
+      calls: sortCruiseCalls(stored.calls || []),
+    };
+  } catch {
+    return defaultCruisesData;
+  }
+}
+
+export async function getCruiseCalls(options?: {
+  publishedOnly?: boolean;
+  fromDate?: string;
+}): Promise<CruiseCall[]> {
+  const data = await getCruisesData();
+  let calls = data.calls;
+  if (options?.publishedOnly) {
+    calls = calls.filter((c) => c.published);
+  }
+  if (options?.fromDate) {
+    calls = calls.filter((c) => c.date >= options.fromDate!);
+  }
+  return calls;
+}
+
+export async function saveCruisesData(data: CruisesData): Promise<void> {
+  await writeJson("cruises.json", {
+    ...data,
+    calls: sortCruiseCalls(data.calls),
+    updatedAt: new Date().toISOString().slice(0, 10),
+  });
+}
+
+export async function upsertCruiseCall(call: CruiseCall): Promise<CruiseCall> {
+  const data = await getCruisesData();
+  const idx = data.calls.findIndex((c) => c.id === call.id);
+  if (idx === -1) data.calls.push(call);
+  else data.calls[idx] = call;
+  await saveCruisesData(data);
+  return call;
+}
+
+export async function createCruiseCall(
+  input: Partial<CruiseCall> &
+    Pick<CruiseCall, "date" | "shipName" | "company">
+): Promise<CruiseCall> {
+  const data = await getCruisesData();
+  const base = slugify(
+    `${input.date}-${input.shipName}-${input.shipCode || "ship"}`
+  );
+  let id = base;
+  let n = 2;
+  while (data.calls.some((c) => c.id === id)) {
+    id = `${base}-${n++}`;
+  }
+  const call: CruiseCall = {
+    id,
+    date: input.date,
+    port: input.port || data.port || "Puerto de Los Mármoles, Lanzarote",
+    company: input.company,
+    shipCode: input.shipCode || "",
+    shipName: input.shipName,
+    arrivalTime: input.arrivalTime || "08:00",
+    departureTime: input.departureTime || "18:00",
+    season: input.season || data.season || "2026-2027",
+    published: input.published ?? true,
+    notes: input.notes || "",
+  };
+  data.calls.push(call);
+  await saveCruisesData(data);
+  return call;
+}
+
+export async function deleteCruiseCall(id: string): Promise<boolean> {
+  const data = await getCruisesData();
+  const next = data.calls.filter((c) => c.id !== id);
+  if (next.length === data.calls.length) return false;
+  data.calls = next;
+  await saveCruisesData(data);
   return true;
 }
 

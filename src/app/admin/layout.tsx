@@ -16,6 +16,7 @@ import {
   LogOut,
   Map,
   Settings,
+  Ship,
 } from "lucide-react";
 
 const nav = [
@@ -26,6 +27,7 @@ const nav = [
   { href: "/admin/estadisticas", label: "Estadísticas", icon: BarChart3 },
   { href: "/admin/excursiones", label: "Excursiones", icon: Map },
   { href: "/admin/traslados", label: "Traslados", icon: Bus },
+  { href: "/admin/cruceros", label: "Cruceros", icon: Ship },
   { href: "/admin/blog", label: "Blog", icon: BookOpen },
   { href: "/admin/ajustes", label: "Ajustes", icon: Settings },
 ];

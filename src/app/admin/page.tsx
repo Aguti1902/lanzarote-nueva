@@ -10,6 +10,7 @@ import {
   FileText,
   Map,
   Percent,
+  Ship,
   TrendingUp,
 } from "lucide-react";
 import type { Booking } from "@/types";
@@ -33,7 +34,13 @@ type Stats = {
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
-  const [counts, setCounts] = useState({ tours: 0, transfers: 0, posts: 0, invoices: 0 });
+  const [counts, setCounts] = useState({
+    tours: 0,
+    transfers: 0,
+    posts: 0,
+    invoices: 0,
+    cruises: 0,
+  });
 
   useEffect(() => {
     Promise.all([
@@ -42,13 +49,15 @@ export default function AdminDashboard() {
       fetch("/api/transfers").then((r) => r.json()),
       fetch("/api/blog").then((r) => r.json()),
       fetch("/api/invoices").then((r) => r.json()),
-    ]).then(([statsData, toursData, transfersData, blogData, invData]) => {
+      fetch("/api/cruises").then((r) => r.json()),
+    ]).then(([statsData, toursData, transfersData, blogData, invData, cruiseData]) => {
       setStats(statsData.stats);
       setCounts({
         tours: toursData.tours?.length || 0,
         transfers: transfersData.destinations?.length || 0,
         posts: blogData.posts?.length || 0,
         invoices: invData.invoices?.length || 0,
+        cruises: cruiseData.calls?.length || 0,
       });
     });
   }, []);
@@ -118,10 +127,11 @@ export default function AdminDashboard() {
         })}
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {[
           { href: "/admin/excursiones", label: "Excursiones", count: counts.tours, icon: Map },
           { href: "/admin/traslados", label: "Traslados", count: counts.transfers, icon: Bus },
+          { href: "/admin/cruceros", label: "Cruceros", count: counts.cruises, icon: Ship },
           { href: "/admin/facturas", label: "Facturas", count: counts.invoices, icon: FileText },
           { href: "/admin/blog", label: "Blog", count: counts.posts, icon: BookOpen },
         ].map((item) => (

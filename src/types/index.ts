@@ -98,6 +98,28 @@ export interface TransfersData {
   highlights: string[];
 }
 
+export interface CruiseCall {
+  id: string;
+  date: string;
+  port: string;
+  company: string;
+  shipCode: string;
+  shipName: string;
+  arrivalTime: string;
+  departureTime: string;
+  season: string;
+  published: boolean;
+  notes?: string;
+}
+
+export interface CruisesData {
+  season: string;
+  port: string;
+  source: string;
+  updatedAt: string;
+  calls: CruiseCall[];
+}
+
 export interface Booking {
   id: string;
   createdAt: string;

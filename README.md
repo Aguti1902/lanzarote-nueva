@@ -24,6 +24,7 @@ Desde el panel puedes:
 | Reservas | Ver todas, confirmar / completar / cancelar |
 | Excursiones | Crear, editar, eliminar tours y precios |
 | Traslados | Ver todos los destinos, precios ida/vuelta, ventajas |
+| Cruceros | Calendario de escalas temporada 2026-2027 (crear / editar / ocultar) |
 | Blog | Crear / editar / eliminar entradas |
 | Ajustes web | Teléfono, email, textos de inicio, cruceristas, sobre nosotros |
 
@@ -42,7 +43,7 @@ Botón flotante **Chat IA** en la web pública. Responde sobre excursiones, tras
 - `/sobre-nosotros`
 - `/excursiones` — listado (grupo reducido / grande / privados)
 - `/excursiones/[slug]` — detalle + reserva
-- `/cruceristas` — landing para escalas de crucero
+- `/cruceristas` — landing para escalas de crucero + calendario temporada 2026-2027
 - `/traslados` — aeropuerto ↔ destinos
 - `/blog`
 

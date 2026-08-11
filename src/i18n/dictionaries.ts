@@ -94,6 +94,17 @@ export type Dictionary = {
     recommendedText: string;
     privateTitle: string;
     privateText: string;
+    scheduleKicker: string;
+    scheduleTitle: string;
+    scheduleText: string;
+    scheduleEmpty: string;
+    filterMonth: string;
+    searchShip: string;
+    searchPlaceholder: string;
+    noResults: string;
+    shipSingular: string;
+    shipPlural: string;
+    shipsToday: string;
   };
   about: {
     welcome: string;
@@ -360,6 +371,17 @@ const es: Dictionary = {
     privateTitle: "¿Prefiere algo privado?",
     privateText:
       "La opción más flexible si viaja en familia o quiere un itinerario a medida.",
+    scheduleKicker: "Temporada",
+    scheduleTitle: "Calendario de escalas en Lanzarote",
+    scheduleText: "Consulta los barcos previstos en",
+    scheduleEmpty: "Aún no hay escalas publicadas.",
+    filterMonth: "Mes",
+    searchShip: "Buscar",
+    searchPlaceholder: "Barco o naviera…",
+    noResults: "No hay escalas con estos filtros.",
+    shipSingular: "barco",
+    shipPlural: "barcos",
+    shipsToday: "Barcos ese día",
   },
   about: {
     welcome: "¡Bienvenidos a Lanzarote!",
@@ -636,6 +658,17 @@ const en: Dictionary = {
     recommendedText: "Unique experiences for every port call, in small Spanish-only groups.",
     privateTitle: "Prefer something private?",
     privateText: "The most flexible option for families or a custom itinerary.",
+    scheduleKicker: "Season",
+    scheduleTitle: "Lanzarote cruise call calendar",
+    scheduleText: "See the ships scheduled at",
+    scheduleEmpty: "No published port calls yet.",
+    filterMonth: "Month",
+    searchShip: "Search",
+    searchPlaceholder: "Ship or cruise line…",
+    noResults: "No port calls match these filters.",
+    shipSingular: "ship",
+    shipPlural: "ships",
+    shipsToday: "Ships that day",
   },
   about: {
     welcome: "Welcome to Lanzarote!",
@@ -914,6 +947,17 @@ const de: Dictionary = {
     privateTitle: "Lieber privat?",
     privateText:
       "Die flexibelste Option für Familien oder eine individuelle Route.",
+    scheduleKicker: "Saison",
+    scheduleTitle: "Kreuzfahrtkalender Lanzarote",
+    scheduleText: "Geplante Schiffe in",
+    scheduleEmpty: "Noch keine veröffentlichten Anläufe.",
+    filterMonth: "Monat",
+    searchShip: "Suche",
+    searchPlaceholder: "Schiff oder Reederei…",
+    noResults: "Keine Anläufe für diese Filter.",
+    shipSingular: "Schiff",
+    shipPlural: "Schiffe",
+    shipsToday: "Schiffe an diesem Tag",
   },
   about: {
     welcome: "Willkommen auf Lanzarote!",
