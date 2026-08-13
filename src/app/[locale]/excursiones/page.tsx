@@ -63,7 +63,7 @@ export default async function ExcursionesPage({ params }: Props) {
           <p className="mt-10 text-center text-sm text-ink-muted">
             {dict.excursions.cruiseHint}{" "}
             <Link
-              href={localePath(locale, "/cruceristas")}
+              href={localePath(locale, "/excursiones-cruceros")}
               className="font-bold text-ocean hover:underline"
             >
               {dict.excursions.cruiseLink}

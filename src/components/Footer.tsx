@@ -49,7 +49,10 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href={href("/cruceristas")} className="transition hover:text-white">
+                <Link
+                  href={href("/excursiones-cruceros")}
+                  className="transition hover:text-white"
+                >
                   {dict.nav.cruises}
                 </Link>
               </li>

@@ -20,7 +20,11 @@ export function Header() {
     { href: href("/sobre-nosotros"), path: "/sobre-nosotros", label: dict.nav.about },
     { href: href("/excursiones"), path: "/excursiones", label: dict.nav.excursions },
     { href: href("/traslados"), path: "/traslados", label: dict.nav.transfers },
-    { href: href("/cruceristas"), path: "/cruceristas", label: dict.nav.cruises },
+    {
+      href: href("/excursiones-cruceros"),
+      path: "/excursiones-cruceros",
+      label: dict.nav.cruises,
+    },
     { href: href("/casas"), path: "/casas", label: dict.nav.houses },
   ];
 
@@ -58,7 +62,16 @@ export function Header() {
 
         <nav className="hidden items-center gap-0.5 lg:flex">
           {links.map((link) => {
-            const active = pathname.includes(link.path);
+            const isCruiseNav = link.path === "/excursiones-cruceros";
+            const isExcursionsNav = link.path === "/excursiones";
+            const active = isCruiseNav
+              ? pathname.includes("/excursiones-cruceros") ||
+                pathname.includes("/crucero/") ||
+                pathname.includes("/cruceristas")
+              : isExcursionsNav
+                ? pathname.includes("/excursiones") &&
+                  !pathname.includes("/excursiones-cruceros")
+                : pathname.includes(link.path);
             return (
               <Link
                 key={link.path}

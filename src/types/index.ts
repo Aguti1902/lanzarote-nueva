@@ -120,6 +120,61 @@ export interface CruisesData {
   calls: CruiseCall[];
 }
 
+export interface CruiseShoreTour {
+  id: string;
+  title: string;
+  priceAdult: number | null;
+  image: string;
+  duration: string;
+  places: string[];
+  highlights: string[];
+  bookingSlug?: string;
+  maxGroup?: number;
+  currency?: string;
+}
+
+export interface CruiseItineraryStop {
+  day: number;
+  date: string | null;
+  port: string;
+  portKey: string;
+  time: string;
+  isSeaDay: boolean;
+  hasTours: boolean;
+  tourIds: string[];
+}
+
+export interface CruiseSailing {
+  id: string;
+  companySlug: string;
+  companyName: string;
+  shipSlug: string;
+  shipName: string;
+  departureDate: string;
+  nights: number | null;
+  stops: CruiseItineraryStop[];
+}
+
+export interface CruiseCompanyShip {
+  slug: string;
+  name: string;
+}
+
+export interface CruiseCompany {
+  slug: string;
+  name: string;
+  sailingCount: number;
+  ships: CruiseCompanyShip[];
+}
+
+export interface CruiseItinerariesData {
+  updatedAt: string;
+  source: string;
+  companies: CruiseCompany[];
+  shoreTours: CruiseShoreTour[];
+  sailings: CruiseSailing[];
+}
+
 export interface Booking {
   id: string;
   createdAt: string;

@@ -70,7 +70,7 @@ export default async function HomePage({ params }: Props) {
               {dict.home.ctaOffers}
               <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link href={lp("/cruceristas")} className="btn-ghost">
+            <Link href={lp("/excursiones-cruceros")} className="btn-ghost">
               {dict.home.ctaCruise}
             </Link>
           </div>
@@ -192,7 +192,7 @@ export default async function HomePage({ params }: Props) {
           <p className="mt-4 max-w-lg text-base leading-relaxed text-white/85">
             {settings.cruiseIntro}
           </p>
-          <Link href={lp("/cruceristas")} className="btn-primary mt-8 w-fit">
+          <Link href={lp("/excursiones-cruceros")} className="btn-primary mt-8 w-fit">
             {dict.home.cruisesCta}
             <ArrowRight className="h-4 w-4" />
           </Link>

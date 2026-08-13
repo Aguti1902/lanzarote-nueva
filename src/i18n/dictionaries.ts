@@ -105,6 +105,34 @@ export type Dictionary = {
     shipSingular: string;
     shipPlural: string;
     shipsToday: string;
+    browseTitle: string;
+    browseSubtitle: string;
+    selectCruise: string;
+    companiesTitle: string;
+    companySailings: string;
+    upcomingCruises: string;
+    shipSailings: string;
+    departure: string;
+    nights: string;
+    nightSingular: string;
+    nightPlural: string;
+    viewItinerary: string;
+    noSailings: string;
+    otherCompanies: string;
+    itineraryTitle: string;
+    callDay: string;
+    seaDay: string;
+    noToursYet: string;
+    moreInfo: string;
+    meetingPoint: string;
+    meetingPointTitle: string;
+    meetingPointBody: string;
+    bookTour: string;
+    placesToVisit: string;
+    durationLabel: string;
+    breadcrumbCruises: string;
+    seeExcursionsForShip: string;
+    calendarHint: string;
   };
   about: {
     welcome: string;
@@ -382,6 +410,38 @@ const es: Dictionary = {
     shipSingular: "barco",
     shipPlural: "barcos",
     shipsToday: "Barcos ese día",
+    browseTitle: "Excursiones para cruceros en Canarias",
+    browseSubtitle:
+      "Seleccione su naviera, barco y salida para ver el itinerario completo y las excursiones disponibles en cada escala.",
+    selectCruise: "Seleccione su crucero",
+    companiesTitle: "Compañías de cruceros",
+    companySailings: "salidas previstas",
+    upcomingCruises: "Próximos cruceros de",
+    shipSailings: "salidas previstas",
+    departure: "Salida prevista",
+    nights: "noches",
+    nightSingular: "noche",
+    nightPlural: "noches",
+    viewItinerary: "Ver itinerario y excursiones",
+    noSailings: "Aún no hay salidas publicadas para esta naviera.",
+    otherCompanies: "Excursiones para otras compañías de cruceros",
+    itineraryTitle: "Escalas de este crucero",
+    callDay: "Día de escala",
+    seaDay: "Día",
+    noToursYet:
+      "Aún no ofrecemos excursiones en {port}. Estamos trabajando con otras agencias de confianza para ofrecerle las mejores experiencias en cada puerto.",
+    moreInfo: "Más información",
+    meetingPoint: "Punto de encuentro",
+    meetingPointTitle: "Punto de encuentro en Lanzarote",
+    meetingPointBody:
+      "El punto de encuentro con la guía es el control de policía del puerto. El transporte estará en el aparcamiento externo (caminata de unos 10 minutos desde el barco, según atracadero).",
+    bookTour: "Reservar",
+    placesToVisit: "Lugares a visitar",
+    durationLabel: "Duración del tour",
+    breadcrumbCruises: "Excursiones para crucero",
+    seeExcursionsForShip: "Ver excursiones del crucero",
+    calendarHint:
+      "También puede buscar su barco en el calendario de escalas en Lanzarote.",
   },
   about: {
     welcome: "¡Bienvenidos a Lanzarote!",
@@ -669,6 +729,38 @@ const en: Dictionary = {
     shipSingular: "ship",
     shipPlural: "ships",
     shipsToday: "Ships that day",
+    browseTitle: "Shore excursions in the Canary Islands",
+    browseSubtitle:
+      "Choose your cruise line, ship and sailing to see the full itinerary and shore excursions at each port.",
+    selectCruise: "Select your cruise",
+    companiesTitle: "Cruise lines",
+    companySailings: "scheduled sailings",
+    upcomingCruises: "Upcoming cruises from",
+    shipSailings: "scheduled sailings",
+    departure: "Scheduled departure",
+    nights: "nights",
+    nightSingular: "night",
+    nightPlural: "nights",
+    viewItinerary: "View itinerary and excursions",
+    noSailings: "No sailings published for this cruise line yet.",
+    otherCompanies: "Shore excursions for other cruise lines",
+    itineraryTitle: "Ports on this cruise",
+    callDay: "Port day",
+    seaDay: "Day",
+    noToursYet:
+      "We do not yet offer excursions in {port}. We are working with trusted partners to bring you the best experiences in every port.",
+    moreInfo: "More information",
+    meetingPoint: "Meeting point",
+    meetingPointTitle: "Meeting point in Lanzarote",
+    meetingPointBody:
+      "Meet your guide at the port police control. Transport waits in the outer car park (about a 10-minute walk from the ship, depending on berth).",
+    bookTour: "Book",
+    placesToVisit: "Places to visit",
+    durationLabel: "Tour duration",
+    breadcrumbCruises: "Cruise excursions",
+    seeExcursionsForShip: "See cruise excursions",
+    calendarHint:
+      "You can also find your ship in the Lanzarote port-call calendar.",
   },
   about: {
     welcome: "Welcome to Lanzarote!",
@@ -958,6 +1050,38 @@ const de: Dictionary = {
     shipSingular: "Schiff",
     shipPlural: "Schiffe",
     shipsToday: "Schiffe an diesem Tag",
+    browseTitle: "Landausflüge auf den Kanarischen Inseln",
+    browseSubtitle:
+      "Wählen Sie Reederei, Schiff und Abfahrt, um die komplette Route und Ausflüge in jedem Hafen zu sehen.",
+    selectCruise: "Wählen Sie Ihre Kreuzfahrt",
+    companiesTitle: "Kreuzfahrtgesellschaften",
+    companySailings: "geplante Abfahrten",
+    upcomingCruises: "Kommende Kreuzfahrten von",
+    shipSailings: "geplante Abfahrten",
+    departure: "Geplante Abfahrt",
+    nights: "Nächte",
+    nightSingular: "Nacht",
+    nightPlural: "Nächte",
+    viewItinerary: "Route und Ausflüge ansehen",
+    noSailings: "Für diese Reederei sind noch keine Abfahrten veröffentlicht.",
+    otherCompanies: "Landausflüge anderer Reedereien",
+    itineraryTitle: "Häfen dieser Kreuzfahrt",
+    callDay: "Hafentag",
+    seaDay: "Tag",
+    noToursYet:
+      "In {port} bieten wir noch keine Ausflüge an. Wir arbeiten mit vertrauenswürdigen Partnern, um Ihnen in jedem Hafen die besten Erlebnisse zu bieten.",
+    moreInfo: "Mehr Infos",
+    meetingPoint: "Treffpunkt",
+    meetingPointTitle: "Treffpunkt auf Lanzarote",
+    meetingPointBody:
+      "Treffen Sie Ihre Reiseleitung an der Hafenpolizei-Kontrolle. Der Transfer wartet auf dem äußeren Parkplatz (ca. 10 Minuten Fußweg vom Schiff, je nach Liegeplatz).",
+    bookTour: "Buchen",
+    placesToVisit: "Besichtigungen",
+    durationLabel: "Tourdauer",
+    breadcrumbCruises: "Kreuzfahrtausflüge",
+    seeExcursionsForShip: "Kreuzfahrtausflüge ansehen",
+    calendarHint:
+      "Sie finden Ihr Schiff auch im Lanzarote-Hafenkalender.",
   },
   about: {
     welcome: "Willkommen auf Lanzarote!",
