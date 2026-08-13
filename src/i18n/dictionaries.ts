@@ -144,6 +144,16 @@ export type Dictionary = {
     included: string;
     notIncluded: string;
     goToCart: string;
+    dateCalendarKicker: string;
+    dateCalendarTitle: string;
+    dateCalendarText: string;
+    dateCalendarLegend: string;
+    dateCalendarEmptyDay: string;
+    dateCalendarPickDay: string;
+    dateCalendarNoItinerary: string;
+    prevMonth: string;
+    nextMonth: string;
+    orBrowseByCompany: string;
   };
   about: {
     welcome: string;
@@ -424,7 +434,7 @@ const es: Dictionary = {
     shipsToday: "Barcos ese día",
     browseTitle: "Excursiones para cruceros en Canarias",
     browseSubtitle:
-      "Seleccione su naviera, barco y salida para ver el itinerario completo y las excursiones disponibles en cada escala.",
+      "Lo más fácil: elija en el calendario el día de su escala en Lanzarote. También puede buscar por naviera, barco y salida.",
     selectCruise: "Seleccione su crucero",
     companiesTitle: "Compañías de cruceros",
     companySailings: "salidas previstas",
@@ -464,6 +474,19 @@ const es: Dictionary = {
     included: "Incluido",
     notIncluded: "No incluido",
     goToCart: "Ir al carrito",
+    dateCalendarKicker: "Fecha de escala",
+    dateCalendarTitle: "Elija el día de su escala en Lanzarote",
+    dateCalendarText:
+      "Pulse en el calendario la fecha en la que atraca su barco y verá las salidas disponibles en",
+    dateCalendarLegend:
+      "Los días marcados tienen escalas. Pulse uno para ver los barcos y sus excursiones.",
+    dateCalendarEmptyDay: "No hay barcos publicados este día.",
+    dateCalendarPickDay: "Seleccione un día del calendario para continuar.",
+    dateCalendarNoItinerary:
+      "Itinerario completo aún no disponible para esta escala.",
+    prevMonth: "Mes anterior",
+    nextMonth: "Mes siguiente",
+    orBrowseByCompany: "O busque por compañía de cruceros",
   },
   about: {
     welcome: "¡Bienvenidos a Lanzarote!",
@@ -754,7 +777,7 @@ const en: Dictionary = {
     shipsToday: "Ships that day",
     browseTitle: "Shore excursions in the Canary Islands",
     browseSubtitle:
-      "Choose your cruise line, ship and sailing to see the full itinerary and shore excursions at each port.",
+      "Easiest path: pick your Lanzarote port-call day on the calendar. You can also browse by cruise line, ship and sailing.",
     selectCruise: "Select your cruise",
     companiesTitle: "Cruise lines",
     companySailings: "scheduled sailings",
@@ -794,6 +817,19 @@ const en: Dictionary = {
     included: "Included",
     notIncluded: "Not included",
     goToCart: "Go to cart",
+    dateCalendarKicker: "Port-call date",
+    dateCalendarTitle: "Choose your Lanzarote port-call day",
+    dateCalendarText:
+      "Tap the calendar on the day your ship docks and see the available sailings at",
+    dateCalendarLegend:
+      "Marked days have port calls. Tap one to see the ships and shore excursions.",
+    dateCalendarEmptyDay: "No ships published for this day.",
+    dateCalendarPickDay: "Select a day on the calendar to continue.",
+    dateCalendarNoItinerary:
+      "Full itinerary is not available for this port call yet.",
+    prevMonth: "Previous month",
+    nextMonth: "Next month",
+    orBrowseByCompany: "Or browse by cruise line",
   },
   about: {
     welcome: "Welcome to Lanzarote!",
@@ -1086,7 +1122,7 @@ const de: Dictionary = {
     shipsToday: "Schiffe an diesem Tag",
     browseTitle: "Landausflüge auf den Kanarischen Inseln",
     browseSubtitle:
-      "Wählen Sie Reederei, Schiff und Abfahrt, um die komplette Route und Ausflüge in jedem Hafen zu sehen.",
+      "Am einfachsten: wählen Sie im Kalender Ihren Hafentag auf Lanzarote. Sie können auch nach Reederei, Schiff und Abfahrt suchen.",
     selectCruise: "Wählen Sie Ihre Kreuzfahrt",
     companiesTitle: "Kreuzfahrtgesellschaften",
     companySailings: "geplante Abfahrten",
@@ -1126,6 +1162,19 @@ const de: Dictionary = {
     included: "Inbegriffen",
     notIncluded: "Nicht inbegriffen",
     goToCart: "Zum Warenkorb",
+    dateCalendarKicker: "Hafentag",
+    dateCalendarTitle: "Wählen Sie Ihren Hafentag auf Lanzarote",
+    dateCalendarText:
+      "Tippen Sie im Kalender auf den Tag, an dem Ihr Schiff anlegt, und sehen Sie die verfügbaren Abfahrten in",
+    dateCalendarLegend:
+      "Markierte Tage haben Hafenstopps. Tippen Sie auf einen Tag, um Schiffe und Ausflüge zu sehen.",
+    dateCalendarEmptyDay: "An diesem Tag sind keine Schiffe veröffentlicht.",
+    dateCalendarPickDay: "Wählen Sie einen Tag im Kalender, um fortzufahren.",
+    dateCalendarNoItinerary:
+      "Die komplette Route ist für diesen Hafenstopp noch nicht verfügbar.",
+    prevMonth: "Vorheriger Monat",
+    nextMonth: "Nächster Monat",
+    orBrowseByCompany: "Oder nach Reederei suchen",
   },
   about: {
     welcome: "Willkommen auf Lanzarote!",
