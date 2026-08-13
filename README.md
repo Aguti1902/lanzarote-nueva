@@ -44,7 +44,8 @@ Botón flotante **Chat IA** en la web pública. Responde sobre excursiones, tras
 - `/excursiones` — listado (grupo reducido / grande / privados)
 - `/excursiones/[slug]` — detalle + reserva
 - `/excursiones-cruceros` — navieras, salidas e itinerarios con excursiones por escala
-- `/crucero/[naviera]/[barco]/[salida]` — itinerario completo del crucero
+- `/crucero/[naviera]/[barco]/[salida]` — itinerario completo; reserva y compra de excursiones en Lanzarote
+- `/excursiones-cruceros/tour/[id]` — ficha de excursión de crucero con carrito / reserva
 - `/cruceristas` — landing + calendario de escalas en Lanzarote temporada 2026-2027
 - `/traslados` — aeropuerto ↔ destinos
 - `/blog`
