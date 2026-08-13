@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { CruiseCompanyBrowser } from "@/components/CruiseCompanyBrowser";
-import { getCruiseCompanies } from "@/lib/cruise-itineraries";
-import { getSettings } from "@/lib/content";
+import {
+  CruisePortCalendar,
+  type CalendarCall,
+} from "@/components/CruisePortCalendar";
+import { getCruiseCompanies, buildPortCallSailingLinks } from "@/lib/cruise-itineraries";
+import { getCruiseCalls, getCruisesData, getSettings } from "@/lib/content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
-import { localePath } from "@/i18n/path";
 
 export const dynamic = "force-dynamic";
 
@@ -20,11 +22,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ExcursionesCrucerosPage({ params }: Props) {
   const locale = resolveLocale((await params).locale);
-  const [dict, settings, companies] = await Promise.all([
+  const [dict, settings, companies, cruiseData, cruiseCalls] = await Promise.all([
     getDictionary(locale),
     getSettings(),
     getCruiseCompanies(),
+    getCruisesData(),
+    getCruiseCalls({ publishedOnly: true }),
   ]);
+
+  const sailingLinks = await buildPortCallSailingLinks(cruiseCalls);
+  const calendarCalls: CalendarCall[] = cruiseCalls.map((call) => ({
+    ...call,
+    sailingHref: sailingLinks[call.id],
+  }));
 
   return (
     <>
@@ -35,20 +45,22 @@ export default async function ExcursionesCrucerosPage({ params }: Props) {
         compact
       />
 
+      <section className="border-b border-sand-line bg-sky-soft/50 py-14">
+        <div className="mx-auto max-w-6xl px-4 md:px-6">
+          <CruisePortCalendar
+            calls={calendarCalls}
+            season={cruiseData.season}
+            port={cruiseData.port}
+          />
+        </div>
+      </section>
+
       <section className="mx-auto max-w-6xl px-4 py-14 md:px-6">
-        <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h2 className="text-3xl font-bold md:text-4xl">
-              {dict.cruises.selectCruise}
-            </h2>
-            <p className="mt-2 text-ink-muted">{dict.cruises.companiesTitle}</p>
-          </div>
-          <Link
-            href={localePath(locale, "/cruceristas")}
-            className="text-sm font-bold text-ocean hover:underline"
-          >
-            {dict.cruises.calendarHint}
-          </Link>
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold md:text-4xl">
+            {dict.cruises.orBrowseByCompany}
+          </h2>
+          <p className="mt-2 text-ink-muted">{dict.cruises.companiesTitle}</p>
         </div>
         <CruiseCompanyBrowser companies={companies} />
       </section>
