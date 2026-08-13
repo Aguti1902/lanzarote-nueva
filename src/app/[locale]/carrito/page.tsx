@@ -55,7 +55,14 @@ export default function CarritoPage() {
             children: item.children,
             totalPrice: item.totalPrice,
             paymentMethod,
-            customer: { name, email, phone, hotel },
+            customer: {
+              name,
+              email,
+              phone,
+              hotel,
+              cruiseShip: item.cruiseShip,
+              notes: item.notes,
+            },
           }),
         });
         const data = await res.json();
@@ -105,11 +112,26 @@ export default function CarritoPage() {
                 <div className="min-w-0 flex-1">
                   <h2 className="truncate font-bold text-ink">{item.title}</h2>
                   <p className="mt-1 text-sm text-ink-muted">
-                    {item.date} · {item.adults} {dict.common.adults}
-                    {item.children > 0
-                      ? `, ${item.children} ${dict.common.children}`
-                      : ""}
+                    {item.date} ·{" "}
+                    {item.source === "cruise"
+                      ? `${item.adults} ${
+                          item.adults === 1
+                            ? dict.cruises.passengerSingular
+                            : dict.cruises.passengerPlural
+                        }`
+                      : `${item.adults} ${dict.common.adults}${
+                          item.children > 0
+                            ? `, ${item.children} ${dict.common.children}`
+                            : ""
+                        }`}
                   </p>
+                  {item.cruiseShip && (
+                    <p className="mt-1 text-xs text-ink-muted">
+                      {item.cruiseShip}
+                      {item.cruiseCompany ? ` · ${item.cruiseCompany}` : ""}
+                      {item.portName ? ` · ${item.portName}` : ""}
+                    </p>
+                  )}
                   <p className="mt-2 font-bold text-ocean">
                     {formatPrice(item.totalPrice)}
                   </p>

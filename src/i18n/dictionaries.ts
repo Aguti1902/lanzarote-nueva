@@ -29,6 +29,7 @@ export type Dictionary = {
     total: string;
     required: string;
     processing: string;
+    close: string;
   };
   home: {
     ctaOffers: string;
@@ -133,6 +134,16 @@ export type Dictionary = {
     breadcrumbCruises: string;
     seeExcursionsForShip: string;
     calendarHint: string;
+    bookTourTitle: string;
+    selectPassengers: string;
+    passengerSingular: string;
+    passengerPlural: string;
+    perPerson: string;
+    bookingTotal: string;
+    confirmBooking: string;
+    included: string;
+    notIncluded: string;
+    goToCart: string;
   };
   about: {
     welcome: string;
@@ -284,6 +295,7 @@ const es: Dictionary = {
     total: "Total",
     required: "Obligatorio",
     processing: "Procesando…",
+    close: "Cerrar",
   },
   home: {
     ctaOffers: "Ver nuestras ofertas",
@@ -442,6 +454,16 @@ const es: Dictionary = {
     seeExcursionsForShip: "Ver excursiones del crucero",
     calendarHint:
       "También puede buscar su barco en el calendario de escalas en Lanzarote.",
+    bookTourTitle: "Reservar esta excursión",
+    selectPassengers: "Seleccione el número de pasajeros",
+    passengerSingular: "pasajero",
+    passengerPlural: "pasajeros",
+    perPerson: "persona",
+    bookingTotal: "Precio total de su reserva",
+    confirmBooking: "Confirmar reserva",
+    included: "Incluido",
+    notIncluded: "No incluido",
+    goToCart: "Ir al carrito",
   },
   about: {
     welcome: "¡Bienvenidos a Lanzarote!",
@@ -607,6 +629,7 @@ const en: Dictionary = {
     total: "Total",
     required: "Required",
     processing: "Processing…",
+    close: "Close",
   },
   home: {
     ctaOffers: "See our offers",
@@ -761,6 +784,16 @@ const en: Dictionary = {
     seeExcursionsForShip: "See cruise excursions",
     calendarHint:
       "You can also find your ship in the Lanzarote port-call calendar.",
+    bookTourTitle: "Book this excursion",
+    selectPassengers: "Select number of passengers",
+    passengerSingular: "passenger",
+    passengerPlural: "passengers",
+    perPerson: "person",
+    bookingTotal: "Total booking price",
+    confirmBooking: "Confirm booking",
+    included: "Included",
+    notIncluded: "Not included",
+    goToCart: "Go to cart",
   },
   about: {
     welcome: "Welcome to Lanzarote!",
@@ -925,6 +958,7 @@ const de: Dictionary = {
     total: "Gesamt",
     required: "Pflichtfeld",
     processing: "Wird verarbeitet…",
+    close: "Schließen",
   },
   home: {
     ctaOffers: "Unsere Angebote ansehen",
@@ -1082,6 +1116,16 @@ const de: Dictionary = {
     seeExcursionsForShip: "Kreuzfahrtausflüge ansehen",
     calendarHint:
       "Sie finden Ihr Schiff auch im Lanzarote-Hafenkalender.",
+    bookTourTitle: "Diesen Ausflug buchen",
+    selectPassengers: "Anzahl der Passagiere wählen",
+    passengerSingular: "Passagier",
+    passengerPlural: "Passagiere",
+    perPerson: "Person",
+    bookingTotal: "Gesamtpreis Ihrer Buchung",
+    confirmBooking: "Buchung bestätigen",
+    included: "Inbegriffen",
+    notIncluded: "Nicht inbegriffen",
+    goToCart: "Zum Warenkorb",
   },
   about: {
     welcome: "Willkommen auf Lanzarote!",

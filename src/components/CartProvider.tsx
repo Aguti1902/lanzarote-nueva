@@ -21,6 +21,12 @@ export type CartItem = {
   priceAdult: number;
   priceChild: number;
   totalPrice: number;
+  cruiseShip?: string;
+  cruiseCompany?: string;
+  sailingId?: string;
+  portName?: string;
+  notes?: string;
+  source?: "tour" | "cruise";
 };
 
 type CartContextValue = {
