@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
-import { CalendarDays, Clock, Ship } from "lucide-react";
+import { ArrowRight, CalendarDays, Clock, Ship } from "lucide-react";
 import type { CruiseCall } from "@/types";
 import { formatDate, formatWeekday } from "@/lib/format";
 import { useLocale } from "@/components/LocaleProvider";
@@ -10,14 +11,20 @@ type Props = {
   calls: CruiseCall[];
   season: string;
   port: string;
+  sailingLinks?: Record<string, string>;
 };
 
 function monthKey(date: string): string {
   return date.slice(0, 7);
 }
 
-export function CruiseSchedule({ calls, season, port }: Props) {
-  const { dict, locale } = useLocale();
+export function CruiseSchedule({
+  calls,
+  season,
+  port,
+  sailingLinks = {},
+}: Props) {
+  const { dict, locale, href } = useLocale();
   const months = useMemo(() => {
     const keys = Array.from(new Set(calls.map((c) => monthKey(c.date))));
     return keys;
@@ -76,6 +83,14 @@ export function CruiseSchedule({ calls, season, port }: Props) {
           <p className="mt-2 max-w-2xl text-ink-muted">
             {dict.cruises.scheduleText} {port}.
           </p>
+          <p className="mt-2">
+            <Link
+              href={href("/excursiones-cruceros")}
+              className="text-sm font-bold text-ocean hover:underline"
+            >
+              {dict.cruises.selectCruise} →
+            </Link>
+          </p>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
           <label className="text-sm">
@@ -132,29 +147,45 @@ export function CruiseSchedule({ calls, season, port }: Props) {
                 </span>
               </div>
               <ul className="divide-y divide-sand-line">
-                {dayCalls.map((call) => (
-                  <li
-                    key={call.id}
-                    className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
-                  >
-                    <div className="flex items-start gap-3">
-                      <Ship className="mt-0.5 h-4 w-4 shrink-0 text-ocean" />
-                      <div>
-                        <p className="font-semibold text-ink">{call.shipName}</p>
-                        <p className="text-sm text-ink-muted">
-                          {call.company}
-                          {call.shipCode ? ` · ${call.shipCode}` : ""}
-                        </p>
+                {dayCalls.map((call) => {
+                  const sailingHref = sailingLinks[call.id];
+                  return (
+                    <li
+                      key={call.id}
+                      className="flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+                    >
+                      <div className="flex items-start gap-3">
+                        <Ship className="mt-0.5 h-4 w-4 shrink-0 text-ocean" />
+                        <div>
+                          <p className="font-semibold text-ink">
+                            {call.shipName}
+                          </p>
+                          <p className="text-sm text-ink-muted">
+                            {call.company}
+                            {call.shipCode ? ` · ${call.shipCode}` : ""}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-ink-muted sm:justify-end">
-                      <Clock className="h-4 w-4 text-ocean" />
-                      <span>
-                        {call.arrivalTime} – {call.departureTime}
-                      </span>
-                    </div>
-                  </li>
-                ))}
+                      <div className="flex flex-col gap-2 sm:items-end">
+                        <div className="flex items-center gap-2 text-sm text-ink-muted">
+                          <Clock className="h-4 w-4 text-ocean" />
+                          <span>
+                            {call.arrivalTime} – {call.departureTime}
+                          </span>
+                        </div>
+                        {sailingHref ? (
+                          <Link
+                            href={href(sailingHref)}
+                            className="inline-flex items-center gap-1 text-sm font-bold text-ocean hover:underline"
+                          >
+                            {dict.cruises.seeExcursionsForShip}
+                            <ArrowRight className="h-3.5 w-3.5" />
+                          </Link>
+                        ) : null}
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             </article>
           ))}

@@ -7,5 +7,5 @@ type Props = { params: Promise<{ locale: string }> };
 export default async function CrucerosRedirectPage({ params }: Props) {
   const { locale: raw } = await params;
   const locale = resolveLocale(raw);
-  redirect(localePath(locale, "/cruceristas"));
+  redirect(localePath(locale, "/excursiones-cruceros"));
 }

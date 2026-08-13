@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Anchor, Clock, MapPin, Ship } from "lucide-react";
 import { CruiseSchedule } from "@/components/CruiseSchedule";
 import { PageHero } from "@/components/PageHero";
 import { TourCard } from "@/components/TourCard";
 import { getCruiseCalls, getCruisesData, getCruiseTours, getSettings } from "@/lib/content";
+import { buildPortCallSailingLinks } from "@/lib/cruise-itineraries";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
+import { localePath } from "@/i18n/path";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +31,8 @@ export default async function CruceristasPage({ params }: Props) {
   ]);
   const tours = allCruise.filter((t) => t.category === "excursion");
   const privateTours = allCruise.filter((t) => t.category === "private");
+
+  const sailingLinks = await buildPortCallSailingLinks(cruiseCalls);
 
   const pillars = [
     {
@@ -56,9 +61,19 @@ export default async function CruceristasPage({ params }: Props) {
       />
 
       <section className="mx-auto max-w-6xl px-4 py-14 md:px-6">
-        <div className="mb-8 flex items-center gap-3">
-          <Ship className="h-7 w-7 text-ocean" />
-          <h2 className="text-3xl font-bold md:text-4xl">{dict.cruises.select}</h2>
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div className="flex items-center gap-3">
+            <Ship className="h-7 w-7 text-ocean" />
+            <h2 className="text-3xl font-bold md:text-4xl">
+              {dict.cruises.select}
+            </h2>
+          </div>
+          <Link
+            href={localePath(locale, "/excursiones-cruceros")}
+            className="btn-primary justify-center"
+          >
+            {dict.cruises.selectCruise}
+          </Link>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
           {pillars.map((item) => (
@@ -80,6 +95,7 @@ export default async function CruceristasPage({ params }: Props) {
             calls={cruiseCalls}
             season={cruiseData.season}
             port={cruiseData.port}
+            sailingLinks={sailingLinks}
           />
         </div>
       </section>

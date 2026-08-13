@@ -16,6 +16,15 @@ export function formatDate(iso: string, locale = "es-ES"): string {
   }).format(value);
 }
 
+export function formatDateShort(iso: string): string {
+  const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(iso);
+  const value = dateOnly ? new Date(`${iso}T12:00:00`) : new Date(iso);
+  const dd = String(value.getDate()).padStart(2, "0");
+  const mm = String(value.getMonth() + 1).padStart(2, "0");
+  const yyyy = value.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+
 export function formatWeekday(iso: string, locale = "es-ES"): string {
   const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(iso);
   const value = dateOnly ? new Date(`${iso}T12:00:00`) : new Date(iso);

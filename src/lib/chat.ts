@@ -77,7 +77,8 @@ ${settings.cruiseIntro}
 Calendario de escalas temporada ${cruiseData.season} en ${cruiseData.port} (${cruiseCalls.length} escalas).
 Próximas / ejemplo de escalas:
 ${upcomingCruises}
-URL calendario: /cruceristas
+URL cruceros: /excursiones-cruceros
+URL calendario escalas Lanzarote: /cruceristas
 
 INFO CLAVE:
 - Grupo reducido: máx. 8 personas, pago anticipado con tarjeta o Bizum.
@@ -102,7 +103,7 @@ function localReply(message: string, knowledge: string): string {
   }
 
   if (/crucero|crucerista|barco|escala|puerto|calendario/.test(q)) {
-    return "Si llegas en crucero a Lanzarote (Puerto de Los Mármoles), te recogemos en el puerto y adaptamos horarios a tu escala. En /cruceristas verás el calendario de barcos de la temporada 2026-2027 y las excursiones recomendadas (Ruta Sur, Grand Tour, privado o minibus). Dime fecha o nombre del barco y te indico qué hay ese día.";
+    return "Si llegas en crucero a Lanzarote (Puerto de Los Mármoles), te recogemos en el puerto y adaptamos horarios a tu escala. En /excursiones-cruceros elige naviera, barco y salida para ver el itinerario completo y las excursiones. En /cruceristas está el calendario de escalas 2026-2027. Dime fecha o nombre del barco y te indico qué hay ese día.";
   }
 
   if (/traslad|aeropuerto|taxi|recogida|transfer|playa blanca|puerto del carmen|costa teguise|arrecife|puerto calero/.test(q)) {
@@ -192,7 +193,7 @@ async function openaiReply(
         messages: [
           {
             role: "system",
-            content: `You are the booking assistant for Lanzarote Experience Tours. Reply in ${language}, briefly, clearly and kindly (max 120 words unless listing prices). Use only this company information. If unsure, invite the user to contact us or book on the website. Do not invent prices missing from the context. Include internal links when helpful (/${locale}/excursiones, /${locale}/traslados, /${locale}/cruceristas).
+            content: `You are the booking assistant for Lanzarote Experience Tours. Reply in ${language}, briefly, clearly and kindly (max 120 words unless listing prices). Use only this company information. If unsure, invite the user to contact us or book on the website. Do not invent prices missing from the context. Include internal links when helpful (/${locale}/excursiones, /${locale}/traslados, /${locale}/excursiones-cruceros, /${locale}/cruceristas).
 
 CONTEXT:
 ${knowledge}`,
