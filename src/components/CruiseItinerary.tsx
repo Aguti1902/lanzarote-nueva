@@ -7,6 +7,7 @@ import { MapPin, Ship, Waves } from "lucide-react";
 import type { CruiseSailing, CruiseShoreTour } from "@/types";
 import { formatDateShort, formatPrice } from "@/lib/format";
 import { useLocale } from "@/components/LocaleProvider";
+import { CruiseTourBooking } from "@/components/CruiseTourBooking";
 
 type Props = {
   sailing: CruiseSailing;
@@ -16,6 +17,7 @@ type Props = {
 export function CruiseItinerary({ sailing, tours }: Props) {
   const { dict, href, locale } = useLocale();
   const [openTour, setOpenTour] = useState<string | null>(null);
+  const [bookingTour, setBookingTour] = useState<string | null>(null);
   const [meetingOpen, setMeetingOpen] = useState(false);
   const tourMap = new Map(tours.map((t) => [t.id, t]));
 
@@ -109,9 +111,10 @@ export function CruiseItinerary({ sailing, tours }: Props) {
                         <div className="mt-5 space-y-5">
                           {stopTours.map((tour) => {
                             const expanded = openTour === tour.id;
-                            const bookingHref = tour.bookingSlug
-                              ? href(`/excursiones/${tour.bookingSlug}`)
-                              : href("/excursiones");
+                            const bookingOpen = bookingTour === tour.id;
+                            const detailHref = href(
+                              `/excursiones-cruceros/tour/${tour.id}?sailing=${encodeURIComponent(sailing.id)}&company=${encodeURIComponent(sailing.companySlug)}&ship=${encodeURIComponent(sailing.shipSlug)}&date=${encodeURIComponent(stop.date || "")}`
+                            );
                             return (
                               <div
                                 key={tour.id}
@@ -140,6 +143,11 @@ export function CruiseItinerary({ sailing, tours }: Props) {
                                   <h4 className="text-lg font-bold leading-snug">
                                     {tour.title}
                                   </h4>
+                                  {tour.summary && (
+                                    <p className="text-sm leading-relaxed text-ink-muted">
+                                      {tour.summary}
+                                    </p>
+                                  )}
                                   <ul className="space-y-1.5 text-sm text-ink-muted">
                                     {tour.duration && (
                                       <li>
@@ -163,14 +171,44 @@ export function CruiseItinerary({ sailing, tours }: Props) {
                                   </ul>
 
                                   {expanded && (
-                                    <p className="rounded-lg bg-sky-soft/80 p-3 text-sm leading-relaxed text-ink-muted">
-                                      {tour.places.length > 0
-                                        ? `${tour.title}. ${dict.cruises.placesToVisit}: ${tour.places.join(", ")}.`
-                                        : tour.title}
-                                      {tour.maxGroup
-                                        ? ` ${dict.common.max} ${tour.maxGroup}.`
-                                        : ""}
-                                    </p>
+                                    <div className="space-y-3 rounded-lg bg-sky-soft/80 p-3 text-sm leading-relaxed text-ink-muted">
+                                      {tour.description && (
+                                        <p className="whitespace-pre-line">
+                                          {tour.description}
+                                        </p>
+                                      )}
+                                      {tour.included && tour.included.length > 0 && (
+                                        <div>
+                                          <p className="font-semibold text-ink">
+                                            {dict.cruises.included}
+                                          </p>
+                                          <ul className="mt-1 space-y-0.5">
+                                            {tour.included.map((item) => (
+                                              <li key={item}>• {item}</li>
+                                            ))}
+                                          </ul>
+                                        </div>
+                                      )}
+                                      {tour.notIncluded &&
+                                        tour.notIncluded.length > 0 && (
+                                          <div>
+                                            <p className="font-semibold text-ink">
+                                              {dict.cruises.notIncluded}
+                                            </p>
+                                            <ul className="mt-1 space-y-0.5">
+                                              {tour.notIncluded.map((item) => (
+                                                <li key={item}>• {item}</li>
+                                              ))}
+                                            </ul>
+                                          </div>
+                                        )}
+                                      <Link
+                                        href={detailHref}
+                                        className="inline-block font-bold text-ocean hover:underline"
+                                      >
+                                        {dict.cruises.moreInfo} →
+                                      </Link>
+                                    </div>
                                   )}
 
                                   <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
@@ -191,13 +229,28 @@ export function CruiseItinerary({ sailing, tours }: Props) {
                                       <MapPin className="h-4 w-4" />
                                       {dict.cruises.meetingPoint}
                                     </button>
-                                    <Link
-                                      href={bookingHref}
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        setBookingTour(
+                                          bookingOpen ? null : tour.id
+                                        )
+                                      }
                                       className="btn-primary justify-center rounded-full px-5 py-2.5 text-sm uppercase tracking-wide"
                                     >
                                       {dict.cruises.bookTour}
-                                    </Link>
+                                    </button>
                                   </div>
+
+                                  {bookingOpen && stop.date && (
+                                    <CruiseTourBooking
+                                      tour={tour}
+                                      sailing={sailing}
+                                      callDate={stop.date}
+                                      portName={stop.port}
+                                      onClose={() => setBookingTour(null)}
+                                    />
+                                  )}
                                 </div>
                               </div>
                             );

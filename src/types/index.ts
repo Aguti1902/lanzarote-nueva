@@ -123,14 +123,25 @@ export interface CruisesData {
 export interface CruiseShoreTour {
   id: string;
   title: string;
+  shortTitle?: string;
+  summary?: string;
+  description?: string;
   priceAdult: number | null;
+  priceChild?: number | null;
+  pricePerPerson?: number | null;
   image: string;
   duration: string;
   places: string[];
   highlights: string[];
+  included?: string[];
+  notIncluded?: string[];
   bookingSlug?: string;
   maxGroup?: number;
   currency?: string;
+  allowCard?: boolean;
+  allowBizum?: boolean;
+  allowPayOnDay?: boolean;
+  cancellationPolicy?: string;
 }
 
 export interface CruiseItineraryStop {

@@ -362,7 +362,8 @@
         "Islote de Hilario",
         "El Golfo",
         "Los Hervideros",
-        "La Geria"
+        "La Geria",
+        "Salinas de Janubio"
       ],
       "highlights": [
         "Excursión en grupos pequeños, máximo 25 personas",
@@ -373,8 +374,28 @@
         "Punto de encuentro con la guía : El control de policía"
       ],
       "bookingSlug": "excursion-timanfaya-montanas-del-fuego",
-      "maxGroup": 25,
-      "currency": "EUR"
+      "maxGroup": 14,
+      "currency": "EUR",
+      "description": "Disfrute de este recorrido que le llevará al paisaje lunar del Parque Nacional de Timanfaya, al volcán El Golfo con la laguna verde, a los acantilados de Los Hervideros y a la región vinícola de La Geria.\n\nLlegaremos al Parque Nacional de Timanfaya, donde será testigo de experimentos geotérmicos que revelan temperaturas entre 50 y 600 °C a pocos metros bajo la superficie.\n\nContinuaremos hacia la costa para conocer Los Hervideros y el volcán El Golfo, con su lago de aguas casi fluorescentes. Terminaremos en La Geria, con viñas cultivadas en hoyos protegidos del viento.\n\nDatos importantes:\n• Salida: media hora después de la llegada del crucero\n• Punto de encuentro: control de policía del puerto\n• Transporte: aparcamiento externo (aprox. 10 min a pie)\n• Nivel de actividad: moderado\n• Duración: 5 horas\n• No apta para personas con movilidad reducida",
+      "summary": "Parque Nacional de Timanfaya, El Golfo, Los Hervideros y La Geria. Ideal para escalas de crucero (~5 h), con regreso al barco garantizado.",
+      "priceChild": 120.0,
+      "pricePerPerson": 120.0,
+      "allowCard": true,
+      "allowBizum": true,
+      "allowPayOnDay": true,
+      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes. Devolución íntegra si el barco no atraca.",
+      "included": [
+        "Transporte climatizado con WIFI",
+        "Guía local",
+        "Entradas al Parque Nacional de Timanfaya",
+        "Seguro turístico",
+        "Regreso al barco a tiempo garantizado"
+      ],
+      "notIncluded": [
+        "Comida y bebidas",
+        "Paseo en camello (opcional, ~6 €)"
+      ],
+      "shortTitle": "Sur de Lanzarote · Timanfaya"
     },
     {
       "id": "lanzarote-experience-tour-nuestra-excursion-mas-completa-para-cruceristas",
@@ -383,9 +404,10 @@
       "image": "/images/tours/cruise/lanzarote-experience-tour-nuestra-excursion-mas-completa-para-cruceristas.jpg",
       "duration": "8 horas",
       "places": [
-        "Parque nacional de Timanfaya",
+        "Parque Nacional de Timanfaya",
         "Jameos del Agua",
-        "Jardín de Cactus"
+        "Jardín de Cactus",
+        "La Geria"
       ],
       "highlights": [
         "Excursión en grupos pequeños, máximo 25 personas",
@@ -396,8 +418,27 @@
         "Punto de encuentro con la guía : El control de policía"
       ],
       "bookingSlug": "excursion-grand-tour-experience",
-      "maxGroup": 25,
-      "currency": "EUR"
+      "maxGroup": 14,
+      "currency": "EUR",
+      "description": "Visite los lugares más simbólicos de Lanzarote en este tour de día completo. Descubra el Parque Nacional de Timanfaya, sus anomalías geotérmicas y la Ruta de los Volcanes. Sorpréndase con La Geria, el Jardín de Cactus y los Jameos del Agua, obras de César Manrique.\n\nDurante la excursión disfrutará de paisajes únicos, pueblos con historia y la cultura de la isla.\n\nDatos importantes:\n• Salida: media hora después de la llegada del crucero\n• Punto de encuentro: control de policía del puerto\n• Transporte: aparcamiento externo (aprox. 10 min a pie)\n• Nivel de actividad: moderado\n• Duración: 8 horas\n• No apta para personas con movilidad reducida\n\n¿Por qué reservar con nosotros?\n• Sin paradas comerciales\n• Grupos reducidos\n• Evitamos las colas\n• No mezclamos turistas locales con pasajeros de crucero\n• Regreso al barco a tiempo garantizado",
+      "summary": "La excursión más completa para cruceristas: Timanfaya, Jameos del Agua y Jardín de Cactus en un día (~8 h), con entradas incluidas.",
+      "priceChild": 195.0,
+      "pricePerPerson": 195.0,
+      "allowCard": true,
+      "allowBizum": true,
+      "allowPayOnDay": true,
+      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes. Devolución íntegra si el barco no atraca.",
+      "included": [
+        "Transporte climatizado con WIFI",
+        "Guía local",
+        "Entradas a Timanfaya, Jameos del Agua y Jardín de Cactus",
+        "Seguro turístico",
+        "Regreso al barco a tiempo garantizado"
+      ],
+      "notIncluded": [
+        "Comida y bebidas"
+      ],
+      "shortTitle": "Lanzarote Experience Tour"
     }
   ],
   "sailings": [

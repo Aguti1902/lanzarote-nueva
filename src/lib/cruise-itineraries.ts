@@ -57,6 +57,20 @@ export async function getCruiseShoreTourMap(): Promise<
   return new Map(tours.map((t) => [t.id, t]));
 }
 
+export async function getCruiseShoreTourById(
+  id: string
+): Promise<CruiseShoreTour | undefined> {
+  const tours = await getCruiseShoreTours();
+  return tours.find((t) => t.id === id);
+}
+
+export async function getCruiseSailingById(
+  sailingId: string
+): Promise<CruiseSailing | undefined> {
+  const data = await getCruiseItinerariesData();
+  return data.sailings.find((s) => s.id === sailingId);
+}
+
 export async function getSailingsByCompany(
   companySlug: string
 ): Promise<CruiseSailing[]> {
