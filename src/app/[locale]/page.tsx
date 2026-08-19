@@ -80,7 +80,11 @@ export default async function HomePage({ params }: Props) {
           <div className="marquee-track gap-12 px-4">
             {[0, 1].map((i) => (
               <p key={i} className="shrink-0 whitespace-nowrap">
-                {dict.home.marquee}
+                {(locale === "en"
+                  ? settings.bannerEn
+                  : locale === "de"
+                    ? settings.bannerDe
+                    : settings.bannerEs) || dict.home.marquee}
               </p>
             ))}
           </div>

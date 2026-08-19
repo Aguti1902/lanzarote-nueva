@@ -10,11 +10,15 @@ import {
   BookOpen,
   Bus,
   CalendarDays,
+  CreditCard,
   ExternalLink,
   FileText,
+  Handshake,
   LayoutDashboard,
   LogOut,
   Map,
+  MessageSquareHeart,
+  Link2,
   Settings,
   Ship,
 } from "lucide-react";
@@ -22,14 +26,19 @@ import {
 const nav = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/reservas", label: "Reservas", icon: CalendarDays },
+  { href: "/admin/reservas-cruceros", label: "Reservas cruceros", icon: Ship },
+  { href: "/admin/pagos-online", label: "Pagos online", icon: CreditCard },
   { href: "/admin/cobros-efectivo", label: "Cobros efectivo", icon: Banknote },
   { href: "/admin/facturas", label: "Facturas", icon: FileText },
   { href: "/admin/estadisticas", label: "Estadísticas", icon: BarChart3 },
   { href: "/admin/excursiones", label: "Excursiones", icon: Map },
   { href: "/admin/traslados", label: "Traslados", icon: Bus },
   { href: "/admin/cruceros", label: "Cruceros", icon: Ship },
+  { href: "/admin/colaboradores", label: "Colaboradores", icon: Handshake },
+  { href: "/admin/feedback", label: "Feedback", icon: MessageSquareHeart },
+  { href: "/admin/redirecciones", label: "Redirecciones", icon: Link2 },
   { href: "/admin/blog", label: "Blog", icon: BookOpen },
-  { href: "/admin/ajustes", label: "Ajustes", icon: Settings },
+  { href: "/admin/ajustes", label: "Ajustes / Banner", icon: Settings },
 ];
 
 export default function AdminLayout({
@@ -143,7 +152,7 @@ export default function AdminLayout({
             </button>
           </div>
           <p className="hidden text-sm text-ink-muted md:block">
-            LET · Reservas, facturas, cobros en efectivo, blog y estadísticas
+            LET · Reservas, cruceros, pagos, colaboradores, feedback y más
           </p>
         </header>
         <div className="flex-1 p-4 md:p-6">{children}</div>

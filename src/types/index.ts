@@ -91,6 +91,73 @@ export interface SiteSettings {
   companyTaxId?: string;
   companyAddress?: string;
   taxRate?: number;
+  bannerEs?: string;
+  bannerEn?: string;
+  bannerDe?: string;
+}
+
+export interface PaymentLink {
+  id: string;
+  createdAt: string;
+  locator: string;
+  concept: string;
+  amount: number;
+  status: "pending" | "paid" | "cancelled";
+  customerName?: string;
+  customerEmail?: string;
+  notes?: string;
+}
+
+export interface Collaborator {
+  id: string;
+  name: string;
+  type: "agency" | "hotel" | "other";
+  active: boolean;
+  phone: string;
+  email: string;
+  contactPerson: string;
+  notes?: string;
+}
+
+export interface CustomerFeedback {
+  id: string;
+  createdAt: string;
+  bookingId?: string;
+  ratingGeneral: number;
+  ratingContent: number;
+  ratingBooking: number;
+  source: string;
+  suggestions: string;
+  customerName?: string;
+}
+
+export interface CruisePort {
+  id: string;
+  name: string;
+  region: string;
+  offersExcursions: boolean;
+}
+
+export interface CruiseGroup {
+  id: string;
+  status: "open" | "full" | "done" | "private";
+  shipName: string;
+  company: string;
+  date: string;
+  port: string;
+  excursionTitle: string;
+  complete: boolean;
+  minPax: number;
+  pax: number;
+  notes?: string;
+}
+
+export interface SeoRedirect {
+  id: string;
+  httpCode: 301 | 302;
+  locale: "es" | "en" | "de";
+  fromSlug: string;
+  toSlug: string;
 }
 
 export interface TransfersData {
