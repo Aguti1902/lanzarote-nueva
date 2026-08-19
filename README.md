@@ -23,6 +23,7 @@ Desde el panel puedes:
 | Dashboard | Estadísticas, accesos rápidos |
 | Reservas | Ver todas, confirmar / completar / cancelar |
 | Reservas cruceros | Filtro de reservas con barco/escala |
+| Importar reservas | CSV/Excel de proveedores → reservas |
 | Pagos online | Crear enlaces de pago y marcar estados |
 | Cobros efectivo | Seguir depósitos 10% y cobros del día |
 | Facturas | Emitir / abonar |
@@ -33,6 +34,7 @@ Desde el panel puedes:
 | Colaboradores | Agencias / hoteles B2B |
 | Feedback | Valoraciones y sugerencias de clientes |
 | Redirecciones | 301/302 SEO entre slugs |
+| Traducciones | Textos UI ES → EN / DE |
 | Blog | Crear / editar / eliminar entradas |
 | Ajustes / Banner | Contacto, textos, banner multiidioma (ES/EN/DE) |
 

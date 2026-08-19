@@ -1314,9 +1314,19 @@ const de: Dictionary = {
 const dictionaries: Record<Locale, Dictionary> = { es, en, de };
 
 export async function getDictionary(locale: Locale): Promise<Dictionary> {
-  return dictionaries[locale] ?? dictionaries.es;
+  const base = dictionaries[locale] ?? dictionaries.es;
+  if (locale === "es") return base;
+  const { applyTranslationOverrides, getOverridesForLocale } = await import(
+    "@/lib/ui-translations"
+  );
+  const overrides = await getOverridesForLocale(locale);
+  return applyTranslationOverrides(base, overrides);
 }
 
 export function getDictionarySync(locale: Locale): Dictionary {
+  return dictionaries[locale] ?? dictionaries.es;
+}
+
+export function getBaseDictionary(locale: Locale): Dictionary {
   return dictionaries[locale] ?? dictionaries.es;
 }

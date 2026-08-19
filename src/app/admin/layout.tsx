@@ -14,6 +14,7 @@ import {
   ExternalLink,
   FileText,
   Handshake,
+  Languages,
   LayoutDashboard,
   LogOut,
   Map,
@@ -21,12 +22,14 @@ import {
   Link2,
   Settings,
   Ship,
+  Upload,
 } from "lucide-react";
 
 const nav = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/reservas", label: "Reservas", icon: CalendarDays },
   { href: "/admin/reservas-cruceros", label: "Reservas cruceros", icon: Ship },
+  { href: "/admin/importar-reservas", label: "Importar reservas", icon: Upload },
   { href: "/admin/pagos-online", label: "Pagos online", icon: CreditCard },
   { href: "/admin/cobros-efectivo", label: "Cobros efectivo", icon: Banknote },
   { href: "/admin/facturas", label: "Facturas", icon: FileText },
@@ -37,6 +40,7 @@ const nav = [
   { href: "/admin/colaboradores", label: "Colaboradores", icon: Handshake },
   { href: "/admin/feedback", label: "Feedback", icon: MessageSquareHeart },
   { href: "/admin/redirecciones", label: "Redirecciones", icon: Link2 },
+  { href: "/admin/traducciones", label: "Traducciones", icon: Languages },
   { href: "/admin/blog", label: "Blog", icon: BookOpen },
   { href: "/admin/ajustes", label: "Ajustes / Banner", icon: Settings },
 ];
