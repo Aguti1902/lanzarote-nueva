@@ -391,6 +391,10 @@ const defaultSettings: SiteSettings = {
   companyTaxId: "",
   companyAddress: "",
   taxRate: 0,
+  bannerEs:
+    "Excursiones personalizadas · Empresa familiar de Lanzarote · Gracias por apoyar el comercio local · Grupos reducidos, solo en español",
+  bannerEn: "",
+  bannerDe: "",
 };
 
 export async function getSettings(): Promise<SiteSettings> {

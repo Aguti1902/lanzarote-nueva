@@ -35,6 +35,9 @@ const empty: SiteSettings = {
   companyTaxId: "",
   companyAddress: "",
   taxRate: 0,
+  bannerEs: "",
+  bannerEn: "",
+  bannerDe: "",
 };
 
 export default function AdminAjustesPage() {
@@ -197,6 +200,34 @@ export default function AdminAjustesPage() {
           </Field>
           <Field label="URL imagen hero">
             <input className={adminInput} value={settings.transferHeroImage} onChange={(e) => set("transferHeroImage", e.target.value)} />
+          </Field>
+        </section>
+
+        <section className="grid gap-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
+          <h2 className="font-display text-xl">Banner de la web (multiidioma)</h2>
+          <p className="text-sm text-ink-muted">
+            Mensaje del marquee / cinta superior. Si deja un idioma vacío, se usa el texto por defecto del idioma.
+          </p>
+          <Field label="Español">
+            <textarea
+              className={adminTextarea}
+              value={settings.bannerEs || ""}
+              onChange={(e) => set("bannerEs", e.target.value)}
+            />
+          </Field>
+          <Field label="Inglés">
+            <textarea
+              className={adminTextarea}
+              value={settings.bannerEn || ""}
+              onChange={(e) => set("bannerEn", e.target.value)}
+            />
+          </Field>
+          <Field label="Alemán">
+            <textarea
+              className={adminTextarea}
+              value={settings.bannerDe || ""}
+              onChange={(e) => set("bannerDe", e.target.value)}
+            />
           </Field>
         </section>
 

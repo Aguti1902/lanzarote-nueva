@@ -1,0 +1,115 @@
+{
+  "paymentLinks": [
+    {
+      "id": "pay-001",
+      "createdAt": "2026-08-10T10:00:00.000Z",
+      "locator": "PAY-1001",
+      "concept": "Excursión Timanfaya — 2 pax",
+      "amount": 240,
+      "status": "pending",
+      "customerName": "María López",
+      "customerEmail": "maria@example.com",
+      "notes": "Enlace enviado por WhatsApp"
+    },
+    {
+      "id": "pay-002",
+      "createdAt": "2026-08-08T15:20:00.000Z",
+      "locator": "PAY-1002",
+      "concept": "Traslado privado Playa Blanca",
+      "amount": 55,
+      "status": "paid",
+      "customerName": "John Smith",
+      "customerEmail": "john@example.com",
+      "notes": ""
+    }
+  ],
+  "collaborators": [
+    {
+      "id": "col-001",
+      "name": "Hotel Princesa Yaiza",
+      "type": "hotel",
+      "active": false,
+      "phone": "+34 928 000 000",
+      "email": "reservas@princesayaiza.example",
+      "contactPerson": "Elisa Aschenbach",
+      "notes": ""
+    },
+    {
+      "id": "col-002",
+      "name": "INVERSIAL GROUP S.L.U. (ENTREES)",
+      "type": "agency",
+      "active": false,
+      "phone": "",
+      "email": "",
+      "contactPerson": "",
+      "notes": ""
+    }
+  ],
+  "feedback": [
+    {
+      "id": "fb-001",
+      "createdAt": "2026-08-05T12:00:00.000Z",
+      "bookingId": "BK-1001",
+      "ratingGeneral": 10,
+      "ratingContent": 9.5,
+      "ratingBooking": 10,
+      "source": "Recommendation from hotel",
+      "suggestions": "Todo perfecto, volveremos.",
+      "customerName": "Ana"
+    },
+    {
+      "id": "fb-002",
+      "createdAt": "2026-07-28T09:30:00.000Z",
+      "bookingId": "BK-1008",
+      "ratingGeneral": 8,
+      "ratingContent": 8.5,
+      "ratingBooking": 7.5,
+      "source": "Internet",
+      "suggestions": "Más tiempo en Timanfaya.",
+      "customerName": "Peter"
+    }
+  ],
+  "cruisePorts": [
+    { "id": "port-lanzarote", "name": "Lanzarote / Arrecife", "region": "Canary Islands", "offersExcursions": true },
+    { "id": "port-tenerife", "name": "Tenerife", "region": "Canary Islands", "offersExcursions": true },
+    { "id": "port-gran-canaria", "name": "Gran Canaria", "region": "Canary Islands", "offersExcursions": true },
+    { "id": "port-fuerteventura", "name": "Puerto del Rosario (Fuerteventura)", "region": "Canary Islands", "offersExcursions": true },
+    { "id": "port-la-palma", "name": "La Palma", "region": "Canary Islands", "offersExcursions": true },
+    { "id": "port-la-gomera", "name": "La Gomera", "region": "Canary Islands", "offersExcursions": true },
+    { "id": "port-funchal", "name": "Funchal (Madeira)", "region": "Portugal", "offersExcursions": true },
+    { "id": "port-agadir", "name": "Agadir", "region": "Morocco", "offersExcursions": false },
+    { "id": "port-casablanca", "name": "Casablanca", "region": "Morocco", "offersExcursions": false },
+    { "id": "port-lisbon", "name": "Lisbon", "region": "Portugal", "offersExcursions": false }
+  ],
+  "cruiseGroups": [
+    {
+      "id": "grp-001",
+      "status": "open",
+      "shipName": "Crystal Serenity",
+      "company": "Crystal Cruises",
+      "date": "2026-10-15",
+      "port": "Lanzarote",
+      "excursionTitle": "Excursión Sur de Lanzarote, Parque Nacional de Timanfaya",
+      "complete": false,
+      "minPax": 8,
+      "pax": 4,
+      "notes": ""
+    }
+  ],
+  "redirects": [
+    {
+      "id": "redir-001",
+      "httpCode": 301,
+      "locale": "es",
+      "fromSlug": "excursion-gran-tour-lanzarote",
+      "toSlug": "excursion-grand-tour-experience"
+    },
+    {
+      "id": "redir-002",
+      "httpCode": 301,
+      "locale": "en",
+      "fromSlug": "south-excursion-volcano-tour",
+      "toSlug": "excursion-timanfaya-montanas-del-fuego"
+    }
+  ]
+}

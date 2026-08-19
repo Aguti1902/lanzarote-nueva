@@ -22,11 +22,19 @@ Desde el panel puedes:
 |---------|------------------|
 | Dashboard | Estadísticas, accesos rápidos |
 | Reservas | Ver todas, confirmar / completar / cancelar |
+| Reservas cruceros | Filtro de reservas con barco/escala |
+| Pagos online | Crear enlaces de pago y marcar estados |
+| Cobros efectivo | Seguir depósitos 10% y cobros del día |
+| Facturas | Emitir / abonar |
+| Estadísticas | Ingresos y métodos de pago |
 | Excursiones | Crear, editar, eliminar tours y precios |
-| Traslados | Ver todos los destinos, precios ida/vuelta, ventajas |
-| Cruceros | Calendario de escalas temporada 2026-2027 (crear / editar / ocultar) |
+| Traslados | Destinos, precios ida/vuelta |
+| Cruceros | Compañías, puertos, excursiones shore, grupos y calendario de escalas |
+| Colaboradores | Agencias / hoteles B2B |
+| Feedback | Valoraciones y sugerencias de clientes |
+| Redirecciones | 301/302 SEO entre slugs |
 | Blog | Crear / editar / eliminar entradas |
-| Ajustes web | Teléfono, email, textos de inicio, cruceristas, sobre nosotros |
+| Ajustes / Banner | Contacto, textos, banner multiidioma (ES/EN/DE) |
 
 Los cambios se guardan en `src/data/*.json` y se ven en la web al instante.
 

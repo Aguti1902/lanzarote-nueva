@@ -14,6 +14,10 @@ const dataPath = path.join(
 
 let cache: CruiseItinerariesData | null = null;
 
+export function clearCruiseItinerariesCache() {
+  cache = null;
+}
+
 const emptyData: CruiseItinerariesData = {
   updatedAt: "",
   source: "",
