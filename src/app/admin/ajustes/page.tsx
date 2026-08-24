@@ -203,7 +203,7 @@ export default function AdminAjustesPage() {
           </Field>
         </section>
 
-        <section className="grid gap-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
+        <section id="banner" className="grid scroll-mt-6 gap-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
           <h2 className="font-display text-xl">Banner de la web (multiidioma)</h2>
           <p className="text-sm text-ink-muted">
             Mensaje del marquee / cinta superior. Si deja un idioma vacío, se usa el texto por defecto del idioma.

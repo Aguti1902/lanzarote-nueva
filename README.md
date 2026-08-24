@@ -21,22 +21,25 @@ Desde el panel puedes:
 | Sección | Qué puedes hacer |
 |---------|------------------|
 | Dashboard | Estadísticas, accesos rápidos |
+| Banner | Texto marquee ES/EN/DE (en Ajustes) |
 | Reservas | Ver todas, confirmar / completar / cancelar |
 | Reservas cruceros | Filtro de reservas con barco/escala |
+| Grupos cruceros | Grupos de pax por barco/fecha/excursión |
 | Importar reservas | CSV/Excel de proveedores → reservas |
 | Pagos online | Crear enlaces de pago y marcar estados |
 | Cobros efectivo | Seguir depósitos 10% y cobros del día |
 | Facturas | Emitir / abonar |
 | Estadísticas | Ingresos y métodos de pago |
 | Excursiones | Crear, editar, eliminar tours y precios |
+| Excursiones shore | Catálogo de shore excursions |
 | Traslados | Destinos, precios ida/vuelta |
-| Cruceros | Compañías, puertos, excursiones shore, grupos y calendario de escalas |
+| Compañías / Puertos / Escalas | Catálogo de cruceros y calendario |
 | Colaboradores | Agencias / hoteles B2B |
 | Feedback | Valoraciones y sugerencias de clientes |
 | Redirecciones | 301/302 SEO entre slugs |
 | Traducciones | Textos UI ES → EN / DE |
 | Blog | Crear / editar / eliminar entradas |
-| Ajustes / Banner | Contacto, textos, banner multiidioma (ES/EN/DE) |
+| Ajustes | Contacto, textos hero, datos fiscales |
 
 Los cambios se guardan en `src/data/*.json` y se ven en la web al instante.
 

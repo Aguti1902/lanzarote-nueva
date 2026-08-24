@@ -1,16 +1,35 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 import type { CruiseCompany, CruiseGroup, CruisePort, CruiseShoreTour } from "@/types";
 import { formatPrice } from "@/lib/format";
 import { Field, adminInput, adminTextarea, arrayToLines, linesToArray } from "@/components/admin/Field";
 
-type Tab = "escalas" | "companias" | "puertos" | "excursiones" | "grupos";
+type Tab = "companias" | "puertos" | "excursiones" | "grupos";
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: "companias", label: "Compañías" },
+  { id: "puertos", label: "Puertos" },
+  { id: "excursiones", label: "Excursiones shore" },
+  { id: "grupos", label: "Grupos" },
+];
+
+function tabFromParam(raw: string | null): Tab {
+  if (raw === "puertos" || raw === "excursiones" || raw === "grupos") return raw;
+  return "companias";
+}
 
 export default function AdminCrucerosHubPage() {
-  const [tab, setTab] = useState<Tab>("companias");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const tab = tabFromParam(searchParams.get("tab"));
+
+  function setTab(id: Tab) {
+    router.replace(`/admin/cruceros?tab=${id}`);
+  }
 
   return (
     <div className="space-y-6">
@@ -27,25 +46,11 @@ export default function AdminCrucerosHubPage() {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {(
-          [
-            ["companias", "Compañías"],
-            ["puertos", "Puertos"],
-            ["excursiones", "Excursiones shore"],
-            ["grupos", "Grupos"],
-            ["escalas", "Escalas"],
-          ] as const
-        ).map(([id, label]) => (
+        {TABS.map(({ id, label }) => (
           <button
             key={id}
             type="button"
-            onClick={() => {
-              if (id === "escalas") {
-                window.location.href = "/admin/cruceros/escalas";
-                return;
-              }
-              setTab(id);
-            }}
+            onClick={() => setTab(id)}
             className={`rounded-full px-4 py-2 text-sm font-bold ${
               tab === id
                 ? "bg-ocean text-white"
@@ -55,6 +60,12 @@ export default function AdminCrucerosHubPage() {
             {label}
           </button>
         ))}
+        <Link
+          href="/admin/cruceros/escalas"
+          className="rounded-full bg-white px-4 py-2 text-sm font-bold text-ink ring-1 ring-sand-line"
+        >
+          Escalas
+        </Link>
       </div>
 
       {tab === "companias" && <CompaniesPanel />}
@@ -172,6 +183,7 @@ function CompaniesPanel() {
 
 function PortsPanel() {
   const [items, setItems] = useState<CruisePort[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState({
     name: "",
     region: "",
@@ -188,14 +200,28 @@ function PortsPanel() {
     load();
   }, []);
 
-  async function create(e: React.FormEvent) {
+  function startEdit(p: CruisePort) {
+    setEditingId(p.id);
+    setForm({
+      name: p.name,
+      region: p.region,
+      offersExcursions: p.offersExcursions,
+    });
+  }
+
+  function resetForm() {
+    setEditingId(null);
+    setForm({ name: "", region: "", offersExcursions: true });
+  }
+
+  async function save(e: React.FormEvent) {
     e.preventDefault();
     await fetch("/api/admin/extras?resource=ports", {
-      method: "POST",
+      method: editingId ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: JSON.stringify(editingId ? { id: editingId, ...form } : form),
     });
-    setForm({ name: "", region: "", offersExcursions: true });
+    resetForm();
     await load();
   }
 
@@ -204,16 +230,19 @@ function PortsPanel() {
     await fetch(`/api/admin/extras?resource=ports&id=${id}`, {
       method: "DELETE",
     });
+    if (editingId === id) resetForm();
     await load();
   }
 
   return (
     <div className="space-y-4">
       <form
-        onSubmit={create}
+        onSubmit={save}
         className="grid gap-3 rounded-xl bg-white p-5 ring-1 ring-sand-line md:grid-cols-3"
       >
-        <h2 className="font-bold md:col-span-3">Crear un puerto</h2>
+        <h2 className="font-bold md:col-span-3">
+          {editingId ? "Editar puerto" : "Crear un puerto"}
+        </h2>
         <Field label="Nombre del puerto">
           <input
             required
@@ -241,9 +270,20 @@ function PortsPanel() {
             <option value="0">No</option>
           </select>
         </Field>
-        <button type="submit" className="btn-primary w-fit md:col-span-3">
-          Crear puerto
-        </button>
+        <div className="flex flex-wrap gap-2 md:col-span-3">
+          <button type="submit" className="btn-primary w-fit">
+            {editingId ? "Guardar puerto" : "Crear puerto"}
+          </button>
+          {editingId && (
+            <button
+              type="button"
+              onClick={resetForm}
+              className="rounded-full border border-sand-line px-4 py-2 text-sm"
+            >
+              Cancelar
+            </button>
+          )}
+        </div>
       </form>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((p) => (
@@ -261,13 +301,24 @@ function PortsPanel() {
                     : "Sin excursiones"}
                 </p>
               </div>
-              <button
-                type="button"
-                onClick={() => remove(p.id)}
-                className="text-ink-muted hover:text-ocean"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => startEdit(p)}
+                  className="text-ink-muted hover:text-ocean"
+                  aria-label="Editar"
+                >
+                  <Pencil className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => remove(p.id)}
+                  className="text-ink-muted hover:text-ocean"
+                  aria-label="Eliminar"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           </div>
         ))}
@@ -425,7 +476,8 @@ function ShoreToursPanel() {
 
 function GroupsPanel() {
   const [items, setItems] = useState<CruiseGroup[]>([]);
-  const [form, setForm] = useState({
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const emptyForm = {
     shipName: "",
     company: "",
     date: "",
@@ -434,7 +486,9 @@ function GroupsPanel() {
     minPax: 8,
     pax: 0,
     status: "open" as CruiseGroup["status"],
-  });
+    complete: false,
+  };
+  const [form, setForm] = useState(emptyForm);
 
   async function load() {
     const res = await fetch("/api/admin/extras?resource=groups");
@@ -446,23 +500,34 @@ function GroupsPanel() {
     load();
   }, []);
 
-  async function create(e: React.FormEvent) {
+  function startEdit(g: CruiseGroup) {
+    setEditingId(g.id);
+    setForm({
+      shipName: g.shipName,
+      company: g.company,
+      date: g.date,
+      port: g.port,
+      excursionTitle: g.excursionTitle,
+      minPax: g.minPax,
+      pax: g.pax,
+      status: g.status,
+      complete: g.complete,
+    });
+  }
+
+  function resetForm() {
+    setEditingId(null);
+    setForm(emptyForm);
+  }
+
+  async function save(e: React.FormEvent) {
     e.preventDefault();
     await fetch("/api/admin/extras?resource=groups", {
-      method: "POST",
+      method: editingId ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: JSON.stringify(editingId ? { id: editingId, ...form } : form),
     });
-    setForm({
-      shipName: "",
-      company: "",
-      date: "",
-      port: "Lanzarote",
-      excursionTitle: "",
-      minPax: 8,
-      pax: 0,
-      status: "open",
-    });
+    resetForm();
     await load();
   }
 
@@ -471,16 +536,19 @@ function GroupsPanel() {
     await fetch(`/api/admin/extras?resource=groups&id=${id}`, {
       method: "DELETE",
     });
+    if (editingId === id) resetForm();
     await load();
   }
 
   return (
     <div className="space-y-4">
       <form
-        onSubmit={create}
+        onSubmit={save}
         className="grid gap-3 rounded-xl bg-white p-5 ring-1 ring-sand-line md:grid-cols-3"
       >
-        <h2 className="font-bold md:col-span-3">Nuevo grupo crucero</h2>
+        <h2 className="font-bold md:col-span-3">
+          {editingId ? "Editar grupo crucero" : "Nuevo grupo crucero"}
+        </h2>
         <Field label="Crucero / barco">
           <input
             required
@@ -557,9 +625,20 @@ function GroupsPanel() {
             <option value="private">Privada</option>
           </select>
         </Field>
-        <button type="submit" className="btn-primary w-fit md:col-span-3">
-          Crear grupo
-        </button>
+        <div className="flex flex-wrap gap-2 md:col-span-3">
+          <button type="submit" className="btn-primary w-fit">
+            {editingId ? "Guardar grupo" : "Crear grupo"}
+          </button>
+          {editingId && (
+            <button
+              type="button"
+              onClick={resetForm}
+              className="rounded-full border border-sand-line px-4 py-2 text-sm"
+            >
+              Cancelar
+            </button>
+          )}
+        </div>
       </form>
 
       <div className="overflow-x-auto rounded-xl bg-white ring-1 ring-sand-line">
@@ -592,13 +671,24 @@ function GroupsPanel() {
                 <td className="px-4 py-3">{g.minPax}</td>
                 <td className="px-4 py-3">{g.pax}</td>
                 <td className="px-4 py-3 text-right">
-                  <button
-                    type="button"
-                    onClick={() => remove(g.id)}
-                    className="text-ink-muted hover:text-ocean"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
+                  <div className="flex justify-end gap-2">
+                    <button
+                      type="button"
+                      onClick={() => startEdit(g)}
+                      className="text-ink-muted hover:text-ocean"
+                      aria-label="Editar"
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => remove(g.id)}
+                      className="text-ink-muted hover:text-ocean"
+                      aria-label="Eliminar"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
