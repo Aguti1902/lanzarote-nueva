@@ -178,7 +178,7 @@ td,th{padding:8px 0;border-bottom:1px solid #e5e7eb;text-align:left;font-size:14
 <table><thead><tr><th>Concepto</th><th>Importe</th></tr></thead><tbody>
 ${selected.lines.map((l) => `<tr><td>${l.qty}× ${l.description}</td><td>${l.total.toFixed(2)} €</td></tr>`).join("")}
 </tbody></table>
-<p>Base: ${selected.subtotal.toFixed(2)} € · IVA (${selected.taxRate}%): ${selected.taxAmount.toFixed(2)} €</p>
+<p>Base: ${selected.subtotal.toFixed(2)} € · IGIC (${selected.taxRate}%): ${selected.taxAmount.toFixed(2)} €</p>
 <p class="total">Total: ${selected.total.toFixed(2)} €</p>
 ${selected.notes ? `<p class="muted">${selected.notes}</p>` : ""}
 <p class="muted">Reserva ${selected.bookingId}${selected.relatedInvoiceId ? ` · Relacionada: ${selected.relatedInvoiceId}` : ""}</p>
@@ -231,7 +231,7 @@ ${selected.notes ? `<p class="muted">${selected.notes}</p>` : ""}
                   <dd>{formatPrice(selected.subtotal)}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt>IVA ({selected.taxRate}%)</dt>
+                  <dt>IGIC ({selected.taxRate}%)</dt>
                   <dd>{formatPrice(selected.taxAmount)}</dd>
                 </div>
                 <div className="flex justify-between text-base font-bold">

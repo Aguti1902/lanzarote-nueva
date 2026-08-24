@@ -395,7 +395,7 @@ const defaultSettings: SiteSettings = {
   companyLegalName: "Lanzarote Experience Tours S.L.U.",
   companyTaxId: "",
   companyAddress: "",
-  taxRate: 0,
+  taxRate: 7,
   bannerEs:
     "Excursiones personalizadas · Empresa familiar de Lanzarote · Gracias por apoyar el comercio local · Grupos reducidos, solo en español",
   bannerEn: "",

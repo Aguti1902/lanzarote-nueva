@@ -47,7 +47,7 @@ export async function createInvoiceForBooking(
   if (already) return already;
 
   const settings = await getSettings();
-  const taxRate = settings.taxRate ?? 0;
+  const taxRate = settings.taxRate ?? 7;
   const invoices = await getInvoices();
   const year = new Date().getFullYear();
   const number = nextNumber(invoices, year);

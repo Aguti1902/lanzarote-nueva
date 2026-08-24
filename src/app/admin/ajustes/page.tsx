@@ -40,7 +40,7 @@ const empty: SiteSettings = {
   companyLegalName: "",
   companyTaxId: "",
   companyAddress: "",
-  taxRate: 0,
+  taxRate: 7,
   bannerEs: "",
   bannerEn: "",
   bannerDe: "",
@@ -308,16 +308,20 @@ export default function AdminAjustesPage() {
           <Field label="Dirección fiscal" className="md:col-span-2">
             <input className={adminInput} value={settings.companyAddress || ""} onChange={(e) => set("companyAddress", e.target.value)} />
           </Field>
-          <Field label="% IVA">
+          <Field label="% IGIC">
             <input
               type="number"
               min={0}
               max={30}
+              step={0.1}
               className={adminInput}
-              value={settings.taxRate ?? 0}
+              value={settings.taxRate ?? 7}
               onChange={(e) => set("taxRate", Number(e.target.value))}
             />
           </Field>
+          <p className="text-xs text-ink-muted md:col-span-2">
+            En Canarias se aplica IGIC (no IVA). Valor habitual del servicio: 7%.
+          </p>
         </section>
 
         <button
