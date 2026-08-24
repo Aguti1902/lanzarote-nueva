@@ -3,10 +3,18 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Booking } from "@/types";
 import { formatDate, formatPrice, paymentLabel } from "@/lib/format";
+import {
+  DateRangeFilter,
+  emptyDateRange,
+  inDateRange,
+  type DateRange,
+} from "@/components/admin/DateRangeFilter";
 
 export default function AdminReservasCrucerosPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [tab, setTab] = useState<"current" | "done">("current");
+  const [dateField, setDateField] = useState<"service" | "created">("service");
+  const [range, setRange] = useState<DateRange>(emptyDateRange);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -26,20 +34,37 @@ export default function AdminReservasCrucerosPage() {
     });
   }, [bookings]);
 
-  const filtered = cruiseBookings.filter((b) => {
-    if (tab === "done") {
-      return b.status === "completed" || b.status === "cancelled";
-    }
-    return b.status === "pending" || b.status === "confirmed";
-  });
+  const filtered = useMemo(() => {
+    return cruiseBookings.filter((b) => {
+      if (tab === "done") {
+        if (!(b.status === "completed" || b.status === "cancelled")) return false;
+      } else if (!(b.status === "pending" || b.status === "confirmed")) {
+        return false;
+      }
+      const dateValue = dateField === "service" ? b.date : b.createdAt;
+      return inDateRange(dateValue, range);
+    });
+  }, [cruiseBookings, tab, dateField, range]);
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Reservas de cruceros</h1>
-        <p className="mt-1 text-sm text-ink-muted">
-          Reservas con barco / escala indicados por el cliente
-        </p>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold">Reservas de cruceros</h1>
+          <p className="mt-1 text-sm text-ink-muted">
+            Reservas con barco / escala indicados por el cliente
+          </p>
+        </div>
+        <select
+          value={dateField}
+          onChange={(e) =>
+            setDateField(e.target.value as "service" | "created")
+          }
+          className="rounded border border-sand-line bg-white px-3 py-2 text-sm"
+        >
+          <option value="service">Filtrar por fecha servicio</option>
+          <option value="created">Filtrar por fecha reserva</option>
+        </select>
       </div>
 
       <div className="flex gap-2">
@@ -67,6 +92,18 @@ export default function AdminReservasCrucerosPage() {
         </button>
       </div>
 
+      <DateRangeFilter
+        value={range}
+        onChange={setRange}
+        label="Calendario de clientes"
+        hint={
+          dateField === "service"
+            ? "Rango según día del servicio / escala"
+            : "Rango según día en que reservaron"
+        }
+        resultCount={filtered.length}
+      />
+
       <div className="overflow-x-auto rounded-xl bg-white ring-1 ring-sand-line">
         <table className="w-full min-w-[980px] text-left text-sm">
           <thead className="border-b border-sand-line bg-sky-soft text-ink-muted">
@@ -93,7 +130,7 @@ export default function AdminReservasCrucerosPage() {
             {!loading && filtered.length === 0 && (
               <tr>
                 <td colSpan={9} className="px-4 py-6 text-ink-muted">
-                  No hay reservas de crucero en esta pestaña
+                  No hay reservas de crucero en este filtro
                 </td>
               </tr>
             )}

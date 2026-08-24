@@ -4,11 +4,18 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { Invoice } from "@/types";
 import { formatPrice } from "@/lib/format";
+import {
+  DateRangeFilter,
+  emptyDateRange,
+  inDateRange,
+  type DateRange,
+} from "@/components/admin/DateRangeFilter";
 
 export function FacturasClient() {
   const searchParams = useSearchParams();
   const focusId = searchParams.get("id");
   const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [range, setRange] = useState<DateRange>(emptyDateRange);
   const [stats, setStats] = useState({
     countInvoices: 0,
     countCredits: 0,
@@ -18,6 +25,11 @@ export function FacturasClient() {
   });
   const [selected, setSelected] = useState<Invoice | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const filteredInvoices = useMemo(
+    () => invoices.filter((inv) => inDateRange(inv.createdAt, range)),
+    [invoices, range]
+  );
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -73,6 +85,14 @@ export function FacturasClient() {
         ))}
       </div>
 
+      <DateRangeFilter
+        value={range}
+        onChange={setRange}
+        label="Calendario de facturación"
+        hint="Filtre facturas por fecha de emisión"
+        resultCount={filteredInvoices.length}
+      />
+
       <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
         <div className="overflow-x-auto rounded-lg bg-white ring-1 ring-sand-line">
           <table className="w-full min-w-[720px] text-left text-sm">
@@ -93,8 +113,15 @@ export function FacturasClient() {
                   </td>
                 </tr>
               )}
+              {!loading && filteredInvoices.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="px-4 py-8 text-center text-ink-muted">
+                    No hay facturas en este rango
+                  </td>
+                </tr>
+              )}
               {!loading &&
-                invoices.map((inv) => (
+                filteredInvoices.map((inv) => (
                   <tr
                     key={inv.id}
                     className={`cursor-pointer border-b border-sand-line/70 hover:bg-sky-soft/50 ${

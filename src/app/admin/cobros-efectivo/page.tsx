@@ -3,9 +3,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Booking } from "@/types";
 import { formatDate, formatPrice, paymentLabel } from "@/lib/format";
+import {
+  DateRangeFilter,
+  emptyDateRange,
+  inDateRange,
+  type DateRange,
+} from "@/components/admin/DateRangeFilter";
 
 export default function AdminCobrosEfectivoPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [range, setRange] = useState<DateRange>(emptyDateRange);
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(async () => {
@@ -27,10 +34,11 @@ export default function AdminCobrosEfectivoPage() {
           (b) =>
             b.status !== "cancelled" &&
             b.cashStatus === "pending" &&
-            (b.amountDueCash ?? 0) > 0
+            (b.amountDueCash ?? 0) > 0 &&
+            inDateRange(b.date, range)
         )
         .sort((a, b) => a.date.localeCompare(b.date)),
-    [bookings]
+    [bookings, range]
   );
 
   const totalDue = pending.reduce((s, b) => s + (b.amountDueCash || 0), 0);
@@ -59,6 +67,14 @@ export default function AdminCobrosEfectivoPage() {
         </div>
       </div>
 
+      <DateRangeFilter
+        value={range}
+        onChange={setRange}
+        label="Calendario por fecha de servicio"
+        hint="Filtre clientes a cobrar por día o rango"
+        resultCount={pending.length}
+      />
+
       <div className="overflow-x-auto rounded-lg bg-white ring-1 ring-sand-line">
         <table className="w-full min-w-[800px] text-left text-sm">
           <thead className="border-b border-sand-line bg-sky-soft text-ink-muted">
@@ -82,7 +98,7 @@ export default function AdminCobrosEfectivoPage() {
             {!loading && pending.length === 0 && (
               <tr>
                 <td colSpan={6} className="px-4 py-8 text-center text-ink-muted">
-                  No hay cobros en efectivo pendientes.
+                  No hay cobros en efectivo pendientes en este rango.
                 </td>
               </tr>
             )}

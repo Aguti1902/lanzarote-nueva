@@ -1,13 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Booking, BookingStatus } from "@/types";
 import { formatDate, formatPrice, paymentLabel } from "@/lib/format";
+import {
+  DateRangeFilter,
+  emptyDateRange,
+  inDateRange,
+  type DateRange,
+} from "@/components/admin/DateRangeFilter";
 
 export default function AdminReservasPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [filter, setFilter] = useState<"all" | BookingStatus>("all");
+  const [dateField, setDateField] = useState<"service" | "created">("service");
+  const [range, setRange] = useState<DateRange>(emptyDateRange);
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(async () => {
@@ -49,8 +57,13 @@ export default function AdminReservasPage() {
     await load();
   }
 
-  const filtered =
-    filter === "all" ? bookings : bookings.filter((b) => b.status === filter);
+  const filtered = useMemo(() => {
+    return bookings.filter((b) => {
+      if (filter !== "all" && b.status !== filter) return false;
+      const dateValue = dateField === "service" ? b.date : b.createdAt;
+      return inDateRange(dateValue, range);
+    });
+  }, [bookings, filter, dateField, range]);
 
   return (
     <div className="space-y-6">
@@ -61,18 +74,42 @@ export default function AdminReservasPage() {
             Estados, facturas, cobro en efectivo y pagos mixtos
           </p>
         </div>
-        <select
-          value={filter}
-          onChange={(e) => setFilter(e.target.value as "all" | BookingStatus)}
-          className="rounded border border-sand-line bg-white px-3 py-2 text-sm"
-        >
-          <option value="all">Todas</option>
-          <option value="pending">Pendientes</option>
-          <option value="confirmed">Confirmadas</option>
-          <option value="completed">Completadas</option>
-          <option value="cancelled">Canceladas</option>
-        </select>
+        <div className="flex flex-wrap gap-2">
+          <select
+            value={dateField}
+            onChange={(e) =>
+              setDateField(e.target.value as "service" | "created")
+            }
+            className="rounded border border-sand-line bg-white px-3 py-2 text-sm"
+          >
+            <option value="service">Filtrar por fecha servicio</option>
+            <option value="created">Filtrar por fecha reserva</option>
+          </select>
+          <select
+            value={filter}
+            onChange={(e) => setFilter(e.target.value as "all" | BookingStatus)}
+            className="rounded border border-sand-line bg-white px-3 py-2 text-sm"
+          >
+            <option value="all">Todas</option>
+            <option value="pending">Pendientes</option>
+            <option value="confirmed">Confirmadas</option>
+            <option value="completed">Completadas</option>
+            <option value="cancelled">Canceladas</option>
+          </select>
+        </div>
       </div>
+
+      <DateRangeFilter
+        value={range}
+        onChange={setRange}
+        label="Calendario de clientes"
+        hint={
+          dateField === "service"
+            ? "Rango según día del servicio"
+            : "Rango según día en que reservaron"
+        }
+        resultCount={filtered.length}
+      />
 
       <div className="overflow-x-auto rounded-lg bg-white shadow-sm ring-1 ring-sand-line">
         <table className="w-full min-w-[1000px] text-left text-sm">
@@ -92,6 +129,13 @@ export default function AdminReservasPage() {
               <tr>
                 <td colSpan={7} className="px-4 py-8 text-center text-ink-muted">
                   Cargando…
+                </td>
+              </tr>
+            )}
+            {!loading && filtered.length === 0 && (
+              <tr>
+                <td colSpan={7} className="px-4 py-8 text-center text-ink-muted">
+                  No hay reservas en este rango de fechas
                 </td>
               </tr>
             )}
@@ -120,7 +164,9 @@ export default function AdminReservasPage() {
                     )}
                   </td>
                   <td className="px-4 py-3 text-xs whitespace-nowrap">
-                    <p>Total: <b>{formatPrice(b.amountTotal ?? b.totalPrice)}</b></p>
+                    <p>
+                      Total: <b>{formatPrice(b.amountTotal ?? b.totalPrice)}</b>
+                    </p>
                     <p className="text-success">
                       Tarjeta: {formatPrice(b.amountPaidCard ?? 0)}
                     </p>

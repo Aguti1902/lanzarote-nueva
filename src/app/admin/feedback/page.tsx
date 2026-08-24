@@ -1,14 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Plus, Trash2 } from "lucide-react";
 import type { CustomerFeedback } from "@/types";
 import { Field, adminInput, adminTextarea } from "@/components/admin/Field";
+import {
+  DateRangeFilter,
+  emptyDateRange,
+  inDateRange,
+  type DateRange,
+} from "@/components/admin/DateRangeFilter";
 
 export default function AdminFeedbackPage() {
   const [items, setItems] = useState<CustomerFeedback[]>([]);
+  const [range, setRange] = useState<DateRange>(emptyDateRange);
   const [loading, setLoading] = useState(true);
+
+  const filtered = useMemo(
+    () => items.filter((item) => inDateRange(item.createdAt, range)),
+    [items, range]
+  );
   const [form, setForm] = useState({
     bookingId: "",
     customerName: "",
@@ -150,6 +162,14 @@ export default function AdminFeedbackPage() {
         </button>
       </form>
 
+      <DateRangeFilter
+        value={range}
+        onChange={setRange}
+        label="Calendario de feedback"
+        hint="Filtre opiniones por fecha"
+        resultCount={filtered.length}
+      />
+
       <div className="overflow-x-auto rounded-xl bg-white ring-1 ring-sand-line">
         <table className="w-full min-w-[980px] text-left text-sm">
           <thead className="border-b border-sand-line bg-sky-soft text-ink-muted">
@@ -172,7 +192,14 @@ export default function AdminFeedbackPage() {
                 </td>
               </tr>
             )}
-            {items.map((item) => (
+            {!loading && filtered.length === 0 && (
+              <tr>
+                <td colSpan={8} className="px-4 py-6 text-ink-muted">
+                  No hay feedback en este rango
+                </td>
+              </tr>
+            )}
+            {filtered.map((item) => (
               <tr key={item.id} className="border-b border-sand-line align-top">
                 <td className="px-4 py-3 text-ink-muted">
                   {new Date(item.createdAt).toLocaleDateString("es-ES")}

@@ -1,13 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import type { PaymentLink } from "@/types";
 import { formatPrice } from "@/lib/format";
 import { Field, adminInput, adminTextarea } from "@/components/admin/Field";
+import {
+  DateRangeFilter,
+  emptyDateRange,
+  inDateRange,
+  type DateRange,
+} from "@/components/admin/DateRangeFilter";
 
 export default function AdminPagosOnlinePage() {
   const [items, setItems] = useState<PaymentLink[]>([]);
+  const [range, setRange] = useState<DateRange>(emptyDateRange);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [form, setForm] = useState({
@@ -17,6 +24,11 @@ export default function AdminPagosOnlinePage() {
     customerEmail: "",
     notes: "",
   });
+
+  const filtered = useMemo(
+    () => items.filter((item) => inDateRange(item.createdAt, range)),
+    [items, range]
+  );
 
   async function load() {
     setLoading(true);
@@ -144,6 +156,14 @@ export default function AdminPagosOnlinePage() {
         </button>
       </form>
 
+      <DateRangeFilter
+        value={range}
+        onChange={setRange}
+        label="Calendario de pagos"
+        hint="Filtre por fecha de creación del enlace"
+        resultCount={filtered.length}
+      />
+
       <div className="overflow-x-auto rounded-xl bg-white ring-1 ring-sand-line">
         <table className="w-full min-w-[900px] text-left text-sm">
           <thead className="border-b border-sand-line bg-sky-soft text-ink-muted">
@@ -165,14 +185,14 @@ export default function AdminPagosOnlinePage() {
                 </td>
               </tr>
             )}
-            {!loading && items.length === 0 && (
+            {!loading && filtered.length === 0 && (
               <tr>
                 <td colSpan={7} className="px-4 py-6 text-ink-muted">
-                  No hay pagos
+                  No hay pagos en este rango
                 </td>
               </tr>
             )}
-            {items.map((item) => (
+            {filtered.map((item) => (
               <tr key={item.id} className="border-b border-sand-line">
                 <td className="px-4 py-3 font-semibold">{item.locator}</td>
                 <td className="px-4 py-3 text-ink-muted">

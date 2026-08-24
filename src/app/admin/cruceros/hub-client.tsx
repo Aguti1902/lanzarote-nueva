@@ -2,11 +2,17 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import type { CruiseCompany, CruiseGroup, CruisePort, CruiseShoreTour } from "@/types";
 import { formatPrice } from "@/lib/format";
 import { Field, adminInput, adminTextarea, arrayToLines, linesToArray } from "@/components/admin/Field";
+import {
+  DateRangeFilter,
+  emptyDateRange,
+  inDateRange,
+  type DateRange,
+} from "@/components/admin/DateRangeFilter";
 
 type Tab = "companias" | "puertos" | "excursiones" | "grupos";
 
@@ -476,6 +482,7 @@ function ShoreToursPanel() {
 
 function GroupsPanel() {
   const [items, setItems] = useState<CruiseGroup[]>([]);
+  const [range, setRange] = useState<DateRange>(emptyDateRange);
   const [editingId, setEditingId] = useState<string | null>(null);
   const emptyForm = {
     shipName: "",
@@ -489,6 +496,11 @@ function GroupsPanel() {
     complete: false,
   };
   const [form, setForm] = useState(emptyForm);
+
+  const filtered = useMemo(
+    () => items.filter((g) => inDateRange(g.date, range)),
+    [items, range]
+  );
 
   async function load() {
     const res = await fetch("/api/admin/extras?resource=groups");
@@ -641,6 +653,14 @@ function GroupsPanel() {
         </div>
       </form>
 
+      <DateRangeFilter
+        value={range}
+        onChange={setRange}
+        label="Calendario de grupos"
+        hint="Filtre grupos por fecha de escala / servicio"
+        resultCount={filtered.length}
+      />
+
       <div className="overflow-x-auto rounded-xl bg-white ring-1 ring-sand-line">
         <table className="w-full min-w-[900px] text-left text-sm">
           <thead className="border-b border-sand-line bg-sky-soft text-ink-muted">
@@ -657,7 +677,7 @@ function GroupsPanel() {
             </tr>
           </thead>
           <tbody>
-            {items.map((g) => (
+            {filtered.map((g) => (
               <tr key={g.id} className="border-b border-sand-line">
                 <td className="px-4 py-3 capitalize">{g.status}</td>
                 <td className="px-4 py-3 font-semibold">
