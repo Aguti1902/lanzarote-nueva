@@ -3,7 +3,7 @@
     "id": "FAC-2026-0025",
     "number": 25,
     "type": "invoice",
-    "bookingId": "BK-1024",
+    "bookingId": "BK-1005",
     "createdAt": "2026-08-09T10:00:00.000Z",
     "customer": {
       "name": "Ana Belén Cruz",
@@ -29,7 +29,7 @@
     "id": "FAC-2026-0024",
     "number": 24,
     "type": "invoice",
-    "bookingId": "BK-1023",
+    "bookingId": "T-1005",
     "createdAt": "2026-08-08T16:20:00.000Z",
     "customer": {
       "name": "Elena Vargas",
@@ -55,7 +55,7 @@
     "id": "FAC-2026-0023",
     "number": 23,
     "type": "invoice",
-    "bookingId": "BK-1022",
+    "bookingId": "R-1012",
     "createdAt": "2026-08-07T11:30:00.000Z",
     "customer": {
       "name": "Oliver Smith",
@@ -81,7 +81,7 @@
     "id": "FAC-2026-0022",
     "number": 22,
     "type": "invoice",
-    "bookingId": "BK-1021",
+    "bookingId": "BK-1004",
     "createdAt": "2026-08-06T19:00:00.000Z",
     "customer": {
       "name": "Sara Jiménez",
@@ -107,7 +107,7 @@
     "id": "FAC-2026-0021",
     "number": 21,
     "type": "invoice",
-    "bookingId": "BK-1020",
+    "bookingId": "CR-1002",
     "createdAt": "2026-08-05T12:45:00.000Z",
     "customer": {
       "name": "Family Rossi",
@@ -133,7 +133,7 @@
     "id": "FAC-2026-0020",
     "number": 20,
     "type": "invoice",
-    "bookingId": "BK-1019",
+    "bookingId": "T-1004",
     "createdAt": "2026-08-03T15:10:00.000Z",
     "customer": {
       "name": "Nina Johansson",
@@ -159,7 +159,7 @@
     "id": "FAC-2026-0019",
     "number": 19,
     "type": "invoice",
-    "bookingId": "BK-1018",
+    "bookingId": "R-1011",
     "createdAt": "2026-08-01T10:20:00.000Z",
     "customer": {
       "name": "Diego Fernández",
@@ -185,7 +185,7 @@
     "id": "FAC-2026-0018",
     "number": 18,
     "type": "invoice",
-    "bookingId": "BK-1017",
+    "bookingId": "R-1010",
     "createdAt": "2026-07-28T13:00:00.000Z",
     "customer": {
       "name": "Claire Dubois",
@@ -211,7 +211,7 @@
     "id": "FAC-2026-0017",
     "number": 17,
     "type": "invoice",
-    "bookingId": "BK-1016",
+    "bookingId": "R-1009",
     "createdAt": "2026-07-18T11:05:00.000Z",
     "customer": {
       "name": "Grupo Empresa Norte S.L.",
@@ -238,7 +238,7 @@
     "id": "ABO-2026-0016",
     "number": 16,
     "type": "credit_note",
-    "bookingId": "BK-1015",
+    "bookingId": "R-1008",
     "createdAt": "2026-07-16T16:30:00.000Z",
     "customer": {
       "name": "Paula Ortega",
@@ -259,14 +259,14 @@
     "total": -150,
     "taxRate": 0,
     "relatedInvoiceId": "FAC-2026-0015",
-    "notes": "Abono por cancelación de reserva BK-1015. Anula FAC-2026-0015.",
+    "notes": "Abono por cancelación de reserva R-1008. Anula FAC-2026-0015.",
     "status": "issued"
   },
   {
     "id": "FAC-2026-0015",
     "number": 15,
     "type": "invoice",
-    "bookingId": "BK-1015",
+    "bookingId": "R-1008",
     "createdAt": "2026-07-14T17:30:00.000Z",
     "customer": {
       "name": "Paula Ortega",
@@ -293,7 +293,7 @@
     "id": "FAC-2026-0014",
     "number": 14,
     "type": "invoice",
-    "bookingId": "BK-1014",
+    "bookingId": "R-1007",
     "createdAt": "2026-07-08T09:50:00.000Z",
     "customer": {
       "name": "Thomas Keller",
@@ -319,7 +319,7 @@
     "id": "FAC-2026-0013",
     "number": 13,
     "type": "invoice",
-    "bookingId": "BK-1013",
+    "bookingId": "R-1006",
     "createdAt": "2026-07-02T12:15:00.000Z",
     "customer": {
       "name": "María López",
@@ -345,7 +345,7 @@
     "id": "FAC-2026-0012",
     "number": 12,
     "type": "invoice",
-    "bookingId": "BK-1012",
+    "bookingId": "BK-1003",
     "createdAt": "2026-06-27T16:00:00.000Z",
     "customer": {
       "name": "Robert Brown",
@@ -371,7 +371,7 @@
     "id": "FAC-2026-0011",
     "number": 11,
     "type": "invoice",
-    "bookingId": "BK-1011",
+    "bookingId": "T-1003",
     "createdAt": "2026-06-20T10:40:00.000Z",
     "customer": {
       "name": "Isabel Gómez",
@@ -397,7 +397,7 @@
     "id": "FAC-2026-0010",
     "number": 10,
     "type": "invoice",
-    "bookingId": "BK-1010",
+    "bookingId": "R-1005",
     "createdAt": "2026-06-11T13:20:00.000Z",
     "customer": {
       "name": "Hans Müller",
@@ -423,7 +423,7 @@
     "id": "FAC-2026-0009",
     "number": 9,
     "type": "invoice",
-    "bookingId": "BK-1009",
+    "bookingId": "BK-1002",
     "createdAt": "2026-06-03T11:00:00.000Z",
     "customer": {
       "name": "Lucía Navarro",
@@ -449,7 +449,7 @@
     "id": "FAC-2026-0008",
     "number": 8,
     "type": "invoice",
-    "bookingId": "BK-1008",
+    "bookingId": "CR-1001",
     "createdAt": "2026-05-22T18:45:00.000Z",
     "customer": {
       "name": "Emily Carter",
@@ -475,7 +475,7 @@
     "id": "FAC-2026-0007",
     "number": 7,
     "type": "invoice",
-    "bookingId": "BK-1007",
+    "bookingId": "T-1002",
     "createdAt": "2026-05-14T14:10:00.000Z",
     "customer": {
       "name": "Miguel Torres",
@@ -501,7 +501,7 @@
     "id": "FAC-2026-0006",
     "number": 6,
     "type": "invoice",
-    "bookingId": "BK-1006",
+    "bookingId": "BK-1001",
     "createdAt": "2026-05-05T09:30:00.000Z",
     "customer": {
       "name": "Anna Schmidt",
@@ -527,7 +527,7 @@
     "id": "FAC-2026-0005",
     "number": 5,
     "type": "invoice",
-    "bookingId": "BK-1005",
+    "bookingId": "R-1004",
     "createdAt": "2026-04-28T12:00:00.000Z",
     "customer": {
       "name": "Pedro Álvarez",
@@ -553,7 +553,7 @@
     "id": "FAC-2026-0004",
     "number": 4,
     "type": "invoice",
-    "bookingId": "BK-1004",
+    "bookingId": "R-1003",
     "createdAt": "2026-04-15T17:20:00.000Z",
     "customer": {
       "name": "Sophie Martin",
@@ -579,7 +579,7 @@
     "id": "FAC-2026-0003",
     "number": 3,
     "type": "invoice",
-    "bookingId": "BK-1003",
+    "bookingId": "R-1002",
     "createdAt": "2026-04-02T10:05:00.000Z",
     "customer": {
       "name": "Carmen Ruiz",
@@ -605,7 +605,7 @@
     "id": "FAC-2026-0002",
     "number": 2,
     "type": "invoice",
-    "bookingId": "BK-1002",
+    "bookingId": "T-1001",
     "createdAt": "2026-03-18T15:40:00.000Z",
     "customer": {
       "name": "James Wilson",
@@ -631,7 +631,7 @@
     "id": "FAC-2026-0001",
     "number": 1,
     "type": "invoice",
-    "bookingId": "BK-1001",
+    "bookingId": "R-1001",
     "createdAt": "2026-03-12T11:15:00.000Z",
     "customer": {
       "name": "Laura Méndez",

@@ -28,6 +28,7 @@ export default function AdminReservasCrucerosPage() {
 
   const cruiseBookings = useMemo(() => {
     return bookings.filter((b) => {
+      if (b.id.startsWith("CR-")) return true;
       const ship = b.customer?.cruiseShip?.trim();
       const notes = b.customer?.notes || "";
       return Boolean(ship) || /crucero|escala|ship/i.test(notes);

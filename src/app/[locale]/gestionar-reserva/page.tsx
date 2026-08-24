@@ -61,7 +61,7 @@ export default function GestionarReservaPage() {
               className={inputClass}
               value={bookingId}
               onChange={(e) => setBookingId(e.target.value)}
-              placeholder="BK-1001"
+              placeholder="R-1001 / CR-1001 / T-1001 / BK-1001"
               required
             />
           </div>

@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import type { Booking, BookingStatus, CashStatus } from "@/types";
+import { buildBookingId } from "@/lib/booking-ids";
 import { splitPaymentAmounts } from "@/lib/payments";
 
 const dataPath = path.join(process.cwd(), "src/data/bookings.json");
@@ -50,7 +51,7 @@ export async function addBooking(
   }
 ): Promise<Booking> {
   const bookings = await getBookings();
-  const id = `BK-${1000 + bookings.length + 1}`;
+  const id = buildBookingId(bookings, booking);
   const split = splitPaymentAmounts(booking.totalPrice, booking.paymentMethod);
   const created: Booking = {
     ...booking,

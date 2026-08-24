@@ -49,7 +49,7 @@
     {
       "id": "fb-001",
       "createdAt": "2026-08-05T12:00:00.000Z",
-      "bookingId": "BK-1001",
+      "bookingId": "R-1001",
       "ratingGeneral": 10,
       "ratingContent": 9.5,
       "ratingBooking": 10,
@@ -60,7 +60,7 @@
     {
       "id": "fb-002",
       "createdAt": "2026-07-28T09:30:00.000Z",
-      "bookingId": "BK-1008",
+      "bookingId": "CR-1001",
       "ratingGeneral": 8,
       "ratingContent": 8.5,
       "ratingBooking": 7.5,
@@ -70,16 +70,66 @@
     }
   ],
   "cruisePorts": [
-    { "id": "port-lanzarote", "name": "Lanzarote / Arrecife", "region": "Canary Islands", "offersExcursions": true },
-    { "id": "port-tenerife", "name": "Tenerife", "region": "Canary Islands", "offersExcursions": true },
-    { "id": "port-gran-canaria", "name": "Gran Canaria", "region": "Canary Islands", "offersExcursions": true },
-    { "id": "port-fuerteventura", "name": "Puerto del Rosario (Fuerteventura)", "region": "Canary Islands", "offersExcursions": true },
-    { "id": "port-la-palma", "name": "La Palma", "region": "Canary Islands", "offersExcursions": true },
-    { "id": "port-la-gomera", "name": "La Gomera", "region": "Canary Islands", "offersExcursions": true },
-    { "id": "port-funchal", "name": "Funchal (Madeira)", "region": "Portugal", "offersExcursions": true },
-    { "id": "port-agadir", "name": "Agadir", "region": "Morocco", "offersExcursions": false },
-    { "id": "port-casablanca", "name": "Casablanca", "region": "Morocco", "offersExcursions": false },
-    { "id": "port-lisbon", "name": "Lisbon", "region": "Portugal", "offersExcursions": false }
+    {
+      "id": "port-lanzarote",
+      "name": "Lanzarote / Arrecife",
+      "region": "Canary Islands",
+      "offersExcursions": true
+    },
+    {
+      "id": "port-tenerife",
+      "name": "Tenerife",
+      "region": "Canary Islands",
+      "offersExcursions": true
+    },
+    {
+      "id": "port-gran-canaria",
+      "name": "Gran Canaria",
+      "region": "Canary Islands",
+      "offersExcursions": true
+    },
+    {
+      "id": "port-fuerteventura",
+      "name": "Puerto del Rosario (Fuerteventura)",
+      "region": "Canary Islands",
+      "offersExcursions": true
+    },
+    {
+      "id": "port-la-palma",
+      "name": "La Palma",
+      "region": "Canary Islands",
+      "offersExcursions": true
+    },
+    {
+      "id": "port-la-gomera",
+      "name": "La Gomera",
+      "region": "Canary Islands",
+      "offersExcursions": true
+    },
+    {
+      "id": "port-funchal",
+      "name": "Funchal (Madeira)",
+      "region": "Portugal",
+      "offersExcursions": true
+    },
+    {
+      "id": "port-agadir",
+      "name": "Agadir",
+      "region": "Morocco",
+      "offersExcursions": false
+    },
+    {
+      "id": "port-casablanca",
+      "name": "Casablanca",
+      "region": "Morocco",
+      "offersExcursions": false
+    },
+    {
+      "id": "port-lisbon",
+      "name": "Lisbon",
+      "region": "Portugal",
+      "offersExcursions": false
+    }
   ],
   "cruiseGroups": [
     {
