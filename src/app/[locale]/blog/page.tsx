@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { PageBodyText } from "@/components/PageBodyText";
 import { PageHero } from "@/components/PageHero";
 import { getBlogPosts, getSettings } from "@/lib/content";
 import { formatDate } from "@/lib/format";
@@ -36,7 +37,9 @@ export default async function BlogPage({ params }: Props) {
         subtitle={settings.blogIntro}
       />
 
-      <div className="mx-auto max-w-6xl px-4 py-12 md:px-6 md:py-16">
+      <PageBodyText text={settings.blogText} />
+
+      <div className="mx-auto max-w-6xl px-4 pb-12 md:px-6 md:pb-16">
         {featured && (
           <Link
             href={lp(`/blog/${featured.slug}`)}

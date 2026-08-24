@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageBodyText } from "@/components/PageBodyText";
 import { PageHero } from "@/components/PageHero";
 import { CruiseCompanyBrowser } from "@/components/CruiseCompanyBrowser";
 import {
@@ -40,10 +41,12 @@ export default async function ExcursionesCrucerosPage({ params }: Props) {
     <>
       <PageHero
         image={settings.cruiseHeroImage}
-        title={dict.cruises.browseTitle}
-        subtitle={dict.cruises.browseSubtitle}
+        title={settings.cruiseHeadline || dict.cruises.browseTitle}
+        subtitle={settings.cruiseIntro || dict.cruises.browseSubtitle}
         compact
       />
+
+      <PageBodyText text={settings.cruiseText} />
 
       <section className="border-b border-sand-line bg-sky-soft/50 py-14">
         <div className="mx-auto max-w-6xl px-4 md:px-6">

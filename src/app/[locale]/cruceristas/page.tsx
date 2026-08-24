@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Anchor, Clock, MapPin, Ship } from "lucide-react";
 import { CruiseSchedule } from "@/components/CruiseSchedule";
+import { PageBodyText } from "@/components/PageBodyText";
 import { PageHero } from "@/components/PageHero";
 import { TourCard } from "@/components/TourCard";
 import { getCruiseCalls, getCruisesData, getCruiseTours, getSettings } from "@/lib/content";
@@ -56,11 +57,13 @@ export default async function CruceristasPage({ params }: Props) {
     <>
       <PageHero
         image={settings.cruiseHeroImage}
-        title={dict.cruises.title}
+        title={settings.cruiseHeadline || dict.cruises.title}
         subtitle={settings.cruiseIntro}
       />
 
-      <section className="mx-auto max-w-6xl px-4 py-14 md:px-6">
+      <PageBodyText text={settings.cruiseText} />
+
+      <section className="mx-auto max-w-6xl px-4 pb-14 md:px-6">
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="flex items-center gap-3">
             <Ship className="h-7 w-7 text-ocean" />

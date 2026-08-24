@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PageBodyText } from "@/components/PageBodyText";
 import { PageHero } from "@/components/PageHero";
 import { TourCard } from "@/components/TourCard";
 import { getSettings, getTours } from "@/lib/content";
@@ -28,11 +29,16 @@ export default async function ExcursionesPage({ params }: Props) {
     <>
       <PageHero
         image={settings.excursionsHeroImage}
-        title={dict.excursions.title}
-        subtitle={`${tours.length} · ${dict.excursions.subtitle}`}
+        title={settings.excursionsTitle || dict.excursions.title}
+        subtitle={
+          settings.excursionsIntro ||
+          `${tours.length} · ${dict.excursions.subtitle}`
+        }
       />
 
-      <section className="mx-auto max-w-6xl px-4 py-12 md:px-6 md:py-16">
+      <PageBodyText text={settings.excursionsText} />
+
+      <section className="mx-auto max-w-6xl px-4 pb-12 md:px-6 md:pb-16">
         <div className="mt-2 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {tours.map((tour) => (
             <TourCard key={tour.id} tour={tour} />

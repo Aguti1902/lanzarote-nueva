@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CheckCircle2 } from "lucide-react";
+import { PageBodyText } from "@/components/PageBodyText";
 import { PageHero } from "@/components/PageHero";
 import { TransferBookingForm } from "@/components/TransferBookingForm";
 import { getSettings, getTransfersData } from "@/lib/content";
@@ -13,8 +14,11 @@ type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = resolveLocale((await params).locale);
-  const dict = await getDictionary(locale);
-  return { title: dict.transfers.title };
+  const [dict, settings] = await Promise.all([
+    getDictionary(locale),
+    getSettings(),
+  ]);
+  return { title: settings.transferTitle || dict.transfers.title };
 }
 
 export default async function TrasladosPage({ params }: Props) {
@@ -35,11 +39,13 @@ export default async function TrasladosPage({ params }: Props) {
     <>
       <PageHero
         image={settings.transferHeroImage}
-        title={dict.transfers.title}
+        title={settings.transferTitle || dict.transfers.title}
         subtitle={settings.transferIntro}
       />
 
-      <section className="mx-auto max-w-6xl px-4 py-14 md:px-6">
+      <PageBodyText text={settings.transferText} />
+
+      <section className="mx-auto max-w-6xl px-4 pb-14 md:px-6">
         <div className="grid gap-4 md:grid-cols-3">
           {chips.map((label) => (
             <div

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { SiteSettings } from "@/types";
 import { Field, adminInput, adminTextarea } from "@/components/admin/Field";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
 const empty: SiteSettings = {
   brandName: "",
@@ -22,14 +23,19 @@ const empty: SiteSettings = {
   aboutPromise: "",
   excursionsTitle: "",
   excursionsIntro: "",
+  excursionsText: "",
   excursionsHeroImage: "",
   blogTitle: "",
   blogIntro: "",
+  blogText: "",
   blogHeroImage: "",
   cruiseHeadline: "",
   cruiseIntro: "",
+  cruiseText: "",
   cruiseHeroImage: "",
+  transferTitle: "",
   transferIntro: "",
+  transferText: "",
   transferHeroImage: "",
   companyLegalName: "",
   companyTaxId: "",
@@ -83,8 +89,8 @@ export default function AdminAjustesPage() {
       <div>
         <h1 className="font-display text-3xl text-ink">Ajustes de la web</h1>
         <p className="mt-1 text-sm text-ink-muted">
-          Textos, imágenes de cabecera y datos de contacto. Todo sincronizado con
-          la web pública.
+          Título, entradilla y texto completo por página. Las imágenes se suben
+          desde el ordenador (no por URL).
         </p>
       </div>
 
@@ -122,9 +128,12 @@ export default function AdminAjustesPage() {
           <Field label="Subtítulo">
             <textarea className={adminTextarea} value={settings.homeSubheadline} onChange={(e) => set("homeSubheadline", e.target.value)} />
           </Field>
-          <Field label="URL imagen hero inicio">
-            <input className={adminInput} value={settings.homeHeroImage} onChange={(e) => set("homeHeroImage", e.target.value)} />
-          </Field>
+          <ImageUploadField
+            label="Imagen hero inicio"
+            folder="home"
+            value={settings.homeHeroImage}
+            onChange={(url) => set("homeHeroImage", url)}
+          />
         </section>
 
         <section className="space-y-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
@@ -145,12 +154,18 @@ export default function AdminAjustesPage() {
             <textarea className={adminTextarea} value={settings.aboutPromise} onChange={(e) => set("aboutPromise", e.target.value)} />
           </Field>
           <div className="grid gap-4 md:grid-cols-2">
-            <Field label="URL imagen principal">
-              <input className={adminInput} value={settings.aboutImage} onChange={(e) => set("aboutImage", e.target.value)} />
-            </Field>
-            <Field label="URL imagen secundaria">
-              <input className={adminInput} value={settings.aboutImageSecondary} onChange={(e) => set("aboutImageSecondary", e.target.value)} />
-            </Field>
+            <ImageUploadField
+              label="Imagen principal"
+              folder="about"
+              value={settings.aboutImage}
+              onChange={(url) => set("aboutImage", url)}
+            />
+            <ImageUploadField
+              label="Imagen secundaria"
+              folder="about"
+              value={settings.aboutImageSecondary}
+              onChange={(url) => set("aboutImageSecondary", url)}
+            />
           </div>
         </section>
 
@@ -159,12 +174,22 @@ export default function AdminAjustesPage() {
           <Field label="Título">
             <input className={adminInput} value={settings.excursionsTitle} onChange={(e) => set("excursionsTitle", e.target.value)} />
           </Field>
-          <Field label="Introducción">
+          <Field label="Entradilla">
             <textarea className={adminTextarea} value={settings.excursionsIntro} onChange={(e) => set("excursionsIntro", e.target.value)} />
           </Field>
-          <Field label="URL imagen hero">
-            <input className={adminInput} value={settings.excursionsHeroImage} onChange={(e) => set("excursionsHeroImage", e.target.value)} />
+          <Field label="Texto completo (párrafos con línea en blanco)">
+            <textarea
+              className={`${adminTextarea} min-h-[160px]`}
+              value={settings.excursionsText}
+              onChange={(e) => set("excursionsText", e.target.value)}
+            />
           </Field>
+          <ImageUploadField
+            label="Imagen hero"
+            folder="excursions"
+            value={settings.excursionsHeroImage}
+            onChange={(url) => set("excursionsHeroImage", url)}
+          />
         </section>
 
         <section className="space-y-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
@@ -172,12 +197,22 @@ export default function AdminAjustesPage() {
           <Field label="Título">
             <input className={adminInput} value={settings.blogTitle} onChange={(e) => set("blogTitle", e.target.value)} />
           </Field>
-          <Field label="Introducción">
+          <Field label="Entradilla">
             <textarea className={adminTextarea} value={settings.blogIntro} onChange={(e) => set("blogIntro", e.target.value)} />
           </Field>
-          <Field label="URL imagen hero">
-            <input className={adminInput} value={settings.blogHeroImage} onChange={(e) => set("blogHeroImage", e.target.value)} />
+          <Field label="Texto completo (párrafos con línea en blanco)">
+            <textarea
+              className={`${adminTextarea} min-h-[160px]`}
+              value={settings.blogText}
+              onChange={(e) => set("blogText", e.target.value)}
+            />
           </Field>
+          <ImageUploadField
+            label="Imagen hero"
+            folder="blog"
+            value={settings.blogHeroImage}
+            onChange={(url) => set("blogHeroImage", url)}
+          />
         </section>
 
         <section className="space-y-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
@@ -185,22 +220,53 @@ export default function AdminAjustesPage() {
           <Field label="Titular de bienvenida">
             <input className={adminInput} value={settings.cruiseHeadline} onChange={(e) => set("cruiseHeadline", e.target.value)} />
           </Field>
-          <Field label="Texto de bienvenida">
+          <Field label="Entradilla">
             <textarea className={adminTextarea} value={settings.cruiseIntro} onChange={(e) => set("cruiseIntro", e.target.value)} />
           </Field>
-          <Field label="URL imagen hero">
-            <input className={adminInput} value={settings.cruiseHeroImage} onChange={(e) => set("cruiseHeroImage", e.target.value)} />
+          <Field label="Texto completo (párrafos con línea en blanco)">
+            <textarea
+              className={`${adminTextarea} min-h-[160px]`}
+              value={settings.cruiseText}
+              onChange={(e) => set("cruiseText", e.target.value)}
+            />
           </Field>
+          <ImageUploadField
+            label="Imagen hero"
+            folder="cruise"
+            value={settings.cruiseHeroImage}
+            onChange={(url) => set("cruiseHeroImage", url)}
+          />
         </section>
 
         <section className="space-y-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
           <h2 className="font-display text-xl">Traslados</h2>
-          <Field label="Texto introductorio">
-            <textarea className={adminTextarea} value={settings.transferIntro} onChange={(e) => set("transferIntro", e.target.value)} />
+          <Field label="Título">
+            <input
+              className={adminInput}
+              value={settings.transferTitle}
+              onChange={(e) => set("transferTitle", e.target.value)}
+            />
           </Field>
-          <Field label="URL imagen hero">
-            <input className={adminInput} value={settings.transferHeroImage} onChange={(e) => set("transferHeroImage", e.target.value)} />
+          <Field label="Entradilla">
+            <textarea
+              className={adminTextarea}
+              value={settings.transferIntro}
+              onChange={(e) => set("transferIntro", e.target.value)}
+            />
           </Field>
+          <Field label="Texto completo (párrafos con línea en blanco)">
+            <textarea
+              className={`${adminTextarea} min-h-[200px]`}
+              value={settings.transferText}
+              onChange={(e) => set("transferText", e.target.value)}
+            />
+          </Field>
+          <ImageUploadField
+            label="Imagen hero"
+            folder="transfers"
+            value={settings.transferHeroImage}
+            onChange={(url) => set("transferHeroImage", url)}
+          />
         </section>
 
         <section id="banner" className="grid scroll-mt-6 gap-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
