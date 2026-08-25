@@ -7,14 +7,28 @@ export default function AdminLoginPage() {
   const router = useRouter();
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (password === "admin123") {
+    setError("");
+    setSubmitting(true);
+    try {
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+      if (!response.ok) {
+        setError("Contraseña incorrecta");
+        return;
+      }
       localStorage.setItem("lt_admin", "1");
       router.push("/admin");
-    } else {
-      setError("Contraseña incorrecta");
+    } catch {
+      setError("No se pudo iniciar sesión");
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -40,9 +54,10 @@ export default function AdminLoginPage() {
         {error && <p className="mt-2 text-sm text-coral">{error}</p>}
         <button
           type="submit"
+          disabled={submitting}
           className="mt-5 w-full rounded-md bg-ocean py-2.5 font-semibold text-white hover:bg-ocean-deep"
         >
-          Entrar
+          {submitting ? "Entrando…" : "Entrar"}
         </button>
         <p className="mt-4 text-center text-xs text-ink-muted">
           Demo: usa la contraseña <code>admin123</code>

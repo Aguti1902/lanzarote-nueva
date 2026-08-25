@@ -8,6 +8,7 @@ import type {
 } from "@/types";
 import { promises as fs } from "fs";
 import path from "path";
+import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/client";
 
 type TranslatedLocale = Exclude<Locale, "es">;
 
@@ -65,15 +66,38 @@ const translationCache = new Map<
   Promise<ContentTranslations>
 >();
 
+async function readTranslationFile(
+  locale: TranslatedLocale
+): Promise<ContentTranslations> {
+  const raw = await fs.readFile(
+    path.join(translationsDir, `${locale}.json`),
+    "utf-8"
+  );
+  return JSON.parse(raw) as ContentTranslations;
+}
+
 function loadTranslations(
   locale: TranslatedLocale
 ): Promise<ContentTranslations> {
   const cached = translationCache.get(locale);
   if (cached) return cached;
 
-  const pending = fs
-    .readFile(path.join(translationsDir, `${locale}.json`), "utf-8")
-    .then((raw) => JSON.parse(raw) as ContentTranslations);
+  const pending = (async () => {
+    if (isSupabaseConfigured()) {
+      try {
+        const { data, error } = await getSupabaseAdmin()
+          .from("content_translations")
+          .select("data")
+          .eq("locale", locale)
+          .maybeSingle();
+        if (error) throw new Error(error.message);
+        if (data?.data) return data.data as ContentTranslations;
+      } catch {
+        // Keep translated pages available if Supabase is temporarily unavailable.
+      }
+    }
+    return readTranslationFile(locale);
+  })();
 
   translationCache.set(locale, pending);
   return pending;

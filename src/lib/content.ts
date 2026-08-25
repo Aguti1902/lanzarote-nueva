@@ -9,6 +9,8 @@ import type {
   TransferDestination,
   TransfersData,
 } from "@/types";
+import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/client";
+import { rowToTour, tourToRow } from "@/lib/supabase/mappers";
 
 const dataDir = path.join(process.cwd(), "src/data");
 
@@ -25,6 +27,29 @@ async function writeJson(file: string, data: unknown): Promise<void> {
   );
 }
 
+async function replaceRows(
+  table: string,
+  key: string,
+  rows: Array<Record<string, unknown>>
+): Promise<void> {
+  const sb = getSupabaseAdmin();
+  if (rows.length) {
+    const { error } = await sb.from(table).upsert(rows);
+    if (error) throw new Error(error.message);
+  }
+
+  const { data: existing, error: readError } = await sb.from(table).select(key);
+  if (readError) throw new Error(readError.message);
+  const keep = new Set(rows.map((row) => String(row[key])));
+  const removed = (existing || [])
+    .map((row) => String(row[key]))
+    .filter((id) => !keep.has(id));
+  if (removed.length) {
+    const { error } = await sb.from(table).delete().in(key, removed);
+    if (error) throw new Error(error.message);
+  }
+}
+
 function slugify(value: string): string {
   return value
     .toLowerCase()
@@ -37,7 +62,13 @@ function slugify(value: string): string {
 /* ── Tours ── */
 
 export async function getTours(): Promise<Tour[]> {
-  return readJson<Tour[]>("tours.json");
+  if (!isSupabaseConfigured()) return readJson<Tour[]>("tours.json");
+
+  const { data, error } = await getSupabaseAdmin().from("tours").select("*");
+  if (error) throw new Error(error.message);
+  return (data || []).map((row) =>
+    rowToTour(row as Record<string, unknown>)
+  );
 }
 
 export async function getTourBySlug(slug: string): Promise<Tour | undefined> {
@@ -59,7 +90,11 @@ export async function getCruiseTours(): Promise<Tour[]> {
 }
 
 export async function saveTours(tours: Tour[]): Promise<void> {
-  await writeJson("tours.json", tours);
+  if (!isSupabaseConfigured()) {
+    await writeJson("tours.json", tours);
+    return;
+  }
+  await replaceRows("tours", "id", tours.map(tourToRow));
 }
 
 export async function upsertTour(tour: Tour): Promise<Tour> {
@@ -134,7 +169,32 @@ export async function deleteTour(id: string): Promise<boolean> {
 /* ── Transfers ── */
 
 export async function getTransfersData(): Promise<TransfersData> {
-  return readJson<TransfersData>("transfers.json");
+  if (!isSupabaseConfigured()) {
+    return readJson<TransfersData>("transfers.json");
+  }
+
+  const sb = getSupabaseAdmin();
+  const [destinationsResult, metaResult] = await Promise.all([
+    sb.from("transfer_destinations").select("*"),
+    sb.from("transfer_meta").select("highlights").eq("id", 1).maybeSingle(),
+  ]);
+  if (destinationsResult.error) {
+    throw new Error(destinationsResult.error.message);
+  }
+  if (metaResult.error) throw new Error(metaResult.error.message);
+
+  return {
+    destinations: (destinationsResult.data || []).map((row) => ({
+      id: String(row.id),
+      name: String(row.name),
+      slug: String(row.slug),
+      priceOneWay: Number(row.price_one_way) || 0,
+      priceReturn: Number(row.price_return) || 0,
+      duration: String(row.duration || ""),
+      distance: String(row.distance || ""),
+    })),
+    highlights: (metaResult.data?.highlights as string[] | null) || [],
+  };
 }
 
 export async function getTransferDestinations(): Promise<TransferDestination[]> {
@@ -142,7 +202,28 @@ export async function getTransferDestinations(): Promise<TransferDestination[]> 
 }
 
 export async function saveTransfersData(data: TransfersData): Promise<void> {
-  await writeJson("transfers.json", data);
+  if (!isSupabaseConfigured()) {
+    await writeJson("transfers.json", data);
+    return;
+  }
+
+  await replaceRows(
+    "transfer_destinations",
+    "id",
+    data.destinations.map((destination) => ({
+      id: destination.id,
+      name: destination.name,
+      slug: destination.slug,
+      price_one_way: destination.priceOneWay,
+      price_return: destination.priceReturn,
+      duration: destination.duration,
+      distance: destination.distance,
+    }))
+  );
+  const { error } = await getSupabaseAdmin()
+    .from("transfer_meta")
+    .upsert({ id: 1, highlights: data.highlights });
+  if (error) throw new Error(error.message);
 }
 
 export async function upsertTransfer(
@@ -201,7 +282,23 @@ export async function updateTransferHighlights(
 /* ── Blog ── */
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
-  return readJson<BlogPost[]>("blog.json");
+  if (!isSupabaseConfigured()) return readJson<BlogPost[]>("blog.json");
+
+  const { data, error } = await getSupabaseAdmin()
+    .from("blog_posts")
+    .select("*")
+    .order("date", { ascending: false });
+  if (error) throw new Error(error.message);
+  return (data || []).map((row) => ({
+    slug: String(row.slug),
+    title: String(row.title),
+    excerpt: String(row.excerpt || ""),
+    content: String(row.content || ""),
+    image: String(row.image || ""),
+    date: String(row.date).slice(0, 10),
+    author: String(row.author || ""),
+    tags: (row.tags as string[] | null) || [],
+  }));
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | undefined> {
@@ -209,7 +306,24 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | undefined>
 }
 
 export async function saveBlogPosts(posts: BlogPost[]): Promise<void> {
-  await writeJson("blog.json", posts);
+  if (!isSupabaseConfigured()) {
+    await writeJson("blog.json", posts);
+    return;
+  }
+  await replaceRows(
+    "blog_posts",
+    "slug",
+    posts.map((post) => ({
+      slug: post.slug,
+      title: post.title,
+      excerpt: post.excerpt,
+      content: post.content,
+      image: post.image,
+      date: post.date,
+      author: post.author,
+      tags: post.tags,
+    }))
+  );
 }
 
 export async function upsertBlogPost(post: BlogPost): Promise<BlogPost> {
@@ -273,6 +387,42 @@ function sortCruiseCalls(calls: CruiseCall[]): CruiseCall[] {
 }
 
 export async function getCruisesData(): Promise<CruisesData> {
+  if (isSupabaseConfigured()) {
+    const sb = getSupabaseAdmin();
+    const [metaResult, callsResult] = await Promise.all([
+      sb.from("cruise_calendar_meta").select("*").eq("id", 1).maybeSingle(),
+      sb
+        .from("cruise_calls")
+        .select("*")
+        .order("date", { ascending: true })
+        .order("arrival_time", { ascending: true }),
+    ]);
+    if (metaResult.error) throw new Error(metaResult.error.message);
+    if (callsResult.error) throw new Error(callsResult.error.message);
+    const meta = metaResult.data;
+    return {
+      season: String(meta?.season || defaultCruisesData.season),
+      port: String(meta?.port || defaultCruisesData.port),
+      source: String(meta?.source || ""),
+      updatedAt: meta?.updated_at
+        ? String(meta.updated_at).slice(0, 10)
+        : defaultCruisesData.updatedAt,
+      calls: (callsResult.data || []).map((row) => ({
+        id: String(row.id),
+        date: String(row.date).slice(0, 10),
+        port: String(row.port),
+        company: String(row.company),
+        shipCode: String(row.ship_code || ""),
+        shipName: String(row.ship_name),
+        arrivalTime: String(row.arrival_time || ""),
+        departureTime: String(row.departure_time || ""),
+        season: String(row.season || ""),
+        published: Boolean(row.published),
+        notes: row.notes == null ? undefined : String(row.notes),
+      })),
+    };
+  }
+
   try {
     const stored = await readJson<Partial<CruisesData>>("cruises.json");
     return {
@@ -301,11 +451,42 @@ export async function getCruiseCalls(options?: {
 }
 
 export async function saveCruisesData(data: CruisesData): Promise<void> {
-  await writeJson("cruises.json", {
+  const saved = {
     ...data,
     calls: sortCruiseCalls(data.calls),
     updatedAt: new Date().toISOString().slice(0, 10),
+  };
+  if (!isSupabaseConfigured()) {
+    await writeJson("cruises.json", saved);
+    return;
+  }
+
+  const sb = getSupabaseAdmin();
+  const { error: metaError } = await sb.from("cruise_calendar_meta").upsert({
+    id: 1,
+    season: saved.season,
+    port: saved.port,
+    source: saved.source,
+    updated_at: saved.updatedAt,
   });
+  if (metaError) throw new Error(metaError.message);
+  await replaceRows(
+    "cruise_calls",
+    "id",
+    saved.calls.map((call) => ({
+      id: call.id,
+      date: call.date,
+      port: call.port,
+      company: call.company,
+      ship_code: call.shipCode,
+      ship_name: call.shipName,
+      arrival_time: call.arrivalTime,
+      departure_time: call.departureTime,
+      season: call.season,
+      published: call.published,
+      notes: call.notes || null,
+    }))
+  );
 }
 
 export async function upsertCruiseCall(call: CruiseCall): Promise<CruiseCall> {
@@ -403,10 +584,28 @@ const defaultSettings: SiteSettings = {
 };
 
 export async function getSettings(): Promise<SiteSettings> {
-  const stored = await readJson<Partial<SiteSettings>>("settings.json");
+  let stored: Partial<SiteSettings>;
+  if (isSupabaseConfigured()) {
+    const { data, error } = await getSupabaseAdmin()
+      .from("site_settings")
+      .select("data")
+      .eq("id", 1)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    stored = (data?.data as Partial<SiteSettings> | null) || {};
+  } else {
+    stored = await readJson<Partial<SiteSettings>>("settings.json");
+  }
   return { ...defaultSettings, ...stored };
 }
 
 export async function saveSettings(settings: SiteSettings): Promise<void> {
-  await writeJson("settings.json", settings);
+  if (!isSupabaseConfigured()) {
+    await writeJson("settings.json", settings);
+    return;
+  }
+  const { error } = await getSupabaseAdmin()
+    .from("site_settings")
+    .upsert({ id: 1, data: settings, updated_at: new Date().toISOString() });
+  if (error) throw new Error(error.message);
 }

@@ -3,6 +3,8 @@ import path from "path";
 import type { Booking, BookingStatus, CashStatus } from "@/types";
 import { buildBookingId } from "@/lib/booking-ids";
 import { splitPaymentAmounts } from "@/lib/payments";
+import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/client";
+import { bookingToRow, rowToBooking } from "@/lib/supabase/mappers";
 
 const dataPath = path.join(process.cwd(), "src/data/bookings.json");
 
@@ -20,14 +22,39 @@ function normalizeBooking(b: Booking): Booking {
   };
 }
 
-export async function getBookings(): Promise<Booking[]> {
+async function getBookingsJson(): Promise<Booking[]> {
   const raw = await fs.readFile(dataPath, "utf-8");
   const list = JSON.parse(raw) as Booking[];
   return list.map(normalizeBooking);
 }
 
-export async function saveBookings(bookings: Booking[]): Promise<void> {
+async function saveBookingsJson(bookings: Booking[]): Promise<void> {
   await fs.writeFile(dataPath, JSON.stringify(bookings, null, 2), "utf-8");
+}
+
+export async function getBookings(): Promise<Booking[]> {
+  if (!isSupabaseConfigured()) return getBookingsJson();
+
+  const sb = getSupabaseAdmin();
+  const { data, error } = await sb
+    .from("bookings")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return (data || []).map((row) =>
+    normalizeBooking(rowToBooking(row as Record<string, unknown>))
+  );
+}
+
+export async function saveBookings(bookings: Booking[]): Promise<void> {
+  if (!isSupabaseConfigured()) {
+    await saveBookingsJson(bookings);
+    return;
+  }
+  const sb = getSupabaseAdmin();
+  const rows = bookings.map(bookingToRow);
+  const { error } = await sb.from("bookings").upsert(rows);
+  if (error) throw new Error(error.message);
 }
 
 export async function addBooking(
@@ -61,8 +88,16 @@ export async function addBooking(
     createdAt: new Date().toISOString(),
     status: booking.status ?? "confirmed",
   };
-  bookings.unshift(created);
-  await saveBookings(bookings);
+
+  if (!isSupabaseConfigured()) {
+    bookings.unshift(created);
+    await saveBookingsJson(bookings);
+    return created;
+  }
+
+  const sb = getSupabaseAdmin();
+  const { error } = await sb.from("bookings").insert(bookingToRow(created));
+  if (error) throw new Error(error.message);
   return created;
 }
 
@@ -70,40 +105,53 @@ export async function updateBookingStatus(
   id: string,
   status: BookingStatus
 ): Promise<Booking | null> {
-  const bookings = await getBookings();
-  const idx = bookings.findIndex((b) => b.id === id);
-  if (idx === -1) return null;
-  bookings[idx] = { ...bookings[idx], status };
-  await saveBookings(bookings);
-  return bookings[idx];
+  return updateBooking(id, { status });
 }
 
 export async function updateBooking(
   id: string,
   patch: Partial<Booking>
 ): Promise<Booking | null> {
-  const bookings = await getBookings();
-  const idx = bookings.findIndex((b) => b.id === id);
-  if (idx === -1) return null;
-  bookings[idx] = { ...bookings[idx], ...patch };
-  await saveBookings(bookings);
-  return bookings[idx];
+  if (!isSupabaseConfigured()) {
+    const bookings = await getBookingsJson();
+    const idx = bookings.findIndex((b) => b.id === id);
+    if (idx === -1) return null;
+    bookings[idx] = { ...bookings[idx], ...patch };
+    await saveBookingsJson(bookings);
+    return bookings[idx];
+  }
+
+  const sb = getSupabaseAdmin();
+  const { data: existing, error: readErr } = await sb
+    .from("bookings")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+  if (readErr) throw new Error(readErr.message);
+  if (!existing) return null;
+
+  const merged = normalizeBooking({
+    ...rowToBooking(existing as Record<string, unknown>),
+    ...patch,
+  });
+  const { error } = await sb
+    .from("bookings")
+    .update(bookingToRow(merged))
+    .eq("id", id);
+  if (error) throw new Error(error.message);
+  return merged;
 }
 
 export async function markCashCollected(id: string): Promise<Booking | null> {
   const bookings = await getBookings();
-  const idx = bookings.findIndex((b) => b.id === id);
-  if (idx === -1) return null;
-  const b = bookings[idx];
-  bookings[idx] = {
-    ...b,
+  const b = bookings.find((x) => x.id === id);
+  if (!b) return null;
+  return updateBooking(id, {
     amountPaidCash: b.amountDueCash,
     amountDueCash: 0,
     cashStatus: "collected",
     paymentStatus: "paid",
-  };
-  await saveBookings(bookings);
-  return bookings[idx];
+  });
 }
 
 export function getCashPending(bookings: Booking[]): Booking[] {
@@ -143,11 +191,18 @@ export function getStats(bookings: Booking[]) {
     .filter((b) => b.date >= new Date().toISOString().slice(0, 10))
     .sort((a, b) => a.date.localeCompare(b.date));
 
-  const tourCounts = new Map<string, { title: string; count: number; revenue: number }>();
+  const tourCounts = new Map<
+    string,
+    { title: string; count: number; revenue: number }
+  >();
   for (const b of active) {
     if (b.type !== "tour") continue;
     const key = b.tourId || b.tourTitle;
-    const cur = tourCounts.get(key) || { title: b.tourTitle, count: 0, revenue: 0 };
+    const cur = tourCounts.get(key) || {
+      title: b.tourTitle,
+      count: 0,
+      revenue: 0,
+    };
     cur.count += 1;
     cur.revenue += (b.amountPaidCard || 0) + (b.amountPaidCash || 0);
     tourCounts.set(key, cur);

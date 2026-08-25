@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
+import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/client";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -58,6 +59,20 @@ export async function POST(request: Request) {
     const name = `${Date.now().toString(36)}-${Math.random()
       .toString(36)
       .slice(2, 8)}.${extFor(upload.type)}`;
+
+    if (isSupabaseConfigured()) {
+      const sb = getSupabaseAdmin();
+      const storagePath = `${folder}/${name}`;
+      const { error } = await sb.storage
+        .from("uploads")
+        .upload(storagePath, bytes, {
+          contentType: upload.type,
+          upsert: false,
+        });
+      if (error) throw new Error(error.message);
+      const { data } = sb.storage.from("uploads").getPublicUrl(storagePath);
+      return NextResponse.json({ url: data.publicUrl }, { status: 201 });
+    }
 
     const dir = path.join(process.cwd(), "public", "uploads", folder);
     await fs.mkdir(dir, { recursive: true });

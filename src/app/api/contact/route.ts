@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
+import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/client";
 
 type ContactMessage = {
   id: string;
@@ -37,7 +38,6 @@ export async function POST(request: Request) {
       );
     }
 
-    const messages = await getMessages();
     const entry: ContactMessage = {
       id: `MSG-${Date.now()}`,
       createdAt: new Date().toISOString(),
@@ -46,8 +46,27 @@ export async function POST(request: Request) {
       phone: phone || undefined,
       message,
     };
-    messages.unshift(entry);
-    await fs.writeFile(dataPath, JSON.stringify(messages, null, 2) + "\n", "utf-8");
+    if (isSupabaseConfigured()) {
+      const { error } = await getSupabaseAdmin()
+        .from("contact_messages")
+        .insert({
+          id: entry.id,
+          created_at: entry.createdAt,
+          name: entry.name,
+          email: entry.email,
+          phone: entry.phone || null,
+          message: entry.message,
+        });
+      if (error) throw new Error(error.message);
+    } else {
+      const messages = await getMessages();
+      messages.unshift(entry);
+      await fs.writeFile(
+        dataPath,
+        JSON.stringify(messages, null, 2) + "\n",
+        "utf-8"
+      );
+    }
 
     return NextResponse.json({ ok: true, message: entry }, { status: 201 });
   } catch {

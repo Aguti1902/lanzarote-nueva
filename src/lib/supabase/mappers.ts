@@ -1,0 +1,170 @@
+/** Shared mappers between app types and Supabase rows. */
+
+import type { Booking, Invoice, Tour } from "@/types";
+
+export function bookingToRow(b: Booking) {
+  return {
+    id: b.id,
+    created_at: b.createdAt,
+    type: b.type,
+    tour_id: b.tourId ?? null,
+    tour_title: b.tourTitle,
+    service_date: b.date,
+    adults: b.adults,
+    children: b.children,
+    total_price: b.totalPrice,
+    amount_total: b.amountTotal,
+    amount_paid_card: b.amountPaidCard,
+    amount_due_cash: b.amountDueCash,
+    amount_paid_cash: b.amountPaidCash,
+    payment_method: b.paymentMethod,
+    payment_status: b.paymentStatus,
+    cash_status: b.cashStatus,
+    status: b.status,
+    invoice_id: b.invoiceId ?? null,
+    cancellation_reason: b.cancellationReason ?? null,
+    cancelled_at: b.cancelledAt ?? null,
+    cancellation_fee: b.cancellationFee ?? null,
+    customer: b.customer,
+    transfer: b.transfer ?? null,
+    minibus: b.minibus ?? null,
+  };
+}
+
+export function rowToBooking(row: Record<string, unknown>): Booking {
+  return {
+    id: String(row.id),
+    createdAt: String(row.created_at),
+    type: row.type as Booking["type"],
+    tourId: (row.tour_id as string) || undefined,
+    tourTitle: String(row.tour_title),
+    date: String(row.service_date).slice(0, 10),
+    adults: Number(row.adults) || 0,
+    children: Number(row.children) || 0,
+    totalPrice: Number(row.total_price) || 0,
+    amountTotal: Number(row.amount_total) || 0,
+    amountPaidCard: Number(row.amount_paid_card) || 0,
+    amountDueCash: Number(row.amount_due_cash) || 0,
+    amountPaidCash: Number(row.amount_paid_cash) || 0,
+    paymentMethod: row.payment_method as Booking["paymentMethod"],
+    paymentStatus: row.payment_status as Booking["paymentStatus"],
+    cashStatus: row.cash_status as Booking["cashStatus"],
+    status: row.status as Booking["status"],
+    invoiceId: (row.invoice_id as string) || undefined,
+    cancellationReason: (row.cancellation_reason as string) || undefined,
+    cancelledAt: (row.cancelled_at as string) || undefined,
+    cancellationFee:
+      row.cancellation_fee == null ? undefined : Number(row.cancellation_fee),
+    customer: row.customer as Booking["customer"],
+    transfer: (row.transfer as Booking["transfer"]) || undefined,
+    minibus: (row.minibus as Booking["minibus"]) || undefined,
+  };
+}
+
+export function invoiceToRow(inv: Invoice) {
+  return {
+    id: inv.id,
+    number: inv.number,
+    type: inv.type,
+    booking_id: inv.bookingId,
+    created_at: inv.createdAt,
+    customer: inv.customer,
+    lines: inv.lines,
+    subtotal: inv.subtotal,
+    tax_rate: inv.taxRate,
+    tax_amount: inv.taxAmount,
+    total: inv.total,
+    related_invoice_id: inv.relatedInvoiceId ?? null,
+    notes: inv.notes ?? null,
+    status: inv.status,
+  };
+}
+
+export function rowToInvoice(row: Record<string, unknown>): Invoice {
+  return {
+    id: String(row.id),
+    number: Number(row.number),
+    type: row.type as Invoice["type"],
+    bookingId: String(row.booking_id),
+    createdAt: String(row.created_at),
+    customer: row.customer as Invoice["customer"],
+    lines: row.lines as Invoice["lines"],
+    subtotal: Number(row.subtotal) || 0,
+    taxRate: Number(row.tax_rate) || 0,
+    taxAmount: Number(row.tax_amount) || 0,
+    total: Number(row.total) || 0,
+    relatedInvoiceId: (row.related_invoice_id as string) || undefined,
+    notes: (row.notes as string) || undefined,
+    status: row.status as Invoice["status"],
+  };
+}
+
+export function tourToRow(t: Tour) {
+  return {
+    id: t.id,
+    slug: t.slug,
+    title: t.title,
+    short_title: t.shortTitle,
+    category: t.category,
+    group_size: t.groupSize ?? null,
+    duration: t.duration,
+    duration_hours: t.durationHours,
+    price_adult: t.priceAdult,
+    price_child: t.priceChild,
+    currency: t.currency,
+    rating: t.rating,
+    review_count: t.reviewCount,
+    image: t.image,
+    gallery: t.gallery,
+    summary: t.summary,
+    description: t.description,
+    highlights: t.highlights,
+    places: t.places,
+    included: t.included,
+    not_included: t.notIncluded,
+    recommendations: t.recommendations,
+    cancellation_policy: t.cancellationPolicy,
+    max_group: t.maxGroup ?? null,
+    languages: t.languages,
+    allow_pay_on_day: t.allowPayOnDay,
+    allow_card: t.allowCard,
+    allow_bizum: t.allowBizum,
+    cruise_friendly: t.cruiseFriendly,
+    featured: Boolean(t.featured),
+  };
+}
+
+export function rowToTour(row: Record<string, unknown>): Tour {
+  return {
+    id: String(row.id),
+    slug: String(row.slug),
+    title: String(row.title),
+    shortTitle: String(row.short_title),
+    category: row.category as Tour["category"],
+    groupSize: (row.group_size as Tour["groupSize"]) || undefined,
+    duration: String(row.duration),
+    durationHours: Number(row.duration_hours) || 0,
+    priceAdult: Number(row.price_adult) || 0,
+    priceChild: Number(row.price_child) || 0,
+    currency: String(row.currency || "EUR"),
+    rating: Number(row.rating) || 0,
+    reviewCount: Number(row.review_count) || 0,
+    image: String(row.image),
+    gallery: (row.gallery as string[]) || [],
+    summary: String(row.summary || ""),
+    description: String(row.description || ""),
+    highlights: (row.highlights as string[]) || [],
+    places: (row.places as string[]) || [],
+    included: (row.included as string[]) || [],
+    notIncluded: (row.not_included as string[]) || [],
+    recommendations: (row.recommendations as string[]) || [],
+    cancellationPolicy: String(row.cancellation_policy || ""),
+    maxGroup: row.max_group == null ? undefined : Number(row.max_group),
+    languages: (row.languages as string[]) || [],
+    allowPayOnDay: Boolean(row.allow_pay_on_day),
+    allowCard: Boolean(row.allow_card),
+    allowBizum: Boolean(row.allow_bizum),
+    cruiseFriendly: Boolean(row.cruise_friendly),
+    featured: Boolean(row.featured),
+  };
+}

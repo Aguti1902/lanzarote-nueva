@@ -8,13 +8,54 @@ import {
 import { promises as fs } from "fs";
 import path from "path";
 import type { CruiseCompany, CruiseItinerariesData, CruiseShoreTour } from "@/types";
+import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/client";
 
 export const dynamic = "force-dynamic";
 
 const dataPath = path.join(process.cwd(), "src/data/cruiseItineraries.json");
 
+async function replaceSupabaseRows(
+  table: string,
+  key: string,
+  rows: Array<Record<string, unknown>>
+) {
+  const sb = getSupabaseAdmin();
+  if (rows.length) {
+    const { error } = await sb.from(table).upsert(rows);
+    if (error) throw new Error(error.message);
+  }
+  const { data: existing, error: readError } = await sb.from(table).select(key);
+  if (readError) throw new Error(readError.message);
+  const keep = new Set(rows.map((row) => String(row[key])));
+  const removed = (existing || [])
+    .map((row) => String(row[key]))
+    .filter((id) => !keep.has(id));
+  if (removed.length) {
+    const { error } = await sb.from(table).delete().in(key, removed);
+    if (error) throw new Error(error.message);
+  }
+}
+
 async function save(data: CruiseItinerariesData) {
-  await fs.writeFile(dataPath, JSON.stringify(data, null, 2) + "\n", "utf-8");
+  if (isSupabaseConfigured()) {
+    await replaceSupabaseRows(
+      "cruise_companies",
+      "slug",
+      data.companies.map((company) => ({
+        slug: company.slug,
+        name: company.name,
+        sailing_count: company.sailingCount,
+        ships: company.ships,
+      }))
+    );
+    await replaceSupabaseRows(
+      "cruise_shore_tours",
+      "id",
+      data.shoreTours.map((tour) => ({ id: tour.id, data: tour }))
+    );
+  } else {
+    await fs.writeFile(dataPath, JSON.stringify(data, null, 2) + "\n", "utf-8");
+  }
   clearCruiseItinerariesCache();
 }
 

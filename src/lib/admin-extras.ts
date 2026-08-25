@@ -8,6 +8,7 @@ import type {
   PaymentLink,
   SeoRedirect,
 } from "@/types";
+import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/client";
 
 const dataPath = path.join(process.cwd(), "src/data/adminExtras.json");
 
@@ -29,17 +30,109 @@ const empty: AdminExtrasData = {
   redirects: [],
 };
 
-async function readData(): Promise<AdminExtrasData> {
+function freshEmpty(): AdminExtrasData {
+  return {
+    paymentLinks: [],
+    collaborators: [],
+    feedback: [],
+    cruisePorts: [],
+    cruiseGroups: [],
+    redirects: [],
+  };
+}
+
+async function readDataJson(): Promise<AdminExtrasData> {
   try {
     const raw = await fs.readFile(dataPath, "utf-8");
     return { ...empty, ...(JSON.parse(raw) as AdminExtrasData) };
   } catch {
-    return empty;
+    return freshEmpty();
   }
 }
 
-async function writeData(data: AdminExtrasData): Promise<void> {
+async function writeDataJson(data: AdminExtrasData): Promise<void> {
   await fs.writeFile(dataPath, JSON.stringify(data, null, 2) + "\n", "utf-8");
+}
+
+async function readTable<T extends { id: string }>(table: string): Promise<T[]> {
+  const { data, error } = await getSupabaseAdmin()
+    .from(table)
+    .select("id, data");
+  if (error) throw new Error(error.message);
+  return (data || []).map((row) => ({
+    ...(row.data as T),
+    id: String(row.id),
+  }));
+}
+
+async function replaceTable<T extends { id: string }>(
+  table: string,
+  items: T[]
+): Promise<void> {
+  const sb = getSupabaseAdmin();
+  if (items.length) {
+    const { error } = await sb
+      .from(table)
+      .upsert(items.map((item) => ({ id: item.id, data: item })));
+    if (error) throw new Error(error.message);
+  }
+
+  const { data: existing, error: readError } = await sb
+    .from(table)
+    .select("id");
+  if (readError) throw new Error(readError.message);
+  const keep = new Set(items.map((item) => item.id));
+  const removed = (existing || [])
+    .map((row) => String(row.id))
+    .filter((id) => !keep.has(id));
+  if (removed.length) {
+    const { error } = await sb.from(table).delete().in("id", removed);
+    if (error) throw new Error(error.message);
+  }
+}
+
+async function readData(): Promise<AdminExtrasData> {
+  if (!isSupabaseConfigured()) return readDataJson();
+
+  const [
+    paymentLinks,
+    collaborators,
+    feedback,
+    cruisePorts,
+    cruiseGroups,
+    redirects,
+  ] = await Promise.all([
+    readTable<PaymentLink>("payment_links"),
+    readTable<Collaborator>("collaborators"),
+    readTable<CustomerFeedback>("customer_feedback"),
+    readTable<CruisePort>("cruise_ports"),
+    readTable<CruiseGroup>("cruise_groups"),
+    readTable<SeoRedirect>("seo_redirects"),
+  ]);
+  return {
+    paymentLinks,
+    collaborators,
+    feedback,
+    cruisePorts,
+    cruiseGroups,
+    redirects,
+  };
+}
+
+async function writeData(data: AdminExtrasData): Promise<void> {
+  if (!isSupabaseConfigured()) {
+    await writeDataJson(data);
+    return;
+  }
+
+  await Promise.all([
+    replaceTable("payment_links", data.paymentLinks),
+    replaceTable("collaborators", data.collaborators),
+    replaceTable("customer_feedback", data.feedback),
+    replaceTable("cruise_ports", data.cruisePorts),
+    replaceTable("cruise_groups", data.cruiseGroups),
+    replaceTable("seo_redirects", data.redirects),
+  ]);
 }
 
 function uid(prefix: string) {

@@ -3,10 +3,12 @@ import path from "path";
 import type { Booking, Invoice } from "@/types";
 import { getSettings } from "@/lib/content";
 import { updateBooking } from "@/lib/bookings";
+import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/client";
+import { invoiceToRow, rowToInvoice } from "@/lib/supabase/mappers";
 
 const dataPath = path.join(process.cwd(), "src/data/invoices.json");
 
-export async function getInvoices(): Promise<Invoice[]> {
+async function getInvoicesJson(): Promise<Invoice[]> {
   try {
     const raw = await fs.readFile(dataPath, "utf-8");
     return JSON.parse(raw) as Invoice[];
@@ -15,8 +17,47 @@ export async function getInvoices(): Promise<Invoice[]> {
   }
 }
 
-export async function saveInvoices(invoices: Invoice[]): Promise<void> {
+async function saveInvoicesJson(invoices: Invoice[]): Promise<void> {
   await fs.writeFile(dataPath, JSON.stringify(invoices, null, 2) + "\n", "utf-8");
+}
+
+export async function getInvoices(): Promise<Invoice[]> {
+  if (!isSupabaseConfigured()) return getInvoicesJson();
+
+  const { data, error } = await getSupabaseAdmin()
+    .from("invoices")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return (data || []).map((row) =>
+    rowToInvoice(row as Record<string, unknown>)
+  );
+}
+
+export async function saveInvoices(invoices: Invoice[]): Promise<void> {
+  if (!isSupabaseConfigured()) {
+    await saveInvoicesJson(invoices);
+    return;
+  }
+
+  const sb = getSupabaseAdmin();
+  if (invoices.length) {
+    const { error } = await sb.from("invoices").upsert(invoices.map(invoiceToRow));
+    if (error) throw new Error(error.message);
+  }
+
+  const { data: existing, error: readError } = await sb
+    .from("invoices")
+    .select("id");
+  if (readError) throw new Error(readError.message);
+  const keep = new Set(invoices.map((invoice) => invoice.id));
+  const removed = (existing || [])
+    .map((row) => String(row.id))
+    .filter((id) => !keep.has(id));
+  if (removed.length) {
+    const { error } = await sb.from("invoices").delete().in("id", removed);
+    if (error) throw new Error(error.message);
+  }
 }
 
 export async function getInvoiceById(id: string): Promise<Invoice | undefined> {

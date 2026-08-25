@@ -2,6 +2,7 @@ import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
 import { promises as fs } from "fs";
 import path from "path";
+import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/client";
 
 const dataPath = path.join(process.cwd(), "src/data/uiTranslations.json");
 
@@ -13,6 +14,21 @@ export type UiTranslationOverrides = {
 const empty: UiTranslationOverrides = { en: {}, de: {} };
 
 export async function getUiTranslationOverrides(): Promise<UiTranslationOverrides> {
+  if (isSupabaseConfigured()) {
+    const { data, error } = await getSupabaseAdmin()
+      .from("ui_translation_overrides")
+      .select("locale, data");
+    if (error) throw new Error(error.message);
+    const overrides: UiTranslationOverrides = { en: {}, de: {} };
+    for (const row of data || []) {
+      if (row.locale === "en" || row.locale === "de") {
+        overrides[row.locale] =
+          (row.data as Record<string, string> | null) || {};
+      }
+    }
+    return overrides;
+  }
+
   try {
     const raw = await fs.readFile(dataPath, "utf-8");
     const data = JSON.parse(raw) as Partial<UiTranslationOverrides>;
@@ -28,6 +44,16 @@ export async function getUiTranslationOverrides(): Promise<UiTranslationOverride
 export async function saveUiTranslationOverrides(
   data: UiTranslationOverrides
 ): Promise<void> {
+  if (isSupabaseConfigured()) {
+    const { error } = await getSupabaseAdmin()
+      .from("ui_translation_overrides")
+      .upsert([
+        { locale: "en", data: data.en },
+        { locale: "de", data: data.de },
+      ]);
+    if (error) throw new Error(error.message);
+    return;
+  }
   await fs.writeFile(dataPath, JSON.stringify(data, null, 2) + "\n", "utf-8");
 }
 
