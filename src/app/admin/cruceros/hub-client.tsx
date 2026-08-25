@@ -16,11 +16,15 @@ import {
 
 type Tab = "companias" | "puertos" | "excursiones" | "grupos";
 
-const TABS: { id: Tab; label: string }[] = [
-  { id: "companias", label: "Compañías" },
-  { id: "puertos", label: "Puertos" },
-  { id: "excursiones", label: "Excursiones shore" },
-  { id: "grupos", label: "Grupos" },
+const TAB_ROUTES: { id: Tab; label: string; href: string }[] = [
+  { id: "companias", label: "Compañías", href: "/admin/companias-cruceros" },
+  { id: "puertos", label: "Puertos", href: "/admin/puertos-cruceros" },
+  {
+    id: "excursiones",
+    label: "Excursiones shore",
+    href: "/admin/excursiones-shore",
+  },
+  { id: "grupos", label: "Grupos", href: "/admin/grupos-cruceros" },
 ];
 
 function tabFromParam(raw: string | null): Tab {
@@ -33,38 +37,28 @@ export default function AdminCrucerosHubPage() {
   const router = useRouter();
   const tab = tabFromParam(searchParams.get("tab"));
 
-  function setTab(id: Tab) {
-    router.replace(`/admin/cruceros?tab=${id}`);
-  }
+  useEffect(() => {
+    const dest = TAB_ROUTES.find((t) => t.id === tab)?.href;
+    if (dest) router.replace(dest);
+  }, [tab, router]);
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold">Cruceros</h1>
-          <p className="mt-1 text-sm text-ink-muted">
-            Compañías, puertos, excursiones shore, grupos y calendario de escalas
-          </p>
-        </div>
-        <Link href="/admin/cruceros/escalas" className="text-sm font-bold text-ocean">
-          Ir al calendario de escalas →
-        </Link>
+      <div>
+        <h1 className="text-3xl font-bold">Cruceros</h1>
+        <p className="mt-1 text-sm text-ink-muted">
+          Redirigiendo a la sección correspondiente…
+        </p>
       </div>
-
       <div className="flex flex-wrap gap-2">
-        {TABS.map(({ id, label }) => (
-          <button
-            key={id}
-            type="button"
-            onClick={() => setTab(id)}
-            className={`rounded-full px-4 py-2 text-sm font-bold ${
-              tab === id
-                ? "bg-ocean text-white"
-                : "bg-white text-ink ring-1 ring-sand-line"
-            }`}
+        {TAB_ROUTES.map(({ href, label }) => (
+          <Link
+            key={href}
+            href={href}
+            className="rounded-full bg-white px-4 py-2 text-sm font-bold text-ink ring-1 ring-sand-line"
           >
             {label}
-          </button>
+          </Link>
         ))}
         <Link
           href="/admin/cruceros/escalas"
@@ -73,16 +67,11 @@ export default function AdminCrucerosHubPage() {
           Escalas
         </Link>
       </div>
-
-      {tab === "companias" && <CompaniesPanel />}
-      {tab === "puertos" && <PortsPanel />}
-      {tab === "excursiones" && <ShoreToursPanel />}
-      {tab === "grupos" && <GroupsPanel />}
     </div>
   );
 }
 
-function CompaniesPanel() {
+export function CompaniesPanel() {
   const [items, setItems] = useState<CruiseCompany[]>([]);
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
@@ -187,7 +176,7 @@ function CompaniesPanel() {
   );
 }
 
-function PortsPanel() {
+export function PortsPanel() {
   const [items, setItems] = useState<CruisePort[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState({
@@ -333,7 +322,7 @@ function PortsPanel() {
   );
 }
 
-function ShoreToursPanel() {
+export function ShoreToursPanel() {
   const [items, setItems] = useState<CruiseShoreTour[]>([]);
   const [editing, setEditing] = useState<CruiseShoreTour | null>(null);
 
@@ -480,7 +469,7 @@ function ShoreToursPanel() {
   );
 }
 
-function GroupsPanel() {
+export function GroupsPanel() {
   const [items, setItems] = useState<CruiseGroup[]>([]);
   const [range, setRange] = useState<DateRange>(emptyDateRange);
   const [editingId, setEditingId] = useState<string | null>(null);
