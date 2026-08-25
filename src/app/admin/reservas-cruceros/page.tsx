@@ -17,6 +17,7 @@ export default function AdminReservasCrucerosPage() {
   const [dateField, setDateField] = useState<"service" | "created">("service");
   const [range, setRange] = useState<DateRange>(emptyDateRange);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [modalView, setModalView] = useState<"details" | "cancel">("details");
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(async () => {
@@ -31,11 +32,15 @@ export default function AdminReservasCrucerosPage() {
     load();
   }, [load]);
 
-  async function setStatus(id: string, status: BookingStatus) {
+  async function setStatus(
+    id: string,
+    status: BookingStatus,
+    cancellationReason?: string
+  ) {
     await fetch("/api/bookings", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, status }),
+      body: JSON.stringify({ id, status, cancellationReason }),
     });
     await load();
   }
@@ -158,7 +163,10 @@ export default function AdminReservasCrucerosPage() {
               <tr
                 key={b.id}
                 className="cursor-pointer border-b border-sand-line hover:bg-sky-soft/40"
-                onClick={() => setSelectedId(b.id)}
+                onClick={() => {
+                  setModalView("details");
+                  setSelectedId(b.id);
+                }}
               >
                 <td className="px-4 py-3 font-semibold text-ocean hover:underline">
                   {b.id}
@@ -193,9 +201,15 @@ export default function AdminReservasCrucerosPage() {
       {selected && (
         <BookingDetailModal
           booking={selected}
-          onClose={() => setSelectedId(null)}
-          onCancel={async (id) => {
-            await setStatus(id, "cancelled");
+          initialView={modalView}
+          onClose={() => {
+            setSelectedId(null);
+            setModalView("details");
+          }}
+          onCancel={async (id, reason) => {
+            await setStatus(id, "cancelled", reason);
+            setSelectedId(null);
+            setModalView("details");
           }}
           onConfirm={async (id) => {
             await setStatus(id, "confirmed");

@@ -1,18 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import type { Booking, BookingStatus } from "@/types";
 import {
   formatDateShort,
   paymentLabel,
 } from "@/lib/format";
+import type { CancelReasonId } from "@/lib/cancellation";
 import {
   buildVoucherHtml,
   downloadVoucherFile,
   openVoucherPrintWindow,
 } from "@/lib/voucher";
+import { CancelBookingPanel } from "@/components/admin/CancelBookingPanel";
 
 function money(n: number) {
   return new Intl.NumberFormat("es-ES", {
@@ -60,18 +62,32 @@ export function BookingDetailModal({
   onIssueInvoice,
   onConfirm,
   onComplete,
+  initialView = "details",
 }: {
   booking: Booking;
   onClose: () => void;
-  onCancel?: (id: string) => void;
+  onCancel?: (id: string, reason: CancelReasonId) => void | Promise<void>;
   onCollectCash?: (id: string) => void;
   onIssueInvoice?: (id: string) => void;
   onConfirm?: (id: string) => void;
   onComplete?: (id: string) => void;
+  initialView?: "details" | "cancel";
 }) {
+  const [view, setView] = useState<"details" | "cancel">(
+    booking.status === "cancelled" ? "details" : initialView
+  );
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    setView(booking.status === "cancelled" ? "details" : initialView);
+  }, [booking.id, booking.status, initialView]);
+
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        if (view === "cancel") setView("details");
+        else onClose();
+      }
     }
     document.addEventListener("keydown", onKey);
     const prev = document.body.style.overflow;
@@ -80,10 +96,20 @@ export function BookingDetailModal({
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
     };
-  }, [onClose]);
+  }, [onClose, view]);
 
   const people = booking.adults + (booking.children || 0);
   const total = booking.amountTotal ?? booking.totalPrice;
+
+  async function handleCancelConfirm(reason: CancelReasonId) {
+    if (!onCancel) return;
+    setSubmitting(true);
+    try {
+      await onCancel(booking.id, reason);
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <div
@@ -103,10 +129,17 @@ export function BookingDetailModal({
               id="booking-detail-title"
               className="text-2xl font-bold tracking-wide text-ink uppercase md:text-3xl"
             >
-              Detalles de reserva
+              {view === "cancel" ? "Cancelar reserva" : "Detalles de reserva"}
             </h2>
             <p className="mt-1 text-sm text-ink-muted">
-              Localizador <span className="font-bold text-ocean">{booking.id}</span>
+              {view === "cancel"
+                ? "Puede cancelar la reserva de una forma sencilla y segura."
+                : (
+                  <>
+                    Localizador{" "}
+                    <span className="font-bold text-ocean">{booking.id}</span>
+                  </>
+                )}
             </p>
           </div>
           <button
@@ -119,213 +152,236 @@ export function BookingDetailModal({
           </button>
         </div>
 
-        <div className="flex flex-wrap gap-3 border-b border-sand-line px-5 py-4 md:px-8">
-          {booking.invoiceId ? (
-            <Link
-              href={`/admin/facturas?id=${booking.invoiceId}`}
-              className="rounded border border-ocean/40 px-4 py-2 text-sm font-bold text-ocean hover:bg-sky-soft"
-            >
-              Factura {booking.invoiceId}
-            </Link>
-          ) : (
-            onIssueInvoice &&
-            booking.status !== "cancelled" && (
+        {view === "cancel" && onCancel ? (
+          <CancelBookingPanel
+            booking={booking}
+            onBack={() => setView("details")}
+            onConfirm={handleCancelConfirm}
+            submitting={submitting}
+          />
+        ) : (
+          <>
+            <div className="flex flex-wrap gap-3 border-b border-sand-line px-5 py-4 md:px-8">
+              {booking.invoiceId ? (
+                <Link
+                  href={`/admin/facturas?id=${booking.invoiceId}`}
+                  className="rounded border border-ocean/40 px-4 py-2 text-sm font-bold text-ocean hover:bg-sky-soft"
+                >
+                  Factura {booking.invoiceId}
+                </Link>
+              ) : (
+                onIssueInvoice &&
+                booking.status !== "cancelled" && (
+                  <button
+                    type="button"
+                    onClick={() => onIssueInvoice(booking.id)}
+                    className="rounded border border-ocean/40 px-4 py-2 text-sm font-bold text-ocean hover:bg-sky-soft"
+                  >
+                    Emitir factura
+                  </button>
+                )
+              )}
+              {booking.status !== "cancelled" && onCancel && (
+                <button
+                  type="button"
+                  onClick={() => setView("cancel")}
+                  className="rounded border border-red-300 px-4 py-2 text-sm font-bold text-red-600 hover:bg-red-50"
+                >
+                  Cancelar reserva
+                </button>
+              )}
+              <Link
+                href={`/es/voucher?id=${encodeURIComponent(booking.id)}`}
+                target="_blank"
+                className="rounded border border-sand-line px-4 py-2 text-sm font-bold text-ink hover:bg-sky-soft"
+              >
+                Abrir voucher
+              </Link>
               <button
                 type="button"
-                onClick={() => onIssueInvoice(booking.id)}
-                className="rounded border border-ocean/40 px-4 py-2 text-sm font-bold text-ocean hover:bg-sky-soft"
+                onClick={() => openVoucherPrintWindow(voucherHtml(booking))}
+                className="rounded border border-sand-line px-4 py-2 text-sm font-bold text-ink hover:bg-sky-soft"
               >
-                Emitir factura
+                Imprimir voucher
               </button>
-            )
-          )}
-          {booking.status !== "cancelled" && onCancel && (
-            <button
-              type="button"
-              onClick={() => {
-                if (
-                  confirm(
-                    "¿Cancelar esta reserva?\n\nSi queda dentro de las 48 h gratis se emitirá abono. Si no, se aplicará cargo de cancelación (sin reembolso)."
-                  )
-                ) {
-                  onCancel(booking.id);
+              <button
+                type="button"
+                onClick={() =>
+                  downloadVoucherFile(booking, voucherHtml(booking))
                 }
-              }}
-              className="rounded border border-red-300 px-4 py-2 text-sm font-bold text-red-600 hover:bg-red-50"
-            >
-              Cancelar reserva
-            </button>
-          )}
-          <Link
-            href={`/es/voucher?id=${encodeURIComponent(booking.id)}`}
-            target="_blank"
-            className="rounded border border-sand-line px-4 py-2 text-sm font-bold text-ink hover:bg-sky-soft"
-          >
-            Abrir voucher
-          </Link>
-          <button
-            type="button"
-            onClick={() => openVoucherPrintWindow(voucherHtml(booking))}
-            className="rounded border border-sand-line px-4 py-2 text-sm font-bold text-ink hover:bg-sky-soft"
-          >
-            Imprimir voucher
-          </button>
-          <button
-            type="button"
-            onClick={() =>
-              downloadVoucherFile(booking, voucherHtml(booking))
-            }
-            className="rounded bg-ocean px-4 py-2 text-sm font-bold text-white hover:bg-ocean-deep"
-          >
-            Descargar voucher
-          </button>
-        </div>
-
-        <div className="grid gap-8 px-5 py-6 md:grid-cols-2 md:px-8">
-          <section>
-            <h3 className="mb-3 border-b border-sand-line pb-2 text-sm font-bold tracking-wide text-ink uppercase">
-              Detalles de la reserva
-            </h3>
-            <dl className="space-y-2 text-sm">
-              <Row label="Localizador" value={booking.id} strong />
-              <Row
-                label="Fecha de la reserva"
-                value={formatDateShort(booking.createdAt)}
-              />
-              <Row label="Fecha del servicio" value={formatDateShort(booking.date)} />
-              <Row label="Estado" value={statusLabel(booking.status)} />
-              <Row label="Total de la reserva" value={money(total)} strong />
-              <Row
-                label="Forma de pago"
-                value={paymentLabel(booking.paymentMethod)}
-              />
-              <Row label="Pagado tarjeta" value={money(booking.amountPaidCard ?? 0)} />
-              <Row label="Efectivo pendiente" value={money(booking.amountDueCash ?? 0)} />
-              <Row label="Efectivo cobrado" value={money(booking.amountPaidCash ?? 0)} />
-              {booking.cancellationReason && (
-                <Row
-                  label="Motivo cancelación"
-                  value={booking.cancellationReason}
-                />
-              )}
-              {booking.cancellationFee != null && booking.status === "cancelled" && (
-                <Row
-                  label="Cargo cancelación"
-                  value={money(booking.cancellationFee)}
-                />
-              )}
-            </dl>
-          </section>
-
-          <section>
-            <h3 className="mb-3 border-b border-sand-line pb-2 text-sm font-bold tracking-wide text-ink uppercase">
-              Detalles del cliente
-            </h3>
-            <dl className="space-y-2 text-sm">
-              <Row label="Nombre" value={booking.customer.name} strong />
-              <Row label="Email" value={booking.customer.email} />
-              <Row label="Teléfono" value={booking.customer.phone || "—"} />
-              {booking.customer.taxId && (
-                <Row label="NIF / CIF" value={booking.customer.taxId} />
-              )}
-              {booking.customer.cruiseShip && (
-                <Row label="Crucero / barco" value={booking.customer.cruiseShip} />
-              )}
-            </dl>
-          </section>
-        </div>
-
-        <section className="border-t border-sand-line px-5 py-6 md:px-8">
-          <h3 className="mb-3 text-sm font-bold tracking-wide text-ink uppercase">
-            Hotel y comentarios
-          </h3>
-          <dl className="space-y-2 text-sm">
-            <Row label="Hotel" value={booking.customer.hotel || "—"} />
-            <Row
-              label="Número de vuelo"
-              value={booking.customer.flightNumber || "—"}
-            />
-            <div>
-              <dt className="text-ink-muted">Sugerencias del cliente</dt>
-              <dd className="mt-1 whitespace-pre-wrap rounded-lg bg-sky-soft/60 px-3 py-2 text-ink">
-                {booking.customer.notes?.trim() || "—"}
-              </dd>
+                className="rounded bg-ocean px-4 py-2 text-sm font-bold text-white hover:bg-ocean-deep"
+              >
+                Descargar voucher
+              </button>
             </div>
-          </dl>
-        </section>
 
-        <section className="border-t border-sand-line px-5 py-6 md:px-8">
-          <h3 className="mb-3 text-sm font-bold tracking-wide text-ink uppercase">
-            Servicios contratados
-          </h3>
-          <div className="rounded-lg bg-sky-soft/50 p-4 ring-1 ring-sand-line">
-            <p className="font-bold text-ink">
-              {serviceKind(booking)}: {booking.tourTitle}
-            </p>
-            <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-ink">
-              {booking.type === "transfer" && (
-                <li>
-                  Tipo de traslado:{" "}
-                  {transferDirectionLabel(booking.transfer?.direction)}
-                </li>
-              )}
-              {booking.transfer?.destination && (
-                <li>Destino: {booking.transfer.destination}</li>
-              )}
-              {booking.type === "minibus" && booking.minibus?.hours != null && (
-                <li>Horas: {booking.minibus.hours}</li>
-              )}
-              <li>Estado: {statusLabel(booking.status)}</li>
-              <li>
-                Personas: {people} ({booking.adults} adultos
-                {booking.children ? ` + ${booking.children} niños` : ""})
-              </li>
-              <li>Precio: {money(total)}</li>
-              <li>Fecha de servicio: {formatDateShort(booking.date)}</li>
-              {booking.customer.flightNumber && (
-                <li>Número de vuelo: {booking.customer.flightNumber}</li>
-              )}
-              {booking.tourId && <li>ID servicio: {booking.tourId}</li>}
-            </ul>
-          </div>
+            <div className="grid gap-8 px-5 py-6 md:grid-cols-2 md:px-8">
+              <section>
+                <h3 className="mb-3 border-b border-sand-line pb-2 text-sm font-bold tracking-wide text-ink uppercase">
+                  Detalles de la reserva
+                </h3>
+                <dl className="space-y-2 text-sm">
+                  <Row label="Localizador" value={booking.id} strong />
+                  <Row
+                    label="Fecha de la reserva"
+                    value={formatDateShort(booking.createdAt)}
+                  />
+                  <Row
+                    label="Fecha del servicio"
+                    value={formatDateShort(booking.date)}
+                  />
+                  <Row label="Estado" value={statusLabel(booking.status)} />
+                  <Row label="Total de la reserva" value={money(total)} strong />
+                  <Row
+                    label="Forma de pago"
+                    value={paymentLabel(booking.paymentMethod)}
+                  />
+                  <Row
+                    label="Pagado tarjeta"
+                    value={money(booking.amountPaidCard ?? 0)}
+                  />
+                  <Row
+                    label="Efectivo pendiente"
+                    value={money(booking.amountDueCash ?? 0)}
+                  />
+                  <Row
+                    label="Efectivo cobrado"
+                    value={money(booking.amountPaidCash ?? 0)}
+                  />
+                  {booking.cancellationReason && (
+                    <Row
+                      label="Motivo cancelación"
+                      value={booking.cancellationReason}
+                    />
+                  )}
+                  {booking.cancellationFee != null &&
+                    booking.status === "cancelled" && (
+                      <Row
+                        label="Cargo cancelación"
+                        value={money(booking.cancellationFee)}
+                      />
+                    )}
+                </dl>
+              </section>
 
-          <div className="mt-4 flex flex-wrap gap-2">
-            {(booking.amountDueCash ?? 0) > 0 &&
-              booking.cashStatus === "pending" &&
-              booking.status !== "cancelled" &&
-              onCollectCash && (
-                <button
-                  type="button"
-                  onClick={() => onCollectCash(booking.id)}
-                  className="rounded bg-emerald-600 px-4 py-2 text-sm font-bold text-white"
-                >
-                  Cobrar efectivo
-                </button>
-              )}
-            {booking.status !== "confirmed" &&
-              booking.status !== "cancelled" &&
-              onConfirm && (
-                <button
-                  type="button"
-                  onClick={() => onConfirm(booking.id)}
-                  className="rounded border border-sand-line px-4 py-2 text-sm font-bold"
-                >
-                  Confirmar
-                </button>
-              )}
-            {booking.status !== "completed" &&
-              booking.status !== "cancelled" &&
-              onComplete && (
-                <button
-                  type="button"
-                  onClick={() => onComplete(booking.id)}
-                  className="rounded border border-sand-line px-4 py-2 text-sm font-bold"
-                >
-                  Completar
-                </button>
-              )}
-          </div>
-        </section>
+              <section>
+                <h3 className="mb-3 border-b border-sand-line pb-2 text-sm font-bold tracking-wide text-ink uppercase">
+                  Detalles del cliente
+                </h3>
+                <dl className="space-y-2 text-sm">
+                  <Row label="Nombre" value={booking.customer.name} strong />
+                  <Row label="Email" value={booking.customer.email} />
+                  <Row
+                    label="Teléfono"
+                    value={booking.customer.phone || "—"}
+                  />
+                  {booking.customer.taxId && (
+                    <Row label="NIF / CIF" value={booking.customer.taxId} />
+                  )}
+                  {booking.customer.cruiseShip && (
+                    <Row
+                      label="Crucero / barco"
+                      value={booking.customer.cruiseShip}
+                    />
+                  )}
+                </dl>
+              </section>
+            </div>
+
+            <section className="border-t border-sand-line px-5 py-6 md:px-8">
+              <h3 className="mb-3 text-sm font-bold tracking-wide text-ink uppercase">
+                Hotel y comentarios
+              </h3>
+              <dl className="space-y-2 text-sm">
+                <Row label="Hotel" value={booking.customer.hotel || "—"} />
+                <Row
+                  label="Número de vuelo"
+                  value={booking.customer.flightNumber || "—"}
+                />
+                <div>
+                  <dt className="text-ink-muted">Sugerencias del cliente</dt>
+                  <dd className="mt-1 whitespace-pre-wrap rounded-lg bg-sky-soft/60 px-3 py-2 text-ink">
+                    {booking.customer.notes?.trim() || "—"}
+                  </dd>
+                </div>
+              </dl>
+            </section>
+
+            <section className="border-t border-sand-line px-5 py-6 md:px-8">
+              <h3 className="mb-3 text-sm font-bold tracking-wide text-ink uppercase">
+                Servicios contratados
+              </h3>
+              <div className="rounded-lg bg-sky-soft/50 p-4 ring-1 ring-sand-line">
+                <p className="font-bold text-ink">
+                  {serviceKind(booking)}: {booking.tourTitle}
+                </p>
+                <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-ink">
+                  {booking.type === "transfer" && (
+                    <li>
+                      Tipo de traslado:{" "}
+                      {transferDirectionLabel(booking.transfer?.direction)}
+                    </li>
+                  )}
+                  {booking.transfer?.destination && (
+                    <li>Destino: {booking.transfer.destination}</li>
+                  )}
+                  {booking.type === "minibus" &&
+                    booking.minibus?.hours != null && (
+                      <li>Horas: {booking.minibus.hours}</li>
+                    )}
+                  <li>Estado: {statusLabel(booking.status)}</li>
+                  <li>
+                    Personas: {people} ({booking.adults} adultos
+                    {booking.children ? ` + ${booking.children} niños` : ""})
+                  </li>
+                  <li>Precio: {money(total)}</li>
+                  <li>Fecha de servicio: {formatDateShort(booking.date)}</li>
+                  {booking.customer.flightNumber && (
+                    <li>Número de vuelo: {booking.customer.flightNumber}</li>
+                  )}
+                  {booking.tourId && <li>ID servicio: {booking.tourId}</li>}
+                </ul>
+              </div>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                {(booking.amountDueCash ?? 0) > 0 &&
+                  booking.cashStatus === "pending" &&
+                  booking.status !== "cancelled" &&
+                  onCollectCash && (
+                    <button
+                      type="button"
+                      onClick={() => onCollectCash(booking.id)}
+                      className="rounded bg-emerald-600 px-4 py-2 text-sm font-bold text-white"
+                    >
+                      Cobrar efectivo
+                    </button>
+                  )}
+                {booking.status !== "confirmed" &&
+                  booking.status !== "cancelled" &&
+                  onConfirm && (
+                    <button
+                      type="button"
+                      onClick={() => onConfirm(booking.id)}
+                      className="rounded border border-sand-line px-4 py-2 text-sm font-bold"
+                    >
+                      Confirmar
+                    </button>
+                  )}
+                {booking.status !== "completed" &&
+                  booking.status !== "cancelled" &&
+                  onComplete && (
+                    <button
+                      type="button"
+                      onClick={() => onComplete(booking.id)}
+                      className="rounded border border-sand-line px-4 py-2 text-sm font-bold"
+                    >
+                      Completar
+                    </button>
+                  )}
+              </div>
+            </section>
+          </>
+        )}
       </div>
     </div>
   );

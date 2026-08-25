@@ -49,3 +49,12 @@ export function assessCancellation(
 export function isValidCancelReason(value: string): value is CancelReasonId {
   return (CANCEL_REASON_IDS as readonly string[]).includes(value);
 }
+
+export const CANCEL_REASON_LABELS: Record<CancelReasonId, string> = {
+  changed_plans: "He cambiado mis planes y no necesito este servicio",
+  not_interested: "Ya no me interesa este servicio",
+  better_price: "He encontrado un mejor precio",
+  personal: "Por razones personales y/o familiares",
+  other: "Por otros motivos",
+};
+

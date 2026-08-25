@@ -72,10 +72,11 @@ export async function POST(request: Request) {
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
-    const { id, status, collectCash } = body as {
+    const { id, status, collectCash, cancellationReason } = body as {
       id: string;
       status?: BookingStatus;
       collectCash?: boolean;
+      cancellationReason?: string;
     };
     if (!id) {
       return NextResponse.json({ error: "Datos inválidos" }, { status: 400 });
@@ -103,7 +104,10 @@ export async function PATCH(request: Request) {
         status: "cancelled",
         cancelledAt: new Date().toISOString(),
         cancellationFee: assessment.fee,
-        cancellationReason: existing.cancellationReason || "admin",
+        cancellationReason:
+          (cancellationReason && String(cancellationReason).trim()) ||
+          existing.cancellationReason ||
+          "admin",
       });
       if (!booking) {
         return NextResponse.json({ error: "No encontrada" }, { status: 404 });
