@@ -102,7 +102,9 @@ export function CruiseItinerary({ sailing, tours }: Props) {
                       <Ship className="mt-1 h-5 w-5 shrink-0 text-ocean" />
                     )}
                     <div className="min-w-0 flex-1">
-                      <h3 className="text-xl font-bold text-ink">{stop.port}</h3>
+                      <h3 className="text-xl font-bold text-ink">
+                        {stop.isSeaDay ? dict.cruises.atSea : stop.port}
+                      </h3>
                       {stop.time ? (
                         <p className="mt-1 text-sm text-ink-muted">{stop.time}</p>
                       ) : null}

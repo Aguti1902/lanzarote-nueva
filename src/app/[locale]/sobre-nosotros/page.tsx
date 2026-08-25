@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { getSettings } from "@/lib/content";
+import { localizeSettings } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
@@ -20,10 +21,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function SobreNosotrosPage({ params }: Props) {
   const locale = resolveLocale((await params).locale);
-  const [settings, dict] = await Promise.all([
-    getSettings(),
-    getDictionary(locale),
-  ]);
+  const dict = await getDictionary(locale);
+  const settings = await localizeSettings(await getSettings(), locale);
   const values = settings.aboutValues
     .split("\n")
     .map((v) => v.trim())

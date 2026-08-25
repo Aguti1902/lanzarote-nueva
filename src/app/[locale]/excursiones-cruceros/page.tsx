@@ -8,6 +8,7 @@ import {
 } from "@/components/CruisePortCalendar";
 import { getCruiseCompanies, buildPortCallSailingLinks } from "@/lib/cruise-itineraries";
 import { getCruiseCalls, getCruisesData, getSettings } from "@/lib/content";
+import { localizeSettings } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 
@@ -23,9 +24,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ExcursionesCrucerosPage({ params }: Props) {
   const locale = resolveLocale((await params).locale);
-  const [dict, settings, companies, cruiseData, cruiseCalls] = await Promise.all([
-    getDictionary(locale),
-    getSettings(),
+  const dict = await getDictionary(locale);
+  const [settings, companies, cruiseData, cruiseCalls] = await Promise.all([
+    localizeSettings(await getSettings(), locale),
     getCruiseCompanies(),
     getCruisesData(),
     getCruiseCalls({ publishedOnly: true }),

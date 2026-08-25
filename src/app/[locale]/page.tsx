@@ -10,6 +10,10 @@ import {
 } from "lucide-react";
 import { TourCard } from "@/components/TourCard";
 import { getFeaturedTours, getSettings } from "@/lib/content";
+import {
+  localizeSettings,
+  localizeTours,
+} from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
@@ -35,10 +39,10 @@ type Props = { params: Promise<{ locale: string }> };
 export default async function HomePage({ params }: Props) {
   const { locale: raw } = await params;
   const locale = resolveLocale(raw);
-  const [featured, settings, dict] = await Promise.all([
-    getFeaturedTours(),
-    getSettings(),
-    getDictionary(locale),
+  const dict = await getDictionary(locale);
+  const [featured, settings] = await Promise.all([
+    localizeTours(await getFeaturedTours(), locale),
+    localizeSettings(await getSettings(), locale),
   ]);
 
   const awardLoop = [...awards, ...awards];

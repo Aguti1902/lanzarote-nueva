@@ -6,6 +6,7 @@ import {
   getCruiseShoreTourMap,
 } from "@/lib/cruise-itineraries";
 import { formatDateShort } from "@/lib/format";
+import { localizeShoreTours } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CruiseSailingPage({ params }: Props) {
   const { locale: raw, company, ship, sailingId } = await params;
-  resolveLocale(raw);
+  const locale = resolveLocale(raw);
   const sailing = await getCruiseSailing(company, ship, sailingId);
   if (!sailing) notFound();
 
@@ -41,9 +42,12 @@ export default async function CruiseSailingPage({ params }: Props) {
   const tourIds = new Set(
     sailing.stops.flatMap((stop) => stop.tourIds)
   );
-  const tours = [...tourIds]
-    .map((id) => tourMap.get(id))
-    .filter(Boolean) as NonNullable<ReturnType<typeof tourMap.get>>[];
+  const tours = await localizeShoreTours(
+    [...tourIds]
+      .map((id) => tourMap.get(id))
+      .filter(Boolean) as NonNullable<ReturnType<typeof tourMap.get>>[],
+    locale
+  );
 
   return (
     <section className="mx-auto max-w-3xl px-4 py-10 md:max-w-4xl md:px-6 md:py-14">

@@ -8,7 +8,7 @@ import { formatPrice, groupSizeLabel } from "@/lib/format";
 import { useLocale } from "@/components/LocaleProvider";
 
 export function TourCard({ tour }: { tour: Tour }) {
-  const { dict, href } = useLocale();
+  const { dict, href, locale } = useLocale();
 
   return (
     <Link
@@ -26,7 +26,7 @@ export function TourCard({ tour }: { tour: Tour }) {
         <div className="absolute inset-0 bg-gradient-to-t from-bg-deep/70 via-bg-deep/10 to-transparent" />
         {tour.groupSize && (
           <span className="absolute top-3 left-3 rounded-full bg-white/95 px-3 py-1 text-[11px] font-bold tracking-wide text-ocean-deep uppercase shadow-sm">
-            {groupSizeLabel(tour.groupSize)}
+            {groupSizeLabel(tour.groupSize, locale)}
           </span>
         )}
         <div className="absolute right-3 bottom-3 left-3 flex items-end justify-between gap-3">

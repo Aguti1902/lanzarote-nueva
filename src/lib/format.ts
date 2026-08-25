@@ -1,15 +1,27 @@
-export function formatPrice(amount: number, currency = "EUR"): string {
-  return new Intl.NumberFormat("es-ES", {
+import type { Locale } from "@/i18n/config";
+
+export function intlLocale(locale: Locale | string = "es"): string {
+  if (locale === "en") return "en-GB";
+  if (locale === "de") return "de-DE";
+  return "es-ES";
+}
+
+export function formatPrice(
+  amount: number,
+  currency = "EUR",
+  locale: Locale | string = "es"
+): string {
+  return new Intl.NumberFormat(intlLocale(locale), {
     style: "currency",
     currency,
     maximumFractionDigits: 0,
   }).format(amount);
 }
 
-export function formatDate(iso: string, locale = "es-ES"): string {
+export function formatDate(iso: string, locale: Locale | string = "es"): string {
   const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(iso);
   const value = dateOnly ? new Date(`${iso}T12:00:00`) : new Date(iso);
-  return new Intl.DateTimeFormat(locale, {
+  return new Intl.DateTimeFormat(intlLocale(locale), {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -25,24 +37,56 @@ export function formatDateShort(iso: string): string {
   return `${dd}/${mm}/${yyyy}`;
 }
 
-export function formatWeekday(iso: string, locale = "es-ES"): string {
+export function formatWeekday(
+  iso: string,
+  locale: Locale | string = "es"
+): string {
   const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(iso);
   const value = dateOnly ? new Date(`${iso}T12:00:00`) : new Date(iso);
-  return new Intl.DateTimeFormat(locale, { weekday: "long" }).format(value);
+  return new Intl.DateTimeFormat(intlLocale(locale), { weekday: "long" }).format(
+    value
+  );
 }
 
-export function groupSizeLabel(size?: "small" | "large"): string {
-  if (size === "small") return "Grupo reducido";
-  if (size === "large") return "Grupo grande";
-  return "Privado";
+export function groupSizeLabel(
+  size?: "small" | "large",
+  locale: Locale | string = "es"
+): string {
+  const map = {
+    es: { small: "Grupo reducido", large: "Grupo grande", private: "Privado" },
+    en: { small: "Small group", large: "Large group", private: "Private" },
+    de: { small: "Kleine Gruppe", large: "Große Gruppe", private: "Privat" },
+  } as const;
+  const L = map[(locale as Locale) in map ? (locale as Locale) : "es"];
+  if (size === "small") return L.small;
+  if (size === "large") return L.large;
+  return L.private;
 }
 
-export function paymentLabel(method: string): string {
-  const map: Record<string, string> = {
-    card: "Tarjeta",
-    bizum: "Bizum",
-    pay_on_day: "Pago el día del tour",
-    deposit_10: "10% tarjeta + resto efectivo",
+export function paymentLabel(
+  method: string,
+  locale: Locale | string = "es"
+): string {
+  const map: Record<string, Record<string, string>> = {
+    es: {
+      card: "Tarjeta",
+      bizum: "Bizum",
+      pay_on_day: "Pago el día del tour",
+      deposit_10: "10% tarjeta + resto efectivo",
+    },
+    en: {
+      card: "Card",
+      bizum: "Bizum",
+      pay_on_day: "Pay on the day",
+      deposit_10: "10% card + cash balance",
+    },
+    de: {
+      card: "Karte",
+      bizum: "Bizum",
+      pay_on_day: "Zahlung am Tourtag",
+      deposit_10: "10% Karte + Rest bar",
+    },
   };
-  return map[method] ?? method;
+  const L = map[locale as string] || map.es;
+  return L[method] ?? method;
 }

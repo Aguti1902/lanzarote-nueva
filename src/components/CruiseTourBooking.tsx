@@ -153,10 +153,10 @@ export function CruiseTourBooking({
         }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Error al reservar");
+      if (!res.ok) throw new Error(data.error || dict.booking.bookError);
       router.push(`${href("/reserva/confirmacion")}?id=${data.booking.id}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error al reservar");
+      setError(err instanceof Error ? err.message : dict.booking.bookError);
     } finally {
       setLoading(false);
     }

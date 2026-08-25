@@ -123,6 +123,7 @@ export type Dictionary = {
     itineraryTitle: string;
     callDay: string;
     seaDay: string;
+    atSea: string;
     noToursYet: string;
     moreInfo: string;
     meetingPoint: string;
@@ -250,6 +251,26 @@ export type Dictionary = {
     notFound: string;
     notFoundBody: string;
   };
+  tourDetail: {
+    reviews: string;
+    maxPeople: string;
+    alsoAvailable: string;
+    sameItinerary: string;
+    view: string;
+    highlights: string;
+    places: string;
+    included: string;
+    notIncluded: string;
+    recommendations: string;
+    cancellation: string;
+    maxAbbrev: string;
+  };
+  blog: {
+    eyebrow: string;
+    readArticle: string;
+    readMore: string;
+    related: string;
+  };
   booking: {
     date: string;
     name: string;
@@ -271,6 +292,8 @@ export type Dictionary = {
     cashLater: string;
     perAdult: string;
     perVehicle: string;
+    hoursMin: string;
+    bookError: string;
   };
   transferForm: {
     title: string;
@@ -495,6 +518,7 @@ const es: Dictionary = {
     itineraryTitle: "Escalas de este crucero",
     callDay: "Día de escala",
     seaDay: "Día",
+    atSea: "Navegando",
     noToursYet:
       "Aún no ofrecemos excursiones en {port}. Estamos trabajando con otras agencias de confianza para ofrecerle las mejores experiencias en cada puerto.",
     moreInfo: "Más información",
@@ -652,6 +676,26 @@ const es: Dictionary = {
     notFound: "Voucher no encontrado",
     notFoundBody: "Compruebe el localizador o consulte su reserva.",
   },
+  tourDetail: {
+    reviews: "opiniones",
+    maxPeople: "Hasta {n} personas",
+    alsoAvailable: "También disponible en {size}",
+    sameItinerary: "Mismo itinerario desde {price}/adulto.",
+    view: "Ver {name}",
+    highlights: "Lo más destacado",
+    places: "Lugares que visitaremos",
+    included: "Incluido",
+    notIncluded: "No incluido",
+    recommendations: "Recomendaciones",
+    cancellation: "Política de cancelación",
+    maxAbbrev: "máx.",
+  },
+  blog: {
+    eyebrow: "Blog",
+    readArticle: "Leer artículo",
+    readMore: "Leer más",
+    related: "También te puede interesar",
+  },
   booking: {
     date: "Fecha *",
     name: "Nombre completo *",
@@ -673,6 +717,8 @@ const es: Dictionary = {
     cashLater: "Efectivo el día",
     perAdult: "por adulto",
     perVehicle: "por vehículo",
+    hoursMin: "Horas (mín. 4)",
+    bookError: "Error al reservar",
   },
   transferForm: {
     title: "Reservar traslado",
@@ -900,6 +946,7 @@ const en: Dictionary = {
     itineraryTitle: "Ports on this cruise",
     callDay: "Port day",
     seaDay: "Day",
+    atSea: "At sea",
     noToursYet:
       "We do not yet offer excursions in {port}. We are working with trusted partners to bring you the best experiences in every port.",
     moreInfo: "More information",
@@ -1053,6 +1100,26 @@ const en: Dictionary = {
     notFound: "Voucher not found",
     notFoundBody: "Check the locator or look up your booking.",
   },
+  tourDetail: {
+    reviews: "reviews",
+    maxPeople: "Up to {n} people",
+    alsoAvailable: "Also available as {size}",
+    sameItinerary: "Same itinerary from {price}/adult.",
+    view: "View {name}",
+    highlights: "Highlights",
+    places: "Places we will visit",
+    included: "Included",
+    notIncluded: "Not included",
+    recommendations: "Recommendations",
+    cancellation: "Cancellation policy",
+    maxAbbrev: "max.",
+  },
+  blog: {
+    eyebrow: "Blog",
+    readArticle: "Read article",
+    readMore: "Read more",
+    related: "You may also like",
+  },
   booking: {
     date: "Date *",
     name: "Full name *",
@@ -1074,6 +1141,8 @@ const en: Dictionary = {
     cashLater: "Cash on the day",
     perAdult: "per adult",
     perVehicle: "per vehicle",
+    hoursMin: "Hours (min. 4)",
+    bookError: "Booking failed",
   },
   transferForm: {
     title: "Book a transfer",
@@ -1304,6 +1373,7 @@ const de: Dictionary = {
     itineraryTitle: "Häfen dieser Kreuzfahrt",
     callDay: "Hafentag",
     seaDay: "Tag",
+    atSea: "Auf See",
     noToursYet:
       "In {port} bieten wir noch keine Ausflüge an. Wir arbeiten mit vertrauenswürdigen Partnern, um Ihnen in jedem Hafen die besten Erlebnisse zu bieten.",
     moreInfo: "Mehr Infos",
@@ -1462,6 +1532,26 @@ const de: Dictionary = {
     notFound: "Voucher nicht gefunden",
     notFoundBody: "Prüfen Sie den Locator oder suchen Sie Ihre Buchung.",
   },
+  tourDetail: {
+    reviews: "Bewertungen",
+    maxPeople: "Bis zu {n} Personen",
+    alsoAvailable: "Auch verfügbar als {size}",
+    sameItinerary: "Gleiche Route ab {price}/Erwachsener.",
+    view: "{name} ansehen",
+    highlights: "Highlights",
+    places: "Orte, die wir besuchen",
+    included: "Inbegriffen",
+    notIncluded: "Nicht inbegriffen",
+    recommendations: "Empfehlungen",
+    cancellation: "Stornierungsbedingungen",
+    maxAbbrev: "max.",
+  },
+  blog: {
+    eyebrow: "Blog",
+    readArticle: "Artikel lesen",
+    readMore: "Mehr lesen",
+    related: "Das könnte Sie auch interessieren",
+  },
   booking: {
     date: "Datum *",
     name: "Vollständiger Name *",
@@ -1483,6 +1573,8 @@ const de: Dictionary = {
     cashLater: "Bar am Tag",
     perAdult: "pro Erwachsenem",
     perVehicle: "pro Fahrzeug",
+    hoursMin: "Stunden (min. 4)",
+    bookError: "Buchung fehlgeschlagen",
   },
   transferForm: {
     title: "Transfer buchen",

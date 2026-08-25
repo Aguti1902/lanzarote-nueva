@@ -5,6 +5,10 @@ import { PageHero } from "@/components/PageHero";
 import { TransferBookingForm } from "@/components/TransferBookingForm";
 import { getSettings, getTransfersData } from "@/lib/content";
 import { formatPrice } from "@/lib/format";
+import {
+  localizeSettings,
+  localizeTransfers,
+} from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 
@@ -14,19 +18,17 @@ type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = resolveLocale((await params).locale);
-  const [dict, settings] = await Promise.all([
-    getDictionary(locale),
-    getSettings(),
-  ]);
+  const dict = await getDictionary(locale);
+  const settings = await localizeSettings(await getSettings(), locale);
   return { title: settings.transferTitle || dict.transfers.title };
 }
 
 export default async function TrasladosPage({ params }: Props) {
   const locale = resolveLocale((await params).locale);
-  const [transfers, settings, dict] = await Promise.all([
-    getTransfersData(),
-    getSettings(),
-    getDictionary(locale),
+  const dict = await getDictionary(locale);
+  const [transfers, settings] = await Promise.all([
+    localizeTransfers(await getTransfersData(), locale),
+    localizeSettings(await getSettings(), locale),
   ]);
 
   const chips = [
