@@ -10,6 +10,20 @@ export function isSupabaseConfigured(): boolean {
   );
 }
 
+/** Log and continue with local JSON when schema is missing or Supabase is down. */
+export function warnSupabaseFallback(
+  context: string,
+  error: { message?: string } | Error | string | null | undefined
+): void {
+  const message =
+    typeof error === "string"
+      ? error
+      : error && typeof error === "object" && "message" in error
+        ? String(error.message || error)
+        : String(error ?? "unknown error");
+  console.warn(`[supabase] ${context}: fallback a JSON — ${message}`);
+}
+
 /** Server-side client (prefer service role for admin writes). */
 export function getSupabaseAdmin(): SupabaseClient {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

@@ -9,7 +9,11 @@ import type {
   TransferDestination,
   TransfersData,
 } from "@/types";
-import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/client";
+import {
+  getSupabaseAdmin,
+  isSupabaseConfigured,
+  warnSupabaseFallback,
+} from "@/lib/supabase/client";
 import { rowToTour, tourToRow } from "@/lib/supabase/mappers";
 
 const dataDir = path.join(process.cwd(), "src/data");
@@ -68,7 +72,10 @@ export async function getTours(): Promise<Tour[]> {
   if (!isSupabaseConfigured()) return readJson<Tour[]>("tours.json");
 
   const { data, error } = await getSupabaseAdmin().from("tours").select("*");
-  if (error) throw new Error(error.message);
+  if (error) {
+    warnSupabaseFallback("tours", error);
+    return readJson<Tour[]>("tours.json");
+  }
   return (data || []).map((row) =>
     rowToTour(row as Record<string, unknown>)
   );
@@ -181,10 +188,13 @@ export async function getTransfersData(): Promise<TransfersData> {
     sb.from("transfer_destinations").select("*"),
     sb.from("transfer_meta").select("highlights").eq("id", 1).maybeSingle(),
   ]);
-  if (destinationsResult.error) {
-    throw new Error(destinationsResult.error.message);
+  if (destinationsResult.error || metaResult.error) {
+    warnSupabaseFallback(
+      "transfers",
+      destinationsResult.error || metaResult.error
+    );
+    return readJson<TransfersData>("transfers.json");
   }
-  if (metaResult.error) throw new Error(metaResult.error.message);
 
   return {
     destinations: (destinationsResult.data || []).map((row) => ({
@@ -291,7 +301,10 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     .from("blog_posts")
     .select("*")
     .order("date", { ascending: false });
-  if (error) throw new Error(error.message);
+  if (error) {
+    warnSupabaseFallback("blog_posts", error);
+    return readJson<BlogPost[]>("blog.json");
+  }
   return (data || []).map((row) => ({
     slug: String(row.slug),
     title: String(row.title),
@@ -400,30 +413,34 @@ export async function getCruisesData(): Promise<CruisesData> {
         .order("date", { ascending: true })
         .order("arrival_time", { ascending: true }),
     ]);
-    if (metaResult.error) throw new Error(metaResult.error.message);
-    if (callsResult.error) throw new Error(callsResult.error.message);
-    const meta = metaResult.data;
-    return {
-      season: String(meta?.season || defaultCruisesData.season),
-      port: String(meta?.port || defaultCruisesData.port),
-      source: String(meta?.source || ""),
-      updatedAt: meta?.updated_at
-        ? String(meta.updated_at).slice(0, 10)
-        : defaultCruisesData.updatedAt,
-      calls: (callsResult.data || []).map((row) => ({
-        id: String(row.id),
-        date: String(row.date).slice(0, 10),
-        port: String(row.port),
-        company: String(row.company),
-        shipCode: String(row.ship_code || ""),
-        shipName: String(row.ship_name),
-        arrivalTime: String(row.arrival_time || ""),
-        departureTime: String(row.departure_time || ""),
-        season: String(row.season || ""),
-        published: Boolean(row.published),
-        notes: row.notes == null ? undefined : String(row.notes),
-      })),
-    };
+    if (!metaResult.error && !callsResult.error) {
+      const meta = metaResult.data;
+      return {
+        season: String(meta?.season || defaultCruisesData.season),
+        port: String(meta?.port || defaultCruisesData.port),
+        source: String(meta?.source || ""),
+        updatedAt: meta?.updated_at
+          ? String(meta.updated_at).slice(0, 10)
+          : defaultCruisesData.updatedAt,
+        calls: (callsResult.data || []).map((row) => ({
+          id: String(row.id),
+          date: String(row.date).slice(0, 10),
+          port: String(row.port),
+          company: String(row.company),
+          shipCode: String(row.ship_code || ""),
+          shipName: String(row.ship_name),
+          arrivalTime: String(row.arrival_time || ""),
+          departureTime: String(row.departure_time || ""),
+          season: String(row.season || ""),
+          published: Boolean(row.published),
+          notes: row.notes == null ? undefined : String(row.notes),
+        })),
+      };
+    }
+    warnSupabaseFallback(
+      "cruises",
+      metaResult.error || callsResult.error
+    );
   }
 
   try {
@@ -594,8 +611,12 @@ export async function getSettings(): Promise<SiteSettings> {
       .select("data")
       .eq("id", 1)
       .maybeSingle();
-    if (error) throw new Error(error.message);
-    stored = (data?.data as Partial<SiteSettings> | null) || {};
+    if (error) {
+      warnSupabaseFallback("site_settings", error);
+      stored = await readJson<Partial<SiteSettings>>("settings.json");
+    } else {
+      stored = (data?.data as Partial<SiteSettings> | null) || {};
+    }
   } else {
     stored = await readJson<Partial<SiteSettings>>("settings.json");
   }

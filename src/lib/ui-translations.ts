@@ -2,7 +2,11 @@ import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
 import { promises as fs } from "fs";
 import path from "path";
-import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/client";
+import {
+  getSupabaseAdmin,
+  isSupabaseConfigured,
+  warnSupabaseFallback,
+} from "@/lib/supabase/client";
 
 const dataPath = path.join(process.cwd(), "src/data/uiTranslations.json");
 
@@ -13,23 +17,7 @@ export type UiTranslationOverrides = {
 
 const empty: UiTranslationOverrides = { en: {}, de: {} };
 
-export async function getUiTranslationOverrides(): Promise<UiTranslationOverrides> {
-  if (isSupabaseConfigured()) {
-    const { data, error } = await getSupabaseAdmin()
-      .from("ui_translation_overrides")
-      .select("locale, data");
-    if (error) throw new Error(error.message);
-    const overrides: UiTranslationOverrides = { en: {}, de: {} };
-    for (const row of data || []) {
-      const locale = String(row.locale);
-      if (locale === "en" || locale === "de") {
-        overrides[locale] =
-          (row.data as Record<string, string> | null) || {};
-      }
-    }
-    return overrides;
-  }
-
+async function readOverridesJson(): Promise<UiTranslationOverrides> {
   try {
     const raw = await fs.readFile(dataPath, "utf-8");
     const data = JSON.parse(raw) as Partial<UiTranslationOverrides>;
@@ -40,6 +28,28 @@ export async function getUiTranslationOverrides(): Promise<UiTranslationOverride
   } catch {
     return { ...empty, en: {}, de: {} };
   }
+}
+
+export async function getUiTranslationOverrides(): Promise<UiTranslationOverrides> {
+  if (isSupabaseConfigured()) {
+    const { data, error } = await getSupabaseAdmin()
+      .from("ui_translation_overrides")
+      .select("locale, data");
+    if (!error) {
+      const overrides: UiTranslationOverrides = { en: {}, de: {} };
+      for (const row of data || []) {
+        const locale = String(row.locale);
+        if (locale === "en" || locale === "de") {
+          overrides[locale] =
+            (row.data as Record<string, string> | null) || {};
+        }
+      }
+      return overrides;
+    }
+    warnSupabaseFallback("ui_translation_overrides", error);
+  }
+
+  return readOverridesJson();
 }
 
 export async function saveUiTranslationOverrides(

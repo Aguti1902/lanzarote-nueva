@@ -3,7 +3,11 @@ import path from "path";
 import type { Booking, Invoice } from "@/types";
 import { getSettings } from "@/lib/content";
 import { updateBooking } from "@/lib/bookings";
-import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/client";
+import {
+  getSupabaseAdmin,
+  isSupabaseConfigured,
+  warnSupabaseFallback,
+} from "@/lib/supabase/client";
 import { invoiceToRow, rowToInvoice } from "@/lib/supabase/mappers";
 
 const dataPath = path.join(process.cwd(), "src/data/invoices.json");
@@ -28,7 +32,10 @@ export async function getInvoices(): Promise<Invoice[]> {
     .from("invoices")
     .select("*")
     .order("created_at", { ascending: false });
-  if (error) throw new Error(error.message);
+  if (error) {
+    warnSupabaseFallback("invoices", error);
+    return getInvoicesJson();
+  }
   return (data || []).map((row) =>
     rowToInvoice(row as Record<string, unknown>)
   );

@@ -8,7 +8,11 @@ import type {
   PaymentLink,
   SeoRedirect,
 } from "@/types";
-import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/client";
+import {
+  getSupabaseAdmin,
+  isSupabaseConfigured,
+  warnSupabaseFallback,
+} from "@/lib/supabase/client";
 
 const dataPath = path.join(process.cwd(), "src/data/adminExtras.json");
 
@@ -94,29 +98,37 @@ async function replaceTable<T extends { id: string }>(
 async function readData(): Promise<AdminExtrasData> {
   if (!isSupabaseConfigured()) return readDataJson();
 
-  const [
-    paymentLinks,
-    collaborators,
-    feedback,
-    cruisePorts,
-    cruiseGroups,
-    redirects,
-  ] = await Promise.all([
-    readTable<PaymentLink>("payment_links"),
-    readTable<Collaborator>("collaborators"),
-    readTable<CustomerFeedback>("customer_feedback"),
-    readTable<CruisePort>("cruise_ports"),
-    readTable<CruiseGroup>("cruise_groups"),
-    readTable<SeoRedirect>("seo_redirects"),
-  ]);
-  return {
-    paymentLinks,
-    collaborators,
-    feedback,
-    cruisePorts,
-    cruiseGroups,
-    redirects,
-  };
+  try {
+    const [
+      paymentLinks,
+      collaborators,
+      feedback,
+      cruisePorts,
+      cruiseGroups,
+      redirects,
+    ] = await Promise.all([
+      readTable<PaymentLink>("payment_links"),
+      readTable<Collaborator>("collaborators"),
+      readTable<CustomerFeedback>("customer_feedback"),
+      readTable<CruisePort>("cruise_ports"),
+      readTable<CruiseGroup>("cruise_groups"),
+      readTable<SeoRedirect>("seo_redirects"),
+    ]);
+    return {
+      paymentLinks,
+      collaborators,
+      feedback,
+      cruisePorts,
+      cruiseGroups,
+      redirects,
+    };
+  } catch (error) {
+    warnSupabaseFallback(
+      "admin_extras",
+      error instanceof Error ? error : String(error)
+    );
+    return readDataJson();
+  }
 }
 
 async function writeData(data: AdminExtrasData): Promise<void> {

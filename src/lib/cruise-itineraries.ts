@@ -6,7 +6,11 @@ import type {
   CruiseSailing,
   CruiseShoreTour,
 } from "@/types";
-import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/client";
+import {
+  getSupabaseAdmin,
+  isSupabaseConfigured,
+  warnSupabaseFallback,
+} from "@/lib/supabase/client";
 
 const dataPath = path.join(
   process.cwd(),
@@ -50,35 +54,36 @@ export async function getCruiseItinerariesData(): Promise<CruiseItinerariesData>
       toursResult.error ||
       sailingsResult.error ||
       metaResult.error;
-    if (error) throw new Error(error.message);
-
-    cache = {
-      updatedAt: metaResult.data?.updated_at
-        ? String(metaResult.data.updated_at)
-        : "",
-      source: String(metaResult.data?.source || ""),
-      companies: (companiesResult.data || []).map((row) => ({
-        slug: String(row.slug),
-        name: String(row.name),
-        sailingCount: Number(row.sailing_count) || 0,
-        ships: (row.ships as CruiseCompany["ships"] | null) || [],
-      })),
-      shoreTours: (toursResult.data || []).map((row) => ({
-        ...(row.data as CruiseShoreTour),
-        id: String(row.id),
-      })),
-      sailings: (sailingsResult.data || []).map((row) => ({
-        id: String(row.id),
-        companySlug: String(row.company_slug),
-        companyName: String(row.company_name),
-        shipSlug: String(row.ship_slug),
-        shipName: String(row.ship_name),
-        departureDate: String(row.departure_date).slice(0, 10),
-        nights: row.nights == null ? null : Number(row.nights),
-        stops: (row.stops as CruiseSailing["stops"] | null) || [],
-      })),
-    };
-    return cache;
+    if (!error) {
+      cache = {
+        updatedAt: metaResult.data?.updated_at
+          ? String(metaResult.data.updated_at)
+          : "",
+        source: String(metaResult.data?.source || ""),
+        companies: (companiesResult.data || []).map((row) => ({
+          slug: String(row.slug),
+          name: String(row.name),
+          sailingCount: Number(row.sailing_count) || 0,
+          ships: (row.ships as CruiseCompany["ships"] | null) || [],
+        })),
+        shoreTours: (toursResult.data || []).map((row) => ({
+          ...(row.data as CruiseShoreTour),
+          id: String(row.id),
+        })),
+        sailings: (sailingsResult.data || []).map((row) => ({
+          id: String(row.id),
+          companySlug: String(row.company_slug),
+          companyName: String(row.company_name),
+          shipSlug: String(row.ship_slug),
+          shipName: String(row.ship_name),
+          departureDate: String(row.departure_date).slice(0, 10),
+          nights: row.nights == null ? null : Number(row.nights),
+          stops: (row.stops as CruiseSailing["stops"] | null) || [],
+        })),
+      };
+      return cache;
+    }
+    warnSupabaseFallback("cruise_itineraries", error);
   }
 
   try {

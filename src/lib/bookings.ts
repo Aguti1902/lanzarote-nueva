@@ -3,7 +3,11 @@ import path from "path";
 import type { Booking, BookingStatus, CashStatus } from "@/types";
 import { buildBookingId } from "@/lib/booking-ids";
 import { splitPaymentAmounts } from "@/lib/payments";
-import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/client";
+import {
+  getSupabaseAdmin,
+  isSupabaseConfigured,
+  warnSupabaseFallback,
+} from "@/lib/supabase/client";
 import { bookingToRow, rowToBooking } from "@/lib/supabase/mappers";
 
 const dataPath = path.join(process.cwd(), "src/data/bookings.json");
@@ -40,7 +44,10 @@ export async function getBookings(): Promise<Booking[]> {
     .from("bookings")
     .select("*")
     .order("created_at", { ascending: false });
-  if (error) throw new Error(error.message);
+  if (error) {
+    warnSupabaseFallback("bookings", error);
+    return getBookingsJson();
+  }
   return (data || []).map((row) =>
     normalizeBooking(rowToBooking(row as Record<string, unknown>))
   );
