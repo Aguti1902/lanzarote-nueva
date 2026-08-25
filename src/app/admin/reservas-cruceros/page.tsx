@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import type { Booking } from "@/types";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import type { Booking, BookingStatus } from "@/types";
 import { formatDate, formatPrice, paymentLabel } from "@/lib/format";
 import {
   DateRangeFilter,
@@ -9,22 +9,36 @@ import {
   inDateRange,
   type DateRange,
 } from "@/components/admin/DateRangeFilter";
+import { BookingDetailModal } from "@/components/admin/BookingDetailModal";
 
 export default function AdminReservasCrucerosPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [tab, setTab] = useState<"current" | "done">("current");
   const [dateField, setDateField] = useState<"service" | "created">("service");
   const [range, setRange] = useState<DateRange>(emptyDateRange);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch("/api/bookings")
-      .then((r) => r.json())
-      .then((d) => {
-        setBookings(d.bookings || []);
-        setLoading(false);
-      });
+  const load = useCallback(async () => {
+    setLoading(true);
+    const res = await fetch("/api/bookings");
+    const data = await res.json();
+    setBookings(data.bookings || []);
+    setLoading(false);
   }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  async function setStatus(id: string, status: BookingStatus) {
+    await fetch("/api/bookings", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, status }),
+    });
+    await load();
+  }
 
   const cruiseBookings = useMemo(() => {
     return bookings.filter((b) => {
@@ -47,13 +61,18 @@ export default function AdminReservasCrucerosPage() {
     });
   }, [cruiseBookings, tab, dateField, range]);
 
+  const selected = useMemo(
+    () => bookings.find((b) => b.id === selectedId) || null,
+    [bookings, selectedId]
+  );
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold">Reservas de cruceros</h1>
           <p className="mt-1 text-sm text-ink-muted">
-            Reservas con barco / escala indicados por el cliente
+            Pulse el localizador para ver el detalle completo
           </p>
         </div>
         <select
@@ -136,8 +155,14 @@ export default function AdminReservasCrucerosPage() {
               </tr>
             )}
             {filtered.map((b) => (
-              <tr key={b.id} className="border-b border-sand-line">
-                <td className="px-4 py-3 font-semibold">{b.id}</td>
+              <tr
+                key={b.id}
+                className="cursor-pointer border-b border-sand-line hover:bg-sky-soft/40"
+                onClick={() => setSelectedId(b.id)}
+              >
+                <td className="px-4 py-3 font-semibold text-ocean hover:underline">
+                  {b.id}
+                </td>
                 <td className="px-4 py-3">{b.customer.name}</td>
                 <td className="px-4 py-3 text-ink-muted">
                   {formatDate(b.createdAt)}
@@ -164,6 +189,22 @@ export default function AdminReservasCrucerosPage() {
           </tbody>
         </table>
       </div>
+
+      {selected && (
+        <BookingDetailModal
+          booking={selected}
+          onClose={() => setSelectedId(null)}
+          onCancel={async (id) => {
+            await setStatus(id, "cancelled");
+          }}
+          onConfirm={async (id) => {
+            await setStatus(id, "confirmed");
+          }}
+          onComplete={async (id) => {
+            await setStatus(id, "completed");
+          }}
+        />
+      )}
     </div>
   );
 }

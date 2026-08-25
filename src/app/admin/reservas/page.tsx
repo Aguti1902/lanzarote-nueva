@@ -10,12 +10,14 @@ import {
   inDateRange,
   type DateRange,
 } from "@/components/admin/DateRangeFilter";
+import { BookingDetailModal } from "@/components/admin/BookingDetailModal";
 
 export default function AdminReservasPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [filter, setFilter] = useState<"all" | BookingStatus>("all");
   const [dateField, setDateField] = useState<"service" | "created">("service");
   const [range, setRange] = useState<DateRange>(emptyDateRange);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(async () => {
@@ -65,13 +67,18 @@ export default function AdminReservasPage() {
     });
   }, [bookings, filter, dateField, range]);
 
+  const selected = useMemo(
+    () => bookings.find((b) => b.id === selectedId) || null,
+    [bookings, selectedId]
+  );
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-ink">Reservas</h1>
           <p className="mt-1 text-sm text-ink-muted">
-            Estados, facturas, cobro en efectivo y pagos mixtos
+            Pulse el localizador para ver todos los detalles
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -141,15 +148,32 @@ export default function AdminReservasPage() {
             )}
             {!loading &&
               filtered.map((b) => (
-                <tr key={b.id} className="border-b border-sand-line/70 align-top">
-                  <td className="px-4 py-3 font-bold text-ocean">{b.id}</td>
+                <tr
+                  key={b.id}
+                  className="border-b border-sand-line/70 align-top hover:bg-sky-soft/40"
+                >
+                  <td className="px-4 py-3">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedId(b.id)}
+                      className="font-bold text-ocean hover:underline"
+                    >
+                      {b.id}
+                    </button>
+                  </td>
                   <td className="px-4 py-3 whitespace-nowrap">
                     {formatDate(b.date)}
                   </td>
                   <td className="px-4 py-3 max-w-[260px]">
-                    <p className="font-medium">{b.tourTitle}</p>
-                    <p className="text-xs text-ink-muted">{b.customer.name}</p>
-                    <p className="text-xs text-ink-muted">{b.customer.email}</p>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedId(b.id)}
+                      className="text-left"
+                    >
+                      <p className="font-medium hover:text-ocean">{b.tourTitle}</p>
+                      <p className="text-xs text-ink-muted">{b.customer.name}</p>
+                      <p className="text-xs text-ink-muted">{b.customer.email}</p>
+                    </button>
                   </td>
                   <td className="px-4 py-3">
                     <p>{paymentLabel(b.paymentMethod)}</p>
@@ -158,6 +182,7 @@ export default function AdminReservasPage() {
                       <Link
                         href={`/admin/facturas?id=${b.invoiceId}`}
                         className="text-xs font-bold text-ocean hover:underline"
+                        onClick={(e) => e.stopPropagation()}
                       >
                         {b.invoiceId}
                       </Link>
@@ -184,6 +209,13 @@ export default function AdminReservasPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-col gap-1">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedId(b.id)}
+                        className="text-left text-xs font-bold text-ocean hover:underline"
+                      >
+                        Detalles
+                      </button>
                       {(b.amountDueCash ?? 0) > 0 &&
                         b.cashStatus === "pending" &&
                         b.status !== "cancelled" && (
@@ -238,6 +270,28 @@ export default function AdminReservasPage() {
           </tbody>
         </table>
       </div>
+
+      {selected && (
+        <BookingDetailModal
+          booking={selected}
+          onClose={() => setSelectedId(null)}
+          onCancel={async (id) => {
+            await setStatus(id, "cancelled");
+          }}
+          onCollectCash={async (id) => {
+            await collectCash(id);
+          }}
+          onIssueInvoice={async (id) => {
+            await issueInvoice(id);
+          }}
+          onConfirm={async (id) => {
+            await setStatus(id, "confirmed");
+          }}
+          onComplete={async (id) => {
+            await setStatus(id, "completed");
+          }}
+        />
+      )}
     </div>
   );
 }
