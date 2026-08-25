@@ -1,5 +1,6 @@
 import type { Booking } from "@/types";
 import { formatDateShort, paymentLabel } from "@/lib/format";
+import { BRAND_LOGO_DATA_URI } from "@/lib/brand-logo-data";
 
 export type VoucherCompany = {
   brandName: string;
@@ -115,9 +116,9 @@ export function buildVoucherHtml(
   };
 
   const origin = (options?.origin || "").replace(/\/$/, "");
-  const logoUrl =
-    options?.logoUrl ||
-    (origin ? `${origin}/images/brand/logo.png` : "/images/brand/logo.png");
+  // Always embed logo as data URI so print/download/blob windows never break,
+  // and it stays visible on the voucher (logo is white → needs dark plate).
+  const logoUrl = options?.logoUrl || BRAND_LOGO_DATA_URI;
   const verifyUrl = origin
     ? `${origin}/es/voucher?id=${encodeURIComponent(booking.id)}`
     : `LET:${booking.id}`;
@@ -198,7 +199,15 @@ export function buildVoucherHtml(
     align-items: flex-start;
     border-bottom: 1px solid var(--line);
   }
-  .brand img { height: 52px; width: auto; display: block; }
+  .brand-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--header);
+    padding: 10px 14px;
+    border-radius: 6px;
+  }
+  .brand-logo img { height: 52px; width: auto; display: block; }
   .brand .legal {
     margin-top: 10px;
     font-size: 12px;
@@ -312,7 +321,9 @@ export function buildVoucherHtml(
     <div class="topbar"></div>
     <div class="head">
       <div class="brand">
-        <img src="${esc(logoUrl)}" alt="${esc(company.brandName)}" />
+        <div class="brand-logo">
+          <img src="${logoUrl}" alt="${esc(company.brandName)}" width="113" height="75" />
+        </div>
         <p class="legal">
           <strong>${esc(company.legalName)}</strong><br />
           ${esc(company.address)}<br />
