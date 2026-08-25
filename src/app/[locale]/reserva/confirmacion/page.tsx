@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, FileText, UserRound, XCircle } from "lucide-react";
 import { getBookings } from "@/lib/bookings";
 import { formatDate, formatPrice } from "@/lib/format";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -31,19 +31,24 @@ export default async function ConfirmacionPage({ params, searchParams }: Props) 
   }
 
   return (
-    <div className="mx-auto flex max-w-lg flex-col items-center px-4 py-20 text-center md:px-6">
+    <div className="mx-auto flex max-w-2xl flex-col items-center px-4 py-16 text-center md:px-6 md:py-20">
       <CheckCircle2 className="h-14 w-14 text-success" />
-      <h1 className="mt-5 text-3xl font-bold text-ink md:text-4xl">
+      <h1 className="mt-5 font-display text-3xl text-ink md:text-4xl">
         {dict.confirmation.title}
       </h1>
-      <p className="mt-3 text-ink-muted">{dict.confirmation.body}</p>
+      <p className="mt-3 max-w-lg text-ink-muted">{dict.confirmation.body}</p>
 
       {booking ? (
-        <div className="mt-8 w-full rounded-lg bg-white p-6 text-left ring-1 ring-sand-line">
-          <p className="text-xs tracking-wide text-ink-muted uppercase">
-            {dict.confirmation.locator}
-          </p>
-          <p className="text-2xl font-bold text-ocean">{booking.id}</p>
+        <div className="mt-8 w-full bg-white p-6 text-left ring-1 ring-sand-line md:p-8">
+          <div className="flex flex-wrap items-end justify-between gap-3 border-b border-sand-line pb-4">
+            <div>
+              <p className="text-xs tracking-wide text-ink-muted uppercase">
+                {dict.confirmation.locator}
+              </p>
+              <p className="text-2xl font-bold text-ocean">{booking.id}</p>
+            </div>
+            <p className="text-sm text-ink-muted">{formatDate(booking.date)}</p>
+          </div>
           <dl className="mt-4 space-y-2 text-sm">
             <div className="flex justify-between gap-4">
               <dt className="text-ink-muted">{dict.confirmation.service}</dt>
@@ -90,6 +95,32 @@ export default async function ConfirmacionPage({ params, searchParams }: Props) 
               </dd>
             </div>
           </dl>
+
+          <div className="mt-6 grid gap-2 sm:grid-cols-2">
+            <Link
+              href={localePath(locale, `/voucher?id=${encodeURIComponent(booking.id)}`)}
+              className="inline-flex items-center justify-center gap-2 bg-ocean px-4 py-3 text-sm font-bold text-white hover:bg-ocean-deep"
+            >
+              <FileText className="h-4 w-4" />
+              {dict.confirmation.viewVoucher}
+            </Link>
+            <Link
+              href={localePath(locale, "/gestionar-reserva")}
+              className="inline-flex items-center justify-center gap-2 border border-ocean/40 px-4 py-3 text-sm font-bold text-ocean hover:bg-sky-soft"
+            >
+              <UserRound className="h-4 w-4" />
+              {dict.confirmation.manage}
+            </Link>
+            {booking.status !== "cancelled" && booking.status !== "completed" && (
+              <Link
+                href={localePath(locale, "/cancelar-reserva")}
+                className="inline-flex items-center justify-center gap-2 border border-red-300 px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50 sm:col-span-2"
+              >
+                <XCircle className="h-4 w-4" />
+                {dict.confirmation.cancel}
+              </Link>
+            )}
+          </div>
         </div>
       ) : (
         <p className="mt-6 text-sm text-ink-muted">

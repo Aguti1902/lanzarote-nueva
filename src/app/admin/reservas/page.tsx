@@ -18,6 +18,7 @@ export default function AdminReservasPage() {
   const [dateField, setDateField] = useState<"service" | "created">("service");
   const [range, setRange] = useState<DateRange>(emptyDateRange);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [modalView, setModalView] = useState<"details" | "cancel">("details");
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(async () => {
@@ -32,11 +33,15 @@ export default function AdminReservasPage() {
     load();
   }, [load]);
 
-  async function setStatus(id: string, status: BookingStatus) {
+  async function setStatus(
+    id: string,
+    status: BookingStatus,
+    cancellationReason?: string
+  ) {
     await fetch("/api/bookings", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, status }),
+      body: JSON.stringify({ id, status, cancellationReason }),
     });
     await load();
   }
@@ -155,7 +160,10 @@ export default function AdminReservasPage() {
                   <td className="px-4 py-3">
                     <button
                       type="button"
-                      onClick={() => setSelectedId(b.id)}
+                      onClick={() => {
+                        setModalView("details");
+                        setSelectedId(b.id);
+                      }}
                       className="font-bold text-ocean hover:underline"
                     >
                       {b.id}
@@ -167,7 +175,10 @@ export default function AdminReservasPage() {
                   <td className="px-4 py-3 max-w-[260px]">
                     <button
                       type="button"
-                      onClick={() => setSelectedId(b.id)}
+                      onClick={() => {
+                        setModalView("details");
+                        setSelectedId(b.id);
+                      }}
                       className="text-left"
                     >
                       <p className="font-medium hover:text-ocean">{b.tourTitle}</p>
@@ -211,7 +222,10 @@ export default function AdminReservasPage() {
                     <div className="flex flex-col gap-1">
                       <button
                         type="button"
-                        onClick={() => setSelectedId(b.id)}
+                        onClick={() => {
+                          setModalView("details");
+                          setSelectedId(b.id);
+                        }}
                         className="text-left text-xs font-bold text-ocean hover:underline"
                       >
                         Detalles
@@ -257,10 +271,13 @@ export default function AdminReservasPage() {
                       {b.status !== "cancelled" && (
                         <button
                           type="button"
-                          onClick={() => setStatus(b.id, "cancelled")}
+                          onClick={() => {
+                            setModalView("cancel");
+                            setSelectedId(b.id);
+                          }}
                           className="text-left text-xs font-medium text-red-600 hover:underline"
                         >
-                          Cancelar (+ abono)
+                          Cancelar
                         </button>
                       )}
                     </div>
@@ -274,9 +291,15 @@ export default function AdminReservasPage() {
       {selected && (
         <BookingDetailModal
           booking={selected}
-          onClose={() => setSelectedId(null)}
-          onCancel={async (id) => {
-            await setStatus(id, "cancelled");
+          initialView={modalView}
+          onClose={() => {
+            setSelectedId(null);
+            setModalView("details");
+          }}
+          onCancel={async (id, reason) => {
+            await setStatus(id, "cancelled", reason);
+            setSelectedId(null);
+            setModalView("details");
           }}
           onCollectCash={async (id) => {
             await collectCash(id);

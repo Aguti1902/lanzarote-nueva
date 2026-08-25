@@ -71,6 +71,22 @@ export function Footer() {
                   {dict.nav.contact}
                 </Link>
               </li>
+              <li>
+                <Link
+                  href={href("/gestionar-reserva")}
+                  className="transition hover:text-white"
+                >
+                  {dict.nav.manageBooking}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={href("/cancelar-reserva")}
+                  className="transition hover:text-white"
+                >
+                  {dict.cancel.title}
+                </Link>
+              </li>
             </ul>
           </div>
 

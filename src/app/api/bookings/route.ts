@@ -3,12 +3,14 @@ import {
   addBooking,
   getBookings,
   markCashCollected,
+  updateBooking,
   updateBookingStatus,
 } from "@/lib/bookings";
 import {
   createCreditNoteForBooking,
   createInvoiceForBooking,
 } from "@/lib/invoices";
+import { assessCancellation } from "@/lib/cancellation";
 import type { BookingStatus, PaymentMethod } from "@/types";
 
 export async function GET() {
@@ -70,10 +72,11 @@ export async function POST(request: Request) {
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
-    const { id, status, collectCash } = body as {
+    const { id, status, collectCash, cancellationReason } = body as {
       id: string;
       status?: BookingStatus;
       collectCash?: boolean;
+      cancellationReason?: string;
     };
     if (!id) {
       return NextResponse.json({ error: "Datos inválidos" }, { status: 400 });
@@ -91,17 +94,37 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: "Datos inválidos" }, { status: 400 });
     }
 
+    if (status === "cancelled") {
+      const existing = (await getBookings()).find((b) => b.id === id);
+      if (!existing) {
+        return NextResponse.json({ error: "No encontrada" }, { status: 404 });
+      }
+      const assessment = assessCancellation(existing);
+      const booking = await updateBooking(id, {
+        status: "cancelled",
+        cancelledAt: new Date().toISOString(),
+        cancellationFee: assessment.fee,
+        cancellationReason:
+          (cancellationReason && String(cancellationReason).trim()) ||
+          existing.cancellationReason ||
+          "admin",
+      });
+      if (!booking) {
+        return NextResponse.json({ error: "No encontrada" }, { status: 404 });
+      }
+      let creditNote = null;
+      if (assessment.free) {
+        creditNote = await createCreditNoteForBooking(booking);
+      }
+      return NextResponse.json({ booking, creditNote, assessment });
+    }
+
     const booking = await updateBookingStatus(id, status);
     if (!booking) {
       return NextResponse.json({ error: "No encontrada" }, { status: 404 });
     }
 
-    let creditNote = null;
-    if (status === "cancelled") {
-      creditNote = await createCreditNoteForBooking(booking);
-    }
-
-    return NextResponse.json({ booking, creditNote });
+    return NextResponse.json({ booking });
   } catch {
     return NextResponse.json({ error: "Error al actualizar" }, { status: 500 });
   }
