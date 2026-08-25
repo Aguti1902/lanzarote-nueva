@@ -14,6 +14,8 @@ import {
 import { BookingWidget } from "@/components/BookingWidget";
 import { getTourBySlug, getTours } from "@/lib/content";
 import { formatPrice, groupSizeLabel } from "@/lib/format";
+import { localizeTour, localizeTours } from "@/lib/localize-content";
+import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
 
@@ -22,19 +24,27 @@ export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const tour = await getTourBySlug(slug);
-  if (!tour) return { title: "Excursión" };
+  const { slug, locale: raw } = await params;
+  const locale = resolveLocale(raw);
+  const dict = await getDictionary(locale);
+  const base = await getTourBySlug(slug);
+  if (!base) return { title: dict.nav.excursions };
+  const tour = await localizeTour(base, locale);
   return { title: tour.shortTitle, description: tour.summary };
 }
 
 export default async function TourDetailPage({ params }: Props) {
   const { slug, locale: raw } = await params;
   const locale = resolveLocale(raw);
-  const tour = await getTourBySlug(slug);
-  if (!tour) notFound();
+  const dict = await getDictionary(locale);
+  const base = await getTourBySlug(slug);
+  if (!base) notFound();
 
-  const tours = await getTours();
+  const [tour, tours] = await Promise.all([
+    localizeTour(base, locale),
+    localizeTours(await getTours(), locale),
+  ]);
+
   const sibling =
     tour.groupSize === "small"
       ? tours.find(
@@ -67,8 +77,10 @@ export default async function TourDetailPage({ params }: Props) {
         <div className="absolute inset-x-0 bottom-0 mx-auto max-w-6xl px-4 pb-8 md:px-6">
           {tour.groupSize && (
             <span className="mb-3 inline-block rounded-md bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur">
-              {groupSizeLabel(tour.groupSize)}
-              {tour.maxGroup ? ` · máx. ${tour.maxGroup}` : ""}
+              {groupSizeLabel(tour.groupSize, locale)}
+              {tour.maxGroup
+                ? ` · ${dict.tourDetail.maxAbbrev} ${tour.maxGroup}`
+                : ""}
             </span>
           )}
           <h1 className="max-w-3xl font-display text-3xl text-white md:text-5xl">
@@ -84,7 +96,7 @@ export default async function TourDetailPage({ params }: Props) {
               <Star className="h-4 w-4 fill-rating text-rating" />
               {tour.rating.toFixed(1)}
               <span className="font-normal text-ink-muted">
-                ({tour.reviewCount} opiniones)
+                ({tour.reviewCount} {dict.tourDetail.reviews})
               </span>
             </span>
             <span className="inline-flex items-center gap-1">
@@ -94,7 +106,7 @@ export default async function TourDetailPage({ params }: Props) {
             {tour.maxGroup && (
               <span className="inline-flex items-center gap-1">
                 <Users className="h-4 w-4" />
-                Hasta {tour.maxGroup} personas
+                {dict.tourDetail.maxPeople.replace("{n}", String(tour.maxGroup))}
               </span>
             )}
             <span className="inline-flex items-center gap-1">
@@ -129,23 +141,28 @@ export default async function TourDetailPage({ params }: Props) {
           {sibling && (
             <div className="mt-6 rounded-lg border border-ocean/20 bg-ocean/5 p-4 text-sm">
               <p className="font-medium text-ocean-deep">
-                También disponible en{" "}
-                {groupSizeLabel(sibling.groupSize).toLowerCase()}
+                {dict.tourDetail.alsoAvailable.replace(
+                  "{size}",
+                  groupSizeLabel(sibling.groupSize, locale).toLowerCase()
+                )}
               </p>
               <p className="mt-1 text-ink-muted">
-                Mismo itinerario desde {formatPrice(sibling.priceAdult)}/adulto.{" "}
+                {dict.tourDetail.sameItinerary.replace(
+                  "{price}",
+                  formatPrice(sibling.priceAdult, "EUR", locale)
+                )}{" "}
                 <Link
                   href={localePath(locale, `/excursiones/${sibling.slug}`)}
                   className="font-semibold text-ocean underline-offset-2 hover:underline"
                 >
-                  Ver {sibling.shortTitle}
+                  {dict.tourDetail.view.replace("{name}", sibling.shortTitle)}
                 </Link>
               </p>
             </div>
           )}
 
           <section className="mt-10">
-            <h2 className="font-display text-2xl">Lo más destacado</h2>
+            <h2 className="font-display text-2xl">{dict.tourDetail.highlights}</h2>
             <ul className="mt-4 space-y-2">
               {tour.highlights.map((h) => (
                 <li key={h} className="flex gap-2 text-ink-muted">
@@ -157,7 +174,7 @@ export default async function TourDetailPage({ params }: Props) {
           </section>
 
           <section className="mt-10">
-            <h2 className="font-display text-2xl">Lugares que visitaremos</h2>
+            <h2 className="font-display text-2xl">{dict.tourDetail.places}</h2>
             <ul className="mt-4 grid gap-2 sm:grid-cols-2">
               {tour.places.map((p) => (
                 <li
@@ -173,7 +190,7 @@ export default async function TourDetailPage({ params }: Props) {
 
           <section className="mt-10 grid gap-6 sm:grid-cols-2">
             <div>
-              <h2 className="font-display text-2xl">Incluido</h2>
+              <h2 className="font-display text-2xl">{dict.tourDetail.included}</h2>
               <ul className="mt-4 space-y-2 text-sm text-ink-muted">
                 {tour.included.map((i) => (
                   <li key={i} className="flex gap-2">
@@ -184,7 +201,9 @@ export default async function TourDetailPage({ params }: Props) {
               </ul>
             </div>
             <div>
-              <h2 className="font-display text-2xl">No incluido</h2>
+              <h2 className="font-display text-2xl">
+                {dict.tourDetail.notIncluded}
+              </h2>
               <ul className="mt-4 space-y-2 text-sm text-ink-muted">
                 {tour.notIncluded.map((i) => (
                   <li key={i} className="flex gap-2">
@@ -197,7 +216,9 @@ export default async function TourDetailPage({ params }: Props) {
           </section>
 
           <section className="mt-10">
-            <h2 className="font-display text-2xl">Recomendaciones</h2>
+            <h2 className="font-display text-2xl">
+              {dict.tourDetail.recommendations}
+            </h2>
             <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-ink-muted">
               {tour.recommendations.map((r) => (
                 <li key={r}>{r}</li>
@@ -206,7 +227,9 @@ export default async function TourDetailPage({ params }: Props) {
           </section>
 
           <section className="mt-10 rounded-xl bg-surface p-5 ring-1 ring-sand-line">
-            <h2 className="font-display text-xl">Política de cancelación</h2>
+            <h2 className="font-display text-xl">
+              {dict.tourDetail.cancellation}
+            </h2>
             <p className="mt-2 text-sm text-ink-muted">
               {tour.cancellationPolicy}
             </p>

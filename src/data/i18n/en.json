@@ -1,0 +1,460 @@
+{
+  "settings": {
+    "hours": "Contact us 24/7",
+    "tagline": "LET us guide you",
+    "homeHeadline": "Lanzarote Experience Tours",
+    "homeSubheadline": "LET us guide you",
+    "aboutTitle": "Lanzarote Experience Tours",
+    "aboutLead": "LET is a local family business offering guided tours in Lanzarote. We focus on the experience, and the excursion is the means by which we achieve our goal: your satisfaction.",
+    "aboutText": "This allows us to monitor quality by offering excursions in small groups, in our own minibuses and in Spanish only.\n\nLanzarote (a Biosphere Reserve) has a landscape unlike anywhere else in the world, and visitors often feel as though they have landed on another planet. The island is known for its silence, tranquillity, the warm welcome of its people and a volcanic landscape masterfully shaped by artists such as César Manrique and Jesús Soto.\n\nWe organise guided tours directly, without intermediaries, in Spanish and in small groups (maximum 14 people). We pick you up at the door of your accommodation.",
+    "aboutValues": "Customer First\nIntegrity\nQuality\nSustainability\nTeamwork\nRoom for Creativity",
+    "aboutPromise": "We monitor quality by offering excursions in small groups, in our own minibuses and in Spanish only. Your satisfaction is our goal.",
+    "excursionsTitle": "Activities and guided excursions in Lanzarote",
+    "excursionsIntro": "Excursions, activities and guided tours for discovering the best of Lanzarote in small groups and in Spanish only.",
+    "excursionsText": "We organise guided tours directly, without intermediaries, with pickup from your accommodation and small groups (maximum 14 people).\n\nEach route is designed so you can enjoy Timanfaya, Jameos del Agua, César Manrique's work and the island's less crowded corners, with plenty of time and clear explanations.",
+    "blogTitle": "Lanzarote Blog",
+    "blogIntro": "Ideas and tips to help you make the most of your visit to the island.",
+    "blogText": "On our blog you will find practical guides, seasonal recommendations and answers to the most common questions people have before booking an excursion or transfer.\n\nWe update our content to help you plan your stay in Lanzarote more effectively.",
+    "cruiseHeadline": "Shore excursions in the Canary Islands",
+    "cruiseIntro": "Make the most of your cruise call in Lanzarote (2026–2027 season, Puerto de Los Mármoles) and discover the island on excursions tailored to your all-aboard time.",
+    "cruiseText": "We design shore excursions around the actual time available during your call: pickup at the pier, a tour of the essential sights and return to the ship with time to spare.\n\nCheck the cruise calendar, choose your cruise line and book the excursion that best fits your all-aboard time.",
+    "transferTitle": "Private airport ↔ hotel transfers",
+    "transferIntro": "Spend more time enjoying the island and less time at the airport by booking a private transfer to your hotel. Our driver will be waiting for you in the arrivals terminal.",
+    "transferText": "We offer private door-to-door transfers between Lanzarote Airport (ACE) and the main tourist resorts: Playa Blanca, Puerto del Carmen, Costa Teguise, Puerto Calero and more.\n\nYou can book a one-way arrival transfer, a one-way departure transfer or a return transfer. The price is per vehicle (not per person), and the driver will be waiting with a sign bearing your name.\n\nIf your flight is delayed, we adjust your pickup time. Give us your flight number and hotel when booking for a stress-free arrival."
+  },
+  "tours": {
+    "timanfaya-experience": {
+      "title": "Timanfaya and the Mountains of Fire Experience Tour",
+      "shortTitle": "Timanfaya and the Mountains of Fire",
+      "duration": "Approx. 5 hours",
+      "summary": "Discover Timanfaya National Park, Los Hervideros, El Golfo, the Janubio Salt Pans and La Geria in a small group and in Spanish only.",
+      "description": "Guided tour of Timanfaya National Park and the Mountains of Fire. Includes geothermal demonstrations, the Route of the Volcanoes, the Timanfaya coast (Los Hervideros and El Golfo), panoramic views of the Janubio Salt Pans and a tasting in La Geria. Small groups of no more than 14 people, in Spanish only. Pickup at the door of your accommodation.",
+      "highlights": [
+        "Small group: maximum 14 people",
+        "Spanish only",
+        "Pickup from your accommodation",
+        "Admission to Timanfaya included",
+        "Air-conditioned minibus with Wi-Fi"
+      ],
+      "places": [
+        "Timanfaya National Park",
+        "Los Hervideros",
+        "El Golfo and the Green Lagoon",
+        "Janubio Salt Pans",
+        "La Geria"
+      ],
+      "included": [
+        "Transport in an air-conditioned minibus",
+        "Official Spanish-speaking guide",
+        "Admission to Timanfaya National Park",
+        "Tourist insurance"
+      ],
+      "notIncluded": [
+        "Camel ride (optional)",
+        "Lunch"
+      ],
+      "recommendations": [
+        "Comfortable footwear",
+        "Camera",
+        "Light jacket"
+      ],
+      "cancellationPolicy": "Free cancellation up to 48 hours before pickup.",
+      "languages": [
+        "English"
+      ]
+    },
+    "grand-tour-experience": {
+      "title": "Grand Tour Experience: the landscape's legacy",
+      "shortTitle": "Grand Tour Experience",
+      "duration": "Approx. 8 hours",
+      "summary": "The entire island in one day: north and south, Manrique, Timanfaya, Jameos del Agua, Mirador del Río and more.",
+      "description": "The Grand Tour Experience covers Lanzarote's essential sights in one day: Timanfaya, the southern coast, César Manrique sites in the north (Jameos del Agua, Cueva de los Verdes or Mirador del Río, depending on the itinerary), and the island's unique landscapes. Small group, in Spanish only, with pickup from your accommodation.",
+      "highlights": [
+        "Complete north and south itinerary",
+        "Maximum 14 people",
+        "Spanish only",
+        "Pickup from your accommodation"
+      ],
+      "places": [
+        "Timanfaya",
+        "Jameos del Agua",
+        "Cueva de los Verdes",
+        "Mirador del Río",
+        "La Geria"
+      ],
+      "included": [
+        "Transport by minibus",
+        "Official Spanish-speaking guide",
+        "Admission tickets specified in the itinerary",
+        "Tourist insurance"
+      ],
+      "notIncluded": [
+        "Lunch",
+        "Drinks"
+      ],
+      "recommendations": [
+        "Full-day tour: bring water and a snack",
+        "Comfortable footwear",
+        "Sunscreen"
+      ],
+      "cancellationPolicy": "Free cancellation up to 48 hours before pickup.",
+      "languages": [
+        "English"
+      ]
+    },
+    "tour-privado": {
+      "title": "Private Lanzarote Tour: Minibus + Tour Guide",
+      "shortTitle": "Private Tour",
+      "duration": "Tailor-made",
+      "summary": "A minibus and official guide exclusively for your group. An itinerary tailored to you.",
+      "description": "Design your day in Lanzarote with a private minibus and official tour guide. Ideal for families, groups of friends or cruise passengers who want to explore at their own pace with complete flexibility.",
+      "highlights": [
+        "Vehicle and guide exclusively for your group",
+        "Customised itinerary",
+        "Ideal for families and groups",
+        "Flexible schedule"
+      ],
+      "places": [
+        "As agreed in your itinerary"
+      ],
+      "included": [
+        "Private minibus",
+        "Official guide",
+        "Tourist insurance"
+      ],
+      "notIncluded": [
+        "Admission to visitor attractions",
+        "Meals"
+      ],
+      "recommendations": [
+        "Tell us your preferences when booking"
+      ],
+      "cancellationPolicy": "Free cancellation up to 48 hours in advance.",
+      "languages": [
+        "English"
+      ]
+    },
+    "cesar-manrique": {
+      "title": "César Manrique Experience Tour",
+      "shortTitle": "César Manrique Experience",
+      "duration": "Approx. 6 hours",
+      "summary": "One man's talent and love for his homeland: the Foundation, Jameos del Agua, Mirador del Río and the Cactus Garden.",
+      "description": "A tour dedicated to the work of César Manrique: César Manrique Foundation, Jameos del Agua, Mirador del Río and the Cactus Garden. Small groups and in Spanish only.",
+      "highlights": [
+        "Focus on César Manrique",
+        "Maximum 14 people",
+        "Spanish only"
+      ],
+      "places": [
+        "César Manrique Foundation",
+        "Jameos del Agua",
+        "Mirador del Río",
+        "Cactus Garden"
+      ],
+      "included": [
+        "Transport",
+        "Official guide",
+        "Admission tickets on the itinerary"
+      ],
+      "notIncluded": [
+        "Lunch"
+      ],
+      "recommendations": [
+        "Comfortable footwear"
+      ],
+      "cancellationPolicy": "Free cancellation up to 48 hours in advance.",
+      "languages": [
+        "English"
+      ]
+    },
+    "ruta-vino": {
+      "title": "Lanzarote Wine Tour",
+      "shortTitle": "Wine Tour",
+      "duration": "Approx. 4 hours",
+      "summary": "Discover La Geria, its volcanoes and Malvasía wine tastings at local wineries.",
+      "description": "A wine experience through La Geria: vineyards planted in hollows, wineries and a tasting of Lanzarote wines.",
+      "highlights": [
+        "Wine tastings",
+        "Small group",
+        "Spanish only"
+      ],
+      "places": [
+        "La Geria",
+        "Local wineries"
+      ],
+      "included": [
+        "Transport",
+        "Guide",
+        "Tastings"
+      ],
+      "notIncluded": [
+        "Winery purchases"
+      ],
+      "recommendations": [
+        "Alcohol tastings are not suitable for minors"
+      ],
+      "cancellationPolicy": "Free cancellation up to 48 hours in advance.",
+      "languages": [
+        "English"
+      ]
+    },
+    "senderismo-norte": {
+      "title": "Hiking in Northern Lanzarote: Ermita de Las Nieves – El Bosquecillo – Haría",
+      "shortTitle": "Northern Lanzarote Hike",
+      "duration": "Approx. 5 hours",
+      "summary": "A guided hike through the green north of Lanzarote with a local guide.",
+      "description": "Guided hike through Ermita de Las Nieves, El Bosquecillo and the Haría valley. Ideal for nature lovers and panoramic views.",
+      "highlights": [
+        "Hiking guide",
+        "Small group",
+        "Northern landscapes"
+      ],
+      "places": [
+        "Ermita de Las Nieves",
+        "El Bosquecillo",
+        "Haría"
+      ],
+      "included": [
+        "Transport",
+        "Guide",
+        "Insurance"
+      ],
+      "notIncluded": [
+        "Food",
+        "Walking poles"
+      ],
+      "recommendations": [
+        "Hiking footwear",
+        "Water",
+        "Hat"
+      ],
+      "cancellationPolicy": "Free cancellation up to 48 hours in advance.",
+      "languages": [
+        "English"
+      ]
+    },
+    "graciosa-catamaran": {
+      "title": "La Graciosa by Catamaran",
+      "shortTitle": "La Graciosa by Catamaran",
+      "duration": "Approx. 8 hours",
+      "summary": "A full day in La Graciosa by catamaran: beaches, snorkelling and a unique atmosphere.",
+      "description": "Catamaran excursion to the island of La Graciosa. Free time on the beaches, the option to go snorkelling and lunch on board, subject to availability.",
+      "highlights": [
+        "Catamaran",
+        "La Graciosa beaches",
+        "Full day"
+      ],
+      "places": [
+        "Órzola",
+        "La Graciosa"
+      ],
+      "included": [
+        "Overland transport",
+        "Ferry/catamaran",
+        "Guide"
+      ],
+      "notIncluded": [
+        "Extras on board"
+      ],
+      "recommendations": [
+        "Swimwear",
+        "Towel",
+        "Sunscreen"
+      ],
+      "cancellationPolicy": "Free cancellation up to 48 hours in advance.",
+      "languages": [
+        "English"
+      ]
+    },
+    "delfines-atardecer": {
+      "title": "Dolphin-Watching Excursion at a Romantic Lanzarote Sunset",
+      "shortTitle": "Dolphins at Sunset",
+      "duration": "Approx. 3 hours",
+      "summary": "A sunset boat trip with dolphin watching and views of the setting sun.",
+      "description": "A sunset cruise to spot dolphins (subject to sightings in the wild) and enjoy the sun setting off the coast of Lanzarote.",
+      "highlights": [
+        "Sunset",
+        "Dolphin watching",
+        "Romantic atmosphere"
+      ],
+      "places": [
+        "Lanzarote coast"
+      ],
+      "included": [
+        "Boat trip",
+        "Crew"
+      ],
+      "notIncluded": [
+        "Drinks"
+      ],
+      "recommendations": [
+        "Warm clothing for the wind"
+      ],
+      "cancellationPolicy": "Free cancellation up to 48 hours in advance.",
+      "languages": [
+        "English"
+      ]
+    },
+    "mercadillo-teguise": {
+      "title": "Teguise Market",
+      "shortTitle": "Teguise Market",
+      "duration": "Approx. 4 hours",
+      "summary": "Visit the traditional Sunday market in Teguise with transport and a guide.",
+      "description": "Every Sunday, the village of Teguise fills with handicrafts, local produce and Canarian atmosphere. Includes transport and assistance.",
+      "highlights": [
+        "Sundays",
+        "Local handicrafts",
+        "Historic village"
+      ],
+      "places": [
+        "Teguise"
+      ],
+      "included": [
+        "Transport",
+        "Assistance"
+      ],
+      "notIncluded": [
+        "Purchases"
+      ],
+      "recommendations": [
+        "Cash for the market"
+      ],
+      "cancellationPolicy": "Free cancellation up to 48 hours in advance.",
+      "languages": [
+        "English"
+      ]
+    }
+  },
+  "blog": {
+    "que-ver-en-lanzarote-en-un-dia": {
+      "title": "What to See in Lanzarote in One Day (If You Arrive by Cruise Ship)",
+      "excerpt": "If your ship calls at Arrecife or Puerto de Los Mármoles, this is your roadmap for seeing the essentials without getting back late for boarding.",
+      "content": "Arriving in Lanzarote by cruise ship is a golden opportunity… and the clock is ticking. With around 6–8 hours ashore, you can see the island's most iconic sights without rushing if you choose wisely.\n\n**Option A — Half day (Southern Route)**\nTimanfaya, El Golfo and La Geria. Perfect if your port call is short or you want to return to the ship with time to spare.\n\n**Option B — Full day (Grand Tour)**\nAdd Jameos del Agua and the Cactus Garden. The most comprehensive option if you have a long port call.\n\n**Pro tip:** book a private tour or minibus if you are travelling as a family or group. We adapt the departure and return times to your cruise schedule.\n\nAt Lanzarote Travels, we arrange pickup at the port and get you back with plenty of time before boarding.",
+      "author": "Lanzarote Travels Team",
+      "tags": [
+        "Cruises",
+        "Itineraries"
+      ]
+    },
+    "timanfaya-consejos-practicos": {
+      "title": "Timanfaya: Practical Tips for Your Visit",
+      "excerpt": "Geothermal heat, the Route of the Volcanoes and queues: what you need to know before entering Timanfaya National Park.",
+      "content": "Timanfaya National Park is the volcanic heart of Lanzarote. Here are the essentials:\n\n**Priority access**\nWith authorised transport (our minibuses and tours), you avoid long waits during the high season.\n\n**Clothing**\nBring a jacket. Even if it is sunny on the coast, the park is often windy.\n\n**Camels**\nThe ride is optional and paid for on site.\n\n**Photos**\nIslote de Hilario and El Golfo are hard to beat: do not forget your camera.\n\nFor the most comfortable experience, choose a small-group or private tour.",
+      "author": "Lanzarote Travels Team",
+      "tags": [
+        "Timanfaya",
+        "Tips"
+      ]
+    },
+    "grupo-reducido-vs-grupo-grande": {
+      "title": "Small Group or Large Group: Which Is Right for You?",
+      "excerpt": "The same itinerary, a different experience. We help you choose according to your travel style and budget.",
+      "content": "At Lanzarote Travels, we offer the same routes in two formats:\n\n**Small group (max. 8)**\nMore personal attention from the guide, a flexible pace and ideal for couples and families who value peace and quiet. The price is slightly higher.\n\n**Large group (up to 20)**\nThe same route at a better price. You can pay by card, Bizum or on the day of the tour. Perfect if you are travelling on a tighter budget.\n\nThere is no “better” option: it depends on whether you prioritise a more intimate experience or price. Lanzarote's landscape is spectacular either way.",
+      "author": "Lanzarote Travels Team",
+      "tags": [
+        "Excursions",
+        "Guides"
+      ]
+    },
+    "traslados-aeropuerto-lanzarote": {
+      "title": "Airport Transfers: How to Arrive Stress-Free",
+      "excerpt": "Playa Blanca, Puerto del Carmen, Costa Teguise and more: fixed rates, a sign with your name and flight tracking.",
+      "content": "After a flight, the last thing you want is to negotiate prices or look for a taxi. A private transfer gives you peace of mind from the very first minute.\n\n**How it works**\nWe wait for you in the terminal with a sign bearing your name, help you with your luggage and take you straight to your hotel.\n\n**Popular destinations**\nPlaya Blanca, Puerto Calero, Puerto del Carmen, Arrecife and Costa Teguise — one way, return, or both ways.\n\n**The advantage**\nA fixed rate agreed when you book. No surprises due to traffic or late-night schedules.\n\nYou can book your transfer online through our website in just a few minutes.",
+      "author": "Lanzarote Travels Team",
+      "tags": [
+        "Transfers",
+        "Airport"
+      ]
+    },
+    "la-geria-vino-volcanico": {
+      "title": "La Geria: the Volcanic Wine Landscape",
+      "excerpt": "Ash hollows, stone walls and Malvasía: why La Geria is an essential stop on almost all our tours.",
+      "content": "La Geria is one of Europe's most remarkable agricultural landscapes. The vines grow in hollows protected from the wind by crescent-shaped volcanic-stone walls.\n\n**What you will see**\nUnique panoramic views, wineries and often a small tasting of local wine, depending on the tour.\n\n**When it is visited**\nIt is included in both the Southern Route and the Grand Tour: a perfect contrast after Timanfaya.\n\nIf you would like to enjoy wine tourism at a leisurely pace, ask about a private tour: we can extend the stop at whichever winery you like best.",
+      "author": "Lanzarote Travels Team",
+      "tags": [
+        "La Geria",
+        "Culture"
+      ]
+    }
+  },
+  "transfers": {
+    "highlights": [
+      "100% private service",
+      "Meet and greet in the terminal with a sign bearing your name",
+      "Air-conditioned vehicle",
+      "Flight tracking",
+      "Fixed rate: no surprises",
+      "Available from airport → hotel and hotel → airport"
+    ]
+  },
+  "shoreTours": {
+    "excursion-sur-de-lanzarote-parque-nacional-de-timanfaya": {
+      "title": "Southern Lanzarote and Timanfaya National Park Excursion",
+      "shortTitle": "Southern Lanzarote · Timanfaya",
+      "summary": "Timanfaya National Park, El Golfo, Los Hervideros and La Geria. Ideal for cruise calls (approx. 5 hours), with guaranteed return to the ship.",
+      "description": "Enjoy a tour that takes you to the lunar landscape of Timanfaya National Park, the El Golfo volcano with its green lagoon, the cliffs of Los Hervideros and the La Geria wine region.\n\nWe will reach Timanfaya National Park, where you will witness geothermal demonstrations revealing temperatures between 50 and 600°C just a few metres below the surface.\n\nWe then continue to the coast to visit Los Hervideros and the El Golfo volcano, with its almost fluorescent green lake. We finish in La Geria, where vines are grown in hollows protected from the wind.\n\nImportant information:\n• Departure: half an hour after the cruise ship arrives\n• Meeting point: port police checkpoint\n• Transport: external car park (approx. 10-minute walk)\n• Activity level: moderate\n• Duration: 5 hours\n• Not suitable for people with reduced mobility",
+      "duration": "5 hours",
+      "highlights": [
+        "Small-group excursion, maximum 25 people",
+        "Only one language per tour",
+        "Guaranteed return to the ship ON TIME.",
+        "Money back if the ship does not dock.",
+        "Excursion departure: half an hour after the cruise ship arrives",
+        "Meeting point with the guide: the police checkpoint"
+      ],
+      "places": [
+        "Timanfaya",
+        "Islote de Hilario",
+        "El Golfo",
+        "Los Hervideros",
+        "La Geria",
+        "Janubio Salt Pans"
+      ],
+      "included": [
+        "Air-conditioned transport with Wi-Fi",
+        "Local guide",
+        "Admission to Timanfaya National Park",
+        "Tourist insurance",
+        "Guaranteed return to the ship on time"
+      ],
+      "notIncluded": [
+        "Food and drinks",
+        "Camel ride (optional, approx. €6)"
+      ]
+    },
+    "lanzarote-experience-tour-nuestra-excursion-mas-completa-para-cruceristas": {
+      "title": "Lanzarote Experience Tour: Our Most Comprehensive Excursion for Cruise Passengers",
+      "shortTitle": "Lanzarote Experience Tour",
+      "summary": "The most comprehensive excursion for cruise passengers: Timanfaya, Jameos del Agua and the Cactus Garden in one day (approx. 8 hours), with admission included.",
+      "description": "Visit Lanzarote's most iconic sights on this full-day tour. Discover Timanfaya National Park, its geothermal anomalies and the Route of the Volcanoes. Marvel at La Geria, the Cactus Garden and Jameos del Agua, works by César Manrique.\n\nDuring the excursion, you will enjoy unique landscapes, historic villages and the island's culture.\n\nImportant information:\n• Departure: half an hour after the cruise ship arrives\n• Meeting point: port police checkpoint\n• Transport: external car park (approx. 10-minute walk)\n• Activity level: moderate\n• Duration: 8 hours\n• Not suitable for people with reduced mobility\n\nWhy book with us?\n• No commercial stops\n• Small groups\n• We avoid the queues\n• We do not mix holidaymakers staying on the island with cruise passengers\n• Guaranteed return to the ship on time",
+      "duration": "8 hours",
+      "highlights": [
+        "Small-group excursion, maximum 25 people",
+        "Only one language per tour",
+        "Guaranteed return to the ship ON TIME.",
+        "Money back if the ship does not dock.",
+        "Excursion departure: half an hour after the cruise ship arrives",
+        "Meeting point with the guide: the police checkpoint"
+      ],
+      "places": [
+        "Timanfaya National Park",
+        "Jameos del Agua",
+        "Cactus Garden",
+        "La Geria"
+      ],
+      "included": [
+        "Air-conditioned transport with Wi-Fi",
+        "Local guide",
+        "Admission to Timanfaya, Jameos del Agua and the Cactus Garden",
+        "Tourist insurance",
+        "Guaranteed return to the ship on time"
+      ],
+      "notIncluded": [
+        "Food and drinks"
+      ]
+    }
+  },
+  "cruise": {
+    "seaDayLabel": "At sea"
+  }
+}

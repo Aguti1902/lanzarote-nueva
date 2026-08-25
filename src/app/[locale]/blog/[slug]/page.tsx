@@ -5,6 +5,11 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { getBlogPosts, getPostBySlug } from "@/lib/content";
 import { formatDate } from "@/lib/format";
+import {
+  localizeBlogPost,
+  localizeBlogPosts,
+} from "@/lib/localize-content";
+import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
 
@@ -13,19 +18,24 @@ export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const post = await getPostBySlug(slug);
-  if (!post) return { title: "Blog" };
+  const { slug, locale: raw } = await params;
+  const locale = resolveLocale(raw);
+  const dict = await getDictionary(locale);
+  const base = await getPostBySlug(slug);
+  if (!base) return { title: dict.blog.eyebrow };
+  const post = await localizeBlogPost(base, locale);
   return { title: post.title, description: post.excerpt };
 }
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug, locale: raw } = await params;
   const locale = resolveLocale(raw);
-  const post = await getPostBySlug(slug);
-  if (!post) notFound();
+  const dict = await getDictionary(locale);
+  const base = await getPostBySlug(slug);
+  if (!base) notFound();
 
-  const all = await getBlogPosts();
+  const post = await localizeBlogPost(base, locale);
+  const all = await localizeBlogPosts(await getBlogPosts(), locale);
   const related = all.filter((p) => p.slug !== post.slug).slice(0, 2);
   const paragraphs = post.content.split("\n\n");
   const lp = (path: string) => localePath(locale, path);
@@ -57,7 +67,7 @@ export default async function BlogPostPage({ params }: Props) {
             {post.title}
           </h1>
           <p className="mt-3 text-sm text-white/75">
-            {formatDate(post.date)} · {post.author}
+            {formatDate(post.date, locale)} · {post.author}
           </p>
         </div>
       </div>
@@ -68,7 +78,7 @@ export default async function BlogPostPage({ params }: Props) {
           className="inline-flex items-center gap-2 text-sm font-medium text-ocean hover:text-ocean-deep"
         >
           <ArrowLeft className="h-4 w-4" />
-          Blog
+          {dict.blog.eyebrow}
         </Link>
         <p className="mt-8 text-lg leading-relaxed text-ink-muted">
           {post.excerpt}
@@ -91,7 +101,7 @@ export default async function BlogPostPage({ params }: Props) {
       {related.length > 0 && (
         <section className="border-t border-sand-line bg-sky-soft/50 py-14">
           <div className="mx-auto max-w-6xl px-4 md:px-6">
-            <h2 className="font-display text-2xl text-ink">También te puede interesar</h2>
+            <h2 className="font-display text-2xl text-ink">{dict.blog.related}</h2>
             <div className="mt-6 grid gap-6 md:grid-cols-2">
               {related.map((item) => (
                 <Link
@@ -109,7 +119,9 @@ export default async function BlogPostPage({ params }: Props) {
                     />
                   </div>
                   <div className="p-4">
-                    <p className="text-xs text-ink-muted">{formatDate(item.date)}</p>
+                    <p className="text-xs text-ink-muted">
+                      {formatDate(item.date, locale)}
+                    </p>
                     <h3 className="mt-1 font-display text-lg group-hover:text-ocean">
                       {item.title}
                     </h3>

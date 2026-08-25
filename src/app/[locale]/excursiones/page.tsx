@@ -4,6 +4,10 @@ import { PageBodyText } from "@/components/PageBodyText";
 import { PageHero } from "@/components/PageHero";
 import { TourCard } from "@/components/TourCard";
 import { getSettings, getTours } from "@/lib/content";
+import {
+  localizeSettings,
+  localizeTours,
+} from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
@@ -19,10 +23,10 @@ type Props = { params: Promise<{ locale: string }> };
 export default async function ExcursionesPage({ params }: Props) {
   const { locale: raw } = await params;
   const locale = resolveLocale(raw);
-  const [tours, settings, dict] = await Promise.all([
-    getTours(),
-    getSettings(),
-    getDictionary(locale),
+  const dict = await getDictionary(locale);
+  const [tours, settings] = await Promise.all([
+    localizeTours(await getTours(), locale),
+    localizeSettings(await getSettings(), locale),
   ]);
 
   return (

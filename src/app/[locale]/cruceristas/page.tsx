@@ -7,6 +7,10 @@ import { PageHero } from "@/components/PageHero";
 import { TourCard } from "@/components/TourCard";
 import { getCruiseCalls, getCruisesData, getCruiseTours, getSettings } from "@/lib/content";
 import { buildPortCallSailingLinks } from "@/lib/cruise-itineraries";
+import {
+  localizeSettings,
+  localizeTours,
+} from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
@@ -23,10 +27,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CruceristasPage({ params }: Props) {
   const locale = resolveLocale((await params).locale);
-  const [allCruise, settings, dict, cruiseData, cruiseCalls] = await Promise.all([
-    getCruiseTours(),
-    getSettings(),
-    getDictionary(locale),
+  const dict = await getDictionary(locale);
+  const [allCruise, settings, cruiseData, cruiseCalls] = await Promise.all([
+    localizeTours(await getCruiseTours(), locale),
+    localizeSettings(await getSettings(), locale),
     getCruisesData(),
     getCruiseCalls({ publishedOnly: true }),
   ]);

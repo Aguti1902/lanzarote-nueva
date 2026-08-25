@@ -9,6 +9,7 @@ import {
   getCruiseShoreTourById,
 } from "@/lib/cruise-itineraries";
 import { formatDateShort, formatPrice } from "@/lib/format";
+import { localizeShoreTour } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
@@ -26,9 +27,13 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { tourId } = await params;
-  const tour = await getCruiseShoreTourById(tourId);
-  return { title: tour?.title || "Excursión crucero" };
+  const { tourId, locale: raw } = await params;
+  const locale = resolveLocale(raw);
+  const dict = await getDictionary(locale);
+  const base = await getCruiseShoreTourById(tourId);
+  if (!base) return { title: dict.cruises.browseTitle };
+  const tour = await localizeShoreTour(base, locale);
+  return { title: tour.title || dict.cruises.browseTitle };
 }
 
 export default async function CruiseShoreTourPage({
@@ -39,8 +44,9 @@ export default async function CruiseShoreTourPage({
   const locale = resolveLocale(raw);
   const query = await searchParams;
   const dict = await getDictionary(locale);
-  const tour = await getCruiseShoreTourById(tourId);
-  if (!tour) notFound();
+  const base = await getCruiseShoreTourById(tourId);
+  if (!base) notFound();
+  const tour = await localizeShoreTour(base, locale);
 
   let sailing = query.sailing
     ? await getCruiseSailingById(query.sailing)

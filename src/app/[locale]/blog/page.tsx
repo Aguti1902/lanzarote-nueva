@@ -6,24 +6,34 @@ import { PageBodyText } from "@/components/PageBodyText";
 import { PageHero } from "@/components/PageHero";
 import { getBlogPosts, getSettings } from "@/lib/content";
 import { formatDate } from "@/lib/format";
+import {
+  localizeBlogPosts,
+  localizeSettings,
+} from "@/lib/localize-content";
+import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Blog",
-  description:
-    "Guías y consejos para disfrutar Lanzarote: Timanfaya, cruceros, grupos reducidos y más.",
-};
-
 type Props = { params: Promise<{ locale: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const locale = resolveLocale((await params).locale);
+  const dict = await getDictionary(locale);
+  const settings = await localizeSettings(await getSettings(), locale);
+  return {
+    title: settings.blogTitle || dict.blog.eyebrow,
+    description: settings.blogIntro || undefined,
+  };
+}
 
 export default async function BlogPage({ params }: Props) {
   const locale = resolveLocale((await params).locale);
+  const dict = await getDictionary(locale);
   const [blogPosts, settings] = await Promise.all([
-    getBlogPosts(),
-    getSettings(),
+    localizeBlogPosts(await getBlogPosts(), locale),
+    localizeSettings(await getSettings(), locale),
   ]);
   const [featured, ...rest] = blogPosts;
   const lp = (path: string) => localePath(locale, path);
@@ -32,7 +42,7 @@ export default async function BlogPage({ params }: Props) {
     <>
       <PageHero
         image={settings.blogHeroImage}
-        eyebrow="Blog"
+        eyebrow={dict.blog.eyebrow}
         title={settings.blogTitle}
         subtitle={settings.blogIntro}
       />
@@ -67,7 +77,7 @@ export default async function BlogPage({ params }: Props) {
                 ))}
               </div>
               <p className="mt-4 text-xs text-ink-muted">
-                {formatDate(featured.date)} · {featured.author}
+                {formatDate(featured.date, locale)} · {featured.author}
               </p>
               <h2 className="mt-2 font-display text-3xl leading-snug text-ink group-hover:text-ocean md:text-4xl">
                 {featured.title}
@@ -76,7 +86,7 @@ export default async function BlogPage({ params }: Props) {
                 {featured.excerpt}
               </p>
               <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-ocean">
-                Leer artículo
+                {dict.blog.readArticle}
                 <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
               </span>
             </div>
@@ -111,7 +121,7 @@ export default async function BlogPage({ params }: Props) {
                   ))}
                 </div>
                 <p className="mt-3 text-xs text-ink-muted">
-                  {formatDate(post.date)}
+                  {formatDate(post.date, locale)}
                 </p>
                 <h2 className="mt-2 font-display text-xl leading-snug group-hover:text-ocean">
                   {post.title}
@@ -120,7 +130,7 @@ export default async function BlogPage({ params }: Props) {
                   {post.excerpt}
                 </p>
                 <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-ocean">
-                  Leer más <ArrowRight className="h-3.5 w-3.5" />
+                  {dict.blog.readMore} <ArrowRight className="h-3.5 w-3.5" />
                 </span>
               </div>
             </Link>
