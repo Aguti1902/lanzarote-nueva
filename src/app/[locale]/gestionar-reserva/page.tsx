@@ -125,6 +125,25 @@ export default function GestionarReservaPage() {
                 <dd className="font-bold">{booking.paymentStatus}</dd>
               </div>
             </dl>
+
+            <div className="mt-6 grid gap-2 sm:grid-cols-2">
+              <Link
+                href={href(`/voucher?id=${encodeURIComponent(booking.id)}`)}
+                className="inline-flex items-center justify-center bg-ocean px-4 py-3 text-sm font-bold text-white hover:bg-ocean-deep"
+              >
+                {dict.manage.viewVoucher}
+              </Link>
+              {booking.status !== "cancelled" &&
+                booking.status !== "completed" && (
+                  <Link
+                    href={href("/cancelar-reserva")}
+                    className="inline-flex items-center justify-center border border-red-300 px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50"
+                  >
+                    {dict.manage.cancelBooking}
+                  </Link>
+                )}
+            </div>
+
             <p className="mt-6 text-sm text-ink-muted">
               {dict.manage.help}{" "}
               <a

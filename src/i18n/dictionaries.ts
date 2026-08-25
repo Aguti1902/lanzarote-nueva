@@ -208,6 +208,47 @@ export type Dictionary = {
     status: string;
     payment: string;
     help: string;
+    viewVoucher: string;
+    cancelBooking: string;
+    printVoucher: string;
+  };
+  cancel: {
+    title: string;
+    subtitle: string;
+    intro: string;
+    continue: string;
+    back: string;
+    backManage: string;
+    whichService: string;
+    serviceDate: string;
+    passengers: string;
+    freeCancel: string;
+    feeCancel: string;
+    reasonTitle: string;
+    reasons: { id: string; label: string }[];
+    submit: string;
+    cancelling: string;
+    doneTitle: string;
+    success: string;
+    alreadyCancelled: string;
+    alreadyCompleted: string;
+    statusPending: string;
+    statusConfirmed: string;
+    statusCompleted: string;
+    statusCancelled: string;
+  };
+  voucher: {
+    title: string;
+    subtitle: string;
+    issued: string;
+    customer: string;
+    serviceDate: string;
+    flight: string;
+    present: string;
+    print: string;
+    download: string;
+    notFound: string;
+    notFoundBody: string;
   };
   booking: {
     date: string;
@@ -250,6 +291,10 @@ export type Dictionary = {
     paidOnline: string;
     cashPending: string;
     invoice: string;
+    viewVoucher: string;
+    manage: string;
+    cancel: string;
+    print: string;
   };
   payments: {
     card: string;
@@ -548,6 +593,64 @@ const es: Dictionary = {
     status: "Estado",
     payment: "Pago",
     help: "¿Necesita cambios? Contáctenos.",
+    viewVoucher: "Ver voucher",
+    cancelBooking: "Cancelar reserva",
+    printVoucher: "Imprimir voucher",
+  },
+  cancel: {
+    title: "Cancelar reserva",
+    subtitle:
+      "Puede cancelar su reserva o algún servicio específico de una forma sencilla y segura.",
+    intro:
+      "Introduzca su localizador y el email de la reserva para continuar.",
+    continue: "Continuar",
+    back: "Volver atrás",
+    backManage: "Gestionar reserva",
+    whichService: "¿Qué servicio desea cancelar?",
+    serviceDate: "Fecha del servicio",
+    passengers: "pasajeros",
+    freeCancel: "Cancelación gratuita (más de 48 h antes del servicio).",
+    feeCancel:
+      "La cancelación de este servicio tiene un cargo de {fee}",
+    reasonTitle:
+      "Nos gustaría saber el motivo por el que desea cancelar su reserva",
+    reasons: [
+      {
+        id: "changed_plans",
+        label: "He cambiado mis planes y no necesito este servicio",
+      },
+      { id: "not_interested", label: "Ya no me interesa este servicio" },
+      { id: "better_price", label: "He encontrado un mejor precio" },
+      {
+        id: "personal",
+        label: "Por razones personales y/o familiares",
+      },
+      { id: "other", label: "Por otros motivos" },
+    ],
+    submit: "Cancelar mi reserva",
+    cancelling: "Cancelando…",
+    doneTitle: "Reserva cancelada",
+    success: "Su reserva se ha cancelado correctamente.",
+    alreadyCancelled: "Esta reserva ya está cancelada.",
+    alreadyCompleted: "No se puede cancelar un servicio ya realizado.",
+    statusPending: "Pendiente",
+    statusConfirmed: "Confirmado",
+    statusCompleted: "Completado",
+    statusCancelled: "Cancelado",
+  },
+  voucher: {
+    title: "VOUCHER / CONFIRMACIÓN",
+    subtitle: "Presente este documento el día del servicio",
+    issued: "Emitido",
+    customer: "Cliente",
+    serviceDate: "Fecha del servicio",
+    flight: "Nº de vuelo",
+    present:
+      "Presente este voucher el día del servicio. Conservamos su localizador en nuestros sistemas.",
+    print: "Imprimir",
+    download: "Descargar",
+    notFound: "Voucher no encontrado",
+    notFoundBody: "Compruebe el localizador o consulte su reserva.",
   },
   booking: {
     date: "Fecha *",
@@ -590,6 +693,10 @@ const es: Dictionary = {
     paidOnline: "Pagado (tarjeta/online)",
     cashPending: "Pendiente en efectivo",
     invoice: "Factura",
+    viewVoucher: "Ver / imprimir voucher",
+    manage: "Gestionar reserva",
+    cancel: "Cancelar reserva",
+    print: "Imprimir confirmación",
   },
   payments: {
     card: "Tarjeta",
@@ -890,6 +997,61 @@ const en: Dictionary = {
     status: "Status",
     payment: "Payment",
     help: "Need changes? Contact us.",
+    viewVoucher: "View voucher",
+    cancelBooking: "Cancel booking",
+    printVoucher: "Print voucher",
+  },
+  cancel: {
+    title: "Cancel booking",
+    subtitle:
+      "You can cancel your booking or a specific service simply and securely.",
+    intro: "Enter your locator and the booking email to continue.",
+    continue: "Continue",
+    back: "Go back",
+    backManage: "Manage booking",
+    whichService: "Which service would you like to cancel?",
+    serviceDate: "Service date",
+    passengers: "passengers",
+    freeCancel: "Free cancellation (more than 48 h before the service).",
+    feeCancel: "Cancelling this service has a charge of {fee}",
+    reasonTitle: "We would like to know why you wish to cancel your booking",
+    reasons: [
+      {
+        id: "changed_plans",
+        label: "I have changed my plans and no longer need this service",
+      },
+      { id: "not_interested", label: "I am no longer interested in this service" },
+      { id: "better_price", label: "I have found a better price" },
+      {
+        id: "personal",
+        label: "For personal and/or family reasons",
+      },
+      { id: "other", label: "For other reasons" },
+    ],
+    submit: "Cancel my booking",
+    cancelling: "Cancelling…",
+    doneTitle: "Booking cancelled",
+    success: "Your booking has been cancelled successfully.",
+    alreadyCancelled: "This booking is already cancelled.",
+    alreadyCompleted: "A completed service cannot be cancelled.",
+    statusPending: "Pending",
+    statusConfirmed: "Confirmed",
+    statusCompleted: "Completed",
+    statusCancelled: "Cancelled",
+  },
+  voucher: {
+    title: "VOUCHER / CONFIRMATION",
+    subtitle: "Please present this document on the day of the service",
+    issued: "Issued",
+    customer: "Customer",
+    serviceDate: "Service date",
+    flight: "Flight number",
+    present:
+      "Please present this voucher on the day of the service. We keep your locator in our systems.",
+    print: "Print",
+    download: "Download",
+    notFound: "Voucher not found",
+    notFoundBody: "Check the locator or look up your booking.",
   },
   booking: {
     date: "Date *",
@@ -932,6 +1094,10 @@ const en: Dictionary = {
     paidOnline: "Paid (card/online)",
     cashPending: "Cash due",
     invoice: "Invoice",
+    viewVoucher: "View / print voucher",
+    manage: "Manage booking",
+    cancel: "Cancel booking",
+    print: "Print confirmation",
   },
   payments: {
     card: "Card",
@@ -1236,6 +1402,65 @@ const de: Dictionary = {
     status: "Status",
     payment: "Zahlung",
     help: "Änderungen nötig? Kontaktieren Sie uns.",
+    viewVoucher: "Voucher ansehen",
+    cancelBooking: "Buchung stornieren",
+    printVoucher: "Voucher drucken",
+  },
+  cancel: {
+    title: "Buchung stornieren",
+    subtitle:
+      "Sie können Ihre Buchung oder einen bestimmten Service einfach und sicher stornieren.",
+    intro:
+      "Geben Sie Ihren Locator und die E-Mail der Buchung ein, um fortzufahren.",
+    continue: "Weiter",
+    back: "Zurück",
+    backManage: "Buchung verwalten",
+    whichService: "Welchen Service möchten Sie stornieren?",
+    serviceDate: "Servicedatum",
+    passengers: "Passagiere",
+    freeCancel: "Kostenlose Stornierung (mehr als 48 Std. vor dem Service).",
+    feeCancel: "Die Stornierung dieses Services kostet {fee}",
+    reasonTitle: "Wir möchten gerne den Grund Ihrer Stornierung wissen",
+    reasons: [
+      {
+        id: "changed_plans",
+        label: "Ich habe meine Pläne geändert und brauche diesen Service nicht",
+      },
+      {
+        id: "not_interested",
+        label: "Dieser Service interessiert mich nicht mehr",
+      },
+      { id: "better_price", label: "Ich habe einen besseren Preis gefunden" },
+      {
+        id: "personal",
+        label: "Aus persönlichen und/oder familiären Gründen",
+      },
+      { id: "other", label: "Aus anderen Gründen" },
+    ],
+    submit: "Meine Buchung stornieren",
+    cancelling: "Wird storniert…",
+    doneTitle: "Buchung storniert",
+    success: "Ihre Buchung wurde erfolgreich storniert.",
+    alreadyCancelled: "Diese Buchung ist bereits storniert.",
+    alreadyCompleted: "Ein bereits durchgeführter Service kann nicht storniert werden.",
+    statusPending: "Ausstehend",
+    statusConfirmed: "Bestätigt",
+    statusCompleted: "Abgeschlossen",
+    statusCancelled: "Storniert",
+  },
+  voucher: {
+    title: "VOUCHER / BESTÄTIGUNG",
+    subtitle: "Bitte legen Sie dieses Dokument am Servicetag vor",
+    issued: "Ausgestellt",
+    customer: "Kunde",
+    serviceDate: "Servicedatum",
+    flight: "Flugnummer",
+    present:
+      "Bitte legen Sie diesen Voucher am Servicetag vor. Wir speichern Ihren Locator in unseren Systemen.",
+    print: "Drucken",
+    download: "Herunterladen",
+    notFound: "Voucher nicht gefunden",
+    notFoundBody: "Prüfen Sie den Locator oder suchen Sie Ihre Buchung.",
   },
   booking: {
     date: "Datum *",
@@ -1278,6 +1503,10 @@ const de: Dictionary = {
     paidOnline: "Bezahlt (Karte/online)",
     cashPending: "Bar noch offen",
     invoice: "Rechnung",
+    viewVoucher: "Voucher ansehen / drucken",
+    manage: "Buchung verwalten",
+    cancel: "Buchung stornieren",
+    print: "Bestätigung drucken",
   },
   payments: {
     card: "Karte",

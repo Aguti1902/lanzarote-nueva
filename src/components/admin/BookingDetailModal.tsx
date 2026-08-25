@@ -8,6 +8,11 @@ import {
   formatDateShort,
   paymentLabel,
 } from "@/lib/format";
+import {
+  buildVoucherHtml,
+  downloadVoucherFile,
+  openVoucherPrintWindow,
+} from "@/lib/voucher";
 
 function money(n: number) {
   return new Intl.NumberFormat("es-ES", {
@@ -41,44 +46,10 @@ function serviceKind(b: Booking) {
   return "Excursión";
 }
 
-function downloadVoucher(b: Booking) {
-  const people = b.adults + (b.children || 0);
-  const html = `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Voucher ${b.id}</title>
-<style>
-body{font-family:system-ui,sans-serif;max-width:720px;margin:40px auto;color:#171c26;padding:0 16px}
-h1{font-size:22px;margin:0 0 8px;letter-spacing:.04em}
-.muted{color:#6b7280;font-size:13px}
-.box{border:1px solid #e5e7eb;border-radius:8px;padding:16px;margin-top:16px}
-.row{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid #f3f4f6;font-size:14px}
-.row:last-child{border-bottom:0}
-.brand{color:#eb4823;font-weight:700}
-</style></head><body>
-<p class="brand">Lanzarote Experience Tours</p>
-<h1>VOUCHER / CONFIRMACIÓN</h1>
-<p class="muted">Localizador <strong>${b.id}</strong> · Emitido ${formatDateShort(b.createdAt)}</p>
-<div class="box">
-  <div class="row"><span>Cliente</span><strong>${b.customer.name}</strong></div>
-  <div class="row"><span>Email</span><span>${b.customer.email}</span></div>
-  <div class="row"><span>Teléfono</span><span>${b.customer.phone || "—"}</span></div>
-  <div class="row"><span>Servicio</span><strong>${b.tourTitle}</strong></div>
-  <div class="row"><span>Fecha</span><strong>${formatDateShort(b.date)}</strong></div>
-  <div class="row"><span>Personas</span><span>${people} (${b.adults} adultos${b.children ? ` + ${b.children} niños` : ""})</span></div>
-  <div class="row"><span>Total</span><strong>${money(b.amountTotal ?? b.totalPrice)}</strong></div>
-  <div class="row"><span>Pago</span><span>${paymentLabel(b.paymentMethod)}</span></div>
-  ${b.customer.hotel ? `<div class="row"><span>Hotel</span><span>${b.customer.hotel}</span></div>` : ""}
-  ${b.customer.flightNumber ? `<div class="row"><span>Vuelo</span><span>${b.customer.flightNumber}</span></div>` : ""}
-  ${b.customer.cruiseShip ? `<div class="row"><span>Crucero</span><span>${b.customer.cruiseShip}</span></div>` : ""}
-  ${b.customer.notes ? `<div class="row"><span>Notas</span><span>${b.customer.notes}</span></div>` : ""}
-</div>
-<p class="muted" style="margin-top:24px">Presente este voucher el día del servicio. Contacto: +34 646 08 05 85</p>
-</body></html>`;
-  const blob = new Blob([html], { type: "text/html;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `voucher-${b.id}.html`;
-  a.click();
-  URL.revokeObjectURL(url);
+function voucherHtml(b: Booking) {
+  return buildVoucherHtml(b, {
+    origin: typeof window !== "undefined" ? window.location.origin : "",
+  });
 }
 
 export function BookingDetailModal({
@@ -172,7 +143,11 @@ export function BookingDetailModal({
             <button
               type="button"
               onClick={() => {
-                if (confirm("¿Cancelar esta reserva y emitir abono?")) {
+                if (
+                  confirm(
+                    "¿Cancelar esta reserva?\n\nSi queda dentro de las 48 h gratis se emitirá abono. Si no, se aplicará cargo de cancelación (sin reembolso)."
+                  )
+                ) {
                   onCancel(booking.id);
                 }
               }}
@@ -181,9 +156,25 @@ export function BookingDetailModal({
               Cancelar reserva
             </button>
           )}
+          <Link
+            href={`/es/voucher?id=${encodeURIComponent(booking.id)}`}
+            target="_blank"
+            className="rounded border border-sand-line px-4 py-2 text-sm font-bold text-ink hover:bg-sky-soft"
+          >
+            Abrir voucher
+          </Link>
           <button
             type="button"
-            onClick={() => downloadVoucher(booking)}
+            onClick={() => openVoucherPrintWindow(voucherHtml(booking))}
+            className="rounded border border-sand-line px-4 py-2 text-sm font-bold text-ink hover:bg-sky-soft"
+          >
+            Imprimir voucher
+          </button>
+          <button
+            type="button"
+            onClick={() =>
+              downloadVoucherFile(booking, voucherHtml(booking))
+            }
             className="rounded bg-ocean px-4 py-2 text-sm font-bold text-white hover:bg-ocean-deep"
           >
             Descargar voucher
@@ -211,6 +202,18 @@ export function BookingDetailModal({
               <Row label="Pagado tarjeta" value={money(booking.amountPaidCard ?? 0)} />
               <Row label="Efectivo pendiente" value={money(booking.amountDueCash ?? 0)} />
               <Row label="Efectivo cobrado" value={money(booking.amountPaidCash ?? 0)} />
+              {booking.cancellationReason && (
+                <Row
+                  label="Motivo cancelación"
+                  value={booking.cancellationReason}
+                />
+              )}
+              {booking.cancellationFee != null && booking.status === "cancelled" && (
+                <Row
+                  label="Cargo cancelación"
+                  value={money(booking.cancellationFee)}
+                />
+              )}
             </dl>
           </section>
 

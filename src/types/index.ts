@@ -277,6 +277,9 @@ export interface Booking {
   cashStatus: CashStatus;
   status: BookingStatus;
   invoiceId?: string;
+  cancellationReason?: string;
+  cancelledAt?: string;
+  cancellationFee?: number;
   customer: {
     name: string;
     email: string;
