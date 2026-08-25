@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import {
   Anchor,
@@ -11,6 +11,7 @@ import {
   BookOpen,
   Building2,
   Bus,
+  CalendarClock,
   CalendarDays,
   CreditCard,
   ExternalLink,
@@ -39,17 +40,17 @@ type NavItem = {
 /** Orden alineado con el panel legacy LET (+ extras del nuevo). */
 const nav: NavItem[] = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/ajustes#banner", label: "Banner", icon: Megaphone },
+  { href: "/admin/banner", label: "Banner", icon: Megaphone },
   { href: "/admin/reservas", label: "Reservas", icon: CalendarDays },
   { href: "/admin/reservas-cruceros", label: "Reservas cruceros", icon: Ship },
-  { href: "/admin/cruceros?tab=grupos", label: "Grupos cruceros", icon: Users },
+  { href: "/admin/grupos-cruceros", label: "Grupos cruceros", icon: Users },
   { href: "/admin/pagos-online", label: "Pagos online", icon: CreditCard },
   { href: "/admin/cobros-efectivo", label: "Cobros efectivo", icon: Banknote },
   { href: "/admin/facturas", label: "Facturas", icon: FileText },
   { href: "/admin/estadisticas", label: "Estadísticas", icon: BarChart3 },
   { href: "/admin/excursiones", label: "Excursiones", icon: Map },
   {
-    href: "/admin/cruceros?tab=excursiones",
+    href: "/admin/excursiones-shore",
     label: "Excursiones shore",
     icon: Anchor,
   },
@@ -57,16 +58,16 @@ const nav: NavItem[] = [
   { href: "/admin/colaboradores", label: "Colaboradores", icon: Handshake },
   { href: "/admin/importar-reservas", label: "Importar reservas", icon: Upload },
   {
-    href: "/admin/cruceros?tab=companias",
+    href: "/admin/companias-cruceros",
     label: "Compañías cruceros",
     icon: Building2,
   },
   {
-    href: "/admin/cruceros?tab=puertos",
+    href: "/admin/puertos-cruceros",
     label: "Puertos cruceros",
     icon: MapPinned,
   },
-  { href: "/admin/cruceros/escalas", label: "Escalas", icon: Ship },
+  { href: "/admin/cruceros/escalas", label: "Escalas", icon: CalendarClock },
   { href: "/admin/feedback", label: "Feedback", icon: MessageSquareHeart },
   { href: "/admin/redirecciones", label: "Redirecciones", icon: Link2 },
   { href: "/admin/traducciones", label: "Traducciones", icon: Languages },
@@ -74,49 +75,24 @@ const nav: NavItem[] = [
   { href: "/admin/ajustes", label: "Ajustes", icon: Settings },
 ];
 
-function pathAndQuery(href: string) {
-  const [pathPart, hash = ""] = href.split("#");
-  const [pathname, query = ""] = pathPart.split("?");
-  return { pathname, query, hash };
+/** Exact path or nested under it — never prefix-match siblings like reservas vs reservas-cruceros. */
+function pathMatches(pathname: string, target: string) {
+  return pathname === target || pathname.startsWith(`${target}/`);
 }
 
 function NavLinks({
   pathname,
-  search,
   onLogout,
   mobile,
 }: {
   pathname: string;
-  search: string;
   onLogout: () => void;
   mobile?: boolean;
 }) {
-  const params = new URLSearchParams(search);
-
   function isActive(href: string) {
-    const { pathname: target, query } = pathAndQuery(href);
+    const target = href.split("?")[0].split("#")[0];
     if (target === "/admin") return pathname === "/admin";
-    if (!pathname.startsWith(target.split("?")[0])) return false;
-
-    if (target === "/admin/cruceros") {
-      const want = new URLSearchParams(query).get("tab");
-      const have = params.get("tab") || "companias";
-      if (pathname !== "/admin/cruceros") return false;
-      return want ? want === have : have === "companias" && !query;
-    }
-
-    if (target === "/admin/ajustes") {
-      return pathname.startsWith("/admin/ajustes") && !href.includes("#");
-    }
-    if (href.includes("#banner")) {
-      return pathname.startsWith("/admin/ajustes");
-    }
-
-    if (target === "/admin/cruceros/escalas") {
-      return pathname.startsWith("/admin/cruceros/escalas");
-    }
-
-    return pathname.startsWith(target);
+    return pathMatches(pathname, target);
   }
 
   if (mobile) {
@@ -186,10 +162,8 @@ function NavLinks({
 function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [ready, setReady] = useState(false);
   const isLogin = pathname === "/admin/login";
-  const search = searchParams.toString();
 
   useEffect(() => {
     const ok = localStorage.getItem("lt_admin") === "1";
@@ -229,22 +203,16 @@ function AdminShell({ children }: { children: React.ReactNode }) {
           </div>
           <p className="text-xs text-white/55">Panel de administración</p>
         </div>
-        <NavLinks pathname={pathname} search={search} onLogout={logout} />
+        <NavLinks pathname={pathname} onLogout={logout} />
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="border-b border-sand-line bg-white px-4 py-3 md:px-6">
           <div className="md:hidden">
-            <NavLinks
-              pathname={pathname}
-              search={search}
-              onLogout={logout}
-              mobile
-            />
+            <NavLinks pathname={pathname} onLogout={logout} mobile />
           </div>
           <p className="hidden text-sm text-ink-muted md:block">
-            LET · Paridad con el panel actual (banner, reservas, cruceros, pagos,
-            import, traducciones…)
+            LET · Panel de administración
           </p>
         </header>
         <div className="flex-1 p-4 md:p-6">{children}</div>

@@ -269,32 +269,17 @@ export default function AdminAjustesPage() {
           />
         </section>
 
-        <section id="banner" className="grid scroll-mt-6 gap-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
-          <h2 className="font-display text-xl">Banner de la web (multiidioma)</h2>
+        <section className="grid gap-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
+          <h2 className="font-display text-xl">Banner de la web</h2>
           <p className="text-sm text-ink-muted">
-            Mensaje del marquee / cinta superior. Si deja un idioma vacío, se usa el texto por defecto del idioma.
+            El banner multiidioma se gestiona en su propia sección del menú.
           </p>
-          <Field label="Español">
-            <textarea
-              className={adminTextarea}
-              value={settings.bannerEs || ""}
-              onChange={(e) => set("bannerEs", e.target.value)}
-            />
-          </Field>
-          <Field label="Inglés">
-            <textarea
-              className={adminTextarea}
-              value={settings.bannerEn || ""}
-              onChange={(e) => set("bannerEn", e.target.value)}
-            />
-          </Field>
-          <Field label="Alemán">
-            <textarea
-              className={adminTextarea}
-              value={settings.bannerDe || ""}
-              onChange={(e) => set("bannerDe", e.target.value)}
-            />
-          </Field>
+          <a
+            href="/admin/banner"
+            className="w-fit text-sm font-bold text-ocean hover:underline"
+          >
+            Ir a Banner →
+          </a>
         </section>
 
         <section className="grid gap-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line md:grid-cols-2">
