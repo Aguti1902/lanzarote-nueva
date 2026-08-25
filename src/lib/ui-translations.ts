@@ -21,8 +21,9 @@ export async function getUiTranslationOverrides(): Promise<UiTranslationOverride
     if (error) throw new Error(error.message);
     const overrides: UiTranslationOverrides = { en: {}, de: {} };
     for (const row of data || []) {
-      if (row.locale === "en" || row.locale === "de") {
-        overrides[row.locale] =
+      const locale = String(row.locale);
+      if (locale === "en" || locale === "de") {
+        overrides[locale] =
           (row.data as Record<string, string> | null) || {};
       }
     }

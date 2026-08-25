@@ -41,7 +41,10 @@ async function replaceRows(
   const { data: existing, error: readError } = await sb.from(table).select(key);
   if (readError) throw new Error(readError.message);
   const keep = new Set(rows.map((row) => String(row[key])));
-  const removed = (existing || [])
+  const existingRows = (existing || []) as unknown as Array<
+    Record<string, unknown>
+  >;
+  const removed = existingRows
     .map((row) => String(row[key]))
     .filter((id) => !keep.has(id));
   if (removed.length) {
