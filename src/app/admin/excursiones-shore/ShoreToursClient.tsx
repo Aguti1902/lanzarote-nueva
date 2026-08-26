@@ -127,6 +127,17 @@ export function ShoreToursPanel() {
       return;
     }
     const isNew = !items.some((t) => t.id === draft.id);
+    const cleanLocale = (locale: "en" | "de") => {
+      const raw = draft.translations?.[locale] || {};
+      const next: CruiseShoreTourTranslation = {};
+      if (raw.title?.trim()) next.title = raw.title.trim();
+      if (raw.shortTitle?.trim()) next.shortTitle = raw.shortTitle.trim();
+      if (raw.summary?.trim()) next.summary = raw.summary.trim();
+      if (raw.description?.trim()) next.description = raw.description.trim();
+      if (raw.highlights?.length) next.highlights = raw.highlights;
+      if (raw.places?.length) next.places = raw.places;
+      return next;
+    };
     const payload = {
       kind: "shore-tours",
       ...draft,
@@ -140,6 +151,10 @@ export function ShoreToursPanel() {
           : draft.description
             ? []
             : [],
+      translations: {
+        en: cleanLocale("en"),
+        de: cleanLocale("de"),
+      },
     };
     const res = await fetch("/api/admin/cruise-catalog", {
       method: isNew ? "POST" : "PUT",

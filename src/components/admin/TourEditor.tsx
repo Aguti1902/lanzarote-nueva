@@ -300,6 +300,21 @@ export function TourEditor({ initial }: { initial?: Tour }) {
       if (!tour.title || !tour.shortTitle) {
         throw new Error("Título y título corto son obligatorios");
       }
+      const cleanLocale = (locale: "en" | "de") => {
+        const raw = tour.translations?.[locale] || {};
+        const next: TourTranslation = {};
+        if (raw.title?.trim()) next.title = raw.title.trim();
+        if (raw.shortTitle?.trim()) next.shortTitle = raw.shortTitle.trim();
+        if (raw.summary?.trim()) next.summary = raw.summary.trim();
+        if (raw.description?.trim()) next.description = raw.description.trim();
+        if (raw.highlights?.length) next.highlights = raw.highlights;
+        if (raw.places?.length) next.places = raw.places;
+        if (raw.included?.length) next.included = raw.included;
+        if (raw.notIncluded?.length) next.notIncluded = raw.notIncluded;
+        if (raw.recommendations?.length)
+          next.recommendations = raw.recommendations;
+        return next;
+      };
       const payload = {
         ...tour,
         category: (tour.category || "excursion") as TourCategory,
@@ -316,6 +331,10 @@ export function TourEditor({ initial }: { initial?: Tour }) {
         image: tour.image || tour.gallery?.[0] || "/images/tours/coast-1.jpg",
         schedule: normalizeSchedule(tour.schedule),
         smallGroup: tour.groupSize === "small" || tour.smallGroup,
+        translations: {
+          en: cleanLocale("en"),
+          de: cleanLocale("de"),
+        },
       };
 
       const res = await fetch("/api/tours", {

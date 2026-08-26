@@ -200,7 +200,88 @@
       "description": "Descubre el Parque Nacional de Timanfaya, Los Hervideros, El Golfo, Salinas de Janubio y La Geria en grupo reducido y solo en español.",
       "keywords": ""
     },
-    "translations": {}
+    "translations": {
+      "en": {
+        "title": "Timanfaya and the Mountains of Fire Experience Tour",
+        "shortTitle": "Timanfaya and the Mountains of Fire",
+        "duration": "Approx. 5 hours",
+        "summary": "Discover Timanfaya National Park, Los Hervideros, El Golfo, the Janubio Salt Pans and La Geria in a small group and in Spanish only.",
+        "description": "Guided tour of Timanfaya National Park and the Mountains of Fire. Includes geothermal demonstrations, the Route of the Volcanoes, the Timanfaya coast (Los Hervideros and El Golfo), panoramic views of the Janubio Salt Pans and a tasting in La Geria. Small groups of no more than 14 people, in Spanish only. Pickup at the door of your accommodation.",
+        "highlights": [
+          "Small group: maximum 14 people",
+          "Spanish only",
+          "Pickup from your accommodation",
+          "Admission to Timanfaya included",
+          "Air-conditioned minibus with Wi-Fi"
+        ],
+        "places": [
+          "Timanfaya National Park",
+          "Los Hervideros",
+          "El Golfo and the Green Lagoon",
+          "Janubio Salt Pans",
+          "La Geria"
+        ],
+        "included": [
+          "Transport in an air-conditioned minibus",
+          "Official Spanish-speaking guide",
+          "Admission to Timanfaya National Park",
+          "Tourist insurance"
+        ],
+        "notIncluded": [
+          "Camel ride (optional)",
+          "Lunch"
+        ],
+        "recommendations": [
+          "Comfortable footwear",
+          "Camera",
+          "Light jacket"
+        ],
+        "cancellationPolicy": "Free cancellation up to 48 hours before pickup.",
+        "languages": [
+          "English"
+        ]
+      },
+      "de": {
+        "title": "Erlebnistour Timanfaya und Feuerberge",
+        "shortTitle": "Timanfaya und Feuerberge",
+        "duration": "Ca. 5 Stunden",
+        "summary": "Entdecken Sie den Nationalpark Timanfaya, Los Hervideros, El Golfo, die Salinen von Janubio und La Geria in einer kleinen Gruppe und ausschließlich auf Spanisch.",
+        "description": "Geführte Tour durch den Nationalpark Timanfaya und die Feuerberge. Inklusive geothermischer Vorführungen, Route der Vulkane, der Timanfaya-Küste (Los Hervideros und El Golfo), Panoramablick auf die Salinen von Janubio und einer Verkostung in La Geria. Kleine Gruppen mit maximal 14 Personen, ausschließlich auf Spanisch. Abholung direkt an Ihrer Unterkunft.",
+        "highlights": [
+          "Kleine Gruppe: maximal 14 Personen",
+          "Ausschließlich auf Spanisch",
+          "Abholung an Ihrer Unterkunft",
+          "Eintritt für Timanfaya inbegriffen",
+          "Klimatisierter Kleinbus mit WLAN"
+        ],
+        "places": [
+          "Nationalpark Timanfaya",
+          "Los Hervideros",
+          "El Golfo und die Grüne Lagune",
+          "Salinen von Janubio",
+          "La Geria"
+        ],
+        "included": [
+          "Fahrt im klimatisierten Kleinbus",
+          "Offizieller spanischsprachiger Reiseleiter",
+          "Eintritt in den Nationalpark Timanfaya",
+          "Touristenversicherung"
+        ],
+        "notIncluded": [
+          "Kamelritt (optional)",
+          "Mittagessen"
+        ],
+        "recommendations": [
+          "Bequeme Schuhe",
+          "Kamera",
+          "Leichte Jacke"
+        ],
+        "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden vor der Abholung.",
+        "languages": [
+          "Deutsch"
+        ]
+      }
+    }
   },
   {
     "id": "grand-tour-experience",
@@ -402,7 +483,86 @@
       "description": "La isla completa en un día: norte y sur, Manrique, Timanfaya, Jameos, Mirador del Río y más.",
       "keywords": ""
     },
-    "translations": {}
+    "translations": {
+      "en": {
+        "title": "Grand Tour Experience: the landscape's legacy",
+        "shortTitle": "Grand Tour Experience",
+        "duration": "Approx. 8 hours",
+        "summary": "The entire island in one day: north and south, Manrique, Timanfaya, Jameos del Agua, Mirador del Río and more.",
+        "description": "The Grand Tour Experience covers Lanzarote's essential sights in one day: Timanfaya, the southern coast, César Manrique sites in the north (Jameos del Agua, Cueva de los Verdes or Mirador del Río, depending on the itinerary), and the island's unique landscapes. Small group, in Spanish only, with pickup from your accommodation.",
+        "highlights": [
+          "Complete north and south itinerary",
+          "Maximum 14 people",
+          "Spanish only",
+          "Pickup from your accommodation"
+        ],
+        "places": [
+          "Timanfaya",
+          "Jameos del Agua",
+          "Cueva de los Verdes",
+          "Mirador del Río",
+          "La Geria"
+        ],
+        "included": [
+          "Transport by minibus",
+          "Official Spanish-speaking guide",
+          "Admission tickets specified in the itinerary",
+          "Tourist insurance"
+        ],
+        "notIncluded": [
+          "Lunch",
+          "Drinks"
+        ],
+        "recommendations": [
+          "Full-day tour: bring water and a snack",
+          "Comfortable footwear",
+          "Sunscreen"
+        ],
+        "cancellationPolicy": "Free cancellation up to 48 hours before pickup.",
+        "languages": [
+          "English"
+        ]
+      },
+      "de": {
+        "title": "Grand Tour Experience: die Spuren der Landschaft",
+        "shortTitle": "Grand Tour Experience",
+        "duration": "Ca. 8 Stunden",
+        "summary": "Die ganze Insel an einem Tag: Norden und Süden, Manrique, Timanfaya, Jameos del Agua, Mirador del Río und mehr.",
+        "description": "Die Grand Tour Experience führt an einem Tag zu den wichtigsten Sehenswürdigkeiten Lanzarotes: Timanfaya, die Südküste, die von César Manrique gestalteten Orte im Norden (je nach Route Jameos del Agua, Cueva de los Verdes oder Mirador del Río) und die einzigartigen Landschaften der Insel. Kleine Gruppe, ausschließlich auf Spanisch, mit Abholung an Ihrer Unterkunft.",
+        "highlights": [
+          "Umfassende Route durch den Norden und Süden",
+          "Maximal 14 Personen",
+          "Ausschließlich auf Spanisch",
+          "Abholung an Ihrer Unterkunft"
+        ],
+        "places": [
+          "Timanfaya",
+          "Jameos del Agua",
+          "Cueva de los Verdes",
+          "Mirador del Río",
+          "La Geria"
+        ],
+        "included": [
+          "Fahrt im Kleinbus",
+          "Offizieller spanischsprachiger Reiseleiter",
+          "Eintrittskarten laut Reiseverlauf",
+          "Touristenversicherung"
+        ],
+        "notIncluded": [
+          "Mittagessen",
+          "Getränke"
+        ],
+        "recommendations": [
+          "Ganztägiger Ausflug: Nehmen Sie Wasser und einen Snack mit",
+          "Bequeme Schuhe",
+          "Sonnenschutz"
+        ],
+        "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden vor der Abholung.",
+        "languages": [
+          "Deutsch"
+        ]
+      }
+    }
   },
   {
     "id": "tour-privado",
@@ -595,7 +755,72 @@
       "description": "Minibus y guía oficial en exclusiva para su grupo. Itinerario a su medida.",
       "keywords": ""
     },
-    "translations": {}
+    "translations": {
+      "en": {
+        "title": "Private Lanzarote Tour: Minibus + Tour Guide",
+        "shortTitle": "Private Tour",
+        "duration": "Tailor-made",
+        "summary": "A minibus and official guide exclusively for your group. An itinerary tailored to you.",
+        "description": "Design your day in Lanzarote with a private minibus and official tour guide. Ideal for families, groups of friends or cruise passengers who want to explore at their own pace with complete flexibility.",
+        "highlights": [
+          "Vehicle and guide exclusively for your group",
+          "Customised itinerary",
+          "Ideal for families and groups",
+          "Flexible schedule"
+        ],
+        "places": [
+          "As agreed in your itinerary"
+        ],
+        "included": [
+          "Private minibus",
+          "Official guide",
+          "Tourist insurance"
+        ],
+        "notIncluded": [
+          "Admission to visitor attractions",
+          "Meals"
+        ],
+        "recommendations": [
+          "Tell us your preferences when booking"
+        ],
+        "cancellationPolicy": "Free cancellation up to 48 hours in advance.",
+        "languages": [
+          "English"
+        ]
+      },
+      "de": {
+        "title": "Private Lanzarote-Tour: Kleinbus + Reiseleiter",
+        "shortTitle": "Private Tour",
+        "duration": "Nach Maß",
+        "summary": "Kleinbus und offizieller Reiseleiter exklusiv für Ihre Gruppe. Eine individuell auf Sie zugeschnittene Route.",
+        "description": "Gestalten Sie Ihren Tag auf Lanzarote mit einem privaten Kleinbus und einem offiziellen Reiseleiter. Ideal für Familien, Freundesgruppen oder Kreuzfahrtgäste, die ihr eigenes Tempo und volle Flexibilität wünschen.",
+        "highlights": [
+          "Fahrzeug und Reiseleiter exklusiv für Ihre Gruppe",
+          "Individuelle Route",
+          "Ideal für Familien und Gruppen",
+          "Flexible Zeiten"
+        ],
+        "places": [
+          "Gemäß vereinbarter Route"
+        ],
+        "included": [
+          "Privater Kleinbus",
+          "Offizieller Reiseleiter",
+          "Touristenversicherung"
+        ],
+        "notIncluded": [
+          "Eintrittskarten für Besucherzentren",
+          "Mahlzeiten"
+        ],
+        "recommendations": [
+          "Teilen Sie uns Ihre Wünsche bei der Buchung mit"
+        ],
+        "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden im Voraus.",
+        "languages": [
+          "Deutsch"
+        ]
+      }
+    }
   },
   {
     "id": "cesar-manrique",
@@ -790,7 +1015,74 @@
       "description": "El talento de un hombre y el amor por su tierra: Fundación, Jameos, Mirador y Jardín de Cactus.",
       "keywords": ""
     },
-    "translations": {}
+    "translations": {
+      "en": {
+        "title": "César Manrique Experience Tour",
+        "shortTitle": "César Manrique Experience",
+        "duration": "Approx. 6 hours",
+        "summary": "One man's talent and love for his homeland: the Foundation, Jameos del Agua, Mirador del Río and the Cactus Garden.",
+        "description": "A tour dedicated to the work of César Manrique: César Manrique Foundation, Jameos del Agua, Mirador del Río and the Cactus Garden. Small groups and in Spanish only.",
+        "highlights": [
+          "Focus on César Manrique",
+          "Maximum 14 people",
+          "Spanish only"
+        ],
+        "places": [
+          "César Manrique Foundation",
+          "Jameos del Agua",
+          "Mirador del Río",
+          "Cactus Garden"
+        ],
+        "included": [
+          "Transport",
+          "Official guide",
+          "Admission tickets on the itinerary"
+        ],
+        "notIncluded": [
+          "Lunch"
+        ],
+        "recommendations": [
+          "Comfortable footwear"
+        ],
+        "cancellationPolicy": "Free cancellation up to 48 hours in advance.",
+        "languages": [
+          "English"
+        ]
+      },
+      "de": {
+        "title": "César Manrique Experience Tour",
+        "shortTitle": "César Manrique Experience",
+        "duration": "Ca. 6 Stunden",
+        "summary": "Das Talent eines Mannes und seine Liebe zur Heimat: Stiftung, Jameos del Agua, Mirador del Río und Kakteengarten.",
+        "description": "Eine Tour, die dem Werk César Manriques gewidmet ist: Fundación César Manrique, Jameos del Agua, Mirador del Río und Kakteengarten. Kleine Gruppen und ausschließlich auf Spanisch.",
+        "highlights": [
+          "César Manrique im Mittelpunkt",
+          "Maximal 14 Personen",
+          "Ausschließlich auf Spanisch"
+        ],
+        "places": [
+          "Fundación César Manrique",
+          "Jameos del Agua",
+          "Mirador del Río",
+          "Kakteengarten"
+        ],
+        "included": [
+          "Transport",
+          "Offizieller Reiseleiter",
+          "Eintrittskarten laut Reiseverlauf"
+        ],
+        "notIncluded": [
+          "Mittagessen"
+        ],
+        "recommendations": [
+          "Bequeme Schuhe"
+        ],
+        "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden im Voraus.",
+        "languages": [
+          "Deutsch"
+        ]
+      }
+    }
   },
   {
     "id": "ruta-vino",
@@ -982,7 +1274,70 @@
       "description": "Descubre La Geria, sus volcanes y degustaciones de vino malvasía en bodegas locales.",
       "keywords": ""
     },
-    "translations": {}
+    "translations": {
+      "en": {
+        "title": "Lanzarote Wine Tour",
+        "shortTitle": "Wine Tour",
+        "duration": "Approx. 4 hours",
+        "summary": "Discover La Geria, its volcanoes and Malvasía wine tastings at local wineries.",
+        "description": "A wine experience through La Geria: vineyards planted in hollows, wineries and a tasting of Lanzarote wines.",
+        "highlights": [
+          "Wine tastings",
+          "Small group",
+          "Spanish only"
+        ],
+        "places": [
+          "La Geria",
+          "Local wineries"
+        ],
+        "included": [
+          "Transport",
+          "Guide",
+          "Tastings"
+        ],
+        "notIncluded": [
+          "Winery purchases"
+        ],
+        "recommendations": [
+          "Alcohol tastings are not suitable for minors"
+        ],
+        "cancellationPolicy": "Free cancellation up to 48 hours in advance.",
+        "languages": [
+          "English"
+        ]
+      },
+      "de": {
+        "title": "Lanzarote-Weintour",
+        "shortTitle": "Weintour",
+        "duration": "Ca. 4 Stunden",
+        "summary": "Entdecken Sie La Geria, seine Vulkane und Verkostungen von Malvasía-Weinen in örtlichen Weingütern.",
+        "description": "Ein Weinerlebnis in La Geria: in Mulden angelegte Weinberge, Weingüter und eine Verkostung von Weinen aus Lanzarote.",
+        "highlights": [
+          "Weinverkostungen",
+          "Kleine Gruppe",
+          "Ausschließlich auf Spanisch"
+        ],
+        "places": [
+          "La Geria",
+          "Örtliche Weingüter"
+        ],
+        "included": [
+          "Transport",
+          "Reiseleiter",
+          "Verkostungen"
+        ],
+        "notIncluded": [
+          "Einkäufe im Weingut"
+        ],
+        "recommendations": [
+          "Alkoholische Verkostungen sind nicht für Minderjährige geeignet"
+        ],
+        "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden im Voraus.",
+        "languages": [
+          "Deutsch"
+        ]
+      }
+    }
   },
   {
     "id": "senderismo-norte",
@@ -1178,7 +1533,78 @@
       "description": "Ruta de senderismo por el norte verde de Lanzarote con guía local.",
       "keywords": ""
     },
-    "translations": {}
+    "translations": {
+      "en": {
+        "title": "Hiking in Northern Lanzarote: Ermita de Las Nieves – El Bosquecillo – Haría",
+        "shortTitle": "Northern Lanzarote Hike",
+        "duration": "Approx. 5 hours",
+        "summary": "A guided hike through the green north of Lanzarote with a local guide.",
+        "description": "Guided hike through Ermita de Las Nieves, El Bosquecillo and the Haría valley. Ideal for nature lovers and panoramic views.",
+        "highlights": [
+          "Hiking guide",
+          "Small group",
+          "Northern landscapes"
+        ],
+        "places": [
+          "Ermita de Las Nieves",
+          "El Bosquecillo",
+          "Haría"
+        ],
+        "included": [
+          "Transport",
+          "Guide",
+          "Insurance"
+        ],
+        "notIncluded": [
+          "Food",
+          "Walking poles"
+        ],
+        "recommendations": [
+          "Hiking footwear",
+          "Water",
+          "Hat"
+        ],
+        "cancellationPolicy": "Free cancellation up to 48 hours in advance.",
+        "languages": [
+          "English"
+        ]
+      },
+      "de": {
+        "title": "Wanderung im Norden Lanzarotes: Ermita de Las Nieves – El Bosquecillo – Haría",
+        "shortTitle": "Wanderung im Norden",
+        "duration": "Ca. 5 Stunden",
+        "summary": "Geführte Wanderung mit einem einheimischen Wanderführer durch den grünen Norden Lanzarotes.",
+        "description": "Geführte Wanderung durch Ermita de Las Nieves, El Bosquecillo und das Tal von Haría. Ideal für Naturliebhaber und Freunde von Panoramablicken.",
+        "highlights": [
+          "Wanderführer",
+          "Kleine Gruppe",
+          "Landschaften des Nordens"
+        ],
+        "places": [
+          "Ermita de Las Nieves",
+          "El Bosquecillo",
+          "Haría"
+        ],
+        "included": [
+          "Transport",
+          "Reiseleiter",
+          "Versicherung"
+        ],
+        "notIncluded": [
+          "Verpflegung",
+          "Wanderstöcke"
+        ],
+        "recommendations": [
+          "Wanderschuhe",
+          "Wasser",
+          "Kopfbedeckung"
+        ],
+        "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden im Voraus.",
+        "languages": [
+          "Deutsch"
+        ]
+      }
+    }
   },
   {
     "id": "graciosa-catamaran",
@@ -1372,7 +1798,74 @@
       "description": "Día completo a La Graciosa en catamarán: playas, snorkel y ambiente único.",
       "keywords": ""
     },
-    "translations": {}
+    "translations": {
+      "en": {
+        "title": "La Graciosa by Catamaran",
+        "shortTitle": "La Graciosa by Catamaran",
+        "duration": "Approx. 8 hours",
+        "summary": "A full day in La Graciosa by catamaran: beaches, snorkelling and a unique atmosphere.",
+        "description": "Catamaran excursion to the island of La Graciosa. Free time on the beaches, the option to go snorkelling and lunch on board, subject to availability.",
+        "highlights": [
+          "Catamaran",
+          "La Graciosa beaches",
+          "Full day"
+        ],
+        "places": [
+          "Órzola",
+          "La Graciosa"
+        ],
+        "included": [
+          "Overland transport",
+          "Ferry/catamaran",
+          "Guide"
+        ],
+        "notIncluded": [
+          "Extras on board"
+        ],
+        "recommendations": [
+          "Swimwear",
+          "Towel",
+          "Sunscreen"
+        ],
+        "cancellationPolicy": "Free cancellation up to 48 hours in advance.",
+        "languages": [
+          "English"
+        ]
+      },
+      "de": {
+        "title": "Mit dem Katamaran nach La Graciosa",
+        "shortTitle": "La Graciosa mit dem Katamaran",
+        "duration": "Ca. 8 Stunden",
+        "summary": "Ein ganzer Tag auf La Graciosa mit dem Katamaran: Strände, Schnorcheln und eine einzigartige Atmosphäre.",
+        "description": "Katamaranausflug zur Insel La Graciosa. Freizeit an den Stränden, Möglichkeit zum Schnorcheln und je nach Verfügbarkeit Mittagessen an Bord.",
+        "highlights": [
+          "Katamaran",
+          "Strände von La Graciosa",
+          "Ganztägig"
+        ],
+        "places": [
+          "Órzola",
+          "La Graciosa"
+        ],
+        "included": [
+          "Transfer an Land",
+          "Fähre/Katamaran",
+          "Reiseleiter"
+        ],
+        "notIncluded": [
+          "Extras an Bord"
+        ],
+        "recommendations": [
+          "Badebekleidung",
+          "Handtuch",
+          "Sonnenschutz"
+        ],
+        "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden im Voraus.",
+        "languages": [
+          "Deutsch"
+        ]
+      }
+    }
   },
   {
     "id": "delfines-atardecer",
@@ -1561,7 +2054,66 @@
       "description": "Salida en barco al atardecer con avistamiento de delfines y puesta de sol.",
       "keywords": ""
     },
-    "translations": {}
+    "translations": {
+      "en": {
+        "title": "Dolphin-Watching Excursion at a Romantic Lanzarote Sunset",
+        "shortTitle": "Dolphins at Sunset",
+        "duration": "Approx. 3 hours",
+        "summary": "A sunset boat trip with dolphin watching and views of the setting sun.",
+        "description": "A sunset cruise to spot dolphins (subject to sightings in the wild) and enjoy the sun setting off the coast of Lanzarote.",
+        "highlights": [
+          "Sunset",
+          "Dolphin watching",
+          "Romantic atmosphere"
+        ],
+        "places": [
+          "Lanzarote coast"
+        ],
+        "included": [
+          "Boat trip",
+          "Crew"
+        ],
+        "notIncluded": [
+          "Drinks"
+        ],
+        "recommendations": [
+          "Warm clothing for the wind"
+        ],
+        "cancellationPolicy": "Free cancellation up to 48 hours in advance.",
+        "languages": [
+          "English"
+        ]
+      },
+      "de": {
+        "title": "Delfinbeobachtung bei einem romantischen Sonnenuntergang auf Lanzarote",
+        "shortTitle": "Delfine bei Sonnenuntergang",
+        "duration": "Ca. 3 Stunden",
+        "summary": "Bootsfahrt bei Sonnenuntergang mit Delfinbeobachtung und Blick auf die untergehende Sonne.",
+        "description": "Bootsfahrt am Abend, bei der Sie Delfine beobachten können (Sichtungen in freier Wildbahn können nicht garantiert werden) und den Sonnenuntergang vor der Küste Lanzarotes genießen.",
+        "highlights": [
+          "Sonnenuntergang",
+          "Delfinbeobachtung",
+          "Romantische Atmosphäre"
+        ],
+        "places": [
+          "Küste Lanzarotes"
+        ],
+        "included": [
+          "Bootsfahrt",
+          "Besatzung"
+        ],
+        "notIncluded": [
+          "Getränke"
+        ],
+        "recommendations": [
+          "Warme Kleidung zum Schutz vor dem Wind"
+        ],
+        "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden im Voraus.",
+        "languages": [
+          "Deutsch"
+        ]
+      }
+    }
   },
   {
     "id": "mercadillo-teguise",
@@ -1751,7 +2303,66 @@
       "description": "Visita al tradicional mercadillo dominical de Teguise con transporte y guía.",
       "keywords": ""
     },
-    "translations": {}
+    "translations": {
+      "en": {
+        "title": "Teguise Market",
+        "shortTitle": "Teguise Market",
+        "duration": "Approx. 4 hours",
+        "summary": "Visit the traditional Sunday market in Teguise with transport and a guide.",
+        "description": "Every Sunday, the village of Teguise fills with handicrafts, local produce and Canarian atmosphere. Includes transport and assistance.",
+        "highlights": [
+          "Sundays",
+          "Local handicrafts",
+          "Historic village"
+        ],
+        "places": [
+          "Teguise"
+        ],
+        "included": [
+          "Transport",
+          "Assistance"
+        ],
+        "notIncluded": [
+          "Purchases"
+        ],
+        "recommendations": [
+          "Cash for the market"
+        ],
+        "cancellationPolicy": "Free cancellation up to 48 hours in advance.",
+        "languages": [
+          "English"
+        ]
+      },
+      "de": {
+        "title": "Markt von Teguise",
+        "shortTitle": "Markt von Teguise",
+        "duration": "Ca. 4 Stunden",
+        "summary": "Besuchen Sie den traditionellen Sonntagsmarkt von Teguise mit Transfer und Reiseleitung.",
+        "description": "Jeden Sonntag erfüllt kanarisches Flair den Ort Teguise, wenn Kunsthandwerk und lokale Produkte angeboten werden. Transport und Begleitung sind inbegriffen.",
+        "highlights": [
+          "Sonntags",
+          "Lokales Kunsthandwerk",
+          "Historischer Ort"
+        ],
+        "places": [
+          "Teguise"
+        ],
+        "included": [
+          "Transport",
+          "Begleitung"
+        ],
+        "notIncluded": [
+          "Einkäufe"
+        ],
+        "recommendations": [
+          "Bargeld für den Markt"
+        ],
+        "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden im Voraus.",
+        "languages": [
+          "Deutsch"
+        ]
+      }
+    }
   },
   {
     "id": "panoramica-sur-norte",
@@ -1942,7 +2553,78 @@
       "description": "Recorrido panorámico por el sur y el norte de Lanzarote.",
       "keywords": ""
     },
-    "translations": {}
+    "translations": {
+      "en": {
+        "title": "Panoramic South and North of Lanzarote Tour",
+        "shortTitle": "South & North Panoramic",
+        "duration": "Approx. 8 hours",
+        "summary": "A panoramic journey across southern and northern Lanzarote: villages, viewpoints and volcanic landscapes.",
+        "description": "Discover the contrast between the south and the north of Lanzarote on a guided panoramic tour. Ideal if you want a broad overview of the island with pickup from your accommodation.",
+        "highlights": [
+          "South and north itinerary",
+          "Scenic viewpoints",
+          "Pickup from your accommodation"
+        ],
+        "places": [
+          "Southern coast",
+          "Northern villages",
+          "Viewpoints"
+        ],
+        "included": [
+          "Transport",
+          "Spanish-speaking guide",
+          "Tourist insurance"
+        ],
+        "notIncluded": [
+          "Meals",
+          "Entrance fees not specified"
+        ],
+        "recommendations": [
+          "Comfortable shoes",
+          "Camera",
+          "Sun protection"
+        ],
+        "cancellationPolicy": "Free cancellation up to 48 hours before pickup.",
+        "languages": [
+          "English"
+        ]
+      },
+      "de": {
+        "title": "Panorama-Tour Süd und Nord von Lanzarote",
+        "shortTitle": "Panorama Süd & Nord",
+        "duration": "Ca. 8 Stunden",
+        "summary": "Eine Panoramafahrt durch Süd- und Nordlanzarote: Dörfer, Aussichtspunkte und Vulkanlandschaften.",
+        "description": "Entdecken Sie den Kontrast zwischen Süden und Norden Lanzarotes auf einer geführten Panoramatour. Ideal für einen umfassenden Überblick mit Abholung an Ihrer Unterkunft.",
+        "highlights": [
+          "Route Süd und Nord",
+          "Aussichtspunkte",
+          "Abholung an der Unterkunft"
+        ],
+        "places": [
+          "Südküste",
+          "Dörfer im Norden",
+          "Aussichtspunkte"
+        ],
+        "included": [
+          "Transport",
+          "Spanischsprachiger Guide",
+          "Reiseversicherung"
+        ],
+        "notIncluded": [
+          "Mahlzeiten",
+          "Nicht angegebene Eintritte"
+        ],
+        "recommendations": [
+          "Bequeme Schuhe",
+          "Kamera",
+          "Sonnenschutz"
+        ],
+        "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden vor der Abholung.",
+        "languages": [
+          "Deutsch"
+        ]
+      }
+    }
   },
   {
     "id": "traslado-concierto-jameos",
@@ -2128,7 +2810,72 @@
       "description": "Traslado y acceso a concierto en los Jameos del Agua.",
       "keywords": ""
     },
-    "translations": {}
+    "translations": {
+      "en": {
+        "title": "Transfer + Concert at Jameos del Agua",
+        "shortTitle": "Jameos Concert Transfer",
+        "duration": "Approx. 4 hours",
+        "summary": "Return transfer and access to a concert at César Manrique’s Jameos del Agua.",
+        "description": "Enjoy a concert in the unique setting of Jameos del Agua. Includes return transfer from your accommodation area and entrance according to the programme.",
+        "highlights": [
+          "Unique Manrique venue",
+          "Return transfer",
+          "Evening atmosphere"
+        ],
+        "places": [
+          "Jameos del Agua"
+        ],
+        "included": [
+          "Return transfer",
+          "Concert access (as advertised)",
+          "Tourist insurance"
+        ],
+        "notIncluded": [
+          "Drinks",
+          "Merchandise"
+        ],
+        "recommendations": [
+          "Light jacket",
+          "Camera"
+        ],
+        "cancellationPolicy": "Free cancellation up to 48 hours before pickup.",
+        "languages": [
+          "English"
+        ]
+      },
+      "de": {
+        "title": "Transfer + Konzert in den Jameos del Agua",
+        "shortTitle": "Jameos-Konzert Transfer",
+        "duration": "Ca. 4 Stunden",
+        "summary": "Hin- und Rücktransfer sowie Zugang zu einem Konzert in César Manriques Jameos del Agua.",
+        "description": "Erleben Sie ein Konzert in der einzigartigen Kulisse der Jameos del Agua. Inklusive Transfer und Eintritt gemäß Programm.",
+        "highlights": [
+          "Einzigartiger Manrique-Ort",
+          "Hin- und Rücktransfer",
+          "Abendstimmung"
+        ],
+        "places": [
+          "Jameos del Agua"
+        ],
+        "included": [
+          "Transfer",
+          "Konzertzugang (laut Angebot)",
+          "Reiseversicherung"
+        ],
+        "notIncluded": [
+          "Getränke",
+          "Souvenirs"
+        ],
+        "recommendations": [
+          "Leichte Jacke",
+          "Kamera"
+        ],
+        "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden vor der Abholung.",
+        "languages": [
+          "Deutsch"
+        ]
+      }
+    }
   },
   {
     "id": "astro-tour-experience",
@@ -2318,6 +3065,69 @@
       "description": "Observación de estrellas en cielo limpio de Lanzarote.",
       "keywords": ""
     },
-    "translations": {}
+    "translations": {
+      "en": {
+        "title": "Astro Tour Experience",
+        "shortTitle": "Astro Tour",
+        "duration": "Approx. 3 hours",
+        "summary": "Stargazing under Lanzarote’s clear skies with a guided astronomical experience.",
+        "description": "Observe stars and constellations with telescopes and expert explanations in a dark-sky location on the island.",
+        "highlights": [
+          "Clear night skies",
+          "Telescopes",
+          "Expert guide"
+        ],
+        "places": [
+          "Dark-sky observation point"
+        ],
+        "included": [
+          "Transport",
+          "Guide",
+          "Observation equipment"
+        ],
+        "notIncluded": [
+          "Food and drinks"
+        ],
+        "recommendations": [
+          "Warm clothing",
+          "Closed shoes"
+        ],
+        "cancellationPolicy": "Free cancellation up to 48 hours before pickup.",
+        "languages": [
+          "English"
+        ]
+      },
+      "de": {
+        "title": "Astro Tour Experience",
+        "shortTitle": "Astro Tour",
+        "duration": "Ca. 3 Stunden",
+        "summary": "Sternenbeobachtung unter dem klaren Himmel Lanzarotes mit geführter astronomischer Erfahrung.",
+        "description": "Beobachten Sie Sterne und Sternbilder mit Teleskopen und Fachwissen an einem dunklen Beobachtungsort auf der Insel.",
+        "highlights": [
+          "Klarer Nachthimmel",
+          "Teleskope",
+          "Fachkundiger Guide"
+        ],
+        "places": [
+          "Sternwarten-Punkt"
+        ],
+        "included": [
+          "Transport",
+          "Guide",
+          "Beobachtungsausrüstung"
+        ],
+        "notIncluded": [
+          "Essen und Getränke"
+        ],
+        "recommendations": [
+          "Warme Kleidung",
+          "Geschlossene Schuhe"
+        ],
+        "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden vor der Abholung.",
+        "languages": [
+          "Deutsch"
+        ]
+      }
+    }
   }
 ]

@@ -405,7 +405,50 @@
       "minPax": 8,
       "privatePrice": 0,
       "privateMaxPax": 0,
-      "translations": {}
+      "translations": {
+        "en": {
+          "title": "South Lanzarote Excursion — Timanfaya National Park",
+          "shortTitle": "South Lanzarote · Timanfaya",
+          "summary": "Timanfaya National Park, El Golfo, Los Hervideros and La Geria. Ideal for cruise calls (~5 h), with guaranteed return to the ship.",
+          "description": "Small-group shore excursion across southern Lanzarote: geothermal landscapes of Timanfaya, the green lagoon at El Golfo, Los Hervideros and La Geria wine country. Return to the ship on time guaranteed.",
+          "duration": "5 hours",
+          "highlights": [
+            "Small groups, max. 25 people",
+            "One language per tour",
+            "Guaranteed return to the ship on time",
+            "Money-back if delayed back to the ship"
+          ],
+          "places": [
+            "Timanfaya",
+            "Islote de Hilario",
+            "El Golfo",
+            "Los Hervideros",
+            "La Geria",
+            "Janubio Salt Pans"
+          ]
+        },
+        "de": {
+          "title": "Süd-Lanzarote-Ausflug — Nationalpark Timanfaya",
+          "shortTitle": "Süd-Lanzarote · Timanfaya",
+          "summary": "Nationalpark Timanfaya, El Golfo, Los Hervideros und La Geria. Ideal für Kreuzfahrtstops (~5 Std.), mit garantierter Rückkehr zum Schiff.",
+          "description": "Landausflug in kleinen Gruppen durch Süd-Lanzarote: geothermische Landschaften Timanfayas, die grüne Lagune von El Golfo, Los Hervideros und das Weinland La Geria. Pünktliche Rückkehr zum Schiff garantiert.",
+          "duration": "5 Stunden",
+          "highlights": [
+            "Kleine Gruppen, max. 25 Personen",
+            "Nur eine Sprache pro Tour",
+            "Garantierte pünktliche Rückkehr zum Schiff",
+            "Geld zurück bei Verspätung zum Schiff"
+          ],
+          "places": [
+            "Timanfaya",
+            "Islote de Hilario",
+            "El Golfo",
+            "Los Hervideros",
+            "La Geria",
+            "Salinas de Janubio"
+          ]
+        }
+      }
     },
     {
       "id": "lanzarote-experience-tour-nuestra-excursion-mas-completa-para-cruceristas",
@@ -458,7 +501,46 @@
       "minPax": 8,
       "privatePrice": 0,
       "privateMaxPax": 0,
-      "translations": {}
+      "translations": {
+        "en": {
+          "title": "Lanzarote Experience Tour: our most complete shore excursion",
+          "shortTitle": "Lanzarote Experience Tour",
+          "summary": "The most complete cruise excursion: Timanfaya, Jameos del Agua and the Cactus Garden in one day (~8 h), with admissions included.",
+          "description": "Full-day shore excursion combining Timanfaya National Park with César Manrique highlights in the north. Designed around your all-aboard time with pickup at the pier.",
+          "duration": "8 hours",
+          "highlights": [
+            "Small groups, max. 25 people",
+            "One language per tour",
+            "Guaranteed return to the ship on time",
+            "Key admissions included"
+          ],
+          "places": [
+            "Timanfaya National Park",
+            "Jameos del Agua",
+            "Cactus Garden",
+            "La Geria"
+          ]
+        },
+        "de": {
+          "title": "Lanzarote Experience Tour: unser komplettester Landausflug",
+          "shortTitle": "Lanzarote Experience Tour",
+          "summary": "Der kompletteste Kreuzfahrtausflug: Timanfaya, Jameos del Agua und Kakteengarten an einem Tag (~8 Std.), inkl. Eintritte.",
+          "description": "Ganztägiger Landausflug mit Timanfaya und César-Manrique-Highlights im Norden. Abgestimmt auf Ihre All-aboard-Zeit mit Abholung am Pier.",
+          "duration": "8 Stunden",
+          "highlights": [
+            "Kleine Gruppen, max. 25 Personen",
+            "Nur eine Sprache pro Tour",
+            "Garantierte pünktliche Rückkehr zum Schiff",
+            "Wichtige Eintritte inklusive"
+          ],
+          "places": [
+            "Nationalpark Timanfaya",
+            "Jameos del Agua",
+            "Kakteengarten",
+            "La Geria"
+          ]
+        }
+      }
     },
     {
       "id": "parque-nacional-de-garajonay-la-gomera",
@@ -505,31 +587,35 @@
       "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
       "translations": {
         "en": {
-          "title": "Parque Nacional de Garajonay — La Gomera",
-          "summary": "Parque Nacional de Garajonay — La Gomera",
-          "description": "Bosque laurisilva UNESCO\nRegreso al barco garantizado",
+          "title": "Garajonay National Park — La Gomera",
+          "shortTitle": "Garajonay National Park",
+          "summary": "UNESCO laurel forest and viewpoints on La Gomera, timed for your cruise call.",
+          "description": "Explore Garajonay National Park’s unique laurel forest and scenic viewpoints, with guaranteed return to the ship.",
+          "duration": "4 hours",
           "highlights": [
-            "Bosque laurisilva UNESCO",
-            "Regreso al barco garantizado"
+            "UNESCO laurel forest",
+            "Guaranteed return to the ship"
           ],
           "places": [
             "Garajonay",
             "Valle Gran Rey",
-            "Mirador"
+            "Viewpoint"
           ]
         },
         "de": {
-          "title": "Parque Nacional de Garajonay — La Gomera",
-          "summary": "Parque Nacional de Garajonay — La Gomera",
-          "description": "Bosque laurisilva UNESCO\nRegreso al barco garantizado",
+          "title": "Nationalpark Garajonay — La Gomera",
+          "shortTitle": "Nationalpark Garajonay",
+          "summary": "UNESCO-Lorbeerwald und Aussichtspunkte auf La Gomera, abgestimmt auf Ihren Hafenstopp.",
+          "description": "Erkunden Sie den einzigartigen Lorbeerwald des Nationalparks Garajonay mit garantierter Rückkehr zum Schiff.",
+          "duration": "4 Stunden",
           "highlights": [
-            "Bosque laurisilva UNESCO",
-            "Regreso al barco garantizado"
+            "UNESCO-Lorbeerwald",
+            "Garantierte Rückkehr zum Schiff"
           ],
           "places": [
             "Garajonay",
             "Valle Gran Rey",
-            "Mirador"
+            "Aussichtspunkt"
           ]
         }
       }
@@ -579,29 +665,33 @@
       "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
       "translations": {
         "en": {
-          "title": "Parque natural de las Dunas de Corralejo",
-          "summary": "Parque natural de las Dunas de Corralejo",
-          "description": "Dunas y pueblos del norte\nIdeal para escalas cortas",
+          "title": "Corralejo Natural Dunes Park",
+          "shortTitle": "Corralejo Dunes",
+          "summary": "White sand dunes and northern Fuerteventura villages — ideal for shorter port calls.",
+          "description": "Visit the Corralejo Natural Park dunes and nearby coastal towns on a shore excursion tailored to your ship’s schedule.",
+          "duration": "4 hours",
           "highlights": [
-            "Dunas y pueblos del norte",
-            "Ideal para escalas cortas"
+            "Dunes and northern villages",
+            "Ideal for short calls"
           ],
           "places": [
-            "Parque natural de las Dunas de Corralejo",
+            "Corralejo Natural Dunes Park",
             "Corralejo",
             "El Cotillo"
           ]
         },
         "de": {
-          "title": "Parque natural de las Dunas de Corralejo",
-          "summary": "Parque natural de las Dunas de Corralejo",
-          "description": "Dunas y pueblos del norte\nIdeal para escalas cortas",
+          "title": "Naturpark Dünen von Corralejo",
+          "shortTitle": "Dünen von Corralejo",
+          "summary": "Weiße Sanddünen und Dörfer im Norden Fuerteventuras — ideal für kürzere Hafenstops.",
+          "description": "Besuch der Dünen von Corralejo und benachbarter Küstenorte, abgestimmt auf Ihren Schiffplan.",
+          "duration": "4 Stunden",
           "highlights": [
-            "Dunas y pueblos del norte",
-            "Ideal para escalas cortas"
+            "Dünen und Norddörfer",
+            "Ideal für kurze Stops"
           ],
           "places": [
-            "Parque natural de las Dunas de Corralejo",
+            "Naturpark Dünen von Corralejo",
             "Corralejo",
             "El Cotillo"
           ]
@@ -653,12 +743,14 @@
       "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
       "translations": {
         "en": {
-          "title": "Teide y Norte de Tenerife",
-          "summary": "Teide y Norte de Tenerife",
-          "description": "Parque Nacional del Teide\nPueblos del norte",
+          "title": "Teide and North Tenerife",
+          "shortTitle": "Teide & North Tenerife",
+          "summary": "Teide National Park and charming northern towns of Tenerife.",
+          "description": "From the volcanic landscapes of Teide to La Orotava and Puerto de la Cruz, a classic shore excursion for Tenerife calls.",
+          "duration": "7 hours",
           "highlights": [
-            "Parque Nacional del Teide",
-            "Pueblos del norte"
+            "Teide National Park",
+            "Northern villages"
           ],
           "places": [
             "Teide",
@@ -667,12 +759,14 @@
           ]
         },
         "de": {
-          "title": "Teide y Norte de Tenerife",
-          "summary": "Teide y Norte de Tenerife",
-          "description": "Parque Nacional del Teide\nPueblos del norte",
+          "title": "Teide und Norden Teneriffas",
+          "shortTitle": "Teide & Norden Teneriffa",
+          "summary": "Nationalpark Teide und charmante Orte im Norden Teneriffas.",
+          "description": "Von den Vulkanlandschaften des Teide nach La Orotava und Puerto de la Cruz — ein klassischer Landausflug.",
+          "duration": "7 Stunden",
           "highlights": [
-            "Parque Nacional del Teide",
-            "Pueblos del norte"
+            "Nationalpark Teide",
+            "Dörfer im Norden"
           ],
           "places": [
             "Teide",
@@ -727,31 +821,35 @@
       "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
       "translations": {
         "en": {
-          "title": "Sur de Tenerife y Los Gigantes",
-          "summary": "Sur de Tenerife y Los Gigantes",
-          "description": "Acantilados de Los Gigantes\nCosta sur",
+          "title": "South Tenerife and Los Gigantes",
+          "shortTitle": "South Tenerife · Los Gigantes",
+          "summary": "Los Gigantes cliffs and the sunny south coast of Tenerife.",
+          "description": "Shore excursion along Tenerife’s south coast with views of the famous Los Gigantes cliffs.",
+          "duration": "5 hours",
           "highlights": [
-            "Acantilados de Los Gigantes",
-            "Costa sur"
+            "Los Gigantes cliffs",
+            "South coast"
           ],
           "places": [
             "Los Gigantes",
             "Costa Adeje",
-            "Mirador"
+            "Viewpoint"
           ]
         },
         "de": {
-          "title": "Sur de Tenerife y Los Gigantes",
-          "summary": "Sur de Tenerife y Los Gigantes",
-          "description": "Acantilados de Los Gigantes\nCosta sur",
+          "title": "Süden Teneriffas und Los Gigantes",
+          "shortTitle": "Süden Teneriffa · Los Gigantes",
+          "summary": "Die Klippen von Los Gigantes und die sonnige Südküste Teneriffas.",
+          "description": "Landausflug entlang der Südküste mit Blick auf die berühmten Klippen von Los Gigantes.",
+          "duration": "5 Stunden",
           "highlights": [
-            "Acantilados de Los Gigantes",
-            "Costa sur"
+            "Klippen von Los Gigantes",
+            "Südküste"
           ],
           "places": [
             "Los Gigantes",
             "Costa Adeje",
-            "Mirador"
+            "Aussichtspunkt"
           ]
         }
       }
@@ -801,31 +899,35 @@
       "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
       "translations": {
         "en": {
-          "title": "Funchal y Monte — Madeira",
-          "summary": "Funchal y Monte — Madeira",
-          "description": "Ciudad de Funchal\nTradición del carro de cesto",
+          "title": "Funchal and Monte — Madeira",
+          "shortTitle": "Funchal & Monte",
+          "summary": "Funchal city highlights and the Monte tradition of basket sledges.",
+          "description": "Discover Funchal and Monte with botanical gardens and the island’s emblematic mountain village experience.",
+          "duration": "4 hours",
           "highlights": [
-            "Ciudad de Funchal",
-            "Tradición del carro de cesto"
+            "Funchal city",
+            "Basket sledge tradition"
           ],
           "places": [
             "Funchal",
             "Monte",
-            "Jardines botánicos"
+            "Botanical gardens"
           ]
         },
         "de": {
-          "title": "Funchal y Monte — Madeira",
-          "summary": "Funchal y Monte — Madeira",
-          "description": "Ciudad de Funchal\nTradición del carro de cesto",
+          "title": "Funchal und Monte — Madeira",
+          "shortTitle": "Funchal & Monte",
+          "summary": "Highlights von Funchal und die Monte-Tradition der Korbschlitten.",
+          "description": "Entdecken Sie Funchal und Monte mit Botanischen Gärten und dem typischen Bergdorf-Erlebnis.",
+          "duration": "4 Stunden",
           "highlights": [
-            "Ciudad de Funchal",
-            "Tradición del carro de cesto"
+            "Stadt Funchal",
+            "Korbschlitten-Tradition"
           ],
           "places": [
             "Funchal",
             "Monte",
-            "Jardines botánicos"
+            "Botanische Gärten"
           ]
         }
       }
@@ -875,12 +977,14 @@
       "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
       "translations": {
         "en": {
-          "title": "Este de Madeira — Machico y Ponta de São Lourenço",
-          "summary": "Este de Madeira — Machico y Ponta de São Lourenço",
-          "description": "Paisaje volcánico\nMiradores del este",
+          "title": "East Madeira — Machico and Ponta de São Lourenço",
+          "shortTitle": "East Madeira",
+          "summary": "Volcanic scenery and viewpoints on Madeira’s dramatic eastern tip.",
+          "description": "Shore excursion to Machico and the spectacular Ponta de São Lourenço peninsula.",
+          "duration": "5 hours",
           "highlights": [
-            "Paisaje volcánico",
-            "Miradores del este"
+            "Volcanic landscapes",
+            "Eastern viewpoints"
           ],
           "places": [
             "Machico",
@@ -889,12 +993,14 @@
           ]
         },
         "de": {
-          "title": "Este de Madeira — Machico y Ponta de São Lourenço",
-          "summary": "Este de Madeira — Machico y Ponta de São Lourenço",
-          "description": "Paisaje volcánico\nMiradores del este",
+          "title": "Osten Madeiras — Machico und Ponta de São Lourenço",
+          "shortTitle": "Osten Madeira",
+          "summary": "Vulkanische Landschaft und Aussichtspunkte an Madeiras dramatischem Ostrand.",
+          "description": "Landausflug nach Machico und zur spektakulären Halbinsel Ponta de São Lourenço.",
+          "duration": "5 Stunden",
           "highlights": [
-            "Paisaje volcánico",
-            "Miradores del este"
+            "Vulkanische Landschaft",
+            "Aussichten im Osten"
           ],
           "places": [
             "Machico",
@@ -949,30 +1055,34 @@
       "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
       "translations": {
         "en": {
-          "title": "Jameos del Agua y Jardín de Cactus",
-          "summary": "Jameos del Agua y Jardín de Cactus",
-          "description": "Obras de César Manrique\nGrupos reducidos",
+          "title": "Jameos del Agua and Cactus Garden",
+          "shortTitle": "Jameos & Cactus Garden",
+          "summary": "Two César Manrique masterpieces in northern Lanzarote, in small groups.",
+          "description": "Visit Jameos del Agua and the Cactus Garden with time to enjoy Manrique’s vision of art and nature.",
+          "duration": "5 hours",
           "highlights": [
-            "Obras de César Manrique",
-            "Grupos reducidos"
+            "César Manrique works",
+            "Small groups"
           ],
           "places": [
             "Jameos del Agua",
-            "Jardín de Cactus",
+            "Cactus Garden",
             "Arrieta"
           ]
         },
         "de": {
-          "title": "Jameos del Agua y Jardín de Cactus",
-          "summary": "Jameos del Agua y Jardín de Cactus",
-          "description": "Obras de César Manrique\nGrupos reducidos",
+          "title": "Jameos del Agua und Kakteengarten",
+          "shortTitle": "Jameos & Kakteengarten",
+          "summary": "Zwei Meisterwerke César Manriques im Norden Lanzarotes, in kleinen Gruppen.",
+          "description": "Besuch der Jameos del Agua und des Kakteengartens mit Zeit für Manriques Verbindung von Kunst und Natur.",
+          "duration": "5 Stunden",
           "highlights": [
-            "Obras de César Manrique",
-            "Grupos reducidos"
+            "Werke von César Manrique",
+            "Kleine Gruppen"
           ],
           "places": [
             "Jameos del Agua",
-            "Jardín de Cactus",
+            "Kakteengarten",
             "Arrieta"
           ]
         }
@@ -1023,31 +1133,35 @@
       "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
       "translations": {
         "en": {
-          "title": "La Geria y volcanes — ruta del vino",
-          "summary": "La Geria y volcanes — ruta del vino",
-          "description": "Cata de vinos\nPaisaje volcánico",
+          "title": "La Geria and volcanoes — wine route",
+          "shortTitle": "La Geria wine route",
+          "summary": "Volcanic vineyards of La Geria with wine tasting and lunar landscapes.",
+          "description": "Shore-friendly wine route through La Geria with vineyard views and tasting.",
+          "duration": "4 hours",
           "highlights": [
-            "Cata de vinos",
-            "Paisaje volcánico"
+            "Wine tasting",
+            "Volcanic landscape"
           ],
           "places": [
             "La Geria",
-            "Bodega",
-            "Timanfaya vistas"
+            "Winery",
+            "Timanfaya views"
           ]
         },
         "de": {
-          "title": "La Geria y volcanes — ruta del vino",
-          "summary": "La Geria y volcanes — ruta del vino",
-          "description": "Cata de vinos\nPaisaje volcánico",
+          "title": "La Geria und Vulkane — Weinroute",
+          "shortTitle": "Weinroute La Geria",
+          "summary": "Vulkanische Weinberge von La Geria mit Verkostung und Mondlandschaft.",
+          "description": "Kreuzfahrtfreundliche Weinroute durch La Geria mit Weinbergblicken und Verkostung.",
+          "duration": "4 Stunden",
           "highlights": [
-            "Cata de vinos",
-            "Paisaje volcánico"
+            "Weinverkostung",
+            "Vulkanlandschaft"
           ],
           "places": [
             "La Geria",
-            "Bodega",
-            "Timanfaya vistas"
+            "Weingut",
+            "Timanfaya-Ausblick"
           ]
         }
       }
@@ -1097,31 +1211,35 @@
       "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
       "translations": {
         "en": {
-          "title": "Betancuria y interior de Fuerteventura",
-          "summary": "Betancuria y interior de Fuerteventura",
-          "description": "Antigua capital\nPaisaje de interior",
+          "title": "Betancuria and inland Fuerteventura",
+          "shortTitle": "Betancuria inland",
+          "summary": "Historic Betancuria, the former capital, and inland mountain scenery.",
+          "description": "Discover Betancuria and the quiet interior of Fuerteventura on a shore excursion away from the beaches.",
+          "duration": "5 hours",
           "highlights": [
-            "Antigua capital",
-            "Paisaje de interior"
+            "Former capital",
+            "Inland landscapes"
           ],
           "places": [
             "Betancuria",
             "Antigua",
-            "Mirador"
+            "Viewpoint"
           ]
         },
         "de": {
-          "title": "Betancuria y interior de Fuerteventura",
-          "summary": "Betancuria y interior de Fuerteventura",
-          "description": "Antigua capital\nPaisaje de interior",
+          "title": "Betancuria und das Inland Fuerteventuras",
+          "shortTitle": "Betancuria Inland",
+          "summary": "Historisches Betancuria, die ehemalige Hauptstadt, und Berglandschaft im Inland.",
+          "description": "Entdecken Sie Betancuria und das ruhige Inland Fuerteventuras — abseits der Strände.",
+          "duration": "5 Stunden",
           "highlights": [
-            "Antigua capital",
-            "Paisaje de interior"
+            "Ehemalige Hauptstadt",
+            "Inlandslandschaft"
           ],
           "places": [
             "Betancuria",
             "Antigua",
-            "Mirador"
+            "Aussichtspunkt"
           ]
         }
       }
@@ -1171,31 +1289,35 @@
       "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
       "translations": {
         "en": {
-          "title": "Vallehermoso y norte de La Gomera",
-          "summary": "Vallehermoso y norte de La Gomera",
-          "description": "Valle norte\nVistas atlánticas",
+          "title": "Vallehermoso and northern La Gomera",
+          "shortTitle": "Vallehermoso north",
+          "summary": "Northern valleys of La Gomera with Atlantic views.",
+          "description": "Explore Vallehermoso, Agulo and scenic viewpoints on the greener north of La Gomera.",
+          "duration": "4 hours",
           "highlights": [
-            "Valle norte",
-            "Vistas atlánticas"
+            "Northern valley",
+            "Atlantic views"
           ],
           "places": [
             "Vallehermoso",
             "Agulo",
-            "Mirador"
+            "Viewpoint"
           ]
         },
         "de": {
-          "title": "Vallehermoso y norte de La Gomera",
-          "summary": "Vallehermoso y norte de La Gomera",
-          "description": "Valle norte\nVistas atlánticas",
+          "title": "Vallehermoso und Norden La Gomeras",
+          "shortTitle": "Vallehermoso Norden",
+          "summary": "Nördliche Täler La Gomeras mit Atlantikblicken.",
+          "description": "Erkunden Sie Vallehermoso, Agulo und Aussichtspunkte im grüneren Norden La Gomeras.",
+          "duration": "4 Stunden",
           "highlights": [
-            "Valle norte",
-            "Vistas atlánticas"
+            "Nördliches Tal",
+            "Atlantikblicke"
           ],
           "places": [
             "Vallehermoso",
             "Agulo",
-            "Mirador"
+            "Aussichtspunkt"
           ]
         }
       }

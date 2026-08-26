@@ -323,6 +323,104 @@
       "languages": [
         "Deutsch"
       ]
+    },
+    "panoramica-sur-norte": {
+      "title": "Panorama-Tour Süd und Nord von Lanzarote",
+      "shortTitle": "Panorama Süd & Nord",
+      "duration": "Ca. 8 Stunden",
+      "summary": "Eine Panoramafahrt durch Süd- und Nordlanzarote: Dörfer, Aussichtspunkte und Vulkanlandschaften.",
+      "description": "Entdecken Sie den Kontrast zwischen Süden und Norden Lanzarotes auf einer geführten Panoramatour. Ideal für einen umfassenden Überblick mit Abholung an Ihrer Unterkunft.",
+      "highlights": [
+        "Route Süd und Nord",
+        "Aussichtspunkte",
+        "Abholung an der Unterkunft"
+      ],
+      "places": [
+        "Südküste",
+        "Dörfer im Norden",
+        "Aussichtspunkte"
+      ],
+      "included": [
+        "Transport",
+        "Spanischsprachiger Guide",
+        "Reiseversicherung"
+      ],
+      "notIncluded": [
+        "Mahlzeiten",
+        "Nicht angegebene Eintritte"
+      ],
+      "recommendations": [
+        "Bequeme Schuhe",
+        "Kamera",
+        "Sonnenschutz"
+      ],
+      "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden vor der Abholung.",
+      "languages": [
+        "Deutsch"
+      ]
+    },
+    "traslado-concierto-jameos": {
+      "title": "Transfer + Konzert in den Jameos del Agua",
+      "shortTitle": "Jameos-Konzert Transfer",
+      "duration": "Ca. 4 Stunden",
+      "summary": "Hin- und Rücktransfer sowie Zugang zu einem Konzert in César Manriques Jameos del Agua.",
+      "description": "Erleben Sie ein Konzert in der einzigartigen Kulisse der Jameos del Agua. Inklusive Transfer und Eintritt gemäß Programm.",
+      "highlights": [
+        "Einzigartiger Manrique-Ort",
+        "Hin- und Rücktransfer",
+        "Abendstimmung"
+      ],
+      "places": [
+        "Jameos del Agua"
+      ],
+      "included": [
+        "Transfer",
+        "Konzertzugang (laut Angebot)",
+        "Reiseversicherung"
+      ],
+      "notIncluded": [
+        "Getränke",
+        "Souvenirs"
+      ],
+      "recommendations": [
+        "Leichte Jacke",
+        "Kamera"
+      ],
+      "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden vor der Abholung.",
+      "languages": [
+        "Deutsch"
+      ]
+    },
+    "astro-tour-experience": {
+      "title": "Astro Tour Experience",
+      "shortTitle": "Astro Tour",
+      "duration": "Ca. 3 Stunden",
+      "summary": "Sternenbeobachtung unter dem klaren Himmel Lanzarotes mit geführter astronomischer Erfahrung.",
+      "description": "Beobachten Sie Sterne und Sternbilder mit Teleskopen und Fachwissen an einem dunklen Beobachtungsort auf der Insel.",
+      "highlights": [
+        "Klarer Nachthimmel",
+        "Teleskope",
+        "Fachkundiger Guide"
+      ],
+      "places": [
+        "Sternwarten-Punkt"
+      ],
+      "included": [
+        "Transport",
+        "Guide",
+        "Beobachtungsausrüstung"
+      ],
+      "notIncluded": [
+        "Essen und Getränke"
+      ],
+      "recommendations": [
+        "Warme Kleidung",
+        "Geschlossene Schuhe"
+      ],
+      "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden vor der Abholung.",
+      "languages": [
+        "Deutsch"
+      ]
     }
   },
   "blog": {
@@ -389,18 +487,16 @@
   },
   "shoreTours": {
     "excursion-sur-de-lanzarote-parque-nacional-de-timanfaya": {
-      "title": "Ausflug in den Süden Lanzarotes und zum Nationalpark Timanfaya",
-      "shortTitle": "Süden Lanzarotes · Timanfaya",
-      "summary": "Nationalpark Timanfaya, El Golfo, Los Hervideros und La Geria. Ideal für Kreuzfahrtaufenthalte (ca. 5 Std.), mit garantierter rechtzeitiger Rückkehr zum Schiff.",
-      "description": "Genießen Sie eine Tour, die Sie zur Mondlandschaft des Nationalparks Timanfaya, zum Vulkan El Golfo mit seiner grünen Lagune, zu den Klippen von Los Hervideros und in die Weinregion La Geria führt.\n\nIm Nationalpark Timanfaya erleben Sie geothermische Vorführungen, die Temperaturen zwischen 50 und 600 °C nur wenige Meter unter der Oberfläche sichtbar machen.\n\nAnschließend fahren wir weiter zur Küste und besuchen Los Hervideros sowie den Vulkan El Golfo mit seinem fast fluoreszierenden grünen See. Zum Abschluss geht es nach La Geria, wo die Reben in windgeschützten Mulden wachsen.\n\nWichtige Informationen:\n• Abfahrt: eine halbe Stunde nach Ankunft des Kreuzfahrtschiffs\n• Treffpunkt: Polizeikontrolle am Hafen\n• Transport: externer Parkplatz (ca. 10 Minuten zu Fuß)\n• Aktivitätsniveau: moderat\n• Dauer: 5 Stunden\n• Nicht für Personen mit eingeschränkter Mobilität geeignet",
+      "title": "Süd-Lanzarote-Ausflug — Nationalpark Timanfaya",
+      "shortTitle": "Süd-Lanzarote · Timanfaya",
+      "summary": "Nationalpark Timanfaya, El Golfo, Los Hervideros und La Geria. Ideal für Kreuzfahrtstops (~5 Std.), mit garantierter Rückkehr zum Schiff.",
+      "description": "Landausflug in kleinen Gruppen durch Süd-Lanzarote: geothermische Landschaften Timanfayas, die grüne Lagune von El Golfo, Los Hervideros und das Weinland La Geria. Pünktliche Rückkehr zum Schiff garantiert.",
       "duration": "5 Stunden",
       "highlights": [
-        "Ausflug in kleiner Gruppe, maximal 25 Personen",
+        "Kleine Gruppen, max. 25 Personen",
         "Nur eine Sprache pro Tour",
-        "PÜNKTLICHE Rückkehr zum Schiff garantiert.",
-        "Geld zurück, falls das Schiff nicht anlegt.",
-        "Abfahrt des Ausflugs: eine halbe Stunde nach Ankunft des Kreuzfahrtschiffs",
-        "Treffpunkt mit der Reiseleitung: die Polizeikontrolle"
+        "Garantierte pünktliche Rückkehr zum Schiff",
+        "Geld zurück bei Verspätung zum Schiff"
       ],
       "places": [
         "Timanfaya",
@@ -408,49 +504,186 @@
         "El Golfo",
         "Los Hervideros",
         "La Geria",
-        "Salinen von Janubio"
-      ],
-      "included": [
-        "Klimatisierter Transport mit WLAN",
-        "Einheimischer Reiseleiter",
-        "Eintritt in den Nationalpark Timanfaya",
-        "Touristenversicherung",
-        "Garantierte rechtzeitige Rückkehr zum Schiff"
-      ],
-      "notIncluded": [
-        "Speisen und Getränke",
-        "Kamelritt (optional, ca. 6 €)"
+        "Salinas de Janubio"
       ]
     },
     "lanzarote-experience-tour-nuestra-excursion-mas-completa-para-cruceristas": {
-      "title": "Lanzarote Experience Tour: unser umfassendster Ausflug für Kreuzfahrtgäste",
+      "title": "Lanzarote Experience Tour: unser komplettester Landausflug",
       "shortTitle": "Lanzarote Experience Tour",
-      "summary": "Der umfassendste Ausflug für Kreuzfahrtgäste: Timanfaya, Jameos del Agua und der Kakteengarten an einem Tag (ca. 8 Std.), inklusive Eintritt.",
-      "description": "Besuchen Sie auf dieser ganztägigen Tour die bedeutendsten Orte Lanzarotes. Entdecken Sie den Nationalpark Timanfaya, seine geothermischen Anomalien und die Route der Vulkane. Lassen Sie sich von La Geria, dem Kakteengarten und Jameos del Agua, Werken von César Manrique, begeistern.\n\nWährend des Ausflugs erleben Sie einzigartige Landschaften, geschichtsträchtige Orte und die Kultur der Insel.\n\nWichtige Informationen:\n• Abfahrt: eine halbe Stunde nach Ankunft des Kreuzfahrtschiffs\n• Treffpunkt: Polizeikontrolle am Hafen\n• Transport: externer Parkplatz (ca. 10 Minuten zu Fuß)\n• Aktivitätsniveau: moderat\n• Dauer: 8 Stunden\n• Nicht für Personen mit eingeschränkter Mobilität geeignet\n\nWarum bei uns buchen?\n• Keine Verkaufsstopps\n• Kleine Gruppen\n• Wir vermeiden Warteschlangen\n• Wir mischen keine Urlaubsgäste auf der Insel mit Kreuzfahrtpassagieren\n• Garantierte rechtzeitige Rückkehr zum Schiff",
+      "summary": "Der kompletteste Kreuzfahrtausflug: Timanfaya, Jameos del Agua und Kakteengarten an einem Tag (~8 Std.), inkl. Eintritte.",
+      "description": "Ganztägiger Landausflug mit Timanfaya und César-Manrique-Highlights im Norden. Abgestimmt auf Ihre All-aboard-Zeit mit Abholung am Pier.",
       "duration": "8 Stunden",
       "highlights": [
-        "Ausflug in kleiner Gruppe, maximal 25 Personen",
+        "Kleine Gruppen, max. 25 Personen",
         "Nur eine Sprache pro Tour",
-        "PÜNKTLICHE Rückkehr zum Schiff garantiert.",
-        "Geld zurück, falls das Schiff nicht anlegt.",
-        "Abfahrt des Ausflugs: eine halbe Stunde nach Ankunft des Kreuzfahrtschiffs",
-        "Treffpunkt mit der Reiseleitung: die Polizeikontrolle"
+        "Garantierte pünktliche Rückkehr zum Schiff",
+        "Wichtige Eintritte inklusive"
       ],
       "places": [
         "Nationalpark Timanfaya",
         "Jameos del Agua",
         "Kakteengarten",
         "La Geria"
+      ]
+    },
+    "parque-nacional-de-garajonay-la-gomera": {
+      "title": "Nationalpark Garajonay — La Gomera",
+      "shortTitle": "Nationalpark Garajonay",
+      "summary": "UNESCO-Lorbeerwald und Aussichtspunkte auf La Gomera, abgestimmt auf Ihren Hafenstopp.",
+      "description": "Erkunden Sie den einzigartigen Lorbeerwald des Nationalparks Garajonay mit garantierter Rückkehr zum Schiff.",
+      "duration": "4 Stunden",
+      "highlights": [
+        "UNESCO-Lorbeerwald",
+        "Garantierte Rückkehr zum Schiff"
       ],
-      "included": [
-        "Klimatisierter Transport mit WLAN",
-        "Einheimischer Reiseleiter",
-        "Eintritt für Timanfaya, Jameos del Agua und den Kakteengarten",
-        "Touristenversicherung",
-        "Garantierte rechtzeitige Rückkehr zum Schiff"
+      "places": [
+        "Garajonay",
+        "Valle Gran Rey",
+        "Aussichtspunkt"
+      ]
+    },
+    "dunas-de-corralejo-fuerteventura": {
+      "title": "Naturpark Dünen von Corralejo",
+      "shortTitle": "Dünen von Corralejo",
+      "summary": "Weiße Sanddünen und Dörfer im Norden Fuerteventuras — ideal für kürzere Hafenstops.",
+      "description": "Besuch der Dünen von Corralejo und benachbarter Küstenorte, abgestimmt auf Ihren Schiffplan.",
+      "duration": "4 Stunden",
+      "highlights": [
+        "Dünen und Norddörfer",
+        "Ideal für kurze Stops"
       ],
-      "notIncluded": [
-        "Speisen und Getränke"
+      "places": [
+        "Naturpark Dünen von Corralejo",
+        "Corralejo",
+        "El Cotillo"
+      ]
+    },
+    "teide-y-norte-tenerife": {
+      "title": "Teide und Norden Teneriffas",
+      "shortTitle": "Teide & Norden Teneriffa",
+      "summary": "Nationalpark Teide und charmante Orte im Norden Teneriffas.",
+      "description": "Von den Vulkanlandschaften des Teide nach La Orotava und Puerto de la Cruz — ein klassischer Landausflug.",
+      "duration": "7 Stunden",
+      "highlights": [
+        "Nationalpark Teide",
+        "Dörfer im Norden"
+      ],
+      "places": [
+        "Teide",
+        "La Orotava",
+        "Puerto de la Cruz"
+      ]
+    },
+    "sur-tenerife-los-gigantes": {
+      "title": "Süden Teneriffas und Los Gigantes",
+      "shortTitle": "Süden Teneriffa · Los Gigantes",
+      "summary": "Die Klippen von Los Gigantes und die sonnige Südküste Teneriffas.",
+      "description": "Landausflug entlang der Südküste mit Blick auf die berühmten Klippen von Los Gigantes.",
+      "duration": "5 Stunden",
+      "highlights": [
+        "Klippen von Los Gigantes",
+        "Südküste"
+      ],
+      "places": [
+        "Los Gigantes",
+        "Costa Adeje",
+        "Aussichtspunkt"
+      ]
+    },
+    "funchal-y-monte-madeira": {
+      "title": "Funchal und Monte — Madeira",
+      "shortTitle": "Funchal & Monte",
+      "summary": "Highlights von Funchal und die Monte-Tradition der Korbschlitten.",
+      "description": "Entdecken Sie Funchal und Monte mit Botanischen Gärten und dem typischen Bergdorf-Erlebnis.",
+      "duration": "4 Stunden",
+      "highlights": [
+        "Stadt Funchal",
+        "Korbschlitten-Tradition"
+      ],
+      "places": [
+        "Funchal",
+        "Monte",
+        "Botanische Gärten"
+      ]
+    },
+    "este-madeira-machico": {
+      "title": "Osten Madeiras — Machico und Ponta de São Lourenço",
+      "shortTitle": "Osten Madeira",
+      "summary": "Vulkanische Landschaft und Aussichtspunkte an Madeiras dramatischem Ostrand.",
+      "description": "Landausflug nach Machico und zur spektakulären Halbinsel Ponta de São Lourenço.",
+      "duration": "5 Stunden",
+      "highlights": [
+        "Vulkanische Landschaft",
+        "Aussichten im Osten"
+      ],
+      "places": [
+        "Machico",
+        "Ponta de São Lourenço",
+        "Caniçal"
+      ]
+    },
+    "jameos-y-cactus-lanzarote": {
+      "title": "Jameos del Agua und Kakteengarten",
+      "shortTitle": "Jameos & Kakteengarten",
+      "summary": "Zwei Meisterwerke César Manriques im Norden Lanzarotes, in kleinen Gruppen.",
+      "description": "Besuch der Jameos del Agua und des Kakteengartens mit Zeit für Manriques Verbindung von Kunst und Natur.",
+      "duration": "5 Stunden",
+      "highlights": [
+        "Werke von César Manrique",
+        "Kleine Gruppen"
+      ],
+      "places": [
+        "Jameos del Agua",
+        "Kakteengarten",
+        "Arrieta"
+      ]
+    },
+    "wine-and-volcano-lanzarote": {
+      "title": "La Geria und Vulkane — Weinroute",
+      "shortTitle": "Weinroute La Geria",
+      "summary": "Vulkanische Weinberge von La Geria mit Verkostung und Mondlandschaft.",
+      "description": "Kreuzfahrtfreundliche Weinroute durch La Geria mit Weinbergblicken und Verkostung.",
+      "duration": "4 Stunden",
+      "highlights": [
+        "Weinverkostung",
+        "Vulkanlandschaft"
+      ],
+      "places": [
+        "La Geria",
+        "Weingut",
+        "Timanfaya-Ausblick"
+      ]
+    },
+    "betancuria-fuerteventura": {
+      "title": "Betancuria und das Inland Fuerteventuras",
+      "shortTitle": "Betancuria Inland",
+      "summary": "Historisches Betancuria, die ehemalige Hauptstadt, und Berglandschaft im Inland.",
+      "description": "Entdecken Sie Betancuria und das ruhige Inland Fuerteventuras — abseits der Strände.",
+      "duration": "5 Stunden",
+      "highlights": [
+        "Ehemalige Hauptstadt",
+        "Inlandslandschaft"
+      ],
+      "places": [
+        "Betancuria",
+        "Antigua",
+        "Aussichtspunkt"
+      ]
+    },
+    "vallehermoso-la-gomera": {
+      "title": "Vallehermoso und Norden La Gomeras",
+      "shortTitle": "Vallehermoso Norden",
+      "summary": "Nördliche Täler La Gomeras mit Atlantikblicken.",
+      "description": "Erkunden Sie Vallehermoso, Agulo und Aussichtspunkte im grüneren Norden La Gomeras.",
+      "duration": "4 Stunden",
+      "highlights": [
+        "Nördliches Tal",
+        "Atlantikblicke"
+      ],
+      "places": [
+        "Vallehermoso",
+        "Agulo",
+        "Aussichtspunkt"
       ]
     }
   },
