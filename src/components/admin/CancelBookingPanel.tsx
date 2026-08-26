@@ -116,15 +116,20 @@ export function CancelBookingPanel({
               {" · "}
               Estado: {statusLabel(booking.status)}
             </span>
-            {assessment.free ? (
+            {assessment.refundAmount > 0 ? (
+              <span className="mt-2 block font-bold text-success">
+                Se devolverá {money(assessment.refundAmount)} y se emitirá una
+                factura en negativo (abono) con IGIC 7%.
+              </span>
+            ) : assessment.free ? (
               <span className="mt-2 block font-bold text-success">
                 Cancelación gratuita (más de {assessment.freeUntilHours} h antes
-                del servicio). Se emitirá abono si corresponde.
+                del servicio). No hay cobros que devolver.
               </span>
             ) : (
               <span className="mt-2 block font-bold text-red-600">
                 La cancelación de este servicio tiene un cargo de{" "}
-                {money(assessment.fee)}
+                {money(assessment.fee)}. No corresponde devolución.
               </span>
             )}
           </span>

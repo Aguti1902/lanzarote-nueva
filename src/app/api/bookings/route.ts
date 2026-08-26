@@ -149,13 +149,18 @@ export async function PATCH(request: Request) {
           (cancellationReason && String(cancellationReason).trim()) ||
           existing.cancellationReason ||
           "admin",
+        ...(assessment.refundAmount > 0
+          ? { paymentStatus: "refunded" as const }
+          : {}),
       });
       if (!booking) {
         return NextResponse.json({ error: "No encontrada" }, { status: 404 });
       }
       let creditNote = null;
-      if (assessment.free) {
-        creditNote = await createCreditNoteForBooking(booking);
+      if (assessment.refundAmount > 0) {
+        creditNote = await createCreditNoteForBooking(booking, {
+          refundAmount: assessment.refundAmount,
+        });
       }
       return NextResponse.json({ booking, creditNote, assessment });
     }

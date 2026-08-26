@@ -15,7 +15,10 @@ import {
   openVoucherPrintWindow,
 } from "@/lib/voucher";
 import { CancelBookingPanel } from "@/components/admin/CancelBookingPanel";
-import { BookingStatusBadge } from "@/components/admin/BookingStatusBadge";
+import {
+  BookingStatusBadge,
+  PaymentStatusBadge,
+} from "@/components/admin/BookingStatusBadge";
 
 type CustomerPatch = Partial<Booking["customer"]>;
 
@@ -315,6 +318,16 @@ export function BookingDetailModal({
                     label="Forma de pago"
                     value={paymentLabel(booking.paymentMethod)}
                   />
+                  <div className="flex gap-3">
+                    <dt className="w-44 shrink-0 text-ink-muted">
+                      Estado del pago
+                    </dt>
+                    <dd>
+                      <PaymentStatusBadge
+                        status={booking.paymentStatus || "unpaid"}
+                      />
+                    </dd>
+                  </div>
                   <Row
                     label="Pagado tarjeta"
                     value={money(booking.amountPaidCard ?? 0)}
