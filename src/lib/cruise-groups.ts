@@ -89,12 +89,12 @@ export function bookingsForGroup(
 export function livePaxForGroup(
   group: CruiseGroup,
   bookings: Booking[],
-  allGroups?: CruiseGroup[]
+  allGroups?: CruiseGroup[],
+  excludeBookingId?: string
 ): number {
-  return bookingsForGroup(group, bookings, allGroups).reduce(
-    (sum, b) => sum + bookingPax(b),
-    0
-  );
+  return bookingsForGroup(group, bookings, allGroups)
+    .filter((b) => !excludeBookingId || b.id !== excludeBookingId)
+    .reduce((sum, b) => sum + bookingPax(b), 0);
 }
 
 function seriesIndexForNew(
@@ -239,7 +239,7 @@ export async function assignBookingToCruiseGroup(
   let target =
     candidates.find((g) => {
       if (g.status !== "open") return false;
-      const live = livePaxForGroup(g, bookings, groups);
+      const live = livePaxForGroup(g, bookings, groups, booking.id);
       const max = g.maxPax != null ? Number(g.maxPax) : Infinity;
       return live + pax <= max;
     }) || null;
@@ -251,12 +251,13 @@ export async function assignBookingToCruiseGroup(
     const synced = await syncCruiseGroupCapacity(seed.id);
     spawned = synced.spawned;
     const refreshed = await getCruiseGroups();
+    const bookingsNow = await getBookings();
     target =
       refreshed.find(
         (g) =>
           sameCruiseGroupSeries(g, seed) &&
           g.status === "open" &&
-          livePaxForGroup(g, bookings, refreshed) + pax <=
+          livePaxForGroup(g, bookingsNow, refreshed, booking.id) + pax <=
             (g.maxPax != null ? Number(g.maxPax) : Infinity)
       ) ||
       spawned ||
