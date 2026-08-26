@@ -243,6 +243,10 @@ export function TransferBookingForm({
         <div>
           <p className="text-sm text-ink-muted">{dict.common.total}</p>
           <p className="text-3xl font-bold">{formatPrice(total)}</p>
+          <p className="mt-1 text-xs text-ink-muted">
+            {dict.transfers.extraPerson}:{" "}
+            {formatPrice(dest.priceExtraPerson ?? 10)}
+          </p>
           {paymentMethod === "deposit_10" && (
             <p className="mt-1 text-xs text-ink-muted">
               {dict.booking.payNow}{" "}
