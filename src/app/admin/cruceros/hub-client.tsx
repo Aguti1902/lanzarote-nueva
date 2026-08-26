@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
-import { Pencil, Plus, Trash2 } from "lucide-react";
-import type { CruiseCompany, CruisePort } from "@/types";
-import { Field, adminInput, adminTextarea, arrayToLines, linesToArray } from "@/components/admin/Field";
+import { useEffect, useState } from "react";
+import { Pencil, Trash2 } from "lucide-react";
+import type { CruisePort } from "@/types";
+import { Field, adminInput } from "@/components/admin/Field";
 
 type Tab = "companias" | "puertos" | "excursiones" | "grupos";
 
@@ -64,110 +64,7 @@ export default function AdminCrucerosHubPage() {
   );
 }
 
-export function CompaniesPanel() {
-  const [items, setItems] = useState<CruiseCompany[]>([]);
-  const [name, setName] = useState("");
-  const [slug, setSlug] = useState("");
-
-  async function load() {
-    const res = await fetch("/api/admin/cruise-catalog?kind=companies");
-    const data = await res.json();
-    setItems(data.items || []);
-  }
-
-  useEffect(() => {
-    load();
-  }, []);
-
-  async function create(e: React.FormEvent) {
-    e.preventDefault();
-    await fetch("/api/admin/cruise-catalog", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ kind: "companies", name, slug }),
-    });
-    setName("");
-    setSlug("");
-    await load();
-  }
-
-  async function remove(id: string) {
-    if (!confirm("¿Eliminar compañía?")) return;
-    await fetch(`/api/admin/cruise-catalog?kind=companies&id=${id}`, {
-      method: "DELETE",
-    });
-    await load();
-  }
-
-  return (
-    <div className="space-y-4">
-      <form
-        onSubmit={create}
-        className="grid gap-3 rounded-xl bg-white p-5 ring-1 ring-sand-line md:grid-cols-3"
-      >
-        <h2 className="flex items-center gap-2 font-bold md:col-span-3">
-          <Plus className="h-4 w-4 text-ocean" /> Crear línea
-        </h2>
-        <Field label="Nombre">
-          <input
-            required
-            className={adminInput}
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-              setSlug(
-                e.target.value
-                  .toLowerCase()
-                  .normalize("NFD")
-                  .replace(/[\u0300-\u036f]/g, "")
-                  .replace(/[^a-z0-9]+/g, "-")
-                  .replace(/(^-|-$)/g, "")
-              );
-            }}
-          />
-        </Field>
-        <Field label="Slug">
-          <input
-            required
-            className={adminInput}
-            value={slug}
-            onChange={(e) => setSlug(e.target.value)}
-          />
-        </Field>
-        <div className="flex items-end">
-          <button type="submit" className="btn-primary">
-            Crear línea
-          </button>
-        </div>
-      </form>
-
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((c) => (
-          <div
-            key={c.slug}
-            className="rounded-xl bg-white p-4 ring-1 ring-sand-line"
-          >
-            <div className="flex items-start justify-between gap-2">
-              <div>
-                <p className="font-bold">{c.name}</p>
-                <p className="text-xs text-ink-muted">
-                  {c.ships.length} barcos · {c.sailingCount} salidas
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => remove(c.slug)}
-                className="text-ink-muted hover:text-ocean"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+export { CompaniesPanel } from "@/app/admin/companias-cruceros/CompaniesClient";
 
 export function PortsPanel() {
   const [items, setItems] = useState<CruisePort[]>([]);

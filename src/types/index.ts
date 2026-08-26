@@ -302,6 +302,8 @@ export interface CruiseItineraryStop {
   port: string;
   portKey: string;
   time: string;
+  arrivalTime?: string;
+  departureTime?: string;
   isSeaDay: boolean;
   hasTours: boolean;
   tourIds: string[];
@@ -314,13 +316,16 @@ export interface CruiseSailing {
   shipSlug: string;
   shipName: string;
   departureDate: string;
+  endDate?: string;
   nights: number | null;
+  active?: boolean;
   stops: CruiseItineraryStop[];
 }
 
 export interface CruiseCompanyShip {
   slug: string;
   name: string;
+  active?: boolean;
 }
 
 export interface CruiseCompany {
@@ -328,6 +333,7 @@ export interface CruiseCompany {
   name: string;
   sailingCount: number;
   ships: CruiseCompanyShip[];
+  active?: boolean;
 }
 
 export interface CruiseItinerariesData {
