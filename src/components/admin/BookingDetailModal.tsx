@@ -15,6 +15,7 @@ import {
   openVoucherPrintWindow,
 } from "@/lib/voucher";
 import { CancelBookingPanel } from "@/components/admin/CancelBookingPanel";
+import { BookingStatusBadge } from "@/components/admin/BookingStatusBadge";
 
 function money(n: number) {
   return new Intl.NumberFormat("es-ES", {
@@ -125,12 +126,17 @@ export function BookingDetailModal({
       >
         <div className="flex items-start justify-between gap-4 border-b border-sand-line px-5 py-4 md:px-8">
           <div>
-            <h2
-              id="booking-detail-title"
-              className="text-2xl font-bold tracking-wide text-ink uppercase md:text-3xl"
-            >
-              {view === "cancel" ? "Cancelar reserva" : "Detalles de reserva"}
-            </h2>
+            <div className="flex flex-wrap items-center gap-3">
+              <h2
+                id="booking-detail-title"
+                className="text-2xl font-bold tracking-wide text-ink uppercase md:text-3xl"
+              >
+                {view === "cancel" ? "Cancelar reserva" : "Detalles de reserva"}
+              </h2>
+              {view !== "cancel" && (
+                <BookingStatusBadge status={booking.status} />
+              )}
+            </div>
             <p className="mt-1 text-sm text-ink-muted">
               {view === "cancel"
                 ? "Puede cancelar la reserva de una forma sencilla y segura."
@@ -138,6 +144,11 @@ export function BookingDetailModal({
                   <>
                     Localizador{" "}
                     <span className="font-bold text-ocean">{booking.id}</span>
+                    {booking.status === "cancelled" && booking.cancellationReason && (
+                      <span className="ml-2 text-rose-700">
+                        · Motivo: {booking.cancellationReason}
+                      </span>
+                    )}
                   </>
                 )}
             </p>
@@ -230,7 +241,12 @@ export function BookingDetailModal({
                     label="Fecha del servicio"
                     value={formatDateShort(booking.date)}
                   />
-                  <Row label="Estado" value={statusLabel(booking.status)} />
+                  <div className="flex gap-3">
+                    <dt className="w-44 shrink-0 text-ink-muted">Estado</dt>
+                    <dd>
+                      <BookingStatusBadge status={booking.status} />
+                    </dd>
+                  </div>
                   <Row label="Total de la reserva" value={money(total)} strong />
                   <Row
                     label="Forma de pago"

@@ -10,10 +10,14 @@ import {
   type DateRange,
 } from "@/components/admin/DateRangeFilter";
 import { BookingDetailModal } from "@/components/admin/BookingDetailModal";
+import {
+  BookingStatusBadge,
+  bookingRowClassName,
+} from "@/components/admin/BookingStatusBadge";
 
 export default function AdminReservasCrucerosPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
-  const [tab, setTab] = useState<"current" | "done">("current");
+  const [tab, setTab] = useState<"current" | "done" | "cancelled">("current");
   const [dateField, setDateField] = useState<"service" | "created">("service");
   const [range, setRange] = useState<DateRange>(emptyDateRange);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -56,8 +60,10 @@ export default function AdminReservasCrucerosPage() {
 
   const filtered = useMemo(() => {
     return cruiseBookings.filter((b) => {
-      if (tab === "done") {
-        if (!(b.status === "completed" || b.status === "cancelled")) return false;
+      if (tab === "cancelled") {
+        if (b.status !== "cancelled") return false;
+      } else if (tab === "done") {
+        if (b.status !== "completed") return false;
       } else if (!(b.status === "pending" || b.status === "confirmed")) {
         return false;
       }
@@ -92,7 +98,7 @@ export default function AdminReservasCrucerosPage() {
         </select>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <button
           type="button"
           onClick={() => setTab("current")}
@@ -115,6 +121,17 @@ export default function AdminReservasCrucerosPage() {
         >
           Realizadas
         </button>
+        <button
+          type="button"
+          onClick={() => setTab("cancelled")}
+          className={`rounded-full px-4 py-2 text-sm font-bold ${
+            tab === "cancelled"
+              ? "bg-rose-600 text-white"
+              : "bg-white text-rose-700 ring-1 ring-rose-200"
+          }`}
+        >
+          Canceladas
+        </button>
       </div>
 
       <DateRangeFilter
@@ -134,6 +151,7 @@ export default function AdminReservasCrucerosPage() {
           <thead className="border-b border-sand-line bg-sky-soft text-ink-muted">
             <tr>
               <th className="px-4 py-3">Localizador</th>
+              <th className="px-4 py-3">Estado</th>
               <th className="px-4 py-3">Nombre</th>
               <th className="px-4 py-3">F. reserva</th>
               <th className="px-4 py-3">Próximo servicio</th>
@@ -147,14 +165,14 @@ export default function AdminReservasCrucerosPage() {
           <tbody>
             {loading && (
               <tr>
-                <td colSpan={9} className="px-4 py-6 text-ink-muted">
+                <td colSpan={10} className="px-4 py-6 text-ink-muted">
                   Cargando…
                 </td>
               </tr>
             )}
             {!loading && filtered.length === 0 && (
               <tr>
-                <td colSpan={9} className="px-4 py-6 text-ink-muted">
+                <td colSpan={10} className="px-4 py-6 text-ink-muted">
                   No hay reservas de crucero en este filtro
                 </td>
               </tr>
@@ -162,7 +180,7 @@ export default function AdminReservasCrucerosPage() {
             {filtered.map((b) => (
               <tr
                 key={b.id}
-                className="cursor-pointer border-b border-sand-line hover:bg-sky-soft/40"
+                className={`cursor-pointer border-b border-sand-line ${bookingRowClassName(b.status)}`}
                 onClick={() => {
                   setModalView("details");
                   setSelectedId(b.id);
@@ -170,6 +188,9 @@ export default function AdminReservasCrucerosPage() {
               >
                 <td className="px-4 py-3 font-semibold text-ocean hover:underline">
                   {b.id}
+                </td>
+                <td className="px-4 py-3">
+                  <BookingStatusBadge status={b.status} size="sm" />
                 </td>
                 <td className="px-4 py-3">{b.customer.name}</td>
                 <td className="px-4 py-3 text-ink-muted">
@@ -188,7 +209,15 @@ export default function AdminReservasCrucerosPage() {
                 <td className="px-4 py-3 text-ocean">
                   {formatPrice(b.amountDueCash ?? 0)}
                 </td>
-                <td className="px-4 py-3">{b.tourTitle}</td>
+                <td
+                  className={`px-4 py-3 ${
+                    b.status === "cancelled"
+                      ? "text-rose-800 line-through decoration-rose-300"
+                      : ""
+                  }`}
+                >
+                  {b.tourTitle}
+                </td>
                 <td className="px-4 py-3 text-ink-muted">
                   {b.customer.cruiseShip || "—"}
                 </td>

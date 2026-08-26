@@ -11,6 +11,10 @@ import {
   type DateRange,
 } from "@/components/admin/DateRangeFilter";
 import { BookingDetailModal } from "@/components/admin/BookingDetailModal";
+import {
+  BookingStatusBadge,
+  bookingRowClassName,
+} from "@/components/admin/BookingStatusBadge";
 
 export default function AdminReservasPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -155,7 +159,7 @@ export default function AdminReservasPage() {
               filtered.map((b) => (
                 <tr
                   key={b.id}
-                  className="border-b border-sand-line/70 align-top hover:bg-sky-soft/40"
+                  className={`border-b border-sand-line/70 align-top ${bookingRowClassName(b.status)}`}
                 >
                   <td className="px-4 py-3">
                     <button
@@ -168,6 +172,11 @@ export default function AdminReservasPage() {
                     >
                       {b.id}
                     </button>
+                    {b.status === "cancelled" && (
+                      <div className="mt-1.5">
+                        <BookingStatusBadge status="cancelled" size="sm" />
+                      </div>
+                    )}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">
                     {formatDate(b.date)}
@@ -181,7 +190,15 @@ export default function AdminReservasPage() {
                       }}
                       className="text-left"
                     >
-                      <p className="font-medium hover:text-ocean">{b.tourTitle}</p>
+                      <p
+                        className={`font-medium hover:text-ocean ${
+                          b.status === "cancelled"
+                            ? "text-rose-800 line-through decoration-rose-300"
+                            : ""
+                        }`}
+                      >
+                        {b.tourTitle}
+                      </p>
                       <p className="text-xs text-ink-muted">{b.customer.name}</p>
                       <p className="text-xs text-ink-muted">{b.customer.email}</p>
                     </button>
@@ -216,7 +233,7 @@ export default function AdminReservasPage() {
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <StatusBadge status={b.status} />
+                    <BookingStatusBadge status={b.status} />
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-col gap-1">
@@ -319,24 +336,3 @@ export default function AdminReservasPage() {
   );
 }
 
-function StatusBadge({ status }: { status: BookingStatus }) {
-  const styles: Record<BookingStatus, string> = {
-    pending: "bg-amber-100 text-amber-800",
-    confirmed: "bg-emerald-100 text-emerald-800",
-    completed: "bg-sky-100 text-sky-800",
-    cancelled: "bg-rose-100 text-rose-800",
-  };
-  const labels: Record<BookingStatus, string> = {
-    pending: "Pendiente",
-    confirmed: "Confirmada",
-    completed: "Completada",
-    cancelled: "Cancelada",
-  };
-  return (
-    <span
-      className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${styles[status]}`}
-    >
-      {labels[status]}
-    </span>
-  );
-}
