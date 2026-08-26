@@ -10,8 +10,35 @@ import {
   type DateRange,
 } from "@/components/admin/DateRangeFilter";
 
+type CobrosTab = "all" | "pending" | "collected";
+
+const TABS: { id: CobrosTab; label: string }[] = [
+  { id: "all", label: "Todos" },
+  { id: "pending", label: "Pendientes" },
+  { id: "collected", label: "Cobros realizados" },
+];
+
+function isCashRelevant(b: Booking) {
+  return (
+    b.status !== "cancelled" &&
+    ((b.amountDueCash ?? 0) > 0 ||
+      b.cashStatus === "collected" ||
+      b.cashStatus === "pending")
+  );
+}
+
+function matchesTab(b: Booking, tab: CobrosTab) {
+  if (!isCashRelevant(b)) return false;
+  if (tab === "all") return true;
+  if (tab === "pending") {
+    return b.cashStatus === "pending" && (b.amountDueCash ?? 0) > 0;
+  }
+  return b.cashStatus === "collected";
+}
+
 export default function AdminCobrosEfectivoPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [tab, setTab] = useState<CobrosTab>("pending");
   const [range, setRange] = useState<DateRange>(emptyDateRange);
   const [loading, setLoading] = useState(true);
 
@@ -27,21 +54,32 @@ export default function AdminCobrosEfectivoPage() {
     load();
   }, [load]);
 
-  const pending = useMemo(
+  const filtered = useMemo(
     () =>
       (bookings as Booking[])
-        .filter(
-          (b) =>
-            b.status !== "cancelled" &&
-            b.cashStatus === "pending" &&
-            (b.amountDueCash ?? 0) > 0 &&
-            inDateRange(b.date, range)
-        )
+        .filter((b) => matchesTab(b, tab) && inDateRange(b.date, range))
         .sort((a, b) => a.date.localeCompare(b.date)),
+    [bookings, range, tab]
+  );
+
+  const pendingTotal = useMemo(
+    () =>
+      bookings
+        .filter((b) => matchesTab(b, "pending") && inDateRange(b.date, range))
+        .reduce((s, b) => s + (b.amountDueCash || 0), 0),
     [bookings, range]
   );
 
-  const totalDue = pending.reduce((s, b) => s + (b.amountDueCash || 0), 0);
+  const collectedTotal = useMemo(
+    () =>
+      bookings
+        .filter((b) => matchesTab(b, "collected") && inDateRange(b.date, range))
+        .reduce(
+          (s, b) => s + (b.amountPaidCash || b.amountDueCash || 0),
+          0
+        ),
+    [bookings, range]
+  );
 
   async function collect(id: string) {
     await fetch("/api/bookings", {
@@ -61,18 +99,55 @@ export default function AdminCobrosEfectivoPage() {
             Lo que hay que cobrar en efectivo a cada cliente el día del servicio
           </p>
         </div>
-        <div className="rounded-lg bg-ocean px-4 py-3 text-white">
-          <p className="text-xs opacity-80">Pendiente total</p>
-          <p className="text-2xl font-bold">{formatPrice(totalDue)}</p>
+        <div className="flex flex-wrap gap-3">
+          <div className="rounded-lg bg-ocean px-4 py-3 text-white">
+            <p className="text-xs opacity-80">Pendiente total</p>
+            <p className="text-2xl font-bold">{formatPrice(pendingTotal)}</p>
+          </div>
+          <div className="rounded-lg bg-emerald-700 px-4 py-3 text-white">
+            <p className="text-xs opacity-80">Cobros realizados</p>
+            <p className="text-2xl font-bold">{formatPrice(collectedTotal)}</p>
+          </div>
         </div>
       </div>
+
+      <nav
+        className="flex flex-wrap gap-1 border-b border-sand-line"
+        aria-label="Filtros de cobros"
+      >
+        {TABS.map((item) => {
+          const active = tab === item.id;
+          const count = bookings.filter((b) => matchesTab(b, item.id)).length;
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setTab(item.id)}
+              className={`-mb-px border-b-2 px-4 py-3 text-sm font-bold transition-colors ${
+                active
+                  ? "border-ocean text-ocean"
+                  : "border-transparent text-ink-muted hover:text-ink"
+              }`}
+            >
+              {item.label}
+              <span
+                className={`ml-2 rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+                  active ? "bg-sky-soft text-ocean" : "bg-sand text-ink-muted"
+                }`}
+              >
+                {count}
+              </span>
+            </button>
+          );
+        })}
+      </nav>
 
       <DateRangeFilter
         value={range}
         onChange={setRange}
         label="Calendario por fecha de servicio"
         hint="Filtre clientes a cobrar por día o rango"
-        resultCount={pending.length}
+        resultCount={filtered.length}
       />
 
       <div className="overflow-x-auto rounded-lg bg-white ring-1 ring-sand-line">
@@ -83,57 +158,86 @@ export default function AdminCobrosEfectivoPage() {
               <th className="px-4 py-3 font-medium">Cliente</th>
               <th className="px-4 py-3 font-medium">Servicio</th>
               <th className="px-4 py-3 font-medium">Método</th>
-              <th className="px-4 py-3 font-medium">A cobrar</th>
+              <th className="px-4 py-3 font-medium">Importe</th>
+              <th className="px-4 py-3 font-medium">Estado</th>
               <th className="px-4 py-3 font-medium">Acción</th>
             </tr>
           </thead>
           <tbody>
             {loading && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-ink-muted">
+                <td colSpan={7} className="px-4 py-8 text-center text-ink-muted">
                   Cargando…
                 </td>
               </tr>
             )}
-            {!loading && pending.length === 0 && (
+            {!loading && filtered.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-ink-muted">
-                  No hay cobros en efectivo pendientes en este rango.
+                <td colSpan={7} className="px-4 py-8 text-center text-ink-muted">
+                  No hay cobros en esta pestaña / rango.
                 </td>
               </tr>
             )}
             {!loading &&
-              pending.map((b) => (
-                <tr key={b.id} className="border-b border-sand-line/70">
-                  <td className="px-4 py-3 whitespace-nowrap">
-                    {formatDate(b.date)}
-                  </td>
-                  <td className="px-4 py-3">
-                    <p className="font-bold">{b.customer.name}</p>
-                    <p className="text-xs text-ink-muted">{b.customer.phone}</p>
-                    {b.customer.hotel && (
-                      <p className="text-xs text-ink-muted">{b.customer.hotel}</p>
-                    )}
-                  </td>
-                  <td className="px-4 py-3">
-                    <p>{b.tourTitle}</p>
-                    <p className="text-xs text-ink-muted">{b.id}</p>
-                  </td>
-                  <td className="px-4 py-3">{paymentLabel(b.paymentMethod)}</td>
-                  <td className="px-4 py-3 text-lg font-bold text-ocean">
-                    {formatPrice(b.amountDueCash)}
-                  </td>
-                  <td className="px-4 py-3">
-                    <button
-                      type="button"
-                      onClick={() => collect(b.id)}
-                      className="rounded bg-success px-3 py-1.5 text-xs font-bold text-white"
-                    >
-                      Marcar cobrado
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              filtered.map((b) => {
+                const collected = b.cashStatus === "collected";
+                return (
+                  <tr key={b.id} className="border-b border-sand-line/70">
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      {formatDate(b.date)}
+                    </td>
+                    <td className="px-4 py-3">
+                      <p className="font-bold">{b.customer.name}</p>
+                      <p className="text-xs text-ink-muted">
+                        {b.customer.phone}
+                      </p>
+                      {b.customer.hotel && (
+                        <p className="text-xs text-ink-muted">
+                          {b.customer.hotel}
+                        </p>
+                      )}
+                    </td>
+                    <td className="px-4 py-3">
+                      <p>{b.tourTitle}</p>
+                      <p className="text-xs text-ink-muted">{b.id}</p>
+                    </td>
+                    <td className="px-4 py-3">
+                      {paymentLabel(b.paymentMethod)}
+                    </td>
+                    <td className="px-4 py-3 text-lg font-bold text-ocean">
+                      {formatPrice(
+                        collected
+                          ? b.amountPaidCash || b.amountDueCash
+                          : b.amountDueCash
+                      )}
+                    </td>
+                    <td className="px-4 py-3">
+                      {collected ? (
+                        <span className="font-bold text-emerald-700">
+                          Cobrado
+                        </span>
+                      ) : (
+                        <span className="font-bold text-rose-700">
+                          Pendiente
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3">
+                      {!collected && (b.amountDueCash ?? 0) > 0 ? (
+                        <button
+                          type="button"
+                          onClick={() => collect(b.id)}
+                          className="rounded bg-success px-3 py-1.5 text-xs font-bold text-white"
+                        >
+                          Marcar cobrado
+                        </button>
+                      ) : (
+                        <span className="text-xs text-ink-muted">—</span>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </div>

@@ -53,6 +53,14 @@ export async function getPaymentLinks() {
   return (await readData()).paymentLinks;
 }
 
+export async function getPaymentLinkByHash(hash: string) {
+  if (!hash) return null;
+  const links = await getPaymentLinks();
+  return (
+    links.find((p) => p.paymentHash === hash || p.id === hash) || null
+  );
+}
+
 export async function upsertPaymentLink(
   input: Partial<PaymentLink> & Pick<PaymentLink, "concept" | "amount">
 ) {
@@ -82,6 +90,18 @@ export async function upsertPaymentLink(
     paymentHash:
       input.paymentHash ||
       `${uid("h")}${Math.random().toString(16).slice(2, 10)}`,
+    groupId: input.groupId,
+    bookingId: input.bookingId,
+    mode: input.mode || "standard",
+    personIndex: input.personIndex,
+    personLabel: input.personLabel,
+    serviceType: input.serviceType || "custom",
+    serviceId: input.serviceId,
+    serviceTitle: input.serviceTitle,
+    chargeFull: input.chargeFull ?? true,
+    stripeCheckoutSessionId: input.stripeCheckoutSessionId,
+    stripePaymentIntentId: input.stripePaymentIntentId,
+    stripeCheckoutUrl: input.stripeCheckoutUrl,
   };
   data.paymentLinks.unshift(created);
   await writeData(data);

@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
-import type { PaymentLink } from "@/types";
+import { Copy, Plus, Trash2 } from "lucide-react";
+import type { PaymentLink, PaymentServiceType, Tour } from "@/types";
 import { formatPrice } from "@/lib/format";
 import { Field, adminInput, adminTextarea } from "@/components/admin/Field";
 import {
@@ -13,6 +13,21 @@ import {
 } from "@/components/admin/DateRangeFilter";
 
 type DetailTab = "details" | "delete";
+type ListTab = "all" | "pending" | "paid" | "cancelled";
+
+type ServiceOption = {
+  id: string;
+  title: string;
+  unitPrice: number;
+  kind: PaymentServiceType;
+};
+
+const LIST_TABS: { id: ListTab; label: string }[] = [
+  { id: "all", label: "Todos" },
+  { id: "pending", label: "Pendientes" },
+  { id: "paid", label: "Pagos realizados" },
+  { id: "cancelled", label: "Cancelados" },
+];
 
 function statusLabel(status: PaymentLink["status"]) {
   if (status === "paid") return "Pago realizado";
@@ -45,17 +60,28 @@ function formatDateTime(iso?: string) {
   });
 }
 
+function matchesListTab(item: PaymentLink, tab: ListTab) {
+  if (tab === "all") return true;
+  return item.status === tab;
+}
+
 export default function AdminPagosOnlinePage() {
   const [items, setItems] = useState<PaymentLink[]>([]);
+  const [listTab, setListTab] = useState<ListTab>("all");
   const [range, setRange] = useState<DateRange>(emptyDateRange);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [detailTab, setDetailTab] = useState<DetailTab>("details");
   const [origin, setOrigin] = useState("");
+  const [stripeConfigured, setStripeConfigured] = useState(false);
+  const [services, setServices] = useState<ServiceOption[]>([]);
   const [form, setForm] = useState({
+    serviceType: "tour" as PaymentServiceType,
+    serviceId: "",
     concept: "",
     amount: 0,
+    quantity: 1,
     customerName: "",
     customerEmail: "",
     notes: "",
@@ -68,13 +94,22 @@ export default function AdminPagosOnlinePage() {
   });
 
   const filtered = useMemo(
-    () => items.filter((item) => inDateRange(item.createdAt, range)),
-    [items, range]
+    () =>
+      items.filter(
+        (item) =>
+          matchesListTab(item, listTab) && inDateRange(item.createdAt, range)
+      ),
+    [items, range, listTab]
   );
 
   const selected = useMemo(
     () => items.find((item) => item.id === selectedId) || null,
     [items, selectedId]
+  );
+
+  const serviceOptions = useMemo(
+    () => services.filter((s) => s.kind === form.serviceType),
+    [services, form.serviceType]
   );
 
   async function load() {
@@ -87,10 +122,66 @@ export default function AdminPagosOnlinePage() {
 
   useEffect(() => {
     load();
+    fetch("/api/payments/stripe/checkout")
+      .then((r) => r.json())
+      .then((d) => setStripeConfigured(Boolean(d.stripeConfigured)))
+      .catch(() => setStripeConfigured(false));
   }, []);
 
   useEffect(() => {
     setOrigin(window.location.origin);
+  }, []);
+
+  useEffect(() => {
+    async function loadServices() {
+      try {
+        const [toursRes, transfersRes, shoreRes] = await Promise.all([
+          fetch("/api/tours"),
+          fetch("/api/transfers"),
+          fetch("/api/admin/cruise-catalog?kind=shore-tours"),
+        ]);
+        const toursData = await toursRes.json();
+        const transfersData = await transfersRes.json();
+        const shoreData = await shoreRes.json();
+
+        const tourOptions: ServiceOption[] = (toursData.tours || []).map(
+          (t: Tour) => ({
+            id: t.id,
+            title: t.title,
+            unitPrice: Number(t.priceAdultOffer ?? t.priceAdult) || 0,
+            kind: "tour" as const,
+          })
+        );
+        const transferOptions: ServiceOption[] = (
+          transfersData.destinations || []
+        ).map(
+          (t: { id: string; name: string; priceOneWay?: number }) => ({
+            id: t.id,
+            title: t.name,
+            unitPrice: Number(t.priceOneWay) || 0,
+            kind: "transfer" as const,
+          })
+        );
+        const shoreOptions: ServiceOption[] = (shoreData.items || []).map(
+          (t: {
+            id: string;
+            title: string;
+            priceAdult?: number | null;
+            pricePerPerson?: number | null;
+          }) => ({
+            id: t.id,
+            title: t.title,
+            unitPrice:
+              Number(t.priceAdult ?? t.pricePerPerson ?? 0) || 0,
+            kind: "shore" as const,
+          })
+        );
+        setServices([...tourOptions, ...shoreOptions, ...transferOptions]);
+      } catch {
+        setServices([]);
+      }
+    }
+    loadServices();
   }, []);
 
   useEffect(() => {
@@ -104,27 +195,95 @@ export default function AdminPagosOnlinePage() {
     setDetailTab("details");
   }, [selected]);
 
+  function applyService(serviceId: string, quantity = form.quantity) {
+    const svc = services.find((s) => s.id === serviceId);
+    if (!svc) {
+      setForm((f) => ({ ...f, serviceId }));
+      return;
+    }
+    const qty = Math.max(1, Number(quantity) || 1);
+    setForm((f) => ({
+      ...f,
+      serviceId,
+      serviceType: svc.kind,
+      concept:
+        f.concept.trim() ||
+        `${svc.title} · pago 100% tarjeta (${qty} pax)`,
+      amount: Math.round(svc.unitPrice * qty * 100) / 100,
+      quantity: qty,
+    }));
+  }
+
   async function createPayment(e: React.FormEvent) {
     e.preventDefault();
     setMessage("");
+    const svc = services.find((s) => s.id === form.serviceId);
+    const payload = {
+      concept: form.concept.trim(),
+      amount: Number(form.amount) || 0,
+      customerName: form.customerName.trim(),
+      customerEmail: form.customerEmail.trim(),
+      notes: form.notes.trim(),
+      serviceType: form.serviceType,
+      serviceId: form.serviceId || undefined,
+      serviceTitle: svc?.title,
+      chargeFull: true,
+      paymentMethod: "Stripe",
+      mode: "standard" as const,
+    };
+    if (!payload.concept || payload.amount <= 0) {
+      setMessage("Indica concepto e importe del servicio");
+      return;
+    }
+
     const res = await fetch("/api/admin/extras?resource=payments", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: JSON.stringify(payload),
     });
-    if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.item) {
       setMessage("No se pudo crear el pago");
       return;
     }
+
+    let created: PaymentLink = data.item;
+    if (stripeConfigured) {
+      const stripeRes = await fetch("/api/payments/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          paymentId: created.id,
+          origin: window.location.origin,
+        }),
+      });
+      const stripeData = await stripeRes.json().catch(() => ({}));
+      if (stripeRes.ok && stripeData.payment) {
+        created = stripeData.payment;
+      } else if (!stripeRes.ok) {
+        setMessage(
+          `Enlace creado, pero Stripe falló: ${stripeData.error || "error"}`
+        );
+      }
+    }
+
     setForm({
+      serviceType: "tour",
+      serviceId: "",
       concept: "",
       amount: 0,
+      quantity: 1,
       customerName: "",
       customerEmail: "",
       notes: "",
     });
-    setMessage("Pago / enlace creado");
     await load();
+    setSelectedId(created.id);
+    setMessage(
+      stripeConfigured
+        ? "Link de pago Stripe (100% tarjeta) creado"
+        : "Link creado. Configura STRIPE_SECRET_KEY para cobros reales."
+    );
   }
 
   async function setStatus(item: PaymentLink, status: PaymentLink["status"]) {
@@ -164,6 +323,34 @@ export default function AdminPagosOnlinePage() {
     await load();
   }
 
+  async function ensureStripeLink(item: PaymentLink) {
+    setMessage("");
+    const res = await fetch("/api/payments/stripe/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        paymentId: item.id,
+        origin: window.location.origin,
+      }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      setMessage(data.error || "No se pudo crear el Checkout de Stripe");
+      return;
+    }
+    setMessage("Sesión Stripe generada");
+    await load();
+  }
+
+  async function copyText(text: string) {
+    try {
+      await navigator.clipboard.writeText(text);
+      setMessage("Enlace copiado al portapapeles");
+    } catch {
+      setMessage("No se pudo copiar el enlace");
+    }
+  }
+
   async function remove(id: string) {
     if (!confirm("¿Eliminar este pago?")) return;
     await fetch(`/api/admin/extras?resource=payments&id=${id}`, {
@@ -175,7 +362,11 @@ export default function AdminPagosOnlinePage() {
 
   if (selected) {
     const locked = selected.status === "paid";
-    const link = paymentUrl(selected, origin || "https://lanzarote-nueva.vercel.app");
+    const link = paymentUrl(
+      selected,
+      origin || "https://lanzarote-nueva.vercel.app"
+    );
+    const stripeLink = selected.stripeCheckoutUrl;
 
     return (
       <div className="space-y-6">
@@ -242,7 +433,7 @@ export default function AdminPagosOnlinePage() {
             <section className="rounded-xl bg-white p-5 ring-1 ring-sand-line">
               <h2 className="mb-4 text-lg font-bold">Editar detalles del pago</h2>
               <form onSubmit={updatePayment} className="space-y-3">
-                <Field label="Importe total (€)">
+                <Field label="Importe total (€) — 100% tarjeta">
                   <input
                     type="number"
                     min={0}
@@ -329,18 +520,44 @@ export default function AdminPagosOnlinePage() {
                   </a>
                   <button
                     type="button"
-                    className="mt-3 text-xs font-bold text-ocean hover:underline"
-                    onClick={async () => {
-                      try {
-                        await navigator.clipboard.writeText(link);
-                        setMessage("Enlace copiado al portapapeles");
-                      } catch {
-                        setMessage("No se pudo copiar el enlace");
-                      }
-                    }}
+                    className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-ocean hover:underline"
+                    onClick={() => copyText(link)}
                   >
-                    Copiar enlace
+                    <Copy className="h-3.5 w-3.5" /> Copiar enlace gateway
                   </button>
+
+                  {stripeLink && (
+                    <div className="mt-4 border-t border-sand-line pt-4">
+                      <p className="text-xs font-bold uppercase tracking-wide text-ocean">
+                        Stripe Checkout (100% tarjeta)
+                      </p>
+                      <a
+                        href={stripeLink}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-2 block break-all text-sm font-medium text-ocean hover:underline"
+                      >
+                        {stripeLink}
+                      </a>
+                      <button
+                        type="button"
+                        className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-ocean hover:underline"
+                        onClick={() => copyText(stripeLink)}
+                      >
+                        <Copy className="h-3.5 w-3.5" /> Copiar enlace Stripe
+                      </button>
+                    </div>
+                  )}
+
+                  {!stripeLink && stripeConfigured && (
+                    <button
+                      type="button"
+                      onClick={() => ensureStripeLink(selected)}
+                      className="mt-4 rounded bg-ocean px-3 py-2 text-xs font-bold text-white"
+                    >
+                      Generar Checkout Stripe
+                    </button>
+                  )}
                 </section>
               )}
 
@@ -360,6 +577,14 @@ export default function AdminPagosOnlinePage() {
                     </dd>
                   </div>
                   <div className="flex justify-between gap-3">
+                    <dt className="text-ink-muted">Servicio</dt>
+                    <dd>{selected.serviceTitle || "Personalizado"}</dd>
+                  </div>
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-ink-muted">Cobro</dt>
+                    <dd>100% tarjeta (Stripe)</dd>
+                  </div>
+                  <div className="flex justify-between gap-3">
                     <dt className="text-ink-muted">Fecha de creación</dt>
                     <dd>{formatDateTime(selected.createdAt)}</dd>
                   </div>
@@ -376,7 +601,9 @@ export default function AdminPagosOnlinePage() {
                       <div className="flex justify-between gap-3">
                         <dt className="text-ink-muted">Clave del pago</dt>
                         <dd className="break-all text-xs">
-                          {selected.paymentKey || "—"}
+                          {selected.paymentKey ||
+                            selected.stripePaymentIntentId ||
+                            "—"}
                         </dd>
                       </div>
                     </>
@@ -421,13 +648,56 @@ export default function AdminPagosOnlinePage() {
             Módulo de pagos online
           </h1>
           <p className="mt-1 text-sm text-ink-muted">
-            Cree enlaces de pago y gestione estados (pendiente / pagado)
+            Cree enlaces de pago 100% tarjeta (Stripe) para un servicio
+            concreto
           </p>
         </div>
-        <a href="#crear-pago" className="btn-primary">
-          Crear pago
-        </a>
+        <div className="flex flex-wrap items-center gap-3">
+          <span
+            className={`rounded-full px-3 py-1 text-xs font-bold ${
+              stripeConfigured
+                ? "bg-emerald-50 text-emerald-700"
+                : "bg-amber-50 text-amber-800"
+            }`}
+          >
+            {stripeConfigured ? "Stripe conectado" : "Stripe no configurado"}
+          </span>
+          <a href="#crear-pago" className="btn-primary">
+            Crear link de pago
+          </a>
+        </div>
       </div>
+
+      <nav
+        className="flex flex-wrap gap-1 border-b border-sand-line"
+        aria-label="Filtros de pagos"
+      >
+        {LIST_TABS.map((item) => {
+          const active = listTab === item.id;
+          const count = items.filter((p) => matchesListTab(p, item.id)).length;
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setListTab(item.id)}
+              className={`-mb-px border-b-2 px-4 py-3 text-sm font-bold transition-colors ${
+                active
+                  ? "border-ocean text-ocean"
+                  : "border-transparent text-ink-muted hover:text-ink"
+              }`}
+            >
+              {item.label}
+              <span
+                className={`ml-2 rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+                  active ? "bg-sky-soft text-ocean" : "bg-sand text-ink-muted"
+                }`}
+              >
+                {count}
+              </span>
+            </button>
+          );
+        })}
+      </nav>
 
       {message && (
         <p className="rounded-lg bg-sky-soft px-4 py-2 text-sm text-ocean-deep ring-1 ring-sand-line">
@@ -441,17 +711,70 @@ export default function AdminPagosOnlinePage() {
         className="grid gap-3 rounded-xl bg-white p-5 ring-1 ring-sand-line md:grid-cols-2"
       >
         <h2 className="flex items-center gap-2 font-bold md:col-span-2">
-          <Plus className="h-4 w-4 text-ocean" /> Crear pago
+          <Plus className="h-4 w-4 text-ocean" /> Crear link de pago (100%
+          tarjeta / Stripe)
         </h2>
-        <Field label="Concepto">
-          <input
-            required
+        <Field label="Tipo de servicio">
+          <select
             className={adminInput}
-            value={form.concept}
-            onChange={(e) => setForm({ ...form, concept: e.target.value })}
-          />
+            value={form.serviceType}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                serviceType: e.target.value as PaymentServiceType,
+                serviceId: "",
+              })
+            }
+          >
+            <option value="tour">Excursión</option>
+            <option value="shore">Excursión shore / crucero</option>
+            <option value="transfer">Traslado</option>
+            <option value="custom">Personalizado</option>
+          </select>
         </Field>
-        <Field label="Importe (€)">
+        {form.serviceType !== "custom" ? (
+          <Field label="Servicio">
+            <select
+              required
+              className={adminInput}
+              value={form.serviceId}
+              onChange={(e) => applyService(e.target.value)}
+            >
+              <option value="">Seleccionar…</option>
+              {serviceOptions.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.title} ({formatPrice(s.unitPrice)})
+                </option>
+              ))}
+            </select>
+          </Field>
+        ) : (
+          <Field label="Nombre del servicio">
+            <input
+              className={adminInput}
+              value={form.concept}
+              onChange={(e) => setForm({ ...form, concept: e.target.value })}
+              placeholder="Descripción del cobro"
+              required
+            />
+          </Field>
+        )}
+        {form.serviceType !== "custom" && (
+          <Field label="Personas / unidades">
+            <input
+              type="number"
+              min={1}
+              className={adminInput}
+              value={form.quantity}
+              onChange={(e) => {
+                const quantity = Number(e.target.value) || 1;
+                if (form.serviceId) applyService(form.serviceId, quantity);
+                else setForm({ ...form, quantity });
+              }}
+            />
+          </Field>
+        )}
+        <Field label="Importe total (€)">
           <input
             required
             type="number"
@@ -464,6 +787,16 @@ export default function AdminPagosOnlinePage() {
             }
           />
         </Field>
+        {form.serviceType !== "custom" && (
+          <Field label="Concepto" className="md:col-span-2">
+            <input
+              required
+              className={adminInput}
+              value={form.concept}
+              onChange={(e) => setForm({ ...form, concept: e.target.value })}
+            />
+          </Field>
+        )}
         <Field label="Cliente">
           <input
             className={adminInput}
@@ -490,8 +823,11 @@ export default function AdminPagosOnlinePage() {
             onChange={(e) => setForm({ ...form, notes: e.target.value })}
           />
         </Field>
+        <p className="text-xs text-ink-muted md:col-span-2">
+          El cliente pagará el 100% del importe con tarjeta a través de Stripe.
+        </p>
         <button type="submit" className="btn-primary md:col-span-2 w-fit">
-          Crear pago
+          Crear link de pago
         </button>
       </form>
 
@@ -527,7 +863,7 @@ export default function AdminPagosOnlinePage() {
             {!loading && filtered.length === 0 && (
               <tr>
                 <td colSpan={7} className="px-4 py-6 text-ink-muted">
-                  No hay pagos en este rango
+                  No hay pagos en esta pestaña / rango
                 </td>
               </tr>
             )}

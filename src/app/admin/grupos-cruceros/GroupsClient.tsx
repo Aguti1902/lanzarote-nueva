@@ -14,7 +14,7 @@ import {
 } from "@/components/admin/DateRangeFilter";
 import { BookingDetailModal } from "@/components/admin/BookingDetailModal";
 
-type GroupsTab = "current" | "done" | "private";
+type GroupsTab = "all" | "open" | "full" | "done" | "private";
 
 type GroupDetail = {
   group: CruiseGroup;
@@ -31,9 +31,11 @@ type GroupDetail = {
 };
 
 const TABS: { id: GroupsTab; label: string; listTitle: string }[] = [
-  { id: "current", label: "Reservas actuales", listTitle: "Grupos actuales" },
-  { id: "done", label: "Realizadas", listTitle: "Grupos pasados" },
-  { id: "private", label: "Privadas", listTitle: "Grupos privados" },
+  { id: "all", label: "Todos", listTitle: "Todos los grupos" },
+  { id: "open", label: "Abierto", listTitle: "Grupos abiertos" },
+  { id: "full", label: "Completo", listTitle: "Grupos completos" },
+  { id: "done", label: "Cerrado / realizado", listTitle: "Grupos cerrados" },
+  { id: "private", label: "Privada", listTitle: "Grupos privados" },
 ];
 
 function statusLabel(status: CruiseGroup["status"]) {
@@ -52,9 +54,8 @@ function statusLabel(status: CruiseGroup["status"]) {
 }
 
 function matchesTab(group: CruiseGroup, tab: GroupsTab) {
-  if (tab === "private") return group.status === "private";
-  if (tab === "done") return group.status === "done";
-  return group.status === "open" || group.status === "full";
+  if (tab === "all") return true;
+  return group.status === tab;
 }
 
 function bookingStatusLabel(status: Booking["status"]) {
@@ -78,7 +79,7 @@ function confirmationsMailto(bookings: Booking[], subject: string) {
 
 export function GroupsPanel() {
   const [items, setItems] = useState<CruiseGroup[]>([]);
-  const [tab, setTab] = useState<GroupsTab>("current");
+  const [tab, setTab] = useState<GroupsTab>("all");
   const [range, setRange] = useState<DateRange>(emptyDateRange);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [detailId, setDetailId] = useState<string | null>(null);
