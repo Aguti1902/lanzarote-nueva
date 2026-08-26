@@ -6,6 +6,20 @@ export type BookingType = "tour" | "transfer" | "minibus";
 export type PaymentStatus = "unpaid" | "paid" | "pay_on_day" | "partial";
 export type CashStatus = "pending" | "collected" | "waived" | "none";
 
+export interface TourTranslation {
+  title?: string;
+  shortTitle?: string;
+  summary?: string;
+  description?: string;
+  highlights?: string[];
+  places?: string[];
+  included?: string[];
+  notIncluded?: string[];
+  recommendations?: string[];
+}
+
+export type TourScheduleSlot = "morning" | "afternoon" | "evening";
+
 export interface Tour {
   id: string;
   slug: string;
@@ -17,6 +31,10 @@ export interface Tour {
   durationHours: number;
   priceAdult: number;
   priceChild: number;
+  priceBaby?: number;
+  priceAdultOffer?: number;
+  priceChildOffer?: number;
+  priceBabyOffer?: number;
   currency: string;
   rating: number;
   reviewCount: number;
@@ -37,6 +55,37 @@ export interface Tour {
   allowBizum: boolean;
   cruiseFriendly: boolean;
   featured?: boolean;
+  /** Visible en web pública */
+  active?: boolean;
+  island?: string;
+  isNew?: boolean;
+  bookingMethod?: "online" | "request" | "phone";
+  smallGroup?: boolean;
+  mixLanguages?: boolean;
+  priority?: number;
+  activityType?: string;
+  isPrivateActivity?: boolean;
+  paxPerPrice?: number;
+  youtubeUrl?: string;
+  mapUrl?: string;
+  schedule?: Record<
+    string,
+    Partial<Record<TourScheduleSlot, boolean[]>>
+  >;
+  blockedDates?: Array<{
+    date: string;
+    language?: string;
+    seats: number;
+  }>;
+  seo?: {
+    title?: string;
+    description?: string;
+    keywords?: string;
+  };
+  translations?: {
+    en?: TourTranslation;
+    de?: TourTranslation;
+  };
 }
 
 export interface TransferDestination {

@@ -52,12 +52,155 @@
     ],
     "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes de la recogida.",
     "maxGroup": 14,
-    "languages": ["Español"],
+    "languages": [
+      "Español"
+    ],
     "allowPayOnDay": true,
     "allowCard": true,
     "allowBizum": true,
     "cruiseFriendly": true,
-    "featured": true
+    "featured": true,
+    "active": true,
+    "island": "Lanzarote",
+    "activityType": "Visitas Guiadas",
+    "priority": 1,
+    "isNew": false,
+    "bookingMethod": "online",
+    "smallGroup": true,
+    "mixLanguages": false,
+    "isPrivateActivity": false,
+    "paxPerPrice": 0,
+    "priceBaby": 0,
+    "priceAdultOffer": 69,
+    "priceChildOffer": 45,
+    "priceBabyOffer": 0,
+    "youtubeUrl": "",
+    "mapUrl": "",
+    "schedule": {
+      "Playa Blanca": {
+        "morning": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Puerto del Carmen": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Costa Teguise": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Arrecife": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    "blockedDates": [],
+    "seo": {
+      "title": "Excursión a Timanfaya y las Montañas del Fuego Experience",
+      "description": "Descubre el Parque Nacional de Timanfaya, Los Hervideros, El Golfo, Salinas de Janubio y La Geria en grupo reducido y solo en español.",
+      "keywords": ""
+    },
+    "translations": {}
   },
   {
     "id": "grand-tour-experience",
@@ -100,7 +243,10 @@
       "Entradas indicadas en el itinerario",
       "Seguro turístico"
     ],
-    "notIncluded": ["Almuerzo", "Consumiciones"],
+    "notIncluded": [
+      "Almuerzo",
+      "Consumiciones"
+    ],
     "recommendations": [
       "Día completo: lleve agua y snack",
       "Calzado cómodo",
@@ -108,12 +254,155 @@
     ],
     "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes de la recogida.",
     "maxGroup": 14,
-    "languages": ["Español"],
+    "languages": [
+      "Español"
+    ],
     "allowPayOnDay": true,
     "allowCard": true,
     "allowBizum": true,
     "cruiseFriendly": true,
-    "featured": true
+    "featured": true,
+    "active": true,
+    "island": "Lanzarote",
+    "activityType": "Visitas Guiadas",
+    "priority": 1,
+    "isNew": false,
+    "bookingMethod": "online",
+    "smallGroup": true,
+    "mixLanguages": false,
+    "isPrivateActivity": false,
+    "paxPerPrice": 0,
+    "priceBaby": 0,
+    "priceAdultOffer": 89,
+    "priceChildOffer": 55,
+    "priceBabyOffer": 0,
+    "youtubeUrl": "",
+    "mapUrl": "",
+    "schedule": {
+      "Playa Blanca": {
+        "morning": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Puerto del Carmen": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Costa Teguise": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Arrecife": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    "blockedDates": [],
+    "seo": {
+      "title": "Excursión Grand Tour Experience: la huella del paisaje",
+      "description": "La isla completa en un día: norte y sur, Manrique, Timanfaya, Jameos, Mirador del Río y más.",
+      "keywords": ""
+    },
+    "translations": {}
   },
   {
     "id": "tour-privado",
@@ -141,22 +430,172 @@
       "Ideal para familias y grupos",
       "Horarios flexibles"
     ],
-    "places": ["Según itinerario acordado"],
+    "places": [
+      "Según itinerario acordado"
+    ],
     "included": [
       "Minibus privado",
       "Guía oficial",
       "Seguro turístico"
     ],
-    "notIncluded": ["Entradas a centros turísticos", "Comidas"],
-    "recommendations": ["Indique preferencias al reservar"],
+    "notIncluded": [
+      "Entradas a centros turísticos",
+      "Comidas"
+    ],
+    "recommendations": [
+      "Indique preferencias al reservar"
+    ],
     "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
     "maxGroup": 14,
-    "languages": ["Español"],
+    "languages": [
+      "Español"
+    ],
     "allowPayOnDay": false,
     "allowCard": true,
     "allowBizum": true,
     "cruiseFriendly": true,
-    "featured": true
+    "featured": true,
+    "active": true,
+    "island": "Lanzarote",
+    "activityType": "Privado",
+    "priority": 1,
+    "isNew": false,
+    "bookingMethod": "online",
+    "smallGroup": false,
+    "mixLanguages": false,
+    "isPrivateActivity": true,
+    "paxPerPrice": 0,
+    "priceBaby": 0,
+    "priceAdultOffer": 450,
+    "priceChildOffer": 0,
+    "priceBabyOffer": 0,
+    "youtubeUrl": "",
+    "mapUrl": "",
+    "schedule": {
+      "Playa Blanca": {
+        "morning": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Puerto del Carmen": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Costa Teguise": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Arrecife": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    "blockedDates": [],
+    "seo": {
+      "title": "Excursión Privada en Lanzarote: Minibus + Guía Turístico",
+      "description": "Minibus y guía oficial en exclusiva para su grupo. Itinerario a su medida.",
+      "keywords": ""
+    },
+    "translations": {}
   },
   {
     "id": "cesar-manrique",
@@ -173,7 +612,10 @@
     "rating": 9.4,
     "reviewCount": 154,
     "image": "/images/tours/canyon-1.jpg",
-    "gallery": ["/images/tours/canyon-1.jpg", "/images/tours/grand-tour.jpg"],
+    "gallery": [
+      "/images/tours/canyon-1.jpg",
+      "/images/tours/grand-tour.jpg"
+    ],
     "summary": "El talento de un hombre y el amor por su tierra: Fundación, Jameos, Mirador y Jardín de Cactus.",
     "description": "Recorrido dedicado a la obra de César Manrique: Fundación César Manrique, Jameos del Agua, Mirador del Río y Jardín de Cactus. Grupos reducidos y solo en español.",
     "highlights": [
@@ -187,17 +629,168 @@
       "Mirador del Río",
       "Jardín de Cactus"
     ],
-    "included": ["Transporte", "Guía oficial", "Entradas del itinerario"],
-    "notIncluded": ["Almuerzo"],
-    "recommendations": ["Calzado cómodo"],
+    "included": [
+      "Transporte",
+      "Guía oficial",
+      "Entradas del itinerario"
+    ],
+    "notIncluded": [
+      "Almuerzo"
+    ],
+    "recommendations": [
+      "Calzado cómodo"
+    ],
     "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
     "maxGroup": 14,
-    "languages": ["Español"],
+    "languages": [
+      "Español"
+    ],
     "allowPayOnDay": true,
     "allowCard": true,
     "allowBizum": true,
     "cruiseFriendly": true,
-    "featured": false
+    "featured": false,
+    "active": true,
+    "island": "Lanzarote",
+    "activityType": "Visitas Guiadas",
+    "priority": 10,
+    "isNew": false,
+    "bookingMethod": "online",
+    "smallGroup": true,
+    "mixLanguages": false,
+    "isPrivateActivity": false,
+    "paxPerPrice": 0,
+    "priceBaby": 0,
+    "priceAdultOffer": 75,
+    "priceChildOffer": 48,
+    "priceBabyOffer": 0,
+    "youtubeUrl": "",
+    "mapUrl": "",
+    "schedule": {
+      "Playa Blanca": {
+        "morning": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Puerto del Carmen": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Costa Teguise": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Arrecife": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    "blockedDates": [],
+    "seo": {
+      "title": "Excursión César Manrique Experience",
+      "description": "El talento de un hombre y el amor por su tierra: Fundación, Jameos, Mirador y Jardín de Cactus.",
+      "keywords": ""
+    },
+    "translations": {}
   },
   {
     "id": "ruta-vino",
@@ -214,22 +807,182 @@
     "rating": 9.2,
     "reviewCount": 88,
     "image": "/images/tours/wine-1.jpg",
-    "gallery": ["/images/tours/wine-1.jpg"],
+    "gallery": [
+      "/images/tours/wine-1.jpg"
+    ],
     "summary": "Descubre La Geria, sus volcanes y degustaciones de vino malvasía en bodegas locales.",
     "description": "Una experiencia enológica por La Geria: paisajes de viñedos en hoyos, bodegas y degustación de vinos de Lanzarote.",
-    "highlights": ["Degustaciones", "Grupo reducido", "Solo en español"],
-    "places": ["La Geria", "Bodegas locales"],
-    "included": ["Transporte", "Guía", "Degustaciones"],
-    "notIncluded": ["Compras en bodega"],
-    "recommendations": ["No apto para menores en degustación alcohólica"],
+    "highlights": [
+      "Degustaciones",
+      "Grupo reducido",
+      "Solo en español"
+    ],
+    "places": [
+      "La Geria",
+      "Bodegas locales"
+    ],
+    "included": [
+      "Transporte",
+      "Guía",
+      "Degustaciones"
+    ],
+    "notIncluded": [
+      "Compras en bodega"
+    ],
+    "recommendations": [
+      "No apto para menores en degustación alcohólica"
+    ],
     "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
     "maxGroup": 14,
-    "languages": ["Español"],
+    "languages": [
+      "Español"
+    ],
     "allowPayOnDay": true,
     "allowCard": true,
     "allowBizum": true,
     "cruiseFriendly": false,
-    "featured": false
+    "featured": false,
+    "active": true,
+    "island": "Lanzarote",
+    "activityType": "Visitas Guiadas",
+    "priority": 10,
+    "isNew": false,
+    "bookingMethod": "online",
+    "smallGroup": true,
+    "mixLanguages": false,
+    "isPrivateActivity": false,
+    "paxPerPrice": 0,
+    "priceBaby": 0,
+    "priceAdultOffer": 55,
+    "priceChildOffer": 30,
+    "priceBabyOffer": 0,
+    "youtubeUrl": "",
+    "mapUrl": "",
+    "schedule": {
+      "Playa Blanca": {
+        "morning": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Puerto del Carmen": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Costa Teguise": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Arrecife": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    "blockedDates": [],
+    "seo": {
+      "title": "Ruta del Vino de Lanzarote",
+      "description": "Descubre La Geria, sus volcanes y degustaciones de vino malvasía en bodegas locales.",
+      "keywords": ""
+    },
+    "translations": {}
   },
   {
     "id": "senderismo-norte",
@@ -246,22 +999,186 @@
     "rating": 9.3,
     "reviewCount": 67,
     "image": "/images/tours/desert-1.jpg",
-    "gallery": ["/images/tours/desert-1.jpg"],
+    "gallery": [
+      "/images/tours/desert-1.jpg"
+    ],
     "summary": "Ruta de senderismo por el norte verde de Lanzarote con guía local.",
     "description": "Caminata guiada por Ermita de Las Nieves, El Bosquecillo y el valle de Haría. Ideal para amantes de la naturaleza y vistas panorámicas.",
-    "highlights": ["Guía de senderismo", "Grupo reducido", "Paisajes del norte"],
-    "places": ["Ermita de Las Nieves", "El Bosquecillo", "Haría"],
-    "included": ["Transporte", "Guía", "Seguro"],
-    "notIncluded": ["Comida", "Bastones"],
-    "recommendations": ["Calzado de trekking", "Agua", "Gorra"],
+    "highlights": [
+      "Guía de senderismo",
+      "Grupo reducido",
+      "Paisajes del norte"
+    ],
+    "places": [
+      "Ermita de Las Nieves",
+      "El Bosquecillo",
+      "Haría"
+    ],
+    "included": [
+      "Transporte",
+      "Guía",
+      "Seguro"
+    ],
+    "notIncluded": [
+      "Comida",
+      "Bastones"
+    ],
+    "recommendations": [
+      "Calzado de trekking",
+      "Agua",
+      "Gorra"
+    ],
     "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
     "maxGroup": 12,
-    "languages": ["Español"],
+    "languages": [
+      "Español"
+    ],
     "allowPayOnDay": true,
     "allowCard": true,
     "allowBizum": true,
     "cruiseFriendly": false,
-    "featured": false
+    "featured": false,
+    "active": true,
+    "island": "Lanzarote",
+    "activityType": "Visitas Guiadas",
+    "priority": 10,
+    "isNew": false,
+    "bookingMethod": "online",
+    "smallGroup": true,
+    "mixLanguages": false,
+    "isPrivateActivity": false,
+    "paxPerPrice": 0,
+    "priceBaby": 0,
+    "priceAdultOffer": 49,
+    "priceChildOffer": 35,
+    "priceBabyOffer": 0,
+    "youtubeUrl": "",
+    "mapUrl": "",
+    "schedule": {
+      "Playa Blanca": {
+        "morning": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Puerto del Carmen": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Costa Teguise": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Arrecife": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    "blockedDates": [],
+    "seo": {
+      "title": "Senderismo Norte de Lanzarote: Ermita de Las Nieves - El Bosquecillo - Haría",
+      "description": "Ruta de senderismo por el norte verde de Lanzarote con guía local.",
+      "keywords": ""
+    },
+    "translations": {}
   },
   {
     "id": "graciosa-catamaran",
@@ -278,22 +1195,184 @@
     "rating": 9.1,
     "reviewCount": 120,
     "image": "/images/heroes/cruise.jpg",
-    "gallery": ["/images/heroes/cruise.jpg"],
+    "gallery": [
+      "/images/heroes/cruise.jpg"
+    ],
     "summary": "Día completo a La Graciosa en catamarán: playas, snorkel y ambiente único.",
     "description": "Excursión a la isla de La Graciosa en catamarán. Tiempo libre en playas, posibilidad de snorkel y almuerzo a bordo según disponibilidad.",
-    "highlights": ["Catamarán", "Playas de La Graciosa", "Día completo"],
-    "places": ["Órzola", "La Graciosa"],
-    "included": ["Transporte terrestre", "Ferry/catamarán", "Guía"],
-    "notIncluded": ["Extras a bordo"],
-    "recommendations": ["Traje de baño", "Toalla", "Protector solar"],
+    "highlights": [
+      "Catamarán",
+      "Playas de La Graciosa",
+      "Día completo"
+    ],
+    "places": [
+      "Órzola",
+      "La Graciosa"
+    ],
+    "included": [
+      "Transporte terrestre",
+      "Ferry/catamarán",
+      "Guía"
+    ],
+    "notIncluded": [
+      "Extras a bordo"
+    ],
+    "recommendations": [
+      "Traje de baño",
+      "Toalla",
+      "Protector solar"
+    ],
     "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
     "maxGroup": 40,
-    "languages": ["Español"],
+    "languages": [
+      "Español"
+    ],
     "allowPayOnDay": true,
     "allowCard": true,
     "allowBizum": true,
     "cruiseFriendly": false,
-    "featured": false
+    "featured": false,
+    "active": true,
+    "island": "Lanzarote",
+    "activityType": "Visitas Guiadas",
+    "priority": 10,
+    "isNew": false,
+    "bookingMethod": "online",
+    "smallGroup": false,
+    "mixLanguages": false,
+    "isPrivateActivity": false,
+    "paxPerPrice": 0,
+    "priceBaby": 0,
+    "priceAdultOffer": 79,
+    "priceChildOffer": 49,
+    "priceBabyOffer": 0,
+    "youtubeUrl": "",
+    "mapUrl": "",
+    "schedule": {
+      "Playa Blanca": {
+        "morning": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Puerto del Carmen": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Costa Teguise": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Arrecife": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    "blockedDates": [],
+    "seo": {
+      "title": "La Graciosa en Catamarán",
+      "description": "Día completo a La Graciosa en catamarán: playas, snorkel y ambiente único.",
+      "keywords": ""
+    },
+    "translations": {}
   },
   {
     "id": "delfines-atardecer",
@@ -307,24 +1386,182 @@
     "priceAdult": 45,
     "priceChild": 30,
     "currency": "EUR",
-    "rating": 9.0,
+    "rating": 9,
     "reviewCount": 203,
     "image": "/images/home/cruceros.jpg",
-    "gallery": ["/images/home/cruceros.jpg"],
+    "gallery": [
+      "/images/home/cruceros.jpg"
+    ],
     "summary": "Salida en barco al atardecer con avistamiento de delfines y puesta de sol.",
     "description": "Navegación al atardecer para avistar delfines (sujeto a avistamiento natural) y disfrutar de la puesta de sol frente a la costa de Lanzarote.",
-    "highlights": ["Atardecer", "Avistamiento de delfines", "Ambiente romántico"],
-    "places": ["Costa de Lanzarote"],
-    "included": ["Paseo en barco", "Tripulación"],
-    "notIncluded": ["Bebidas"],
-    "recommendations": ["Ropa abrigada para el viento"],
+    "highlights": [
+      "Atardecer",
+      "Avistamiento de delfines",
+      "Ambiente romántico"
+    ],
+    "places": [
+      "Costa de Lanzarote"
+    ],
+    "included": [
+      "Paseo en barco",
+      "Tripulación"
+    ],
+    "notIncluded": [
+      "Bebidas"
+    ],
+    "recommendations": [
+      "Ropa abrigada para el viento"
+    ],
     "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
-    "languages": ["Español"],
+    "languages": [
+      "Español"
+    ],
     "allowPayOnDay": true,
     "allowCard": true,
     "allowBizum": true,
     "cruiseFriendly": true,
-    "featured": false
+    "featured": false,
+    "active": true,
+    "island": "Lanzarote",
+    "activityType": "Visitas Guiadas",
+    "priority": 10,
+    "isNew": false,
+    "bookingMethod": "online",
+    "smallGroup": false,
+    "mixLanguages": false,
+    "isPrivateActivity": false,
+    "paxPerPrice": 0,
+    "priceBaby": 0,
+    "priceAdultOffer": 45,
+    "priceChildOffer": 30,
+    "priceBabyOffer": 0,
+    "youtubeUrl": "",
+    "mapUrl": "",
+    "schedule": {
+      "Playa Blanca": {
+        "morning": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Puerto del Carmen": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Costa Teguise": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Arrecife": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    "blockedDates": [],
+    "seo": {
+      "title": "Excursión para ver delfines en un romántico atardecer en Lanzarote",
+      "description": "Salida en barco al atardecer con avistamiento de delfines y puesta de sol.",
+      "keywords": ""
+    },
+    "translations": {}
   },
   {
     "id": "mercadillo-teguise",
@@ -341,21 +1578,746 @@
     "rating": 8.9,
     "reviewCount": 74,
     "image": "/images/heroes/about.jpg",
-    "gallery": ["/images/heroes/about.jpg"],
+    "gallery": [
+      "/images/heroes/about.jpg"
+    ],
     "summary": "Visita al tradicional mercadillo dominical de Teguise con transporte y guía.",
     "description": "Cada domingo, el pueblo de Teguise se llena de artesanía, productos locales y ambiente canario. Incluye transporte y acompañamiento.",
-    "highlights": ["Domingos", "Artesanía local", "Pueblo histórico"],
-    "places": ["Teguise"],
-    "included": ["Transporte", "Acompañamiento"],
-    "notIncluded": ["Compras"],
-    "recommendations": ["Efectivo para el mercado"],
+    "highlights": [
+      "Domingos",
+      "Artesanía local",
+      "Pueblo histórico"
+    ],
+    "places": [
+      "Teguise"
+    ],
+    "included": [
+      "Transporte",
+      "Acompañamiento"
+    ],
+    "notIncluded": [
+      "Compras"
+    ],
+    "recommendations": [
+      "Efectivo para el mercado"
+    ],
     "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
     "maxGroup": 14,
-    "languages": ["Español"],
+    "languages": [
+      "Español"
+    ],
     "allowPayOnDay": true,
     "allowCard": true,
     "allowBizum": true,
     "cruiseFriendly": false,
-    "featured": false
+    "featured": false,
+    "active": true,
+    "island": "Lanzarote",
+    "activityType": "Visitas Guiadas",
+    "priority": 10,
+    "isNew": false,
+    "bookingMethod": "online",
+    "smallGroup": true,
+    "mixLanguages": false,
+    "isPrivateActivity": false,
+    "paxPerPrice": 0,
+    "priceBaby": 0,
+    "priceAdultOffer": 35,
+    "priceChildOffer": 20,
+    "priceBabyOffer": 0,
+    "youtubeUrl": "",
+    "mapUrl": "",
+    "schedule": {
+      "Playa Blanca": {
+        "morning": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Puerto del Carmen": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Costa Teguise": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Arrecife": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    "blockedDates": [],
+    "seo": {
+      "title": "Mercadillo de Teguise",
+      "description": "Visita al tradicional mercadillo dominical de Teguise con transporte y guía.",
+      "keywords": ""
+    },
+    "translations": {}
+  },
+  {
+    "id": "panoramica-sur-norte",
+    "slug": "excursion-panoramica-sur-norte-lanzarote",
+    "title": "Excursión panorámica por el sur y norte de Lanzarote",
+    "shortTitle": "Panorámica Sur y Norte",
+    "category": "excursion",
+    "groupSize": "large",
+    "duration": "8 horas",
+    "durationHours": 8,
+    "priceAdult": 95,
+    "priceChild": 70,
+    "image": "/images/tours/coast-1.jpg",
+    "summary": "Recorrido panorámico por el sur y el norte de Lanzarote.",
+    "description": "Una visión completa de la isla en un solo día.",
+    "highlights": [
+      "Sur y norte en un día",
+      "Paradas fotográficas"
+    ],
+    "places": [
+      "Playa Blanca",
+      "Famara",
+      "Miradores"
+    ],
+    "included": [
+      "Transporte",
+      "Guía"
+    ],
+    "notIncluded": [
+      "Comidas"
+    ],
+    "recommendations": [
+      "Calzado cómodo"
+    ],
+    "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
+    "maxGroup": 30,
+    "languages": [
+      "Español"
+    ],
+    "allowPayOnDay": true,
+    "allowCard": true,
+    "allowBizum": true,
+    "cruiseFriendly": false,
+    "featured": false,
+    "active": false,
+    "currency": "EUR",
+    "rating": 9,
+    "reviewCount": 0,
+    "gallery": [
+      "/images/tours/coast-1.jpg"
+    ],
+    "island": "Lanzarote",
+    "activityType": "Visitas Guiadas",
+    "priority": 20,
+    "isNew": false,
+    "bookingMethod": "online",
+    "smallGroup": false,
+    "mixLanguages": false,
+    "isPrivateActivity": false,
+    "paxPerPrice": 0,
+    "priceBaby": 0,
+    "priceAdultOffer": 95,
+    "priceChildOffer": 70,
+    "priceBabyOffer": 0,
+    "youtubeUrl": "",
+    "mapUrl": "",
+    "schedule": {
+      "Playa Blanca": {
+        "morning": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Puerto del Carmen": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Costa Teguise": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Arrecife": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    "blockedDates": [],
+    "seo": {
+      "title": "Excursión panorámica por el sur y norte de Lanzarote",
+      "description": "Recorrido panorámico por el sur y el norte de Lanzarote.",
+      "keywords": ""
+    },
+    "translations": {}
+  },
+  {
+    "id": "traslado-concierto-jameos",
+    "slug": "traslado-concierto-jameos-del-agua",
+    "title": "Traslado + Concierto en los Jameos del Agua",
+    "shortTitle": "Concierto Jameos",
+    "category": "excursion",
+    "duration": "4 horas",
+    "durationHours": 4,
+    "priceAdult": 65,
+    "priceChild": 45,
+    "image": "/images/tours/manrique.jpg",
+    "summary": "Traslado y acceso a concierto en los Jameos del Agua.",
+    "description": "Experiencia cultural en una de las obras de César Manrique.",
+    "highlights": [
+      "Traslado incluido",
+      "Ambiente único"
+    ],
+    "places": [
+      "Jameos del Agua"
+    ],
+    "included": [
+      "Traslado",
+      "Entrada concierto"
+    ],
+    "notIncluded": [
+      "Consumiciones"
+    ],
+    "recommendations": [],
+    "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
+    "maxGroup": 40,
+    "languages": [
+      "Español"
+    ],
+    "allowPayOnDay": false,
+    "allowCard": true,
+    "allowBizum": true,
+    "cruiseFriendly": false,
+    "featured": false,
+    "active": false,
+    "currency": "EUR",
+    "rating": 9,
+    "reviewCount": 0,
+    "gallery": [
+      "/images/tours/manrique.jpg"
+    ],
+    "island": "Lanzarote",
+    "activityType": "Visitas Guiadas",
+    "priority": 20,
+    "isNew": false,
+    "bookingMethod": "online",
+    "smallGroup": false,
+    "mixLanguages": false,
+    "isPrivateActivity": false,
+    "paxPerPrice": 0,
+    "priceBaby": 0,
+    "priceAdultOffer": 65,
+    "priceChildOffer": 45,
+    "priceBabyOffer": 0,
+    "youtubeUrl": "",
+    "mapUrl": "",
+    "schedule": {
+      "Playa Blanca": {
+        "morning": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Puerto del Carmen": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Costa Teguise": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Arrecife": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    "blockedDates": [],
+    "seo": {
+      "title": "Traslado + Concierto en los Jameos del Agua",
+      "description": "Traslado y acceso a concierto en los Jameos del Agua.",
+      "keywords": ""
+    },
+    "translations": {}
+  },
+  {
+    "id": "astro-tour-experience",
+    "slug": "astro-tour-experience",
+    "title": "Astro Tour Experience",
+    "shortTitle": "Astro Tour",
+    "category": "excursion",
+    "groupSize": "small",
+    "duration": "3 horas",
+    "durationHours": 3,
+    "priceAdult": 55,
+    "priceChild": 40,
+    "image": "/images/tours/coast-2.jpg",
+    "summary": "Observación de estrellas en cielo limpio de Lanzarote.",
+    "description": "Tour nocturno de astronomía con telescopio y guía especializado.",
+    "highlights": [
+      "Cielo estrellado",
+      "Telescopio profesional"
+    ],
+    "places": [
+      "Mirador nocturno"
+    ],
+    "included": [
+      "Guía astrónomo",
+      "Telescopio"
+    ],
+    "notIncluded": [
+      "Transporte hotel"
+    ],
+    "recommendations": [
+      "Abrigo"
+    ],
+    "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
+    "maxGroup": 12,
+    "languages": [
+      "Español",
+      "Inglés"
+    ],
+    "allowPayOnDay": false,
+    "allowCard": true,
+    "allowBizum": true,
+    "cruiseFriendly": false,
+    "featured": false,
+    "active": false,
+    "currency": "EUR",
+    "rating": 9,
+    "reviewCount": 0,
+    "gallery": [
+      "/images/tours/coast-2.jpg"
+    ],
+    "island": "Lanzarote",
+    "activityType": "Visitas Guiadas",
+    "priority": 20,
+    "isNew": false,
+    "bookingMethod": "online",
+    "smallGroup": true,
+    "mixLanguages": false,
+    "isPrivateActivity": false,
+    "paxPerPrice": 0,
+    "priceBaby": 0,
+    "priceAdultOffer": 55,
+    "priceChildOffer": 40,
+    "priceBabyOffer": 0,
+    "youtubeUrl": "",
+    "mapUrl": "",
+    "schedule": {
+      "Playa Blanca": {
+        "morning": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Puerto del Carmen": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Costa Teguise": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "Arrecife": {
+        "morning": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "afternoon": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "evening": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    "blockedDates": [],
+    "seo": {
+      "title": "Astro Tour Experience",
+      "description": "Observación de estrellas en cielo limpio de Lanzarote.",
+      "keywords": ""
+    },
+    "translations": {}
   }
 ]

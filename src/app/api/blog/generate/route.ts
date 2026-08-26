@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSettings, getTours } from "@/lib/content";
+import { getSettings, getPublicTours } from "@/lib/content";
 
 export async function POST(request: Request) {
   try {
@@ -12,7 +12,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const [settings, tours] = await Promise.all([getSettings(), getTours()]);
+    const [settings, tours] = await Promise.all([
+      getSettings(),
+      getPublicTours(),
+    ]);
     const tourNames = tours.map((t) => t.shortTitle).join(", ");
 
     const apiKey = process.env.OPENAI_API_KEY;

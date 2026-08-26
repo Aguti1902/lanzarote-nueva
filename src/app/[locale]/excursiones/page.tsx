@@ -3,7 +3,7 @@ import Link from "next/link";
 import { PageBodyText } from "@/components/PageBodyText";
 import { PageHero } from "@/components/PageHero";
 import { TourCard } from "@/components/TourCard";
-import { getSettings, getTours } from "@/lib/content";
+import { getSettings, getPublicTours } from "@/lib/content";
 import {
   localizeSettings,
   localizeTours,
@@ -25,7 +25,7 @@ export default async function ExcursionesPage({ params }: Props) {
   const locale = resolveLocale(raw);
   const dict = await getDictionary(locale);
   const [tours, settings] = await Promise.all([
-    localizeTours(await getTours(), locale),
+    localizeTours(await getPublicTours(), locale),
     localizeSettings(await getSettings(), locale),
   ]);
 

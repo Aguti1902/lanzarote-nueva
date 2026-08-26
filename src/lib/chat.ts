@@ -2,7 +2,7 @@ import {
   getCruiseCalls,
   getCruisesData,
   getSettings,
-  getTours,
+  getPublicTours,
   getTransfersData,
 } from "@/lib/content";
 import { formatPrice, groupSizeLabel } from "@/lib/format";
@@ -21,7 +21,7 @@ function normalize(text: string): string {
 
 async function buildKnowledge(): Promise<string> {
   const [tours, transfers, settings, cruiseData, cruiseCalls] = await Promise.all([
-    getTours(),
+    getPublicTours(),
     getTransfersData(),
     getSettings(),
     getCruisesData(),

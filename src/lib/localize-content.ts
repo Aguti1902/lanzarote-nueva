@@ -95,6 +95,25 @@ export async function localizeTour(
 ): Promise<Tour> {
   if (locale === "es") return tour;
 
+  const embedded = tour.translations?.[locale as "en" | "de"];
+  if (embedded) {
+    return {
+      ...tour,
+      ...embedded,
+      highlights: embedded.highlights?.length
+        ? embedded.highlights
+        : tour.highlights,
+      places: embedded.places?.length ? embedded.places : tour.places,
+      included: embedded.included?.length ? embedded.included : tour.included,
+      notIncluded: embedded.notIncluded?.length
+        ? embedded.notIncluded
+        : tour.notIncluded,
+      recommendations: embedded.recommendations?.length
+        ? embedded.recommendations
+        : tour.recommendations,
+    };
+  }
+
   const translations = await loadTranslations(locale);
   const overlay = translations.tours[tour.id];
   return overlay ? { ...tour, ...overlay } : tour;
@@ -105,12 +124,7 @@ export async function localizeTours(
   locale: Locale
 ): Promise<Tour[]> {
   if (locale === "es") return tours;
-
-  const translations = await loadTranslations(locale);
-  return tours.map((tour) => {
-    const overlay = translations.tours[tour.id];
-    return overlay ? { ...tour, ...overlay } : tour;
-  });
+  return Promise.all(tours.map((tour) => localizeTour(tour, locale)));
 }
 
 export async function localizeBlogPost(

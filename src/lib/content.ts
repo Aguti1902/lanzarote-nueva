@@ -36,12 +36,22 @@ function slugify(value: string): string {
 
 /* ── Tours ── */
 
+function isTourActive(tour: Tour): boolean {
+  return tour.active !== false;
+}
+
+/** Todas las excursiones (incluye inactivas). Uso admin / API. */
 export async function getTours(): Promise<Tour[]> {
   return readJson<Tour[]>("tours.json");
 }
 
+/** Solo excursiones activas para la web pública. */
+export async function getPublicTours(): Promise<Tour[]> {
+  return (await getTours()).filter(isTourActive);
+}
+
 export async function getTourBySlug(slug: string): Promise<Tour | undefined> {
-  const tours = await getTours();
+  const tours = await getPublicTours();
   return tours.find((t) => t.slug === slug);
 }
 
@@ -51,11 +61,11 @@ export async function getTourById(id: string): Promise<Tour | undefined> {
 }
 
 export async function getFeaturedTours(): Promise<Tour[]> {
-  return (await getTours()).filter((t) => t.featured);
+  return (await getPublicTours()).filter((t) => t.featured);
 }
 
 export async function getCruiseTours(): Promise<Tour[]> {
-  return (await getTours()).filter((t) => t.cruiseFriendly);
+  return (await getPublicTours()).filter((t) => t.cruiseFriendly);
 }
 
 export async function saveTours(tours: Tour[]): Promise<void> {
@@ -82,6 +92,30 @@ export async function createTour(
     slug = `${baseSlug}-${n++}`;
   }
   const id = slug;
+  const emptyDays = () => Array(7).fill(false) as boolean[];
+  const defaultSchedule: Tour["schedule"] = {
+    "Playa Blanca": {
+      morning: emptyDays(),
+      afternoon: emptyDays(),
+      evening: emptyDays(),
+    },
+    "Puerto del Carmen": {
+      morning: emptyDays(),
+      afternoon: emptyDays(),
+      evening: emptyDays(),
+    },
+    "Costa Teguise": {
+      morning: emptyDays(),
+      afternoon: emptyDays(),
+      evening: emptyDays(),
+    },
+    Arrecife: {
+      morning: emptyDays(),
+      afternoon: emptyDays(),
+      evening: emptyDays(),
+    },
+  };
+
   const tour: Tour = {
     id,
     slug,
@@ -93,6 +127,10 @@ export async function createTour(
     durationHours: input.durationHours ?? 5,
     priceAdult: input.priceAdult ?? 0,
     priceChild: input.priceChild ?? 0,
+    priceBaby: input.priceBaby ?? 0,
+    priceAdultOffer: input.priceAdultOffer ?? input.priceAdult ?? 0,
+    priceChildOffer: input.priceChildOffer ?? input.priceChild ?? 0,
+    priceBabyOffer: input.priceBabyOffer ?? input.priceBaby ?? 0,
     currency: "EUR",
     rating: input.rating ?? 9.0,
     reviewCount: input.reviewCount ?? 0,
@@ -110,13 +148,30 @@ export async function createTour(
     cancellationPolicy:
       input.cancellationPolicy ||
       "Cancelación gratuita hasta 48 horas antes de la recogida.",
-    maxGroup: input.maxGroup,
+    maxGroup: input.maxGroup ?? 14,
     languages: input.languages || ["Español"],
     allowPayOnDay: input.allowPayOnDay ?? input.groupSize === "large",
     allowCard: input.allowCard ?? true,
     allowBizum: input.allowBizum ?? true,
     cruiseFriendly: input.cruiseFriendly ?? true,
     featured: input.featured ?? false,
+    active: input.active ?? true,
+    island: input.island || "Lanzarote",
+    isNew: input.isNew ?? false,
+    bookingMethod: input.bookingMethod || "online",
+    smallGroup: input.smallGroup ?? input.groupSize === "small",
+    mixLanguages: input.mixLanguages ?? false,
+    priority: input.priority ?? 1,
+    activityType: input.activityType || "Visitas Guiadas",
+    isPrivateActivity:
+      input.isPrivateActivity ?? input.category === "private",
+    paxPerPrice: input.paxPerPrice ?? 0,
+    youtubeUrl: input.youtubeUrl || "",
+    mapUrl: input.mapUrl || "",
+    schedule: input.schedule || defaultSchedule,
+    blockedDates: input.blockedDates || [],
+    seo: input.seo || { title: "", description: "", keywords: "" },
+    translations: input.translations || { en: {}, de: {} },
   };
   tours.push(tour);
   await saveTours(tours);

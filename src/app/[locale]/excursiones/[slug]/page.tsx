@@ -12,7 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { BookingWidget } from "@/components/BookingWidget";
-import { getTourBySlug, getTours } from "@/lib/content";
+import { getTourBySlug, getPublicTours } from "@/lib/content";
 import { formatPrice, groupSizeLabel } from "@/lib/format";
 import { localizeTour, localizeTours } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -42,7 +42,7 @@ export default async function TourDetailPage({ params }: Props) {
 
   const [tour, tours] = await Promise.all([
     localizeTour(base, locale),
-    localizeTours(await getTours(), locale),
+    localizeTours(await getPublicTours(), locale),
   ]);
 
   const sibling =
