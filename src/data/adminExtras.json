@@ -9,7 +9,9 @@
       "status": "pending",
       "customerName": "María López",
       "customerEmail": "maria@example.com",
-      "notes": "Enlace enviado por WhatsApp"
+      "customerLocale": "es",
+      "notes": "Enlace enviado por WhatsApp",
+      "paymentHash": "aa52564fd2d3e9bfa26d9250b82a3113fac128a8"
     },
     {
       "id": "pay-002",
@@ -20,7 +22,12 @@
       "status": "paid",
       "customerName": "John Smith",
       "customerEmail": "john@example.com",
-      "notes": ""
+      "customerLocale": "en",
+      "notes": "",
+      "paidAt": "2026-08-08T16:14:40.000Z",
+      "paymentMethod": "Stripe",
+      "paymentKey": "tok_demo_pay002",
+      "paymentHash": "bb62564fd2d3e9bfa26d9250b82a3113fac128b9"
     }
   ],
   "collaborators": [

@@ -74,7 +74,14 @@ export async function upsertPaymentLink(
     status: input.status || "pending",
     customerName: input.customerName || "",
     customerEmail: input.customerEmail || "",
+    customerLocale: input.customerLocale || "es",
     notes: input.notes || "",
+    paidAt: input.paidAt,
+    paymentMethod: input.paymentMethod,
+    paymentKey: input.paymentKey,
+    paymentHash:
+      input.paymentHash ||
+      `${uid("h")}${Math.random().toString(16).slice(2, 10)}`,
   };
   data.paymentLinks.unshift(created);
   await writeData(data);

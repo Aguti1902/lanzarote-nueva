@@ -110,7 +110,12 @@ export interface PaymentLink {
   status: "pending" | "paid" | "cancelled";
   customerName?: string;
   customerEmail?: string;
+  customerLocale?: "es" | "en" | "de";
   notes?: string;
+  paidAt?: string;
+  paymentMethod?: string;
+  paymentKey?: string;
+  paymentHash?: string;
 }
 
 export interface Collaborator {
