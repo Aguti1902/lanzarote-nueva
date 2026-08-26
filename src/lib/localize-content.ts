@@ -6,8 +6,8 @@ import type {
   Tour,
   TransfersData,
 } from "@/types";
-import { promises as fs } from "fs";
-import path from "path";
+import { isSupabaseConfigured } from "@/lib/supabase/client";
+import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
 
 type TranslatedLocale = Exclude<Locale, "es">;
 
@@ -59,24 +59,37 @@ interface ContentTranslations {
   };
 }
 
-const translationsDir = path.join(process.cwd(), "src/data/i18n");
 const translationCache = new Map<
   TranslatedLocale,
   Promise<ContentTranslations>
 >();
 
+export function clearContentTranslationCache() {
+  translationCache.clear();
+}
+
 function loadTranslations(
   locale: TranslatedLocale
 ): Promise<ContentTranslations> {
-  const cached = translationCache.get(locale);
-  if (cached) return cached;
+  if (!isSupabaseConfigured()) {
+    const cached = translationCache.get(locale);
+    if (cached) return cached;
+  }
 
-  const pending = fs
-    .readFile(path.join(translationsDir, `${locale}.json`), "utf-8")
-    .then((raw) => JSON.parse(raw) as ContentTranslations);
+  const pending = readCmsJson<ContentTranslations>(`i18n/${locale}.json`);
 
-  translationCache.set(locale, pending);
+  if (!isSupabaseConfigured()) {
+    translationCache.set(locale, pending);
+  }
   return pending;
+}
+
+export async function saveContentTranslations(
+  locale: TranslatedLocale,
+  data: ContentTranslations
+): Promise<void> {
+  await writeCmsJson(`i18n/${locale}.json`, data);
+  clearContentTranslationCache();
 }
 
 /** True if the translation object has at least one non-empty field. */

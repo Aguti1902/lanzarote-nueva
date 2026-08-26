@@ -1,10 +1,7 @@
-import { promises as fs } from "fs";
-import path from "path";
 import type { Booking, BookingStatus, CashStatus } from "@/types";
 import { buildBookingId } from "@/lib/booking-ids";
 import { splitPaymentAmounts } from "@/lib/payments";
-
-const dataPath = path.join(process.cwd(), "src/data/bookings.json");
+import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
 
 function normalizeBooking(b: Booking): Booking {
   const total = b.amountTotal ?? b.totalPrice ?? 0;
@@ -21,13 +18,12 @@ function normalizeBooking(b: Booking): Booking {
 }
 
 export async function getBookings(): Promise<Booking[]> {
-  const raw = await fs.readFile(dataPath, "utf-8");
-  const list = JSON.parse(raw) as Booking[];
+  const list = await readCmsJson<Booking[]>("bookings.json");
   return list.map(normalizeBooking);
 }
 
 export async function saveBookings(bookings: Booking[]): Promise<void> {
-  await fs.writeFile(dataPath, JSON.stringify(bookings, null, 2), "utf-8");
+  await writeCmsJson("bookings.json", bookings);
 }
 
 export async function addBooking(

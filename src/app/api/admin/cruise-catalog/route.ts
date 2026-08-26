@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
 import {
-  clearCruiseItinerariesCache,
   getCruiseCompanies,
   getCruiseItinerariesData,
   getCruiseShoreTours,
+  saveCruiseItinerariesData,
 } from "@/lib/cruise-itineraries";
-import { promises as fs } from "fs";
-import path from "path";
 import type {
   CruiseCompany,
   CruiseCompanyShip,
@@ -18,12 +16,8 @@ import type {
 
 export const dynamic = "force-dynamic";
 
-const dataPath = path.join(process.cwd(), "src/data/cruiseItineraries.json");
-
 async function save(data: CruiseItinerariesData) {
-  data.updatedAt = new Date().toISOString().slice(0, 10);
-  await fs.writeFile(dataPath, JSON.stringify(data, null, 2) + "\n", "utf-8");
-  clearCruiseItinerariesCache();
+  await saveCruiseItinerariesData(data);
 }
 
 function slugify(value: string): string {

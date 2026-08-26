@@ -1,0 +1,127 @@
+import { promises as fs } from "fs";
+import path from "path";
+import {
+  getSupabaseAdmin,
+  isSupabaseConfigured,
+  warnSupabaseFallback,
+} from "@/lib/supabase/client";
+
+const dataDir = path.join(process.cwd(), "src/data");
+const CMS_BUCKET = "cms";
+
+let bucketReady: Promise<void> | null = null;
+
+async function ensureCmsBucket(): Promise<void> {
+  if (!bucketReady) {
+    bucketReady = (async () => {
+      const sb = getSupabaseAdmin();
+      const { data: buckets } = await sb.storage.listBuckets();
+      if (buckets?.some((b) => b.name === CMS_BUCKET)) return;
+      const { error } = await sb.storage.createBucket(CMS_BUCKET, {
+        public: false,
+        fileSizeLimit: 50 * 1024 * 1024,
+      });
+      if (error && !/already exists|duplicate/i.test(error.message)) {
+        bucketReady = null;
+        throw error;
+      }
+    })();
+  }
+  await bucketReady;
+}
+
+async function readLocalJson<T>(file: string): Promise<T> {
+  const raw = await fs.readFile(path.join(dataDir, file), "utf-8");
+  return JSON.parse(raw) as T;
+}
+
+async function writeLocalJson(file: string, data: unknown): Promise<void> {
+  const full = path.join(dataDir, file);
+  await fs.mkdir(path.dirname(full), { recursive: true });
+  await fs.writeFile(full, JSON.stringify(data, null, 2) + "\n", "utf-8");
+}
+
+/**
+ * Read CMS JSON: Supabase Storage (`cms` bucket) first, then local `src/data`.
+ * Keeps build/runtime working without Supabase or when Storage is empty.
+ */
+export async function readCmsJson<T>(file: string): Promise<T> {
+  if (!isSupabaseConfigured()) {
+    return readLocalJson<T>(file);
+  }
+
+  try {
+    await ensureCmsBucket();
+    const sb = getSupabaseAdmin();
+    // Signed URL + no-store avoids CDN/edge stale reads from Storage download().
+    const { data: signed, error: signError } = await sb.storage
+      .from(CMS_BUCKET)
+      .createSignedUrl(file, 60);
+    if (signError || !signed?.signedUrl) {
+      warnSupabaseFallback(`cms-read:${file}`, signError);
+      return readLocalJson<T>(file);
+    }
+    const res = await fetch(signed.signedUrl, { cache: "no-store" });
+    if (!res.ok) {
+      warnSupabaseFallback(
+        `cms-read:${file}`,
+        `HTTP ${res.status} ${res.statusText}`
+      );
+      return readLocalJson<T>(file);
+    }
+    const text = await res.text();
+    return JSON.parse(text) as T;
+  } catch (error) {
+    warnSupabaseFallback(`cms-read:${file}`, error as Error);
+    return readLocalJson<T>(file);
+  }
+}
+
+/**
+ * Write CMS JSON to Supabase Storage and mirror to local disk when possible.
+ * On Vercel, local write may be ephemeral; Storage is the durable source.
+ */
+export async function writeCmsJson(file: string, data: unknown): Promise<void> {
+  if (!isSupabaseConfigured()) {
+    await writeLocalJson(file, data);
+    return;
+  }
+
+  try {
+    await ensureCmsBucket();
+    const sb = getSupabaseAdmin();
+    const payload = Buffer.from(JSON.stringify(data, null, 2) + "\n", "utf-8");
+    const options = {
+      upsert: true,
+      contentType: "application/json",
+      cacheControl: "0",
+    } as const;
+
+    // Prefer update for existing objects (more reliable than upload upsert alone).
+    const updated = await sb.storage.from(CMS_BUCKET).update(file, payload, options);
+    if (updated.error) {
+      const uploaded = await sb.storage
+        .from(CMS_BUCKET)
+        .upload(file, payload, options);
+      if (uploaded.error) throw uploaded.error;
+    }
+  } catch (error) {
+    warnSupabaseFallback(`cms-write:${file}`, error as Error);
+    try {
+      await writeLocalJson(file, data);
+    } catch {
+      // ignore
+    }
+    throw error instanceof Error
+      ? error
+      : new Error(`No se pudo guardar ${file} en Supabase Storage`);
+  }
+
+  try {
+    await writeLocalJson(file, data);
+  } catch {
+    // Ignore ephemeral filesystem errors in serverless.
+  }
+}
+
+export { CMS_BUCKET };

@@ -1,22 +1,18 @@
-import { promises as fs } from "fs";
-import path from "path";
 import type { Booking, Invoice } from "@/types";
 import { getSettings } from "@/lib/content";
 import { updateBooking } from "@/lib/bookings";
-
-const dataPath = path.join(process.cwd(), "src/data/invoices.json");
+import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
 
 export async function getInvoices(): Promise<Invoice[]> {
   try {
-    const raw = await fs.readFile(dataPath, "utf-8");
-    return JSON.parse(raw) as Invoice[];
+    return await readCmsJson<Invoice[]>("invoices.json");
   } catch {
     return [];
   }
 }
 
 export async function saveInvoices(invoices: Invoice[]): Promise<void> {
-  await fs.writeFile(dataPath, JSON.stringify(invoices, null, 2) + "\n", "utf-8");
+  await writeCmsJson("invoices.json", invoices);
 }
 
 export async function getInvoiceById(id: string): Promise<Invoice | undefined> {

@@ -1,5 +1,3 @@
-import { promises as fs } from "fs";
-import path from "path";
 import type {
   Collaborator,
   CruiseGroup,
@@ -8,8 +6,7 @@ import type {
   PaymentLink,
   SeoRedirect,
 } from "@/types";
-
-const dataPath = path.join(process.cwd(), "src/data/adminExtras.json");
+import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
 
 export type AdminExtrasData = {
   paymentLinks: PaymentLink[];
@@ -31,15 +28,17 @@ const empty: AdminExtrasData = {
 
 async function readData(): Promise<AdminExtrasData> {
   try {
-    const raw = await fs.readFile(dataPath, "utf-8");
-    return { ...empty, ...(JSON.parse(raw) as AdminExtrasData) };
+    const stored = await readCmsJson<Partial<AdminExtrasData>>(
+      "adminExtras.json"
+    );
+    return { ...empty, ...stored };
   } catch {
     return empty;
   }
 }
 
 async function writeData(data: AdminExtrasData): Promise<void> {
-  await fs.writeFile(dataPath, JSON.stringify(data, null, 2) + "\n", "utf-8");
+  await writeCmsJson("adminExtras.json", data);
 }
 
 function uid(prefix: string) {

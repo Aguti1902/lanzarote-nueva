@@ -1,9 +1,6 @@
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
-import { promises as fs } from "fs";
-import path from "path";
-
-const dataPath = path.join(process.cwd(), "src/data/uiTranslations.json");
+import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
 
 export type UiTranslationOverrides = {
   en: Record<string, string>;
@@ -14,8 +11,9 @@ const empty: UiTranslationOverrides = { en: {}, de: {} };
 
 export async function getUiTranslationOverrides(): Promise<UiTranslationOverrides> {
   try {
-    const raw = await fs.readFile(dataPath, "utf-8");
-    const data = JSON.parse(raw) as Partial<UiTranslationOverrides>;
+    const data = await readCmsJson<Partial<UiTranslationOverrides>>(
+      "uiTranslations.json"
+    );
     return {
       en: data.en || {},
       de: data.de || {},
@@ -28,7 +26,7 @@ export async function getUiTranslationOverrides(): Promise<UiTranslationOverride
 export async function saveUiTranslationOverrides(
   data: UiTranslationOverrides
 ): Promise<void> {
-  await fs.writeFile(dataPath, JSON.stringify(data, null, 2) + "\n", "utf-8");
+  await writeCmsJson("uiTranslations.json", data);
 }
 
 export async function updateUiTranslations(

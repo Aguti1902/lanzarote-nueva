@@ -1,5 +1,3 @@
-import { promises as fs } from "fs";
-import path from "path";
 import type {
   BlogPost,
   CruiseCall,
@@ -9,20 +7,14 @@ import type {
   TransferDestination,
   TransfersData,
 } from "@/types";
-
-const dataDir = path.join(process.cwd(), "src/data");
+import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
 
 async function readJson<T>(file: string): Promise<T> {
-  const raw = await fs.readFile(path.join(dataDir, file), "utf-8");
-  return JSON.parse(raw) as T;
+  return readCmsJson<T>(file);
 }
 
 async function writeJson(file: string, data: unknown): Promise<void> {
-  await fs.writeFile(
-    path.join(dataDir, file),
-    JSON.stringify(data, null, 2) + "\n",
-    "utf-8"
-  );
+  await writeCmsJson(file, data);
 }
 
 function slugify(value: string): string {

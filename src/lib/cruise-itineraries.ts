@@ -1,16 +1,11 @@
-import { promises as fs } from "fs";
-import path from "path";
 import type {
   CruiseCompany,
   CruiseItinerariesData,
   CruiseSailing,
   CruiseShoreTour,
 } from "@/types";
-
-const dataPath = path.join(
-  process.cwd(),
-  "src/data/cruiseItineraries.json"
-);
+import { isSupabaseConfigured } from "@/lib/supabase/client";
+import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
 
 let cache: CruiseItinerariesData | null = null;
 
@@ -27,14 +22,25 @@ const emptyData: CruiseItinerariesData = {
 };
 
 export async function getCruiseItinerariesData(): Promise<CruiseItinerariesData> {
-  if (cache) return cache;
+  // Con Supabase no cacheamos entre requests: Storage es la fuente de verdad.
+  if (cache && !isSupabaseConfigured()) return cache;
   try {
-    const raw = await fs.readFile(dataPath, "utf-8");
-    cache = JSON.parse(raw) as CruiseItinerariesData;
-    return cache;
+    const data = await readCmsJson<CruiseItinerariesData>(
+      "cruiseItineraries.json"
+    );
+    if (!isSupabaseConfigured()) cache = data;
+    return data;
   } catch {
     return emptyData;
   }
+}
+
+export async function saveCruiseItinerariesData(
+  data: CruiseItinerariesData
+): Promise<void> {
+  data.updatedAt = new Date().toISOString().slice(0, 10);
+  await writeCmsJson("cruiseItineraries.json", data);
+  clearCruiseItinerariesCache();
 }
 
 export async function getCruiseCompanies(): Promise<CruiseCompany[]> {
