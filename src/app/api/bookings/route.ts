@@ -72,11 +72,21 @@ export async function POST(request: Request) {
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
-    const { id, status, collectCash, cancellationReason } = body as {
+    const { id, status, collectCash, cancellationReason, customer } = body as {
       id: string;
       status?: BookingStatus;
       collectCash?: boolean;
       cancellationReason?: string;
+      customer?: Partial<{
+        name: string;
+        email: string;
+        phone: string;
+        hotel: string;
+        cruiseShip: string;
+        flightNumber: string;
+        notes: string;
+        taxId: string;
+      }>;
     };
     if (!id) {
       return NextResponse.json({ error: "Datos inválidos" }, { status: 400 });
@@ -84,6 +94,37 @@ export async function PATCH(request: Request) {
 
     if (collectCash) {
       const booking = await markCashCollected(id);
+      if (!booking) {
+        return NextResponse.json({ error: "No encontrada" }, { status: 404 });
+      }
+      return NextResponse.json({ booking });
+    }
+
+    if (customer && typeof customer === "object") {
+      const existing = (await getBookings()).find((b) => b.id === id);
+      if (!existing) {
+        return NextResponse.json({ error: "No encontrada" }, { status: 404 });
+      }
+      const name =
+        customer.name != null ? String(customer.name).trim() : existing.customer.name;
+      if (!name) {
+        return NextResponse.json(
+          { error: "El nombre no puede estar vacío" },
+          { status: 400 }
+        );
+      }
+      const booking = await updateBooking(id, {
+        customer: {
+          ...existing.customer,
+          ...Object.fromEntries(
+            Object.entries(customer).map(([key, value]) => [
+              key,
+              value == null ? "" : String(value).trim(),
+            ])
+          ),
+          name,
+        },
+      });
       if (!booking) {
         return NextResponse.json({ error: "No encontrada" }, { status: 404 });
       }

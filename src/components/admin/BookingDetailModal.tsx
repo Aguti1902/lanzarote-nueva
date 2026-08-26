@@ -17,6 +17,8 @@ import {
 import { CancelBookingPanel } from "@/components/admin/CancelBookingPanel";
 import { BookingStatusBadge } from "@/components/admin/BookingStatusBadge";
 
+type CustomerPatch = Partial<Booking["customer"]>;
+
 function money(n: number) {
   return new Intl.NumberFormat("es-ES", {
     style: "currency",
@@ -55,6 +57,14 @@ function voucherHtml(b: Booking) {
   });
 }
 
+function isCruiseBooking(b: Booking) {
+  return (
+    b.id.startsWith("CR-") ||
+    Boolean(b.customer.cruiseShip?.trim()) ||
+    /crucero|escala|ship/i.test(b.customer.notes || "")
+  );
+}
+
 export function BookingDetailModal({
   booking,
   onClose,
@@ -63,6 +73,7 @@ export function BookingDetailModal({
   onIssueInvoice,
   onConfirm,
   onComplete,
+  onSaveCustomer,
   initialView = "details",
 }: {
   booking: Booking;
@@ -72,21 +83,44 @@ export function BookingDetailModal({
   onIssueInvoice?: (id: string) => void;
   onConfirm?: (id: string) => void;
   onComplete?: (id: string) => void;
+  onSaveCustomer?: (id: string, customer: CustomerPatch) => void | Promise<void>;
   initialView?: "details" | "cancel";
 }) {
   const [view, setView] = useState<"details" | "cancel">(
     booking.status === "cancelled" ? "details" : initialView
   );
   const [submitting, setSubmitting] = useState(false);
+  const [editingCustomer, setEditingCustomer] = useState(false);
+  const [savingCustomer, setSavingCustomer] = useState(false);
+  const [customerForm, setCustomerForm] = useState({
+    name: booking.customer.name || "",
+    email: booking.customer.email || "",
+    phone: booking.customer.phone || "",
+    cruiseShip: booking.customer.cruiseShip || "",
+    hotel: booking.customer.hotel || "",
+    notes: booking.customer.notes || "",
+  });
+  const [customerError, setCustomerError] = useState("");
 
   useEffect(() => {
     setView(booking.status === "cancelled" ? "details" : initialView);
-  }, [booking.id, booking.status, initialView]);
+    setEditingCustomer(false);
+    setCustomerError("");
+    setCustomerForm({
+      name: booking.customer.name || "",
+      email: booking.customer.email || "",
+      phone: booking.customer.phone || "",
+      cruiseShip: booking.customer.cruiseShip || "",
+      hotel: booking.customer.hotel || "",
+      notes: booking.customer.notes || "",
+    });
+  }, [booking.id, booking.status, booking.customer, initialView]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
         if (view === "cancel") setView("details");
+        else if (editingCustomer) setEditingCustomer(false);
         else onClose();
       }
     }
@@ -97,10 +131,12 @@ export function BookingDetailModal({
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
     };
-  }, [onClose, view]);
+  }, [onClose, view, editingCustomer]);
 
   const people = booking.adults + (booking.children || 0);
   const total = booking.amountTotal ?? booking.totalPrice;
+  const cruise = isCruiseBooking(booking);
+  const canEditCustomer = Boolean(onSaveCustomer);
 
   async function handleCancelConfirm(reason: CancelReasonId) {
     if (!onCancel) return;
@@ -109,6 +145,32 @@ export function BookingDetailModal({
       await onCancel(booking.id, reason);
     } finally {
       setSubmitting(false);
+    }
+  }
+
+  async function handleSaveCustomer() {
+    if (!onSaveCustomer) return;
+    const name = customerForm.name.trim();
+    if (!name) {
+      setCustomerError("Escribe un nombre");
+      return;
+    }
+    setSavingCustomer(true);
+    setCustomerError("");
+    try {
+      await onSaveCustomer(booking.id, {
+        name,
+        email: customerForm.email.trim(),
+        phone: customerForm.phone.trim(),
+        cruiseShip: customerForm.cruiseShip.trim(),
+        hotel: customerForm.hotel.trim(),
+        notes: customerForm.notes.trim(),
+      });
+      setEditingCustomer(false);
+    } catch {
+      setCustomerError("No se pudo guardar el nombre");
+    } finally {
+      setSavingCustomer(false);
     }
   }
 
@@ -144,11 +206,12 @@ export function BookingDetailModal({
                   <>
                     Localizador{" "}
                     <span className="font-bold text-ocean">{booking.id}</span>
-                    {booking.status === "cancelled" && booking.cancellationReason && (
-                      <span className="ml-2 text-rose-700">
-                        · Motivo: {booking.cancellationReason}
-                      </span>
-                    )}
+                    {booking.status === "cancelled" &&
+                      booking.cancellationReason && (
+                        <span className="ml-2 text-rose-700">
+                          · Motivo: {booking.cancellationReason}
+                        </span>
+                      )}
                   </>
                 )}
             </p>
@@ -281,26 +344,175 @@ export function BookingDetailModal({
               </section>
 
               <section>
-                <h3 className="mb-3 border-b border-sand-line pb-2 text-sm font-bold tracking-wide text-ink uppercase">
-                  Detalles del cliente
-                </h3>
-                <dl className="space-y-2 text-sm">
-                  <Row label="Nombre" value={booking.customer.name} strong />
-                  <Row label="Email" value={booking.customer.email} />
-                  <Row
-                    label="Teléfono"
-                    value={booking.customer.phone || "—"}
-                  />
-                  {booking.customer.taxId && (
-                    <Row label="NIF / CIF" value={booking.customer.taxId} />
+                <div className="mb-3 flex items-center justify-between gap-3 border-b border-sand-line pb-2">
+                  <h3 className="text-sm font-bold tracking-wide text-ink uppercase">
+                    Detalles del cliente
+                  </h3>
+                  {canEditCustomer && !editingCustomer && (
+                    <button
+                      type="button"
+                      onClick={() => setEditingCustomer(true)}
+                      className="text-xs font-bold text-ocean hover:underline"
+                    >
+                      {cruise ? "Editar / añadir nombre" : "Editar cliente"}
+                    </button>
                   )}
-                  {booking.customer.cruiseShip && (
+                </div>
+
+                {editingCustomer && canEditCustomer ? (
+                  <div className="space-y-3 text-sm">
+                    <label className="block">
+                      <span className="mb-1 block text-ink-muted">
+                        Nombre{" "}
+                        {cruise && (
+                          <span className="text-ocean">
+                            (visible en el listado)
+                          </span>
+                        )}
+                      </span>
+                      <input
+                        value={customerForm.name}
+                        onChange={(e) =>
+                          setCustomerForm((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
+                        className="w-full rounded border border-sand-line px-3 py-2 font-bold"
+                        placeholder={
+                          cruise
+                            ? "Ej. Familia Rossi / PAGADO, ENVIAR UBICACIÓN"
+                            : "Nombre del cliente"
+                        }
+                        autoFocus
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="mb-1 block text-ink-muted">Email</span>
+                      <input
+                        type="email"
+                        value={customerForm.email}
+                        onChange={(e) =>
+                          setCustomerForm((prev) => ({
+                            ...prev,
+                            email: e.target.value,
+                          }))
+                        }
+                        className="w-full rounded border border-sand-line px-3 py-2"
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="mb-1 block text-ink-muted">Teléfono</span>
+                      <input
+                        value={customerForm.phone}
+                        onChange={(e) =>
+                          setCustomerForm((prev) => ({
+                            ...prev,
+                            phone: e.target.value,
+                          }))
+                        }
+                        className="w-full rounded border border-sand-line px-3 py-2"
+                      />
+                    </label>
+                    {(cruise || customerForm.cruiseShip) && (
+                      <label className="block">
+                        <span className="mb-1 block text-ink-muted">
+                          Crucero / barco
+                        </span>
+                        <input
+                          value={customerForm.cruiseShip}
+                          onChange={(e) =>
+                            setCustomerForm((prev) => ({
+                              ...prev,
+                              cruiseShip: e.target.value,
+                            }))
+                          }
+                          className="w-full rounded border border-sand-line px-3 py-2"
+                        />
+                      </label>
+                    )}
+                    <label className="block">
+                      <span className="mb-1 block text-ink-muted">Hotel</span>
+                      <input
+                        value={customerForm.hotel}
+                        onChange={(e) =>
+                          setCustomerForm((prev) => ({
+                            ...prev,
+                            hotel: e.target.value,
+                          }))
+                        }
+                        className="w-full rounded border border-sand-line px-3 py-2"
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="mb-1 block text-ink-muted">
+                        Comentarios / notas
+                      </span>
+                      <textarea
+                        value={customerForm.notes}
+                        onChange={(e) =>
+                          setCustomerForm((prev) => ({
+                            ...prev,
+                            notes: e.target.value,
+                          }))
+                        }
+                        rows={3}
+                        className="w-full rounded border border-sand-line px-3 py-2"
+                      />
+                    </label>
+                    {customerError && (
+                      <p className="text-sm font-medium text-red-600">
+                        {customerError}
+                      </p>
+                    )}
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={handleSaveCustomer}
+                        disabled={savingCustomer}
+                        className="rounded bg-ocean px-4 py-2 text-sm font-bold text-white disabled:opacity-60"
+                      >
+                        {savingCustomer ? "Guardando…" : "Guardar nombre"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditingCustomer(false);
+                          setCustomerError("");
+                          setCustomerForm({
+                            name: booking.customer.name || "",
+                            email: booking.customer.email || "",
+                            phone: booking.customer.phone || "",
+                            cruiseShip: booking.customer.cruiseShip || "",
+                            hotel: booking.customer.hotel || "",
+                            notes: booking.customer.notes || "",
+                          });
+                        }}
+                        className="rounded border border-sand-line px-4 py-2 text-sm font-bold"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <dl className="space-y-2 text-sm">
+                    <Row label="Nombre" value={booking.customer.name} strong />
+                    <Row label="Email" value={booking.customer.email} />
                     <Row
-                      label="Crucero / barco"
-                      value={booking.customer.cruiseShip}
+                      label="Teléfono"
+                      value={booking.customer.phone || "—"}
                     />
-                  )}
-                </dl>
+                    {booking.customer.taxId && (
+                      <Row label="NIF / CIF" value={booking.customer.taxId} />
+                    )}
+                    {booking.customer.cruiseShip && (
+                      <Row
+                        label="Crucero / barco"
+                        value={booking.customer.cruiseShip}
+                      />
+                    )}
+                  </dl>
+                )}
               </section>
             </div>
 

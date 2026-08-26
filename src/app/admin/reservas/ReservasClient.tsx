@@ -119,6 +119,22 @@ export default function AdminReservasPage() {
     await load();
   }
 
+  async function saveCustomer(
+    id: string,
+    customer: Partial<Booking["customer"]>
+  ) {
+    const res = await fetch("/api/bookings", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, customer }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.error || "Error al guardar");
+    }
+    await load();
+  }
+
   const tabCounts = useMemo(() => {
     const counts: Record<ReservasTab, number> = {
       current: 0,
@@ -425,6 +441,7 @@ export default function AdminReservasPage() {
           onComplete={async (id) => {
             await setStatus(id, "completed");
           }}
+          onSaveCustomer={saveCustomer}
         />
       )}
     </div>
