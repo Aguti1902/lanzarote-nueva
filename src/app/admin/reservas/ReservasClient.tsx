@@ -1,0 +1,432 @@
+"use client";
+
+import Link from "next/link";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import type { Booking, BookingStatus } from "@/types";
+import { formatDate, formatPrice, paymentLabel } from "@/lib/format";
+import {
+  DateRangeFilter,
+  emptyDateRange,
+  inDateRange,
+  type DateRange,
+} from "@/components/admin/DateRangeFilter";
+import { BookingDetailModal } from "@/components/admin/BookingDetailModal";
+import {
+  BookingStatusBadge,
+  bookingRowClassName,
+} from "@/components/admin/BookingStatusBadge";
+
+type ReservasTab = "current" | "done" | "incomplete" | "cancelled";
+
+const TABS: { id: ReservasTab; label: string }[] = [
+  { id: "current", label: "Reservas actuales" },
+  { id: "done", label: "Realizadas" },
+  { id: "incomplete", label: "Reservas sin completar" },
+  { id: "cancelled", label: "Reservas Canceladas" },
+];
+
+function parseTab(value: string | null): ReservasTab {
+  if (
+    value === "done" ||
+    value === "incomplete" ||
+    value === "cancelled" ||
+    value === "current"
+  ) {
+    return value;
+  }
+  return "current";
+}
+
+function matchesTab(booking: Booking, tab: ReservasTab): boolean {
+  switch (tab) {
+    case "current":
+      return booking.status === "confirmed";
+    case "done":
+      return booking.status === "completed";
+    case "incomplete":
+      return booking.status === "pending";
+    case "cancelled":
+      return booking.status === "cancelled";
+  }
+}
+
+function tabTitle(tab: ReservasTab): string {
+  return TABS.find((t) => t.id === tab)?.label || "Reservas";
+}
+
+export default function AdminReservasPage() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const tab = parseTab(searchParams.get("tab"));
+
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [dateField, setDateField] = useState<"service" | "created">("service");
+  const [range, setRange] = useState<DateRange>(emptyDateRange);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [modalView, setModalView] = useState<"details" | "cancel">("details");
+  const [loading, setLoading] = useState(true);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    const res = await fetch("/api/bookings");
+    const data = await res.json();
+    setBookings(data.bookings || []);
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  function setTab(next: ReservasTab) {
+    const params = new URLSearchParams(searchParams.toString());
+    if (next === "current") params.delete("tab");
+    else params.set("tab", next);
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  }
+
+  async function setStatus(
+    id: string,
+    status: BookingStatus,
+    cancellationReason?: string
+  ) {
+    await fetch("/api/bookings", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, status, cancellationReason }),
+    });
+    await load();
+  }
+
+  async function collectCash(id: string) {
+    await fetch("/api/bookings", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, collectCash: true }),
+    });
+    await load();
+  }
+
+  async function issueInvoice(bookingId: string) {
+    await fetch("/api/invoices", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ bookingId }),
+    });
+    await load();
+  }
+
+  const tabCounts = useMemo(() => {
+    const counts: Record<ReservasTab, number> = {
+      current: 0,
+      done: 0,
+      incomplete: 0,
+      cancelled: 0,
+    };
+    for (const b of bookings) {
+      if (matchesTab(b, "current")) counts.current += 1;
+      if (matchesTab(b, "done")) counts.done += 1;
+      if (matchesTab(b, "incomplete")) counts.incomplete += 1;
+      if (matchesTab(b, "cancelled")) counts.cancelled += 1;
+    }
+    return counts;
+  }, [bookings]);
+
+  const filtered = useMemo(() => {
+    return bookings.filter((b) => {
+      if (!matchesTab(b, tab)) return false;
+      const dateValue = dateField === "service" ? b.date : b.createdAt;
+      return inDateRange(dateValue, range);
+    });
+  }, [bookings, tab, dateField, range]);
+
+  const selected = useMemo(
+    () => bookings.find((b) => b.id === selectedId) || null,
+    [bookings, selectedId]
+  );
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-wide text-ink uppercase">
+            Reservas
+          </h1>
+          <p className="mt-1 text-sm text-ink-muted">
+            Pulse el localizador para ver todos los detalles
+          </p>
+        </div>
+        <select
+          value={dateField}
+          onChange={(e) =>
+            setDateField(e.target.value as "service" | "created")
+          }
+          className="rounded border border-sand-line bg-white px-3 py-2 text-sm"
+        >
+          <option value="service">Filtrar por fecha servicio</option>
+          <option value="created">Filtrar por fecha reserva</option>
+        </select>
+      </div>
+
+      <nav
+        className="flex flex-wrap gap-1 border-b border-sand-line"
+        aria-label="Filtros de reservas"
+      >
+        {TABS.map((item) => {
+          const active = tab === item.id;
+          const cancelledStyle = item.id === "cancelled";
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setTab(item.id)}
+              className={`-mb-px border-b-2 px-4 py-3 text-sm font-bold transition-colors ${
+                active
+                  ? cancelledStyle
+                    ? "border-rose-600 text-rose-700"
+                    : "border-ocean text-ocean"
+                  : "border-transparent text-ink-muted hover:text-ink"
+              }`}
+            >
+              {item.label}
+              <span
+                className={`ml-2 rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+                  active
+                    ? cancelledStyle
+                      ? "bg-rose-100 text-rose-800"
+                      : "bg-sky-soft text-ocean"
+                    : "bg-sand text-ink-muted"
+                }`}
+              >
+                {tabCounts[item.id]}
+              </span>
+            </button>
+          );
+        })}
+      </nav>
+
+      <h2 className="text-xl font-bold text-ink">{tabTitle(tab)}</h2>
+
+      <DateRangeFilter
+        value={range}
+        onChange={setRange}
+        label="Calendario de clientes"
+        hint={
+          dateField === "service"
+            ? "Rango según día del servicio"
+            : "Rango según día en que reservaron"
+        }
+        resultCount={filtered.length}
+      />
+
+      <div className="overflow-x-auto rounded-lg bg-white shadow-sm ring-1 ring-sand-line">
+        <table className="w-full min-w-[1000px] text-left text-sm">
+          <thead className="border-b border-sand-line bg-sky-soft text-ink-muted">
+            <tr>
+              <th className="px-4 py-3 font-medium">ID</th>
+              <th className="px-4 py-3 font-medium">Fecha</th>
+              <th className="px-4 py-3 font-medium">Servicio / Cliente</th>
+              <th className="px-4 py-3 font-medium">Pago</th>
+              <th className="px-4 py-3 font-medium">Importes</th>
+              <th className="px-4 py-3 font-medium">Estado</th>
+              <th className="px-4 py-3 font-medium">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loading && (
+              <tr>
+                <td colSpan={7} className="px-4 py-8 text-center text-ink-muted">
+                  Cargando…
+                </td>
+              </tr>
+            )}
+            {!loading && filtered.length === 0 && (
+              <tr>
+                <td colSpan={7} className="px-4 py-8 text-center text-ink-muted">
+                  No hay reservas en esta vista
+                </td>
+              </tr>
+            )}
+            {!loading &&
+              filtered.map((b) => (
+                <tr
+                  key={b.id}
+                  className={`border-b border-sand-line/70 align-top ${bookingRowClassName(b.status)}`}
+                >
+                  <td className="px-4 py-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setModalView("details");
+                        setSelectedId(b.id);
+                      }}
+                      className="font-bold text-ocean hover:underline"
+                    >
+                      {b.id}
+                    </button>
+                    {b.status === "cancelled" && (
+                      <div className="mt-1.5">
+                        <BookingStatusBadge status="cancelled" size="sm" />
+                      </div>
+                    )}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    {formatDate(b.date)}
+                  </td>
+                  <td className="px-4 py-3 max-w-[260px]">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setModalView("details");
+                        setSelectedId(b.id);
+                      }}
+                      className="text-left"
+                    >
+                      <p
+                        className={`font-medium hover:text-ocean ${
+                          b.status === "cancelled"
+                            ? "text-rose-800 line-through decoration-rose-300"
+                            : ""
+                        }`}
+                      >
+                        {b.tourTitle}
+                      </p>
+                      <p className="text-xs text-ink-muted">{b.customer.name}</p>
+                      <p className="text-xs text-ink-muted">{b.customer.email}</p>
+                    </button>
+                  </td>
+                  <td className="px-4 py-3">
+                    <p>{paymentLabel(b.paymentMethod)}</p>
+                    <p className="text-xs text-ink-muted">{b.paymentStatus}</p>
+                    {b.invoiceId && (
+                      <Link
+                        href={`/admin/facturas?id=${b.invoiceId}`}
+                        className="text-xs font-bold text-ocean hover:underline"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {b.invoiceId}
+                      </Link>
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-xs whitespace-nowrap">
+                    <p>
+                      Total: <b>{formatPrice(b.amountTotal ?? b.totalPrice)}</b>
+                    </p>
+                    <p className="text-success">
+                      Tarjeta: {formatPrice(b.amountPaidCard ?? 0)}
+                    </p>
+                    {(b.amountDueCash ?? 0) > 0 && (
+                      <p className="font-bold text-ocean">
+                        Efectivo: {formatPrice(b.amountDueCash)}
+                      </p>
+                    )}
+                    {(b.amountPaidCash ?? 0) > 0 && (
+                      <p>Cobrado ef.: {formatPrice(b.amountPaidCash)}</p>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    <BookingStatusBadge status={b.status} />
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex flex-col gap-1">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setModalView("details");
+                          setSelectedId(b.id);
+                        }}
+                        className="text-left text-xs font-bold text-ocean hover:underline"
+                      >
+                        Detalles
+                      </button>
+                      {(b.amountDueCash ?? 0) > 0 &&
+                        b.cashStatus === "pending" &&
+                        b.status !== "cancelled" && (
+                          <button
+                            type="button"
+                            onClick={() => collectCash(b.id)}
+                            className="text-left text-xs font-bold text-success hover:underline"
+                          >
+                            Cobrar efectivo
+                          </button>
+                        )}
+                      {!b.invoiceId && b.status !== "cancelled" && (
+                        <button
+                          type="button"
+                          onClick={() => issueInvoice(b.id)}
+                          className="text-left text-xs font-medium text-ocean hover:underline"
+                        >
+                          Emitir factura
+                        </button>
+                      )}
+                      {b.status !== "confirmed" && b.status !== "cancelled" && (
+                        <button
+                          type="button"
+                          onClick={() => setStatus(b.id, "confirmed")}
+                          className="text-left text-xs font-medium text-ocean hover:underline"
+                        >
+                          Confirmar
+                        </button>
+                      )}
+                      {b.status !== "completed" && b.status !== "cancelled" && (
+                        <button
+                          type="button"
+                          onClick={() => setStatus(b.id, "completed")}
+                          className="text-left text-xs font-medium text-success hover:underline"
+                        >
+                          Completar
+                        </button>
+                      )}
+                      {b.status !== "cancelled" && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setModalView("cancel");
+                            setSelectedId(b.id);
+                          }}
+                          className="text-left text-xs font-medium text-red-600 hover:underline"
+                        >
+                          Cancelar
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+
+      {selected && (
+        <BookingDetailModal
+          booking={selected}
+          initialView={modalView}
+          onClose={() => {
+            setSelectedId(null);
+            setModalView("details");
+          }}
+          onCancel={async (id, reason) => {
+            await setStatus(id, "cancelled", reason);
+            setSelectedId(null);
+            setModalView("details");
+          }}
+          onCollectCash={async (id) => {
+            await collectCash(id);
+          }}
+          onIssueInvoice={async (id) => {
+            await issueInvoice(id);
+          }}
+          onConfirm={async (id) => {
+            await setStatus(id, "confirmed");
+          }}
+          onComplete={async (id) => {
+            await setStatus(id, "completed");
+          }}
+        />
+      )}
+    </div>
+  );
+}
