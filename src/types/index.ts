@@ -153,7 +153,11 @@ export interface CruiseGroup {
   excursionTitle: string;
   complete: boolean;
   minPax: number;
+  maxPax?: number;
   pax: number;
+  pricePerPerson?: number;
+  departureDate?: string;
+  sailingId?: string;
   notes?: string;
 }
 
@@ -280,6 +284,8 @@ export interface Booking {
   cancellationReason?: string;
   cancelledAt?: string;
   cancellationFee?: number;
+  /** Optional link to a cruise group (admin / grupos cruceros). */
+  groupId?: string;
   customer: {
     name: string;
     email: string;

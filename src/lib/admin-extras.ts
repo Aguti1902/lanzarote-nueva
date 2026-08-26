@@ -245,7 +245,12 @@ export async function upsertCruiseGroup(
     excursionTitle: input.excursionTitle,
     complete: input.complete ?? false,
     minPax: Number(input.minPax) || 0,
+    maxPax: input.maxPax != null ? Number(input.maxPax) : undefined,
     pax: Number(input.pax) || 0,
+    pricePerPerson:
+      input.pricePerPerson != null ? Number(input.pricePerPerson) : undefined,
+    departureDate: input.departureDate || undefined,
+    sailingId: input.sailingId || undefined,
     notes: input.notes || "",
   };
   data.cruiseGroups.unshift(created);

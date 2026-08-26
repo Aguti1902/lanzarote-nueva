@@ -1,5 +1,34 @@
 [
   {
+    "id": "CR-1015",
+    "createdAt": "2026-08-23T10:00:00.000Z",
+    "type": "tour",
+    "tourId": "tour-timanfaya",
+    "tourTitle": "Excursión Sur de Lanzarote, Parque Nacional de Timanfaya",
+    "date": "2026-10-15",
+    "adults": 6,
+    "children": 2,
+    "totalPrice": 960,
+    "paymentMethod": "card",
+    "status": "confirmed",
+    "groupId": "grp-001",
+    "customer": {
+      "name": "Robert Walters",
+      "email": "robert.walters.demo@email.com",
+      "phone": "+44 7700 900123",
+      "hotel": "",
+      "cruiseShip": "Crystal Serenity",
+      "notes": "PAGADO, ENVIAR UBICACION X WHATSAPP"
+    },
+    "amountTotal": 960,
+    "amountPaidCard": 960,
+    "amountDueCash": 0,
+    "amountPaidCash": 0,
+    "paymentStatus": "paid",
+    "cashStatus": "none",
+    "invoiceId": "FAC-2026-0030"
+  },
+  {
     "id": "BK-1005",
     "createdAt": "2026-08-09T09:00:00.000Z",
     "type": "tour",
