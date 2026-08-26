@@ -227,6 +227,7 @@ export async function createTransfer(
     slug,
     priceOneWay: input.priceOneWay ?? 0,
     priceReturn: input.priceReturn ?? 0,
+    priceExtraPerson: input.priceExtraPerson ?? 10,
     duration: input.duration || "30 min",
     distance: input.distance || "",
   };

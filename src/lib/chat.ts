@@ -46,7 +46,7 @@ async function buildKnowledge(): Promise<string> {
   const transferLines = transfers.destinations
     .map(
       (d) =>
-        `- Aeropuerto ↔ ${d.name}: ida ${formatPrice(d.priceOneWay)}, ida y vuelta ${formatPrice(d.priceReturn)} (${d.duration})`
+        `- Aeropuerto ↔ ${d.name}: ida ${formatPrice(d.priceOneWay)}, ida y vuelta ${formatPrice(d.priceReturn)}, persona extra ${formatPrice(d.priceExtraPerson ?? 10)} (${d.duration})`
     )
     .join("\n");
 

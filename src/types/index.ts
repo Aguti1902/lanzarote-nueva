@@ -94,6 +94,8 @@ export interface TransferDestination {
   slug: string;
   priceOneWay: number;
   priceReturn: number;
+  /** Precio adicional por persona extra (más allá del cupo del vehículo) */
+  priceExtraPerson: number;
   duration: string;
   distance: string;
 }

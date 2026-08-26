@@ -18,6 +18,7 @@ const emptyDest = (): TransferDestination => ({
   slug: "",
   priceOneWay: 0,
   priceReturn: 0,
+  priceExtraPerson: 10,
   duration: "30 min",
   distance: "",
 });
@@ -55,7 +56,10 @@ export default function AdminTrasladosPage() {
   function startEdit(d: TransferDestination) {
     setEditing(d);
     setCreating(false);
-    setForm({ ...d });
+    setForm({
+      ...d,
+      priceExtraPerson: d.priceExtraPerson ?? 10,
+    });
   }
 
   async function saveDestination(e: React.FormEvent) {
@@ -131,17 +135,53 @@ export default function AdminTrasladosPage() {
       {(creating || editing) && (
         <form
           onSubmit={saveDestination}
-          className="grid gap-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line md:grid-cols-2"
+          className="grid gap-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line md:grid-cols-2 lg:grid-cols-4"
         >
-          <h2 className="font-display text-xl md:col-span-2">
+          <h2 className="font-display text-xl md:col-span-2 lg:col-span-4">
             {creating ? "Nuevo destino" : `Editar: ${editing?.name}`}
           </h2>
-          <Field label="Nombre *">
+          <Field label="Destino *">
             <input
               className={adminInput}
               required
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
+            />
+          </Field>
+          <Field label="Precio (ida) (€)">
+            <input
+              type="number"
+              step="0.01"
+              className={adminInput}
+              value={form.priceOneWay}
+              onChange={(e) =>
+                setForm({ ...form, priceOneWay: Number(e.target.value) })
+              }
+            />
+          </Field>
+          <Field label="Precio (ida / vuelta) (€)">
+            <input
+              type="number"
+              step="0.01"
+              className={adminInput}
+              value={form.priceReturn}
+              onChange={(e) =>
+                setForm({ ...form, priceReturn: Number(e.target.value) })
+              }
+            />
+          </Field>
+          <Field label="Precio por persona extra (€)">
+            <input
+              type="number"
+              step="0.01"
+              className={adminInput}
+              value={form.priceExtraPerson ?? 10}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  priceExtraPerson: Number(e.target.value),
+                })
+              }
             />
           </Field>
           <Field label="Duración">
@@ -151,27 +191,7 @@ export default function AdminTrasladosPage() {
               onChange={(e) => setForm({ ...form, duration: e.target.value })}
             />
           </Field>
-          <Field label="Precio ida (€)">
-            <input
-              type="number"
-              className={adminInput}
-              value={form.priceOneWay}
-              onChange={(e) =>
-                setForm({ ...form, priceOneWay: Number(e.target.value) })
-              }
-            />
-          </Field>
-          <Field label="Precio ida y vuelta (€)">
-            <input
-              type="number"
-              className={adminInput}
-              value={form.priceReturn}
-              onChange={(e) =>
-                setForm({ ...form, priceReturn: Number(e.target.value) })
-              }
-            />
-          </Field>
-          <Field label="Distancia" className="md:col-span-2">
+          <Field label="Distancia" className="md:col-span-2 lg:col-span-3">
             <input
               className={adminInput}
               value={form.distance}
@@ -179,12 +199,12 @@ export default function AdminTrasladosPage() {
               placeholder="≈ 35 km"
             />
           </Field>
-          <div className="flex gap-3 md:col-span-2">
+          <div className="flex gap-3 md:col-span-2 lg:col-span-4">
             <button
               type="submit"
               className="rounded-md bg-ocean px-5 py-2 text-sm font-semibold text-white hover:bg-ocean-deep"
             >
-              Guardar
+              Actualizar datos
             </button>
             <button
               type="button"
@@ -201,7 +221,7 @@ export default function AdminTrasladosPage() {
       )}
 
       <div className="overflow-x-auto rounded-xl bg-white shadow-sm ring-1 ring-sand-line">
-        <table className="w-full min-w-[720px] text-left text-sm">
+        <table className="w-full min-w-[820px] text-left text-sm">
           <thead className="border-b border-sand-line bg-bg text-ink-muted">
             <tr>
               <th className="px-4 py-3 font-medium">Destino</th>
@@ -209,13 +229,14 @@ export default function AdminTrasladosPage() {
               <th className="px-4 py-3 font-medium">Distancia</th>
               <th className="px-4 py-3 font-medium">Ida</th>
               <th className="px-4 py-3 font-medium">Ida y vuelta</th>
+              <th className="px-4 py-3 font-medium">Persona extra</th>
               <th className="px-4 py-3 font-medium">Acciones</th>
             </tr>
           </thead>
           <tbody>
             {loading && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-ink-muted">
+                <td colSpan={7} className="px-4 py-8 text-center text-ink-muted">
                   Cargando…
                 </td>
               </tr>
@@ -234,6 +255,9 @@ export default function AdminTrasladosPage() {
                   </td>
                   <td className="px-4 py-3 font-semibold">
                     {formatPrice(d.priceReturn)}
+                  </td>
+                  <td className="px-4 py-3 font-semibold">
+                    {formatPrice(d.priceExtraPerson ?? 10)}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex gap-2">
@@ -257,7 +281,7 @@ export default function AdminTrasladosPage() {
               ))}
             {!loading && destinations.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-ink-muted">
+                <td colSpan={7} className="px-4 py-8 text-center text-ink-muted">
                   No hay destinos. Añade el primero.
                 </td>
               </tr>

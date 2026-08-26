@@ -93,6 +93,9 @@ export default async function TrasladosPage({ params }: Props) {
                   <th className="px-4 py-3 font-medium">
                     {dict.transfers.return}
                   </th>
+                  <th className="px-4 py-3 font-medium">
+                    {dict.transfers.extraPerson}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -110,6 +113,9 @@ export default async function TrasladosPage({ params }: Props) {
                     </td>
                     <td className="px-4 py-3.5 font-medium text-ocean-deep">
                       {formatPrice(d.priceReturn)}
+                    </td>
+                    <td className="px-4 py-3.5 font-medium text-ocean-deep">
+                      {formatPrice(d.priceExtraPerson ?? 10)}
                     </td>
                   </tr>
                 ))}

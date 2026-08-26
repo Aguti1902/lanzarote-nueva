@@ -7,7 +7,8 @@
       "priceOneWay": 55,
       "priceReturn": 100,
       "duration": "35–45 min",
-      "distance": "≈ 35 km"
+      "distance": "≈ 35 km",
+      "priceExtraPerson": 10
     },
     {
       "id": "puerto-del-carmen",
@@ -16,7 +17,8 @@
       "priceOneWay": 40,
       "priceReturn": 75,
       "duration": "20–30 min",
-      "distance": "≈ 18 km"
+      "distance": "≈ 18 km",
+      "priceExtraPerson": 10
     },
     {
       "id": "costa-teguise",
@@ -25,7 +27,8 @@
       "priceOneWay": 40,
       "priceReturn": 75,
       "duration": "20–25 min",
-      "distance": "≈ 15 km"
+      "distance": "≈ 15 km",
+      "priceExtraPerson": 10
     },
     {
       "id": "puerto-calero",
@@ -34,7 +37,8 @@
       "priceOneWay": 45,
       "priceReturn": 85,
       "duration": "25–35 min",
-      "distance": "≈ 25 km"
+      "distance": "≈ 25 km",
+      "priceExtraPerson": 10
     },
     {
       "id": "arrecife",
@@ -43,7 +47,8 @@
       "priceOneWay": 30,
       "priceReturn": 55,
       "duration": "10–15 min",
-      "distance": "≈ 6 km"
+      "distance": "≈ 6 km",
+      "priceExtraPerson": 10
     },
     {
       "id": "la-santa",
@@ -52,7 +57,8 @@
       "priceOneWay": 50,
       "priceReturn": 95,
       "duration": "30–40 min",
-      "distance": "≈ 28 km"
+      "distance": "≈ 28 km",
+      "priceExtraPerson": 10
     },
     {
       "id": "charco-del-palo",
@@ -61,7 +67,8 @@
       "priceOneWay": 55,
       "priceReturn": 100,
       "duration": "35–45 min",
-      "distance": "≈ 32 km"
+      "distance": "≈ 32 km",
+      "priceExtraPerson": 10
     },
     {
       "id": "haria",
@@ -70,7 +77,8 @@
       "priceOneWay": 55,
       "priceReturn": 100,
       "duration": "40–50 min",
-      "distance": "≈ 35 km"
+      "distance": "≈ 35 km",
+      "priceExtraPerson": 10
     },
     {
       "id": "orzola",
@@ -79,7 +87,8 @@
       "priceOneWay": 60,
       "priceReturn": 110,
       "duration": "45–55 min",
-      "distance": "≈ 40 km"
+      "distance": "≈ 40 km",
+      "priceExtraPerson": 10
     },
     {
       "id": "famara",
@@ -88,7 +97,8 @@
       "priceOneWay": 50,
       "priceReturn": 95,
       "duration": "30–40 min",
-      "distance": "≈ 28 km"
+      "distance": "≈ 28 km",
+      "priceExtraPerson": 10
     },
     {
       "id": "yaiza",
@@ -97,7 +107,8 @@
       "priceOneWay": 50,
       "priceReturn": 95,
       "duration": "30–40 min",
-      "distance": "≈ 30 km"
+      "distance": "≈ 30 km",
+      "priceExtraPerson": 10
     },
     {
       "id": "tias",
@@ -106,7 +117,8 @@
       "priceOneWay": 40,
       "priceReturn": 75,
       "duration": "20–30 min",
-      "distance": "≈ 16 km"
+      "distance": "≈ 16 km",
+      "priceExtraPerson": 10
     },
     {
       "id": "playa-honda",
@@ -115,7 +127,8 @@
       "priceOneWay": 25,
       "priceReturn": 45,
       "duration": "10–15 min",
-      "distance": "≈ 5 km"
+      "distance": "≈ 5 km",
+      "priceExtraPerson": 10
     },
     {
       "id": "puerto-marmoles",
@@ -124,7 +137,8 @@
       "priceOneWay": 35,
       "priceReturn": 65,
       "duration": "15–20 min",
-      "distance": "≈ 8 km"
+      "distance": "≈ 8 km",
+      "priceExtraPerson": 10
     },
     {
       "id": "punta-mujeres",
@@ -133,7 +147,8 @@
       "priceOneWay": 55,
       "priceReturn": 100,
       "duration": "40–50 min",
-      "distance": "≈ 34 km"
+      "distance": "≈ 34 km",
+      "priceExtraPerson": 10
     }
   ],
   "highlights": [

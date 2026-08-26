@@ -79,6 +79,7 @@ export type Dictionary = {
     duration: string;
     oneWay: string;
     return: string;
+    extraPerson: string;
     faqTitle: string;
     faqs: { q: string; a: string }[];
   };
@@ -455,6 +456,7 @@ const es: Dictionary = {
     duration: "Duración",
     oneWay: "Ida",
     return: "Ida y vuelta",
+    extraPerson: "Persona extra",
     faqTitle: "Preguntas frecuentes sobre nuestros traslados en Lanzarote",
     faqs: [
       {
@@ -887,6 +889,7 @@ const en: Dictionary = {
     duration: "Duration",
     oneWay: "One way",
     return: "Return",
+    extraPerson: "Extra person",
     faqTitle: "Frequently asked questions about our transfers",
     faqs: [
       {
@@ -1311,6 +1314,7 @@ const de: Dictionary = {
     duration: "Dauer",
     oneWay: "Einfach",
     return: "Hin und zurück",
+    extraPerson: "Zusätzliche Person",
     faqTitle: "Häufige Fragen zu unseren Transfers",
     faqs: [
       {
