@@ -137,7 +137,12 @@ export function buildVoucherHtml(
     [labels.service, esc(`${serviceKind(booking)}: ${booking.tourTitle}`)],
     [labels.date, formatDateShort(booking.date)],
     [labels.people, esc(peopleLabel)],
-    [labels.status, statusEs(booking.status)],
+    [
+      labels.status,
+      booking.status === "cancelled"
+        ? `<span class="status-cancelled">${esc(statusEs(booking.status))}</span>`
+        : esc(statusEs(booking.status)),
+    ],
     [labels.total, money(total)],
     [labels.payment, esc(paymentLabel(booking.paymentMethod))],
   ];
@@ -279,6 +284,18 @@ export function buildVoucherHtml(
     font-weight: 600;
   }
   td { font-weight: 600; }
+  .status-cancelled {
+    display: inline-block;
+    background: #dc2626;
+    color: #fff !important;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.35);
+  }
   .foot {
     margin: 0 32px 28px;
     padding-top: 16px;

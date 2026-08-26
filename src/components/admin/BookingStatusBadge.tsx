@@ -23,8 +23,9 @@ const config: Record<
     Icon: CheckCircle2,
   },
   cancelled: {
-    label: "Cancelada",
-    className: "bg-rose-600 text-white ring-rose-700 shadow-sm",
+    label: "Cancelado",
+    className:
+      "bg-red-600 text-white ring-2 ring-red-700 shadow-md shadow-red-600/30",
     Icon: Ban,
   },
 };
@@ -56,7 +57,7 @@ export function BookingStatusBadge({
 
 export function bookingRowClassName(status: BookingStatus): string {
   if (status === "cancelled") {
-    return "bg-rose-50/80 hover:bg-rose-50";
+    return "bg-red-50 hover:bg-red-100/80";
   }
   return "hover:bg-sky-soft/40";
 }
