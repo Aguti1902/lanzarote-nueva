@@ -6,7 +6,7 @@ import type { CruiseShoreTour, CruiseShoreTourTranslation } from "@/types";
 import { formatPrice } from "@/lib/format";
 import { Field, adminInput, adminTextarea, arrayToLines, linesToArray } from "@/components/admin/Field";
 
-type DetailTab = "details" | "photos" | "es" | "en" | "de";
+type DetailTab = "details" | "photos" | "availability" | "es" | "en" | "de";
 
 const PORTS = [
   "Lanzarote",
@@ -46,6 +46,9 @@ export function ShoreToursPanel() {
   const [message, setMessage] = useState("");
   const [uploading, setUploading] = useState(false);
   const [newPhotoUrl, setNewPhotoUrl] = useState("");
+  const [blockDate, setBlockDate] = useState("");
+  const [blockLang, setBlockLang] = useState("Todos los idiomas");
+  const [blockSeats, setBlockSeats] = useState(14);
 
   async function load() {
     const res = await fetch("/api/admin/cruise-catalog?kind=shore-tours");
@@ -114,6 +117,7 @@ export function ShoreToursPanel() {
       allowBizum: true,
       allowPayOnDay: true,
       cancellationPolicy: "Cancelación gratuita hasta 48 horas antes.",
+      blockedDates: [],
       translations: { en: emptyTranslation(), de: emptyTranslation() },
     });
     setTab("details");
@@ -231,14 +235,37 @@ export function ShoreToursPanel() {
     });
   }
 
+  function addBlockedDate() {
+    if (!draft) return;
+    if (!blockDate) {
+      setMessage("Selecciona un día para bloquear");
+      return;
+    }
+    const next = [
+      ...(draft.blockedDates || []),
+      {
+        date: blockDate,
+        language: blockLang,
+        seats: blockSeats,
+      },
+    ].sort((a, b) => a.date.localeCompare(b.date));
+    setDraft({ ...draft, blockedDates: next });
+    setBlockDate("");
+    setMessage("Fecha bloqueada (guarda para aplicar)");
+  }
+
   if (draft) {
     const tabs: { id: DetailTab; label: string }[] = [
       { id: "details", label: "Detalles" },
       { id: "photos", label: "Fotos" },
+      { id: "availability", label: "Disponibilidad" },
       { id: "es", label: "Traducción: ES" },
       { id: "en", label: "Traducción: EN" },
       { id: "de", label: "Traducción: DE" },
     ];
+    const upcomingBlocked = (draft.blockedDates || []).filter(
+      (d) => d.date >= new Date().toISOString().slice(0, 10)
+    );
 
     return (
       <div className="space-y-6">
@@ -485,6 +512,100 @@ export function ShoreToursPanel() {
 
             <button type="button" onClick={save} className="btn-primary">
               Guardar fotos
+            </button>
+          </section>
+        )}
+
+        {tab === "availability" && (
+          <section className="space-y-4 rounded-xl bg-white p-5 ring-1 ring-sand-line">
+            <h2 className="text-lg font-bold">
+              Días bloqueados para esta excursión shore
+            </h2>
+            <p className="text-sm text-ink-muted">
+              Igual que en las excursiones normales: las fechas bloqueadas no
+              se podrán reservar en la web.
+            </p>
+            <div className="grid gap-4 rounded-lg bg-bg p-4 md:grid-cols-4">
+              <Field label="Día">
+                <input
+                  type="date"
+                  className={adminInput}
+                  value={blockDate}
+                  onChange={(e) => setBlockDate(e.target.value)}
+                />
+              </Field>
+              <Field label="Idioma">
+                <select
+                  className={adminInput}
+                  value={blockLang}
+                  onChange={(e) => setBlockLang(e.target.value)}
+                >
+                  <option>Todos los idiomas</option>
+                  <option>Español</option>
+                  <option>Inglés</option>
+                  <option>Alemán</option>
+                </select>
+              </Field>
+              <Field label="Plazas a bloquear">
+                <input
+                  type="number"
+                  min={1}
+                  max={draft.maxGroup || 14}
+                  className={adminInput}
+                  value={blockSeats}
+                  onChange={(e) => setBlockSeats(Number(e.target.value))}
+                />
+              </Field>
+              <button
+                type="button"
+                onClick={addBlockedDate}
+                className="self-end rounded-md bg-ocean px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-white hover:bg-ocean-deep"
+              >
+                Bloquear fecha
+              </button>
+            </div>
+
+            {upcomingBlocked.length === 0 ? (
+              <p className="rounded-md bg-sky-soft px-4 py-3 text-sm text-ocean-deep">
+                No hay próximas fechas bloqueadas
+              </p>
+            ) : (
+              <ul className="divide-y divide-sand-line rounded-lg ring-1 ring-sand-line">
+                {(draft.blockedDates || []).map((item, idx) => {
+                  if (item.date < new Date().toISOString().slice(0, 10)) {
+                    return null;
+                  }
+                  return (
+                    <li
+                      key={`${item.date}-${idx}`}
+                      className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-sm"
+                    >
+                      <span>
+                        <strong>{item.date}</strong> ·{" "}
+                        {item.language || "Todos"} · {item.seats} plazas
+                      </span>
+                      <button
+                        type="button"
+                        className="text-coral hover:underline"
+                        onClick={() =>
+                          setDraft({
+                            ...draft,
+                            blockedDates: (draft.blockedDates || []).filter(
+                              (_, i) => i !== idx
+                            ),
+                          })
+                        }
+                      >
+                        Quitar
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+
+            <button type="button" onClick={save} className="btn-primary">
+              Guardar disponibilidad
             </button>
           </section>
         )}

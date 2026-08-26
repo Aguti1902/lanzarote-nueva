@@ -152,6 +152,8 @@ export interface SiteSettings {
   bannerDe?: string;
 }
 
+export type PaymentLinkMode = "standard" | "group_all" | "per_person";
+
 export interface PaymentLink {
   id: string;
   createdAt: string;
@@ -167,6 +169,13 @@ export interface PaymentLink {
   paymentMethod?: string;
   paymentKey?: string;
   paymentHash?: string;
+  /** Optional link to a cruise group (manual payment links). */
+  groupId?: string;
+  bookingId?: string;
+  mode?: PaymentLinkMode;
+  /** 1-based person index when mode is per_person. */
+  personIndex?: number;
+  personLabel?: string;
 }
 
 export interface Collaborator {
@@ -215,6 +224,10 @@ export interface CruiseGroup {
   departureDate?: string;
   sailingId?: string;
   notes?: string;
+  /** When auto-spawned after another group hit maxPax. */
+  spawnedFromId?: string;
+  /** Display ordinal within the same ship/date/excursion series (1, 2, …). */
+  seriesIndex?: number;
 }
 
 export interface SeoRedirect {
@@ -290,6 +303,12 @@ export interface CruiseShoreTour {
   allowBizum?: boolean;
   allowPayOnDay?: boolean;
   cancellationPolicy?: string;
+  /** Fechas bloqueadas (igual que excursiones normales). */
+  blockedDates?: Array<{
+    date: string;
+    language?: string;
+    seats: number;
+  }>;
   translations?: {
     en?: CruiseShoreTourTranslation;
     de?: CruiseShoreTourTranslation;

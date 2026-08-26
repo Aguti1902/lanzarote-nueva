@@ -82,10 +82,101 @@ export async function upsertPaymentLink(
     paymentHash:
       input.paymentHash ||
       `${uid("h")}${Math.random().toString(16).slice(2, 10)}`,
+    groupId: input.groupId || undefined,
+    bookingId: input.bookingId || undefined,
+    mode: input.mode || "standard",
+    personIndex: input.personIndex,
+    personLabel: input.personLabel || undefined,
   };
   data.paymentLinks.unshift(created);
   await writeData(data);
   return created;
+}
+
+export async function getPaymentLinkByHash(hash: string) {
+  if (!hash) return null;
+  const links = await getPaymentLinks();
+  return (
+    links.find((p) => p.paymentHash === hash || p.id === hash) || null
+  );
+}
+
+export function buildPaymentUrl(
+  item: PaymentLink,
+  origin: string
+): string {
+  const locale = item.customerLocale || "es";
+  const hash = item.paymentHash || item.id;
+  const email = encodeURIComponent(item.customerEmail || "");
+  return `${origin}/${locale}/gateway/?h=${hash}&email=${email}&ref=${encodeURIComponent(item.locator)}`;
+}
+
+/** Create group_all + per_person payment links for a cruise group (manual share). */
+export async function ensureGroupPaymentLinks(
+  group: CruiseGroup,
+  options?: { forcePerPerson?: boolean; personCount?: number }
+): Promise<{ groupAll: PaymentLink; perPerson: PaymentLink[] }> {
+  const data = await readData();
+  const existing = data.paymentLinks.filter(
+    (p) => p.groupId === group.id && p.status !== "cancelled"
+  );
+  const price = Number(group.pricePerPerson) || 0;
+  const maxPax = Math.max(
+    1,
+    Number(
+      options?.personCount ??
+        (group.maxPax != null && Number(group.maxPax) > 0
+          ? group.maxPax
+          : group.minPax) ??
+        1
+    ) || 1
+  );
+  const seriesLabel =
+    group.seriesIndex && group.seriesIndex > 1
+      ? ` · Grupo ${group.seriesIndex}`
+      : "";
+
+  let groupAll = existing.find((p) => p.mode === "group_all");
+  if (!groupAll) {
+    groupAll = await upsertPaymentLink({
+      concept: `Grupo ${group.shipName} — ${group.excursionTitle} (${group.date})${seriesLabel} · pago completo`,
+      amount: Math.round(price * maxPax * 100) / 100,
+      customerName: group.shipName,
+      customerLocale: "es",
+      notes: `Pago de todas las plazas del grupo ${group.id}`,
+      groupId: group.id,
+      mode: "group_all",
+      locator: `GRP-${group.id.replace(/^grp-/, "").slice(0, 10).toUpperCase()}`,
+    });
+  }
+
+  let perPerson = existing
+    .filter((p) => p.mode === "per_person")
+    .sort((a, b) => (a.personIndex || 0) - (b.personIndex || 0));
+
+  if (options?.forcePerPerson || perPerson.length === 0) {
+    const created: PaymentLink[] = [];
+    const start = perPerson.length + 1;
+    for (let i = start; i <= maxPax; i++) {
+      const link = await upsertPaymentLink({
+        concept: `Grupo ${group.shipName} — ${group.excursionTitle} (${group.date})${seriesLabel} · persona ${i}`,
+        amount: price,
+        customerLocale: "es",
+        notes: `Pago individual #${i} del grupo ${group.id}`,
+        groupId: group.id,
+        mode: "per_person",
+        personIndex: i,
+        personLabel: `Persona ${i}`,
+        locator: `GRP-${group.id.replace(/^grp-/, "").slice(0, 8).toUpperCase()}-P${i}`,
+      });
+      created.push(link);
+    }
+    perPerson = [...perPerson, ...created].sort(
+      (a, b) => (a.personIndex || 0) - (b.personIndex || 0)
+    );
+  }
+
+  return { groupAll, perPerson };
 }
 
 export async function deletePaymentLink(id: string) {
@@ -259,6 +350,9 @@ export async function upsertCruiseGroup(
     departureDate: input.departureDate || undefined,
     sailingId: input.sailingId || undefined,
     notes: input.notes || "",
+    spawnedFromId: input.spawnedFromId || undefined,
+    seriesIndex:
+      input.seriesIndex != null ? Number(input.seriesIndex) : 1,
   };
   data.cruiseGroups.unshift(created);
   await writeData(data);

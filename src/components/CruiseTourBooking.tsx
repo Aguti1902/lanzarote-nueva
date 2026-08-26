@@ -38,6 +38,14 @@ export function CruiseTourBooking({
   const { dict, href } = useLocale();
   const price = tour.pricePerPerson ?? tour.priceAdult ?? 0;
   const max = tour.maxGroup ?? 14;
+  const dateBlocked = useMemo(
+    () =>
+      Boolean(
+        callDate &&
+          (tour.blockedDates || []).some((b) => b.date === callDate)
+      ),
+    [callDate, tour.blockedDates]
+  );
 
   const [passengers, setPassengers] = useState(2);
   const [name, setName] = useState("");
@@ -98,6 +106,10 @@ export function CruiseTourBooking({
   function handleAddToCart() {
     setError("");
     setCartMsg("");
+    if (dateBlocked) {
+      setError("Esta fecha no está disponible");
+      return;
+    }
     if (!callDate || passengers < 1) {
       setError(dict.cruises.selectPassengers);
       return;
@@ -125,6 +137,10 @@ export function CruiseTourBooking({
   async function handleBookNow(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    if (dateBlocked) {
+      setError("Esta fecha no está disponible");
+      return;
+    }
     if (!name || !email || !phone) {
       setError(dict.booking.fillRequired);
       return;
@@ -216,7 +232,8 @@ export function CruiseTourBooking({
         <button
           type="button"
           onClick={handleAddToCart}
-          className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-ink/15 bg-white px-4 py-3 text-sm font-bold uppercase tracking-wide transition hover:border-ocean hover:text-ocean"
+          disabled={dateBlocked}
+          className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-ink/15 bg-white px-4 py-3 text-sm font-bold uppercase tracking-wide transition hover:border-ocean hover:text-ocean disabled:opacity-50"
         >
           <ShoppingCart className="h-4 w-4" />
           {dict.booking.addToCart}
@@ -224,11 +241,18 @@ export function CruiseTourBooking({
         <button
           type="button"
           onClick={() => setMode(mode === "checkout" ? "quick" : "checkout")}
-          className="btn-primary flex-1 justify-center rounded-full px-4 py-3 text-sm uppercase tracking-wide"
+          disabled={dateBlocked}
+          className="btn-primary flex-1 justify-center rounded-full px-4 py-3 text-sm uppercase tracking-wide disabled:opacity-50"
         >
           {dict.booking.bookNow}
         </button>
       </div>
+
+      {dateBlocked && (
+        <p className="mt-3 text-sm font-semibold text-rose-700">
+          Esta fecha no está disponible para reservar.
+        </p>
+      )}
 
       {cartMsg && (
         <p className="mt-3 text-sm font-semibold text-success">

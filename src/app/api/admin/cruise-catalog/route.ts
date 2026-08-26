@@ -286,6 +286,7 @@ export async function POST(request: Request) {
         cancellationPolicy:
           body.cancellationPolicy ||
           "Cancelación gratuita hasta 48 horas antes.",
+        blockedDates: body.blockedDates || [],
         translations: body.translations || {},
       };
       data.shoreTours.push(tour);
