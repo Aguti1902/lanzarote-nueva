@@ -29,6 +29,7 @@ import {
   Ship,
   Upload,
   Users,
+  Home,
 } from "lucide-react";
 
 type NavItem = {
@@ -55,6 +56,7 @@ const nav: NavItem[] = [
     icon: Anchor,
   },
   { href: "/admin/traslados", label: "Traslados", icon: Bus },
+  { href: "/admin/casas", label: "Casas vacacionales", icon: Home },
   { href: "/admin/colaboradores", label: "Colaboradores", icon: Handshake },
   { href: "/admin/importar-reservas", label: "Importar reservas", icon: Upload },
   {

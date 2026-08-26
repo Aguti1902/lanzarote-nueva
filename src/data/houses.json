@@ -1,0 +1,44 @@
+[
+  {
+    "id": "playa-honda-holiday-home",
+    "title": "Apartamento Vacacional 'Playa Honda Holiday Home'",
+    "summary": "Acogedor apartamento de 60 m² en Playa Honda para 2 huéspedes, con 1 dormitorio, balcón privado, jardín compartido y Wi-Fi. A 2 minutos a pie de la playa de Guacimeta y a unos 1 km del aeropuerto.",
+    "location": "Playa Honda, San Bartolomé",
+    "guests": 2,
+    "bedrooms": 1,
+    "sizeM2": 60,
+    "image": "https://img.holidu.com/images/53af3733-9510-42e3-be9f-7d41b365b171/l.jpg",
+    "gallery": [
+      "https://img.holidu.com/images/53af3733-9510-42e3-be9f-7d41b365b171/l.jpg",
+      "https://img.holidu.com/images/7797cc30-897a-439a-af4a-d3d2916d5ffa/l.jpg",
+      "https://img.holidu.com/images/0bf9f552-6922-4f62-a4a7-8f4530ea139d/l.jpg",
+      "https://img.holidu.com/images/35dc81e8-0899-495d-a129-ca17c7244fda/l.jpg",
+      "https://img.holidu.com/images/122dde0f-edb3-4523-9ccb-18dc7bae5500/l.jpg",
+      "https://img.holidu.com/images/d88ff07b-2a42-4f5e-b70f-e26163548f75/l.jpg"
+    ],
+    "redirectUrl": "https://angela-maria-tejera-bonilla.vacation-bookings.com/?apartmentId=57418864",
+    "active": true,
+    "sortOrder": 1
+  },
+  {
+    "id": "casa-cordel",
+    "title": "Casa de vacaciones \"Casa Cordel\"",
+    "summary": "Casa de 2 plantas en Playa Honda (90 m²) con terraza cubierta privada y Wi-Fi. 4 dormitorios, 2 baños y capacidad para 7 personas. Ideal como base cómoda para explorar Lanzarote.",
+    "location": "Playa Honda, San Bartolomé",
+    "guests": 7,
+    "bedrooms": 4,
+    "sizeM2": 90,
+    "image": "https://img.holidu.com/images/558e63ad-7dcb-4eb3-a0f1-274fdd63846b/l.jpg",
+    "gallery": [
+      "https://img.holidu.com/images/558e63ad-7dcb-4eb3-a0f1-274fdd63846b/l.jpg",
+      "https://img.holidu.com/images/20268bf7-3f70-432e-b0e7-72747a71fa06/l.jpg",
+      "https://img.holidu.com/images/3dda9ed9-702a-4bbe-8631-bf334d47ece4/l.jpg",
+      "https://img.holidu.com/images/81e76efe-20fd-4b5b-84d5-b84ba6e2b36f/l.jpg",
+      "https://img.holidu.com/images/72c34779-5ea6-401b-b785-1f2c8eeac173/l.jpg",
+      "https://img.holidu.com/images/18e28224-c5bd-4ef4-aee4-963c550c5d46/l.jpg"
+    ],
+    "redirectUrl": "https://angela-maria-tejera-bonilla.vacation-bookings.com/?apartmentId=53106819",
+    "active": true,
+    "sortOrder": 2
+  }
+]

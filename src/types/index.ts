@@ -111,6 +111,23 @@ export interface BlogPost {
   tags: string[];
 }
 
+/** Casa vacacional: ficha pública + redirección externa (reservas fuera del panel). */
+export interface VacationHouse {
+  id: string;
+  title: string;
+  summary: string;
+  location: string;
+  guests?: number;
+  bedrooms?: number;
+  sizeM2?: number;
+  image: string;
+  gallery: string[];
+  /** URL externa de reserva / ficha del apartamento */
+  redirectUrl: string;
+  active: boolean;
+  sortOrder: number;
+}
+
 export interface SiteSettings {
   brandName: string;
   tagline: string;

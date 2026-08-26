@@ -171,10 +171,11 @@ export type Dictionary = {
   houses: {
     title: string;
     subtitle: string;
-    houseTitle: string;
-    houseBody: string;
-    features: string[];
     cta: string;
+    empty: string;
+    guests: string;
+    bedrooms: string;
+    size: string;
   };
   contact: {
     title: string;
@@ -577,16 +578,13 @@ const es: Dictionary = {
   },
   houses: {
     title: "Casas vacacionales en Lanzarote",
-    subtitle: "Alojamientos con encaje local para disfrutar la isla con calma.",
-    houseTitle: "Casa Cordel",
-    houseBody:
-      "Casa vacacional en Lanzarote pensada para quienes buscan tranquilidad y una base cómoda desde la que explorar la isla.",
-    features: [
-      "Ubicación tranquila en Lanzarote",
-      "Perfecta para familias y parejas",
-      "Compatible con recogidas de excursiones LET",
-    ],
-    cta: "Solicitar información",
+    subtitle:
+      "Alojamientos en Playa Honda. Reserve directamente en cada ficha.",
+    cta: "Ver y reservar",
+    empty: "Pronto publicaremos nuestras casas vacacionales.",
+    guests: "Huéspedes",
+    bedrooms: "Dormitorios",
+    size: "m²",
   },
   contact: {
     title: "¿Cómo podemos ayudarle?",
@@ -1008,16 +1006,12 @@ const en: Dictionary = {
   },
   houses: {
     title: "Holiday homes in Lanzarote",
-    subtitle: "Local stays to enjoy the island at your own pace.",
-    houseTitle: "Casa Cordel",
-    houseBody:
-      "A holiday home for those seeking calm and a comfortable base to explore Lanzarote.",
-    features: [
-      "Quiet location in Lanzarote",
-      "Ideal for families and couples",
-      "Compatible with LET excursion pick-ups",
-    ],
-    cta: "Request information",
+    subtitle: "Stays in Playa Honda. Book directly on each property page.",
+    cta: "View & book",
+    empty: "Our holiday homes will be published here soon.",
+    guests: "Guests",
+    bedrooms: "Bedrooms",
+    size: "m²",
   },
   contact: {
     title: "How can we help you?",
@@ -1440,16 +1434,13 @@ const de: Dictionary = {
   },
   houses: {
     title: "Ferienhäuser auf Lanzarote",
-    subtitle: "Lokale Unterkünfte, um die Insel in Ruhe zu genießen.",
-    houseTitle: "Casa Cordel",
-    houseBody:
-      "Ein Ferienhaus für alle, die Ruhe und eine komfortable Basis zum Erkunden der Insel suchen.",
-    features: [
-      "Ruhige Lage auf Lanzarote",
-      "Ideal für Familien und Paare",
-      "Kompatibel mit LET-Abholungen",
-    ],
-    cta: "Informationen anfragen",
+    subtitle:
+      "Unterkünfte in Playa Honda. Buchen Sie direkt auf jeder Objektseite.",
+    cta: "Ansehen & buchen",
+    empty: "Unsere Ferienhäuser erscheinen hier in Kürze.",
+    guests: "Gäste",
+    bedrooms: "Schlafzimmer",
+    size: "m²",
   },
   contact: {
     title: "Wie können wir helfen?",
