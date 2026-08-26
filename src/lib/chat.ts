@@ -32,9 +32,9 @@ async function buildKnowledge(): Promise<string> {
     .map((t) => {
       const group = t.groupSize ? groupSizeLabel(t.groupSize) : t.category;
       const pay = [
-        t.allowCard && "tarjeta",
-        t.allowBizum && "Bizum",
-        t.allowCard && "10% tarjeta + resto efectivo",
+        t.allowCard && "tarjeta 100% online",
+        t.allowBizum && "Bizum 100% online",
+        t.allowCard && "20% tarjeta + resto efectivo",
         t.allowPayOnDay && "pago el día del tour",
       ]
         .filter(Boolean)

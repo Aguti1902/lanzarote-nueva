@@ -1,6 +1,11 @@
 export type GroupSize = "small" | "large";
 export type TourCategory = "excursion" | "private" | "minibus" | "transfer";
-export type PaymentMethod = "card" | "bizum" | "pay_on_day" | "deposit_10";
+export type PaymentMethod =
+  | "card"
+  | "bizum"
+  | "pay_on_day"
+  | "deposit_10"
+  | "deposit_20";
 export type BookingStatus = "pending" | "confirmed" | "cancelled" | "completed";
 export type BookingType = "tour" | "transfer" | "minibus";
 export type PaymentStatus = "unpaid" | "paid" | "pay_on_day" | "partial";

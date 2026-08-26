@@ -69,22 +69,25 @@ export function paymentLabel(
 ): string {
   const map: Record<string, Record<string, string>> = {
     es: {
-      card: "Tarjeta",
-      bizum: "Bizum",
+      card: "100% online (tarjeta)",
+      bizum: "100% online (Bizum)",
       pay_on_day: "Pago el día del tour",
       deposit_10: "10% tarjeta + resto efectivo",
+      deposit_20: "20% tarjeta + resto efectivo",
     },
     en: {
-      card: "Card",
-      bizum: "Bizum",
+      card: "100% online (card)",
+      bizum: "100% online (Bizum)",
       pay_on_day: "Pay on the day",
       deposit_10: "10% card + cash balance",
+      deposit_20: "20% card + cash balance",
     },
     de: {
-      card: "Karte",
-      bizum: "Bizum",
+      card: "100% online (Karte)",
+      bizum: "100% online (Bizum)",
       pay_on_day: "Zahlung am Tourtag",
       deposit_10: "10% Karte + Rest bar",
+      deposit_20: "20% Karte + Rest bar",
     },
   };
   const L = map[locale as string] || map.es;

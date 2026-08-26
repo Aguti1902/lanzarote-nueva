@@ -32,6 +32,7 @@ type Stats = {
     bizum: number;
     pay_on_day: number;
     deposit_10: number;
+    deposit_20?: number;
   };
   upcoming: Booking[];
   recent: Booking[];
@@ -105,8 +106,10 @@ export default function AdminDashboard() {
           href: "/admin/cobros-efectivo",
         },
         {
-          label: "Depósitos 10%",
-          value: String(stats.byPayment?.deposit_10 || 0),
+          label: "Depósitos 20%",
+          value: String(
+            (stats.byPayment?.deposit_20 || 0) + (stats.byPayment?.deposit_10 || 0)
+          ),
           icon: Percent,
         },
       ]

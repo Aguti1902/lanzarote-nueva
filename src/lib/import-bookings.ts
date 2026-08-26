@@ -61,7 +61,10 @@ function detectPayment(raw: string): PaymentMethod {
   if (t.includes("tarjeta") || t.includes("card") || t.includes("online")) {
     return "card";
   }
-  if (t.includes("señal") || t.includes("senal") || t.includes("deposit")) {
+  if (t.includes("20%") || t.includes("20 %") || t.includes("señal") || t.includes("senal") || t.includes("deposit")) {
+    return "deposit_20";
+  }
+  if (t.includes("10%") || t.includes("10 %")) {
     return "deposit_10";
   }
   return "pay_on_day";

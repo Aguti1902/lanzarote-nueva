@@ -22,7 +22,7 @@ export default function CarritoPage() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [hotel, setHotel] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("deposit_10");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("deposit_20");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -153,7 +153,8 @@ export default function CarritoPage() {
             <p className="text-3xl font-bold text-ocean-deep">
               {formatPrice(total)}
             </p>
-            {paymentMethod === "deposit_10" && (
+            {(paymentMethod === "deposit_20" ||
+              paymentMethod === "deposit_10") && (
               <p className="mt-1 text-xs text-ink-muted">
                 {dict.cart.now} {formatPrice(split.amountPaidCard)} ·{" "}
                 {dict.cart.cashDay} {formatPrice(split.amountDueCash)}
@@ -195,7 +196,7 @@ export default function CarritoPage() {
                   setPaymentMethod(e.target.value as PaymentMethod)
                 }
               >
-                <option value="deposit_10">{dict.booking.deposit}</option>
+                <option value="deposit_20">{dict.booking.deposit}</option>
                 <option value="card">{dict.booking.card}</option>
                 <option value="bizum">{dict.booking.bizum}</option>
                 <option value="pay_on_day">{dict.booking.payOnDay}</option>

@@ -20,9 +20,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
   const [hours, setHours] = useState(4);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
-    tour.allowPayOnDay ? "pay_on_day" : "card"
-  );
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("deposit_20");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -79,6 +77,12 @@ export function BookingWidget({ tour }: { tour: Tour }) {
   const methods = (
     [
       {
+        id: "deposit_20" as const,
+        label: dict.booking.deposit,
+        icon: <Percent className="h-4 w-4" />,
+        show: tour.allowCard,
+      },
+      {
         id: "card" as const,
         label: dict.booking.card,
         icon: <CreditCard className="h-4 w-4" />,
@@ -89,12 +93,6 @@ export function BookingWidget({ tour }: { tour: Tour }) {
         label: dict.booking.bizum,
         icon: <Smartphone className="h-4 w-4" />,
         show: tour.allowBizum,
-      },
-      {
-        id: "deposit_10" as const,
-        label: dict.booking.deposit,
-        icon: <Percent className="h-4 w-4" />,
-        show: tour.allowCard,
       },
       {
         id: "pay_on_day" as const,
@@ -352,7 +350,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
               {formatPrice(total)}
             </span>
           </div>
-          {paymentMethod === "deposit_10" && (
+          {(paymentMethod === "deposit_20" || paymentMethod === "deposit_10") && (
             <>
               <div className="flex justify-between text-sm">
                 <span className="text-ink-muted">{dict.booking.payNow}</span>
