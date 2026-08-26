@@ -63,6 +63,9 @@ export async function POST(request: Request) {
       if (!body.id || !body.title) {
         return NextResponse.json({ error: "Faltan datos" }, { status: 400 });
       }
+      if (data.shoreTours.some((t) => t.id === body.id)) {
+        return NextResponse.json({ error: "Ya existe" }, { status: 409 });
+      }
       const tour: CruiseShoreTour = {
         id: body.id,
         title: body.title,
@@ -73,13 +76,20 @@ export async function POST(request: Request) {
         priceChild: Number(body.priceChild ?? body.priceAdult) || 0,
         pricePerPerson: Number(body.pricePerPerson ?? body.priceAdult) || 0,
         image: body.image || "/images/tours/timanfaya.jpg",
+        gallery: body.gallery || (body.image ? [body.image] : []),
         duration: body.duration || "",
+        durationHours: Number(body.durationHours) || undefined,
         places: body.places || [],
         highlights: body.highlights || [],
         included: body.included || [],
         notIncluded: body.notIncluded || [],
         bookingSlug: body.bookingSlug || "",
         maxGroup: Number(body.maxGroup) || 14,
+        minPax: Number(body.minPax) || 8,
+        privatePrice: Number(body.privatePrice) || 0,
+        privateMaxPax: Number(body.privateMaxPax) || 0,
+        port: body.port || "Lanzarote",
+        active: body.active !== false,
         currency: "EUR",
         allowCard: true,
         allowBizum: true,
@@ -87,6 +97,7 @@ export async function POST(request: Request) {
         cancellationPolicy:
           body.cancellationPolicy ||
           "Cancelación gratuita hasta 48 horas antes.",
+        translations: body.translations || {},
       };
       data.shoreTours.push(tour);
       await save(data);
@@ -124,7 +135,8 @@ export async function PUT(request: Request) {
       if (idx < 0) {
         return NextResponse.json({ error: "No encontrado" }, { status: 404 });
       }
-      data.shoreTours[idx] = { ...data.shoreTours[idx], ...body };
+      const { kind: _kind, ...rest } = body;
+      data.shoreTours[idx] = { ...data.shoreTours[idx], ...rest };
       await save(data);
       return NextResponse.json({ item: data.shoreTours[idx] });
     }

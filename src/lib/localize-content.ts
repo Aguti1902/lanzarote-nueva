@@ -153,6 +153,16 @@ export async function localizeShoreTour(
 ): Promise<CruiseShoreTour> {
   if (locale === "es") return tour;
 
+  const embedded = tour.translations?.[locale as "en" | "de"];
+  if (embedded) {
+    return {
+      ...tour,
+      ...embedded,
+      highlights: embedded.highlights || tour.highlights,
+      places: embedded.places || tour.places,
+    };
+  }
+
   const translations = await loadTranslations(locale);
   const overlay = translations.shoreTours[tour.id];
   return overlay ? { ...tour, ...overlay } : tour;
@@ -163,12 +173,7 @@ export async function localizeShoreTours(
   locale: Locale
 ): Promise<CruiseShoreTour[]> {
   if (locale === "es") return tours;
-
-  const translations = await loadTranslations(locale);
-  return tours.map((tour) => {
-    const overlay = translations.shoreTours[tour.id];
-    return overlay ? { ...tour, ...overlay } : tour;
-  });
+  return Promise.all(tours.map((tour) => localizeShoreTour(tour, locale)));
 }
 
 export async function getSeaDayLabel(locale: Locale): Promise<string> {

@@ -354,7 +354,7 @@
     {
       "id": "excursion-sur-de-lanzarote-parque-nacional-de-timanfaya",
       "title": "Excursión Sur de Lanzarote, Parque Nacional de Timanfaya",
-      "priceAdult": 120.0,
+      "priceAdult": 120,
       "image": "/images/tours/cruise/excursion-sur-de-lanzarote-parque-nacional-de-timanfaya.jpg",
       "duration": "5 horas",
       "places": [
@@ -378,8 +378,8 @@
       "currency": "EUR",
       "description": "Disfrute de este recorrido que le llevará al paisaje lunar del Parque Nacional de Timanfaya, al volcán El Golfo con la laguna verde, a los acantilados de Los Hervideros y a la región vinícola de La Geria.\n\nLlegaremos al Parque Nacional de Timanfaya, donde será testigo de experimentos geotérmicos que revelan temperaturas entre 50 y 600 °C a pocos metros bajo la superficie.\n\nContinuaremos hacia la costa para conocer Los Hervideros y el volcán El Golfo, con su lago de aguas casi fluorescentes. Terminaremos en La Geria, con viñas cultivadas en hoyos protegidos del viento.\n\nDatos importantes:\n• Salida: media hora después de la llegada del crucero\n• Punto de encuentro: control de policía del puerto\n• Transporte: aparcamiento externo (aprox. 10 min a pie)\n• Nivel de actividad: moderado\n• Duración: 5 horas\n• No apta para personas con movilidad reducida",
       "summary": "Parque Nacional de Timanfaya, El Golfo, Los Hervideros y La Geria. Ideal para escalas de crucero (~5 h), con regreso al barco garantizado.",
-      "priceChild": 120.0,
-      "pricePerPerson": 120.0,
+      "priceChild": 120,
+      "pricePerPerson": 120,
       "allowCard": true,
       "allowBizum": true,
       "allowPayOnDay": true,
@@ -395,12 +395,22 @@
         "Comida y bebidas",
         "Paseo en camello (opcional, ~6 €)"
       ],
-      "shortTitle": "Sur de Lanzarote · Timanfaya"
+      "shortTitle": "Sur de Lanzarote · Timanfaya",
+      "port": "Lanzarote",
+      "active": true,
+      "gallery": [
+        "/images/tours/cruise/excursion-sur-de-lanzarote-parque-nacional-de-timanfaya.jpg"
+      ],
+      "durationHours": 5,
+      "minPax": 8,
+      "privatePrice": 0,
+      "privateMaxPax": 0,
+      "translations": {}
     },
     {
       "id": "lanzarote-experience-tour-nuestra-excursion-mas-completa-para-cruceristas",
       "title": "Lanzarote Experience Tour: Nuestra excursión mas completa para cruceristas",
-      "priceAdult": 195.0,
+      "priceAdult": 195,
       "image": "/images/tours/cruise/lanzarote-experience-tour-nuestra-excursion-mas-completa-para-cruceristas.jpg",
       "duration": "8 horas",
       "places": [
@@ -422,8 +432,8 @@
       "currency": "EUR",
       "description": "Visite los lugares más simbólicos de Lanzarote en este tour de día completo. Descubra el Parque Nacional de Timanfaya, sus anomalías geotérmicas y la Ruta de los Volcanes. Sorpréndase con La Geria, el Jardín de Cactus y los Jameos del Agua, obras de César Manrique.\n\nDurante la excursión disfrutará de paisajes únicos, pueblos con historia y la cultura de la isla.\n\nDatos importantes:\n• Salida: media hora después de la llegada del crucero\n• Punto de encuentro: control de policía del puerto\n• Transporte: aparcamiento externo (aprox. 10 min a pie)\n• Nivel de actividad: moderado\n• Duración: 8 horas\n• No apta para personas con movilidad reducida\n\n¿Por qué reservar con nosotros?\n• Sin paradas comerciales\n• Grupos reducidos\n• Evitamos las colas\n• No mezclamos turistas locales con pasajeros de crucero\n• Regreso al barco a tiempo garantizado",
       "summary": "La excursión más completa para cruceristas: Timanfaya, Jameos del Agua y Jardín de Cactus en un día (~8 h), con entradas incluidas.",
-      "priceChild": 195.0,
-      "pricePerPerson": 195.0,
+      "priceChild": 195,
+      "pricePerPerson": 195,
       "allowCard": true,
       "allowBizum": true,
       "allowPayOnDay": true,
@@ -438,7 +448,757 @@
       "notIncluded": [
         "Comida y bebidas"
       ],
-      "shortTitle": "Lanzarote Experience Tour"
+      "shortTitle": "Lanzarote Experience Tour",
+      "port": "Lanzarote",
+      "active": true,
+      "gallery": [
+        "/images/tours/cruise/lanzarote-experience-tour-nuestra-excursion-mas-completa-para-cruceristas.jpg"
+      ],
+      "durationHours": 8,
+      "minPax": 8,
+      "privatePrice": 0,
+      "privateMaxPax": 0,
+      "translations": {}
+    },
+    {
+      "id": "parque-nacional-de-garajonay-la-gomera",
+      "title": "Parque Nacional de Garajonay — La Gomera",
+      "port": "La Gomera",
+      "priceAdult": 85,
+      "duration": "4 horas",
+      "durationHours": 4,
+      "places": [
+        "Garajonay",
+        "Valle Gran Rey",
+        "Mirador"
+      ],
+      "highlights": [
+        "Bosque laurisilva UNESCO",
+        "Regreso al barco garantizado"
+      ],
+      "image": "/images/tours/timanfaya.jpg",
+      "shortTitle": "Parque Nacional de Garajonay — La Gomera",
+      "summary": "Parque Nacional de Garajonay — La Gomera",
+      "description": "Bosque laurisilva UNESCO\nRegreso al barco garantizado",
+      "priceChild": 59,
+      "pricePerPerson": 85,
+      "active": true,
+      "gallery": [
+        "/images/tours/timanfaya.jpg"
+      ],
+      "minPax": 8,
+      "maxGroup": 14,
+      "privatePrice": 0,
+      "privateMaxPax": 0,
+      "included": [
+        "Guía",
+        "Transporte"
+      ],
+      "notIncluded": [
+        "Comidas",
+        "Entradas opcionales"
+      ],
+      "currency": "EUR",
+      "allowCard": true,
+      "allowBizum": true,
+      "allowPayOnDay": true,
+      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
+      "translations": {
+        "en": {
+          "title": "Parque Nacional de Garajonay — La Gomera",
+          "summary": "Parque Nacional de Garajonay — La Gomera",
+          "description": "Bosque laurisilva UNESCO\nRegreso al barco garantizado",
+          "highlights": [
+            "Bosque laurisilva UNESCO",
+            "Regreso al barco garantizado"
+          ],
+          "places": [
+            "Garajonay",
+            "Valle Gran Rey",
+            "Mirador"
+          ]
+        },
+        "de": {
+          "title": "Parque Nacional de Garajonay — La Gomera",
+          "summary": "Parque Nacional de Garajonay — La Gomera",
+          "description": "Bosque laurisilva UNESCO\nRegreso al barco garantizado",
+          "highlights": [
+            "Bosque laurisilva UNESCO",
+            "Regreso al barco garantizado"
+          ],
+          "places": [
+            "Garajonay",
+            "Valle Gran Rey",
+            "Mirador"
+          ]
+        }
+      }
+    },
+    {
+      "id": "dunas-de-corralejo-fuerteventura",
+      "title": "Parque natural de las Dunas de Corralejo",
+      "port": "Puerto del Rosario",
+      "priceAdult": 75,
+      "duration": "4 horas",
+      "durationHours": 4,
+      "places": [
+        "Parque natural de las Dunas de Corralejo",
+        "Corralejo",
+        "El Cotillo"
+      ],
+      "highlights": [
+        "Dunas y pueblos del norte",
+        "Ideal para escalas cortas"
+      ],
+      "image": "/images/tours/timanfaya.jpg",
+      "minPax": 10,
+      "maxGroup": 20,
+      "shortTitle": "Parque natural de las Dunas de Corralejo",
+      "summary": "Parque natural de las Dunas de Corralejo",
+      "description": "Dunas y pueblos del norte\nIdeal para escalas cortas",
+      "priceChild": 53,
+      "pricePerPerson": 75,
+      "active": true,
+      "gallery": [
+        "/images/tours/timanfaya.jpg"
+      ],
+      "privatePrice": 0,
+      "privateMaxPax": 0,
+      "included": [
+        "Guía",
+        "Transporte"
+      ],
+      "notIncluded": [
+        "Comidas",
+        "Entradas opcionales"
+      ],
+      "currency": "EUR",
+      "allowCard": true,
+      "allowBizum": true,
+      "allowPayOnDay": true,
+      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
+      "translations": {
+        "en": {
+          "title": "Parque natural de las Dunas de Corralejo",
+          "summary": "Parque natural de las Dunas de Corralejo",
+          "description": "Dunas y pueblos del norte\nIdeal para escalas cortas",
+          "highlights": [
+            "Dunas y pueblos del norte",
+            "Ideal para escalas cortas"
+          ],
+          "places": [
+            "Parque natural de las Dunas de Corralejo",
+            "Corralejo",
+            "El Cotillo"
+          ]
+        },
+        "de": {
+          "title": "Parque natural de las Dunas de Corralejo",
+          "summary": "Parque natural de las Dunas de Corralejo",
+          "description": "Dunas y pueblos del norte\nIdeal para escalas cortas",
+          "highlights": [
+            "Dunas y pueblos del norte",
+            "Ideal para escalas cortas"
+          ],
+          "places": [
+            "Parque natural de las Dunas de Corralejo",
+            "Corralejo",
+            "El Cotillo"
+          ]
+        }
+      }
+    },
+    {
+      "id": "teide-y-norte-tenerife",
+      "title": "Teide y Norte de Tenerife",
+      "port": "Tenerife",
+      "priceAdult": 95,
+      "duration": "6 horas",
+      "durationHours": 6,
+      "places": [
+        "Teide",
+        "La Orotava",
+        "Puerto de la Cruz"
+      ],
+      "highlights": [
+        "Parque Nacional del Teide",
+        "Pueblos del norte"
+      ],
+      "image": "/images/tours/timanfaya.jpg",
+      "shortTitle": "Teide y Norte de Tenerife",
+      "summary": "Teide y Norte de Tenerife",
+      "description": "Parque Nacional del Teide\nPueblos del norte",
+      "priceChild": 67,
+      "pricePerPerson": 95,
+      "active": true,
+      "gallery": [
+        "/images/tours/timanfaya.jpg"
+      ],
+      "minPax": 8,
+      "maxGroup": 14,
+      "privatePrice": 0,
+      "privateMaxPax": 0,
+      "included": [
+        "Guía",
+        "Transporte"
+      ],
+      "notIncluded": [
+        "Comidas",
+        "Entradas opcionales"
+      ],
+      "currency": "EUR",
+      "allowCard": true,
+      "allowBizum": true,
+      "allowPayOnDay": true,
+      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
+      "translations": {
+        "en": {
+          "title": "Teide y Norte de Tenerife",
+          "summary": "Teide y Norte de Tenerife",
+          "description": "Parque Nacional del Teide\nPueblos del norte",
+          "highlights": [
+            "Parque Nacional del Teide",
+            "Pueblos del norte"
+          ],
+          "places": [
+            "Teide",
+            "La Orotava",
+            "Puerto de la Cruz"
+          ]
+        },
+        "de": {
+          "title": "Teide y Norte de Tenerife",
+          "summary": "Teide y Norte de Tenerife",
+          "description": "Parque Nacional del Teide\nPueblos del norte",
+          "highlights": [
+            "Parque Nacional del Teide",
+            "Pueblos del norte"
+          ],
+          "places": [
+            "Teide",
+            "La Orotava",
+            "Puerto de la Cruz"
+          ]
+        }
+      }
+    },
+    {
+      "id": "sur-tenerife-los-gigantes",
+      "title": "Sur de Tenerife y Los Gigantes",
+      "port": "Tenerife",
+      "priceAdult": 80,
+      "duration": "5 horas",
+      "durationHours": 5,
+      "places": [
+        "Los Gigantes",
+        "Costa Adeje",
+        "Mirador"
+      ],
+      "highlights": [
+        "Acantilados de Los Gigantes",
+        "Costa sur"
+      ],
+      "image": "/images/tours/timanfaya.jpg",
+      "shortTitle": "Sur de Tenerife y Los Gigantes",
+      "summary": "Sur de Tenerife y Los Gigantes",
+      "description": "Acantilados de Los Gigantes\nCosta sur",
+      "priceChild": 56,
+      "pricePerPerson": 80,
+      "active": true,
+      "gallery": [
+        "/images/tours/timanfaya.jpg"
+      ],
+      "minPax": 8,
+      "maxGroup": 14,
+      "privatePrice": 0,
+      "privateMaxPax": 0,
+      "included": [
+        "Guía",
+        "Transporte"
+      ],
+      "notIncluded": [
+        "Comidas",
+        "Entradas opcionales"
+      ],
+      "currency": "EUR",
+      "allowCard": true,
+      "allowBizum": true,
+      "allowPayOnDay": true,
+      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
+      "translations": {
+        "en": {
+          "title": "Sur de Tenerife y Los Gigantes",
+          "summary": "Sur de Tenerife y Los Gigantes",
+          "description": "Acantilados de Los Gigantes\nCosta sur",
+          "highlights": [
+            "Acantilados de Los Gigantes",
+            "Costa sur"
+          ],
+          "places": [
+            "Los Gigantes",
+            "Costa Adeje",
+            "Mirador"
+          ]
+        },
+        "de": {
+          "title": "Sur de Tenerife y Los Gigantes",
+          "summary": "Sur de Tenerife y Los Gigantes",
+          "description": "Acantilados de Los Gigantes\nCosta sur",
+          "highlights": [
+            "Acantilados de Los Gigantes",
+            "Costa sur"
+          ],
+          "places": [
+            "Los Gigantes",
+            "Costa Adeje",
+            "Mirador"
+          ]
+        }
+      }
+    },
+    {
+      "id": "funchal-y-monte-madeira",
+      "title": "Funchal y Monte — Madeira",
+      "port": "Funchal",
+      "priceAdult": 90,
+      "duration": "4 horas",
+      "durationHours": 4,
+      "places": [
+        "Funchal",
+        "Monte",
+        "Jardines botánicos"
+      ],
+      "highlights": [
+        "Ciudad de Funchal",
+        "Tradición del carro de cesto"
+      ],
+      "image": "/images/tours/timanfaya.jpg",
+      "shortTitle": "Funchal y Monte — Madeira",
+      "summary": "Funchal y Monte — Madeira",
+      "description": "Ciudad de Funchal\nTradición del carro de cesto",
+      "priceChild": 63,
+      "pricePerPerson": 90,
+      "active": true,
+      "gallery": [
+        "/images/tours/timanfaya.jpg"
+      ],
+      "minPax": 8,
+      "maxGroup": 14,
+      "privatePrice": 0,
+      "privateMaxPax": 0,
+      "included": [
+        "Guía",
+        "Transporte"
+      ],
+      "notIncluded": [
+        "Comidas",
+        "Entradas opcionales"
+      ],
+      "currency": "EUR",
+      "allowCard": true,
+      "allowBizum": true,
+      "allowPayOnDay": true,
+      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
+      "translations": {
+        "en": {
+          "title": "Funchal y Monte — Madeira",
+          "summary": "Funchal y Monte — Madeira",
+          "description": "Ciudad de Funchal\nTradición del carro de cesto",
+          "highlights": [
+            "Ciudad de Funchal",
+            "Tradición del carro de cesto"
+          ],
+          "places": [
+            "Funchal",
+            "Monte",
+            "Jardines botánicos"
+          ]
+        },
+        "de": {
+          "title": "Funchal y Monte — Madeira",
+          "summary": "Funchal y Monte — Madeira",
+          "description": "Ciudad de Funchal\nTradición del carro de cesto",
+          "highlights": [
+            "Ciudad de Funchal",
+            "Tradición del carro de cesto"
+          ],
+          "places": [
+            "Funchal",
+            "Monte",
+            "Jardines botánicos"
+          ]
+        }
+      }
+    },
+    {
+      "id": "este-madeira-machico",
+      "title": "Este de Madeira — Machico y Ponta de São Lourenço",
+      "port": "Funchal",
+      "priceAdult": 100,
+      "duration": "5 horas",
+      "durationHours": 5,
+      "places": [
+        "Machico",
+        "Ponta de São Lourenço",
+        "Caniçal"
+      ],
+      "highlights": [
+        "Paisaje volcánico",
+        "Miradores del este"
+      ],
+      "image": "/images/tours/timanfaya.jpg",
+      "shortTitle": "Este de Madeira — Machico y Ponta de São Lourenço",
+      "summary": "Este de Madeira — Machico y Ponta de São Lourenço",
+      "description": "Paisaje volcánico\nMiradores del este",
+      "priceChild": 70,
+      "pricePerPerson": 100,
+      "active": true,
+      "gallery": [
+        "/images/tours/timanfaya.jpg"
+      ],
+      "minPax": 8,
+      "maxGroup": 14,
+      "privatePrice": 0,
+      "privateMaxPax": 0,
+      "included": [
+        "Guía",
+        "Transporte"
+      ],
+      "notIncluded": [
+        "Comidas",
+        "Entradas opcionales"
+      ],
+      "currency": "EUR",
+      "allowCard": true,
+      "allowBizum": true,
+      "allowPayOnDay": true,
+      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
+      "translations": {
+        "en": {
+          "title": "Este de Madeira — Machico y Ponta de São Lourenço",
+          "summary": "Este de Madeira — Machico y Ponta de São Lourenço",
+          "description": "Paisaje volcánico\nMiradores del este",
+          "highlights": [
+            "Paisaje volcánico",
+            "Miradores del este"
+          ],
+          "places": [
+            "Machico",
+            "Ponta de São Lourenço",
+            "Caniçal"
+          ]
+        },
+        "de": {
+          "title": "Este de Madeira — Machico y Ponta de São Lourenço",
+          "summary": "Este de Madeira — Machico y Ponta de São Lourenço",
+          "description": "Paisaje volcánico\nMiradores del este",
+          "highlights": [
+            "Paisaje volcánico",
+            "Miradores del este"
+          ],
+          "places": [
+            "Machico",
+            "Ponta de São Lourenço",
+            "Caniçal"
+          ]
+        }
+      }
+    },
+    {
+      "id": "jameos-y-cactus-lanzarote",
+      "title": "Jameos del Agua y Jardín de Cactus",
+      "port": "Lanzarote",
+      "priceAdult": 110,
+      "duration": "5 horas",
+      "durationHours": 5,
+      "places": [
+        "Jameos del Agua",
+        "Jardín de Cactus",
+        "Arrieta"
+      ],
+      "highlights": [
+        "Obras de César Manrique",
+        "Grupos reducidos"
+      ],
+      "image": "/images/tours/timanfaya.jpg",
+      "shortTitle": "Jameos del Agua y Jardín de Cactus",
+      "summary": "Jameos del Agua y Jardín de Cactus",
+      "description": "Obras de César Manrique\nGrupos reducidos",
+      "priceChild": 77,
+      "pricePerPerson": 110,
+      "active": true,
+      "gallery": [
+        "/images/tours/timanfaya.jpg"
+      ],
+      "minPax": 8,
+      "maxGroup": 14,
+      "privatePrice": 0,
+      "privateMaxPax": 0,
+      "included": [
+        "Guía",
+        "Transporte"
+      ],
+      "notIncluded": [
+        "Comidas",
+        "Entradas opcionales"
+      ],
+      "currency": "EUR",
+      "allowCard": true,
+      "allowBizum": true,
+      "allowPayOnDay": true,
+      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
+      "translations": {
+        "en": {
+          "title": "Jameos del Agua y Jardín de Cactus",
+          "summary": "Jameos del Agua y Jardín de Cactus",
+          "description": "Obras de César Manrique\nGrupos reducidos",
+          "highlights": [
+            "Obras de César Manrique",
+            "Grupos reducidos"
+          ],
+          "places": [
+            "Jameos del Agua",
+            "Jardín de Cactus",
+            "Arrieta"
+          ]
+        },
+        "de": {
+          "title": "Jameos del Agua y Jardín de Cactus",
+          "summary": "Jameos del Agua y Jardín de Cactus",
+          "description": "Obras de César Manrique\nGrupos reducidos",
+          "highlights": [
+            "Obras de César Manrique",
+            "Grupos reducidos"
+          ],
+          "places": [
+            "Jameos del Agua",
+            "Jardín de Cactus",
+            "Arrieta"
+          ]
+        }
+      }
+    },
+    {
+      "id": "wine-and-volcano-lanzarote",
+      "title": "La Geria y volcanes — ruta del vino",
+      "port": "Lanzarote",
+      "priceAdult": 115,
+      "duration": "4 horas",
+      "durationHours": 4,
+      "places": [
+        "La Geria",
+        "Bodega",
+        "Timanfaya vistas"
+      ],
+      "highlights": [
+        "Cata de vinos",
+        "Paisaje volcánico"
+      ],
+      "image": "/images/tours/timanfaya.jpg",
+      "shortTitle": "La Geria y volcanes — ruta del vino",
+      "summary": "La Geria y volcanes — ruta del vino",
+      "description": "Cata de vinos\nPaisaje volcánico",
+      "priceChild": 81,
+      "pricePerPerson": 115,
+      "active": true,
+      "gallery": [
+        "/images/tours/timanfaya.jpg"
+      ],
+      "minPax": 8,
+      "maxGroup": 14,
+      "privatePrice": 0,
+      "privateMaxPax": 0,
+      "included": [
+        "Guía",
+        "Transporte"
+      ],
+      "notIncluded": [
+        "Comidas",
+        "Entradas opcionales"
+      ],
+      "currency": "EUR",
+      "allowCard": true,
+      "allowBizum": true,
+      "allowPayOnDay": true,
+      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
+      "translations": {
+        "en": {
+          "title": "La Geria y volcanes — ruta del vino",
+          "summary": "La Geria y volcanes — ruta del vino",
+          "description": "Cata de vinos\nPaisaje volcánico",
+          "highlights": [
+            "Cata de vinos",
+            "Paisaje volcánico"
+          ],
+          "places": [
+            "La Geria",
+            "Bodega",
+            "Timanfaya vistas"
+          ]
+        },
+        "de": {
+          "title": "La Geria y volcanes — ruta del vino",
+          "summary": "La Geria y volcanes — ruta del vino",
+          "description": "Cata de vinos\nPaisaje volcánico",
+          "highlights": [
+            "Cata de vinos",
+            "Paisaje volcánico"
+          ],
+          "places": [
+            "La Geria",
+            "Bodega",
+            "Timanfaya vistas"
+          ]
+        }
+      }
+    },
+    {
+      "id": "betancuria-fuerteventura",
+      "title": "Betancuria y interior de Fuerteventura",
+      "port": "Puerto del Rosario",
+      "priceAdult": 70,
+      "duration": "4 horas",
+      "durationHours": 4,
+      "places": [
+        "Betancuria",
+        "Antigua",
+        "Mirador"
+      ],
+      "highlights": [
+        "Antigua capital",
+        "Paisaje de interior"
+      ],
+      "image": "/images/tours/timanfaya.jpg",
+      "shortTitle": "Betancuria y interior de Fuerteventura",
+      "summary": "Betancuria y interior de Fuerteventura",
+      "description": "Antigua capital\nPaisaje de interior",
+      "priceChild": 49,
+      "pricePerPerson": 70,
+      "active": true,
+      "gallery": [
+        "/images/tours/timanfaya.jpg"
+      ],
+      "minPax": 8,
+      "maxGroup": 14,
+      "privatePrice": 0,
+      "privateMaxPax": 0,
+      "included": [
+        "Guía",
+        "Transporte"
+      ],
+      "notIncluded": [
+        "Comidas",
+        "Entradas opcionales"
+      ],
+      "currency": "EUR",
+      "allowCard": true,
+      "allowBizum": true,
+      "allowPayOnDay": true,
+      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
+      "translations": {
+        "en": {
+          "title": "Betancuria y interior de Fuerteventura",
+          "summary": "Betancuria y interior de Fuerteventura",
+          "description": "Antigua capital\nPaisaje de interior",
+          "highlights": [
+            "Antigua capital",
+            "Paisaje de interior"
+          ],
+          "places": [
+            "Betancuria",
+            "Antigua",
+            "Mirador"
+          ]
+        },
+        "de": {
+          "title": "Betancuria y interior de Fuerteventura",
+          "summary": "Betancuria y interior de Fuerteventura",
+          "description": "Antigua capital\nPaisaje de interior",
+          "highlights": [
+            "Antigua capital",
+            "Paisaje de interior"
+          ],
+          "places": [
+            "Betancuria",
+            "Antigua",
+            "Mirador"
+          ]
+        }
+      }
+    },
+    {
+      "id": "vallehermoso-la-gomera",
+      "title": "Vallehermoso y norte de La Gomera",
+      "port": "La Gomera",
+      "priceAdult": 80,
+      "duration": "5 horas",
+      "durationHours": 5,
+      "places": [
+        "Vallehermoso",
+        "Agulo",
+        "Mirador"
+      ],
+      "highlights": [
+        "Valle norte",
+        "Vistas atlánticas"
+      ],
+      "image": "/images/tours/timanfaya.jpg",
+      "shortTitle": "Vallehermoso y norte de La Gomera",
+      "summary": "Vallehermoso y norte de La Gomera",
+      "description": "Valle norte\nVistas atlánticas",
+      "priceChild": 56,
+      "pricePerPerson": 80,
+      "active": true,
+      "gallery": [
+        "/images/tours/timanfaya.jpg"
+      ],
+      "minPax": 8,
+      "maxGroup": 14,
+      "privatePrice": 0,
+      "privateMaxPax": 0,
+      "included": [
+        "Guía",
+        "Transporte"
+      ],
+      "notIncluded": [
+        "Comidas",
+        "Entradas opcionales"
+      ],
+      "currency": "EUR",
+      "allowCard": true,
+      "allowBizum": true,
+      "allowPayOnDay": true,
+      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
+      "translations": {
+        "en": {
+          "title": "Vallehermoso y norte de La Gomera",
+          "summary": "Vallehermoso y norte de La Gomera",
+          "description": "Valle norte\nVistas atlánticas",
+          "highlights": [
+            "Valle norte",
+            "Vistas atlánticas"
+          ],
+          "places": [
+            "Vallehermoso",
+            "Agulo",
+            "Mirador"
+          ]
+        },
+        "de": {
+          "title": "Vallehermoso y norte de La Gomera",
+          "summary": "Vallehermoso y norte de La Gomera",
+          "description": "Valle norte\nVistas atlánticas",
+          "highlights": [
+            "Valle norte",
+            "Vistas atlánticas"
+          ],
+          "places": [
+            "Vallehermoso",
+            "Agulo",
+            "Mirador"
+          ]
+        }
+      }
     }
   ],
   "sailings": [

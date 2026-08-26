@@ -201,6 +201,15 @@ export interface CruisesData {
   calls: CruiseCall[];
 }
 
+export interface CruiseShoreTourTranslation {
+  title?: string;
+  shortTitle?: string;
+  summary?: string;
+  description?: string;
+  highlights?: string[];
+  places?: string[];
+}
+
 export interface CruiseShoreTour {
   id: string;
   title: string;
@@ -211,18 +220,29 @@ export interface CruiseShoreTour {
   priceChild?: number | null;
   pricePerPerson?: number | null;
   image: string;
+  gallery?: string[];
   duration: string;
+  durationHours?: number;
   places: string[];
   highlights: string[];
   included?: string[];
   notIncluded?: string[];
   bookingSlug?: string;
   maxGroup?: number;
+  minPax?: number;
+  privatePrice?: number;
+  privateMaxPax?: number;
+  port?: string;
+  active?: boolean;
   currency?: string;
   allowCard?: boolean;
   allowBizum?: boolean;
   allowPayOnDay?: boolean;
   cancellationPolicy?: string;
+  translations?: {
+    en?: CruiseShoreTourTranslation;
+    de?: CruiseShoreTourTranslation;
+  };
 }
 
 export interface CruiseItineraryStop {
