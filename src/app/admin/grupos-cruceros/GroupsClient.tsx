@@ -116,6 +116,29 @@ export function GroupsPanel() {
     [items, tab, range]
   );
 
+  /** Ids de grupos que tienen hermano (misma serie barco+fecha+excursión). */
+  const multiSeriesIds = useMemo(() => {
+    const keyCount = new Map<string, number>();
+    for (const g of items) {
+      const key = `${g.date}|${g.shipName}|${g.excursionTitle}`.toLowerCase();
+      keyCount.set(key, (keyCount.get(key) || 0) + 1);
+    }
+    const ids = new Set<string>();
+    for (const g of items) {
+      const key = `${g.date}|${g.shipName}|${g.excursionTitle}`.toLowerCase();
+      if ((keyCount.get(key) || 0) > 1) ids.add(g.id);
+    }
+    return ids;
+  }, [items]);
+
+  function seriesLabel(g: CruiseGroup) {
+    const idx = g.seriesIndex ?? 1;
+    if (multiSeriesIds.has(g.id) || idx > 1 || g.spawnedFromId) {
+      return `Grupo ${idx}`;
+    }
+    return null;
+  }
+
   const load = useCallback(async () => {
     const res = await fetch("/api/admin/extras?resource=groups");
     const data = await res.json();
@@ -367,9 +390,9 @@ export function GroupsPanel() {
                 <ul className="space-y-2 text-sm">
                   <li>
                     <b>Estado:</b> {statusLabel(g.status)}
-                    {g.seriesIndex != null && g.seriesIndex > 1 ? (
+                    {seriesLabel(g) ? (
                       <span className="ml-2 rounded bg-sky-soft px-2 py-0.5 text-xs font-bold text-ocean">
-                        Grupo {g.seriesIndex}
+                        {seriesLabel(g)}
                       </span>
                     ) : null}
                   </li>
@@ -890,9 +913,7 @@ export function GroupsPanel() {
                       className="text-left font-semibold text-ocean hover:underline"
                     >
                       {g.shipName}
-                      {g.seriesIndex != null && g.seriesIndex > 1
-                        ? ` · G${g.seriesIndex}`
-                        : ""}
+                      {seriesLabel(g) ? ` · ${seriesLabel(g)}` : ""}
                     </button>
                     <div className="text-xs text-ink-muted">{g.company}</div>
                   </td>

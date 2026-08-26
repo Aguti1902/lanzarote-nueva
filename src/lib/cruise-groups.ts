@@ -1,5 +1,6 @@
 import type { Booking, CruiseGroup } from "@/types";
 import {
+  ensureGroupPaymentLinks,
   getCruiseGroups,
   upsertCruiseGroup,
 } from "@/lib/admin-extras";
@@ -165,6 +166,12 @@ export async function syncCruiseGroupCapacity(
         spawnedFromId: group.id,
         seriesIndex,
       });
+      // Enlaces listos en detalles para enviar el pago manualmente
+      try {
+        await ensureGroupPaymentLinks(spawned);
+      } catch {
+        // No bloquear el cupo si fallan los enlaces; se pueden regenerar en el panel
+      }
     }
   } else if (group.status === "full") {
     nextStatus = "open";
