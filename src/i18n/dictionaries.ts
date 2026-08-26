@@ -265,6 +265,9 @@ export type Dictionary = {
     recommendations: string;
     cancellation: string;
     maxAbbrev: string;
+    video: string;
+    map: string;
+    openMap: string;
   };
   blog: {
     eyebrow: string;
@@ -691,6 +694,9 @@ const es: Dictionary = {
     recommendations: "Recomendaciones",
     cancellation: "Política de cancelación",
     maxAbbrev: "máx.",
+    video: "Vídeo de la excursión",
+    map: "Mapa del recorrido",
+    openMap: "Abrir mapa",
   },
   blog: {
     eyebrow: "Blog",
@@ -1116,6 +1122,9 @@ const en: Dictionary = {
     recommendations: "Recommendations",
     cancellation: "Cancellation policy",
     maxAbbrev: "max.",
+    video: "Tour video",
+    map: "Tour map",
+    openMap: "Open map",
   },
   blog: {
     eyebrow: "Blog",
@@ -1549,6 +1558,9 @@ const de: Dictionary = {
     recommendations: "Empfehlungen",
     cancellation: "Stornierungsbedingungen",
     maxAbbrev: "max.",
+    video: "Video der Tour",
+    map: "Kartenübersicht",
+    openMap: "Karte öffnen",
   },
   blog: {
     eyebrow: "Blog",

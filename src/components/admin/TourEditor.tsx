@@ -588,14 +588,23 @@ export function TourEditor({ initial }: { initial?: Tour }) {
                 className={adminInput}
                 value={tour.youtubeUrl || ""}
                 onChange={(e) => set("youtubeUrl", e.target.value)}
+                placeholder="https://www.youtube.com/watch?v=... o youtu.be/..."
               />
+              <p className="mt-1 text-xs text-ink-muted">
+                Se muestra en la ficha pública de la excursión.
+              </p>
             </Field>
             <Field label="URL del mapa" className="md:col-span-2">
               <input
                 className={adminInput}
                 value={tour.mapUrl || ""}
                 onChange={(e) => set("mapUrl", e.target.value)}
+                placeholder="URL de Google Maps (preferible enlace /maps/embed?...)"
               />
+              <p className="mt-1 text-xs text-ink-muted">
+                Usa un enlace de «Insertar mapa» de Google Maps para verlo
+                embebido en la web.
+              </p>
             </Field>
 
             <Field label="Precio por adulto (anterior)">

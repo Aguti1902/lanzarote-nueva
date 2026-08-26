@@ -14,6 +14,11 @@ import {
 import { BookingWidget } from "@/components/BookingWidget";
 import { getTourBySlug, getPublicTours } from "@/lib/content";
 import { formatPrice, groupSizeLabel } from "@/lib/format";
+import {
+  isHttpUrl,
+  mapEmbedUrl,
+  youtubeEmbedUrl,
+} from "@/lib/media-embeds";
 import { localizeTour, localizeTours } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
@@ -61,6 +66,11 @@ export default async function TourDetailPage({ params }: Props) {
               t.durationHours === tour.durationHours
           )
         : undefined;
+
+  const videoSrc = youtubeEmbedUrl(tour.youtubeUrl);
+  const mapSrc = mapEmbedUrl(tour.mapUrl);
+  const mapLink =
+    !mapSrc && isHttpUrl(tour.mapUrl) ? tour.mapUrl!.trim() : null;
 
   return (
     <div>
@@ -225,6 +235,57 @@ export default async function TourDetailPage({ params }: Props) {
               ))}
             </ul>
           </section>
+
+          {videoSrc && (
+            <section className="mt-10">
+              <h2 className="font-display text-2xl">{dict.tourDetail.video}</h2>
+              <div className="mt-4 overflow-hidden rounded-xl ring-1 ring-sand-line">
+                <div className="relative aspect-video w-full bg-bg-deep">
+                  <iframe
+                    src={videoSrc}
+                    title={dict.tourDetail.video}
+                    className="absolute inset-0 h-full w-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                  />
+                </div>
+              </div>
+            </section>
+          )}
+
+          {(mapSrc || mapLink) && (
+            <section className="mt-10">
+              <h2 className="font-display text-2xl">{dict.tourDetail.map}</h2>
+              {mapSrc ? (
+                <div className="mt-4 overflow-hidden rounded-xl ring-1 ring-sand-line">
+                  <div className="relative aspect-[4/3] w-full bg-bg md:aspect-[16/9]">
+                    <iframe
+                      src={mapSrc}
+                      title={dict.tourDetail.map}
+                      className="absolute inset-0 h-full w-full border-0"
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      allowFullScreen
+                    />
+                  </div>
+                </div>
+              ) : (
+                <p className="mt-4">
+                  <a
+                    href={mapLink!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 font-semibold text-ocean underline-offset-2 hover:underline"
+                  >
+                    <MapPin className="h-4 w-4" />
+                    {dict.tourDetail.openMap}
+                  </a>
+                </p>
+              )}
+            </section>
+          )}
 
           <section className="mt-10 rounded-xl bg-surface p-5 ring-1 ring-sand-line">
             <h2 className="font-display text-xl">
