@@ -10,6 +10,10 @@ import {
 } from "@/lib/cruise-itineraries";
 import { formatDateShort, formatPrice } from "@/lib/format";
 import { localizeShoreTour } from "@/lib/localize-content";
+import {
+  shoreTourDurationLabel,
+  shoreTourPublicHighlights,
+} from "@/lib/shore-tour-display";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
@@ -123,25 +127,38 @@ export default async function CruiseShoreTourPage({
           )}
 
           <ul className="mt-6 space-y-2 text-sm text-ink-muted">
-            {tour.duration && (
-              <li>
-                <span className="font-semibold text-ink">
-                  {dict.cruises.durationLabel}:{" "}
-                </span>
-                {tour.duration}
-              </li>
-            )}
-            {tour.highlights.map((item) => (
-              <li key={item}>• {item}</li>
-            ))}
-            {tour.places.length > 0 && (
-              <li>
-                <span className="font-semibold text-ink">
-                  {dict.cruises.placesToVisit}:{" "}
-                </span>
-                {tour.places.join(", ")}
-              </li>
-            )}
+            {(() => {
+              const duration = shoreTourDurationLabel(
+                tour,
+                dict.cruises.durationHours
+              );
+              const bullets = shoreTourPublicHighlights(tour, {
+                smallGroupMax: dict.cruises.smallGroupMax,
+              });
+              return (
+                <>
+                  {duration ? (
+                    <li>
+                      <span className="font-semibold text-ink">
+                        {dict.cruises.durationLabel}:{" "}
+                      </span>
+                      {duration}
+                    </li>
+                  ) : null}
+                  {bullets.map((item) => (
+                    <li key={item}>• {item}</li>
+                  ))}
+                  {tour.places.length > 0 && (
+                    <li>
+                      <span className="font-semibold text-ink">
+                        {dict.cruises.placesToVisit}:{" "}
+                      </span>
+                      {tour.places.join(", ")}
+                    </li>
+                  )}
+                </>
+              );
+            })()}
           </ul>
 
           {tour.description && (

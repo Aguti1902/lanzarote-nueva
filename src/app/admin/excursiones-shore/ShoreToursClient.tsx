@@ -16,6 +16,7 @@ import {
   linesToArray,
 } from "@/components/admin/Field";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
+import { syncShoreTourStructuredFields } from "@/lib/shore-tour-display";
 
 type DetailTab =
   | "details"
@@ -235,20 +236,24 @@ export function ShoreToursPanel() {
         next.recommendations = raw.recommendations;
       return next;
     };
+    const savedId = draft.id || slugify(draft.title);
     const payload = {
       kind: "shore-tours",
-      ...draft,
-      id: draft.id || slugify(draft.title),
-      shortTitle: draft.shortTitle || draft.title,
-      pricePerPerson: draft.priceAdult,
-      image: draft.gallery?.[0] || draft.image,
-      schedule: normalizeSchedule(draft.schedule),
-      blockedDates: draft.blockedDates || [],
-      seo: draft.seo || { title: "", description: "", keywords: "" },
-      translations: {
-        en: cleanLocale("en"),
-        de: cleanLocale("de"),
-      },
+      ...syncShoreTourStructuredFields({
+        ...draft,
+        id: savedId,
+        shortTitle: draft.shortTitle || draft.title,
+        pricePerPerson: draft.priceAdult,
+        image: draft.gallery?.[0] || draft.image,
+        schedule: normalizeSchedule(draft.schedule),
+        blockedDates: draft.blockedDates || [],
+        seo: draft.seo || { title: "", description: "", keywords: "" },
+        translations: {
+          en: cleanLocale("en"),
+          de: cleanLocale("de"),
+        },
+      }),
+      id: savedId,
     };
     const res = await fetch("/api/admin/cruise-catalog", {
       method: isNew ? "POST" : "PUT",
@@ -262,7 +267,7 @@ export function ShoreToursPanel() {
     }
     setMessage("Excursión guardada");
     await load();
-    setSelectedId(payload.id);
+    setSelectedId(savedId);
   }
 
   async function remove(id: string) {

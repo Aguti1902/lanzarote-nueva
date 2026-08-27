@@ -133,6 +133,8 @@ export type Dictionary = {
     bookTour: string;
     placesToVisit: string;
     durationLabel: string;
+    smallGroupMax: string;
+    durationHours: string;
     breadcrumbCruises: string;
     seeExcursionsForShip: string;
     calendarHint: string;
@@ -534,6 +536,8 @@ const es: Dictionary = {
     bookTour: "Reservar",
     placesToVisit: "Lugares a visitar",
     durationLabel: "Duración del tour",
+    smallGroupMax: "Excursión en grupos pequeños, máximo {n} personas",
+    durationHours: "{n} horas",
     breadcrumbCruises: "Excursiones para crucero",
     seeExcursionsForShip: "Ver excursiones del crucero",
     calendarHint:
@@ -966,6 +970,8 @@ const en: Dictionary = {
     bookTour: "Book",
     placesToVisit: "Places to visit",
     durationLabel: "Tour duration",
+    smallGroupMax: "Small-group excursion, maximum {n} people",
+    durationHours: "{n} hours",
     breadcrumbCruises: "Cruise excursions",
     seeExcursionsForShip: "See cruise excursions",
     calendarHint:
@@ -1397,6 +1403,8 @@ const de: Dictionary = {
     bookTour: "Buchen",
     placesToVisit: "Besichtigungen",
     durationLabel: "Tourdauer",
+    smallGroupMax: "Kleine Gruppen, maximal {n} Personen",
+    durationHours: "{n} Stunden",
     breadcrumbCruises: "Kreuzfahrtausflüge",
     seeExcursionsForShip: "Kreuzfahrtausflüge ansehen",
     calendarHint:

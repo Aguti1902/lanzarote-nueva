@@ -15,6 +15,7 @@ import type {
   CruiseSailing,
   CruiseShoreTour,
 } from "@/types";
+import { syncShoreTourStructuredFields } from "@/lib/shore-tour-display";
 
 export const dynamic = "force-dynamic";
 
@@ -294,7 +295,9 @@ export async function POST(request: Request) {
         seo: body.seo || { title: "", description: "", keywords: "" },
         translations: body.translations || {},
       };
-      data.shoreTours.push(tour);
+      data.shoreTours.push(
+        syncShoreTourStructuredFields(tour) as CruiseShoreTour
+      );
       await save(data);
       return NextResponse.json({ item: tour }, { status: 201 });
     }
@@ -424,7 +427,10 @@ export async function PUT(request: Request) {
         return NextResponse.json({ error: "No encontrado" }, { status: 404 });
       }
       const { kind: _kind, ...rest } = body;
-      data.shoreTours[idx] = { ...data.shoreTours[idx], ...rest };
+      data.shoreTours[idx] = syncShoreTourStructuredFields({
+        ...data.shoreTours[idx],
+        ...rest,
+      }) as CruiseShoreTour;
       await save(data);
       return NextResponse.json({ item: data.shoreTours[idx] });
     }
