@@ -12,6 +12,7 @@ import {
 import { BookingDetailModal } from "@/components/admin/BookingDetailModal";
 import {
   BookingStatusBadge,
+  PaymentStatusBadge,
   bookingRowClassName,
 } from "@/components/admin/BookingStatusBadge";
 
@@ -221,6 +222,12 @@ export default function AdminReservasCrucerosPage() {
                   <span className="ml-1 text-xs text-ink-muted">
                     {paymentLabel(b.paymentMethod)}
                   </span>
+                  <div className="mt-1">
+                    <PaymentStatusBadge
+                      status={b.paymentStatus || "unpaid"}
+                      size="sm"
+                    />
+                  </div>
                 </td>
                 <td className="px-4 py-3 text-ocean">
                   {formatPrice(b.amountDueCash ?? 0)}

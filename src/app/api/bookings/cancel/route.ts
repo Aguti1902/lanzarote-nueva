@@ -71,6 +71,9 @@ export async function POST(request: Request) {
       cancellationReason: reason,
       cancelledAt: new Date().toISOString(),
       cancellationFee: assessment.fee,
+      ...(assessment.refundAmount > 0
+        ? { paymentStatus: "refunded" as const }
+        : {}),
     });
 
     if (!updated) {
@@ -81,17 +84,22 @@ export async function POST(request: Request) {
     }
 
     let creditNote = null;
-    if (assessment.free) {
-      creditNote = await createCreditNoteForBooking(updated);
+    if (assessment.refundAmount > 0) {
+      creditNote = await createCreditNoteForBooking(updated, {
+        refundAmount: assessment.refundAmount,
+      });
     }
 
     return NextResponse.json({
       booking: updated,
       assessment,
       creditNote,
-      message: assessment.free
-        ? "Reserva cancelada. Si correspondía reembolso, se ha emitido abono."
-        : `Reserva cancelada. Aplica cargo de cancelación de ${assessment.fee.toFixed(2)} €.`,
+      message:
+        assessment.refundAmount > 0
+          ? `Reserva cancelada. Se ha emitido factura en negativo (abono) por ${assessment.refundAmount.toFixed(2)} €.`
+          : assessment.free
+            ? "Reserva cancelada. No había cobros que devolver."
+            : `Reserva cancelada. Aplica cargo de cancelación de ${assessment.fee.toFixed(2)} €.`,
     });
   } catch {
     return NextResponse.json(

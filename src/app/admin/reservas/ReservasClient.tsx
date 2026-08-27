@@ -14,6 +14,7 @@ import {
 import { BookingDetailModal } from "@/components/admin/BookingDetailModal";
 import {
   BookingStatusBadge,
+  PaymentStatusBadge,
   bookingRowClassName,
 } from "@/components/admin/BookingStatusBadge";
 
@@ -316,11 +317,16 @@ export default function AdminReservasPage() {
                   </td>
                   <td className="px-4 py-3">
                     <p>{paymentLabel(b.paymentMethod)}</p>
-                    <p className="text-xs text-ink-muted">{b.paymentStatus}</p>
+                    <div className="mt-1">
+                      <PaymentStatusBadge
+                        status={b.paymentStatus || "unpaid"}
+                        size="sm"
+                      />
+                    </div>
                     {b.invoiceId && (
                       <Link
                         href={`/admin/facturas?id=${b.invoiceId}`}
-                        className="text-xs font-bold text-ocean hover:underline"
+                        className="mt-1 inline-block text-xs font-bold text-ocean hover:underline"
                         onClick={(e) => e.stopPropagation()}
                       >
                         {b.invoiceId}

@@ -14,14 +14,14 @@
       {
         "description": "Delfines al atardecer",
         "qty": 1,
-        "unitPrice": 157.5,
-        "total": 157.5
+        "unitPrice": 147.2,
+        "total": 147.2
       }
     ],
-    "subtotal": 157.5,
-    "taxAmount": 0,
+    "subtotal": 147.2,
+    "taxAmount": 10.3,
     "total": 157.5,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Factura de demostración",
     "status": "issued"
   },
@@ -40,14 +40,14 @@
       {
         "description": "Traslado Aeropuerto → Puerto Calero",
         "qty": 1,
-        "unitPrice": 45,
-        "total": 45
+        "unitPrice": 42.06,
+        "total": 42.06
       }
     ],
-    "subtotal": 45,
-    "taxAmount": 0,
+    "subtotal": 42.06,
+    "taxAmount": 2.94,
     "total": 45,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Factura de demostración",
     "status": "issued"
   },
@@ -66,14 +66,14 @@
       {
         "description": "Ruta del Vino",
         "qty": 1,
-        "unitPrice": 110,
-        "total": 110
+        "unitPrice": 102.8,
+        "total": 102.8
       }
     ],
-    "subtotal": 110,
-    "taxAmount": 0,
+    "subtotal": 102.8,
+    "taxAmount": 7.2,
     "total": 110,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Depósito 10% tarjeta: 11€. Pendiente efectivo: 99€.",
     "status": "issued"
   },
@@ -92,14 +92,14 @@
       {
         "description": "La Graciosa en Catamarán",
         "qty": 1,
-        "unitPrice": 158,
-        "total": 158
+        "unitPrice": 147.66,
+        "total": 147.66
       }
     ],
-    "subtotal": 158,
-    "taxAmount": 0,
+    "subtotal": 147.66,
+    "taxAmount": 10.34,
     "total": 158,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Factura de demostración",
     "status": "issued"
   },
@@ -118,14 +118,14 @@
       {
         "description": "Excursión Privada",
         "qty": 1,
-        "unitPrice": 450,
-        "total": 450
+        "unitPrice": 420.56,
+        "total": 420.56
       }
     ],
-    "subtotal": 450,
-    "taxAmount": 0,
+    "subtotal": 420.56,
+    "taxAmount": 29.44,
     "total": 450,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Depósito 10% tarjeta: 45€. Pendiente efectivo: 405€.",
     "status": "issued"
   },
@@ -144,14 +144,14 @@
       {
         "description": "Traslado Aeropuerto → Costa Teguise",
         "qty": 1,
-        "unitPrice": 40,
-        "total": 40
+        "unitPrice": 37.38,
+        "total": 37.38
       }
     ],
-    "subtotal": 40,
-    "taxAmount": 0,
+    "subtotal": 37.38,
+    "taxAmount": 2.62,
     "total": 40,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Factura de demostración",
     "status": "issued"
   },
@@ -170,14 +170,14 @@
       {
         "description": "Grand Tour Experience",
         "qty": 1,
-        "unitPrice": 267,
-        "total": 267
+        "unitPrice": 249.53,
+        "total": 249.53
       }
     ],
-    "subtotal": 267,
-    "taxAmount": 0,
+    "subtotal": 249.53,
+    "taxAmount": 17.47,
     "total": 267,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Factura de demostración",
     "status": "issued"
   },
@@ -196,14 +196,14 @@
       {
         "description": "Timanfaya y Montañas del Fuego",
         "qty": 1,
-        "unitPrice": 172.5,
-        "total": 172.5
+        "unitPrice": 161.21,
+        "total": 161.21
       }
     ],
-    "subtotal": 172.5,
-    "taxAmount": 0,
+    "subtotal": 161.21,
+    "taxAmount": 11.29,
     "total": 172.5,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Depósito 10% tarjeta: 17.25€. Pendiente efectivo: 155.25€.",
     "status": "issued"
   },
@@ -223,14 +223,14 @@
       {
         "description": "Minibus privado 4 horas",
         "qty": 1,
-        "unitPrice": 320,
-        "total": 320
+        "unitPrice": 299.07,
+        "total": 299.07
       }
     ],
-    "subtotal": 320,
-    "taxAmount": 0,
+    "subtotal": 299.07,
+    "taxAmount": 20.93,
     "total": 320,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Factura de demostración",
     "status": "issued"
   },
@@ -250,14 +250,14 @@
       {
         "description": "César Manrique Experience",
         "qty": 1,
-        "unitPrice": -150,
-        "total": -150
+        "unitPrice": -140.19,
+        "total": -140.19
       }
     ],
-    "subtotal": -150,
-    "taxAmount": 0,
+    "subtotal": -140.19,
+    "taxAmount": -9.81,
     "total": -150,
-    "taxRate": 0,
+    "taxRate": 7,
     "relatedInvoiceId": "FAC-2026-0015",
     "notes": "Abono por cancelación de reserva R-1008. Anula FAC-2026-0015.",
     "status": "issued"
@@ -278,14 +278,14 @@
       {
         "description": "César Manrique Experience",
         "qty": 1,
-        "unitPrice": 150,
-        "total": 150
+        "unitPrice": 140.19,
+        "total": 140.19
       }
     ],
-    "subtotal": 150,
-    "taxAmount": 0,
+    "subtotal": 140.19,
+    "taxAmount": 9.81,
     "total": 150,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Factura de demostración",
     "status": "issued"
   },
@@ -304,14 +304,14 @@
       {
         "description": "Grand Tour Experience",
         "qty": 1,
-        "unitPrice": 267,
-        "total": 267
+        "unitPrice": 249.53,
+        "total": 249.53
       }
     ],
-    "subtotal": 267,
-    "taxAmount": 0,
+    "subtotal": 249.53,
+    "taxAmount": 17.47,
     "total": 267,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Depósito 10% tarjeta: 26.7€. Pendiente efectivo: 240.3€.",
     "status": "issued"
   },
@@ -330,14 +330,14 @@
       {
         "description": "Timanfaya y Montañas del Fuego",
         "qty": 1,
-        "unitPrice": 276,
-        "total": 276
+        "unitPrice": 257.94,
+        "total": 257.94
       }
     ],
-    "subtotal": 276,
-    "taxAmount": 0,
+    "subtotal": 257.94,
+    "taxAmount": 18.06,
     "total": 276,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Factura de demostración",
     "status": "issued"
   },
@@ -356,14 +356,14 @@
       {
         "description": "Mercadillo de Teguise",
         "qty": 1,
-        "unitPrice": 87.5,
-        "total": 87.5
+        "unitPrice": 81.78,
+        "total": 81.78
       }
     ],
-    "subtotal": 87.5,
-    "taxAmount": 0,
+    "subtotal": 81.78,
+    "taxAmount": 5.72,
     "total": 87.5,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Factura de demostración",
     "status": "issued"
   },
@@ -382,14 +382,14 @@
       {
         "description": "Traslado Ida y vuelta Aeropuerto ↔ Puerto del Carmen",
         "qty": 1,
-        "unitPrice": 75,
-        "total": 75
+        "unitPrice": 70.09,
+        "total": 70.09
       }
     ],
-    "subtotal": 75,
-    "taxAmount": 0,
+    "subtotal": 70.09,
+    "taxAmount": 4.91,
     "total": 75,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Depósito 10% tarjeta: 7.5€. Pendiente efectivo: 67.5€.",
     "status": "issued"
   },
@@ -408,14 +408,14 @@
       {
         "description": "Senderismo Norte",
         "qty": 1,
-        "unitPrice": 147,
-        "total": 147
+        "unitPrice": 137.38,
+        "total": 137.38
       }
     ],
-    "subtotal": 147,
-    "taxAmount": 0,
+    "subtotal": 137.38,
+    "taxAmount": 9.62,
     "total": 147,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Depósito 10% tarjeta: 14.7€. Pendiente efectivo: 132.3€.",
     "status": "issued"
   },
@@ -434,14 +434,14 @@
       {
         "description": "Delfines al atardecer",
         "qty": 1,
-        "unitPrice": 90,
-        "total": 90
+        "unitPrice": 84.11,
+        "total": 84.11
       }
     ],
-    "subtotal": 90,
-    "taxAmount": 0,
+    "subtotal": 84.11,
+    "taxAmount": 5.89,
     "total": 90,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Factura de demostración",
     "status": "issued"
   },
@@ -460,14 +460,14 @@
       {
         "description": "Excursión Privada",
         "qty": 1,
-        "unitPrice": 450,
-        "total": 450
+        "unitPrice": 420.56,
+        "total": 420.56
       }
     ],
-    "subtotal": 450,
-    "taxAmount": 0,
+    "subtotal": 420.56,
+    "taxAmount": 29.44,
     "total": 450,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Factura de demostración",
     "status": "issued"
   },
@@ -486,14 +486,14 @@
       {
         "description": "Traslado Hotel → Aeropuerto (Costa Teguise)",
         "qty": 1,
-        "unitPrice": 40,
-        "total": 40
+        "unitPrice": 37.38,
+        "total": 37.38
       }
     ],
-    "subtotal": 40,
-    "taxAmount": 0,
+    "subtotal": 37.38,
+    "taxAmount": 2.62,
     "total": 40,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Factura de demostración",
     "status": "issued"
   },
@@ -512,14 +512,14 @@
       {
         "description": "La Graciosa en Catamarán",
         "qty": 1,
-        "unitPrice": 237,
-        "total": 237
+        "unitPrice": 221.5,
+        "total": 221.5
       }
     ],
-    "subtotal": 237,
-    "taxAmount": 0,
+    "subtotal": 221.5,
+    "taxAmount": 15.5,
     "total": 237,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Depósito 10% tarjeta: 23.7€. Pendiente efectivo: 213.3€.",
     "status": "issued"
   },
@@ -538,14 +538,14 @@
       {
         "description": "Ruta del Vino",
         "qty": 1,
-        "unitPrice": 220,
-        "total": 220
+        "unitPrice": 205.61,
+        "total": 205.61
       }
     ],
-    "subtotal": 220,
-    "taxAmount": 0,
+    "subtotal": 205.61,
+    "taxAmount": 14.39,
     "total": 220,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Factura de demostración",
     "status": "issued"
   },
@@ -564,14 +564,14 @@
       {
         "description": "César Manrique Experience",
         "qty": 1,
-        "unitPrice": 150,
-        "total": 150
+        "unitPrice": 140.19,
+        "total": 140.19
       }
     ],
-    "subtotal": 150,
-    "taxAmount": 0,
+    "subtotal": 140.19,
+    "taxAmount": 9.81,
     "total": 150,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Factura de demostración",
     "status": "issued"
   },
@@ -590,14 +590,14 @@
       {
         "description": "Grand Tour Experience",
         "qty": 1,
-        "unitPrice": 312,
-        "total": 312
+        "unitPrice": 291.59,
+        "total": 291.59
       }
     ],
-    "subtotal": 312,
-    "taxAmount": 0,
+    "subtotal": 291.59,
+    "taxAmount": 20.41,
     "total": 312,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Depósito 10% tarjeta: 31.2€. Pendiente efectivo: 280.8€.",
     "status": "issued"
   },
@@ -616,14 +616,14 @@
       {
         "description": "Traslado Aeropuerto → Playa Blanca",
         "qty": 1,
-        "unitPrice": 55,
-        "total": 55
+        "unitPrice": 51.4,
+        "total": 51.4
       }
     ],
-    "subtotal": 55,
-    "taxAmount": 0,
+    "subtotal": 51.4,
+    "taxAmount": 3.6,
     "total": 55,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Factura de demostración",
     "status": "issued"
   },
@@ -642,14 +642,14 @@
       {
         "description": "Timanfaya y Montañas del Fuego",
         "qty": 1,
-        "unitPrice": 138,
-        "total": 138
+        "unitPrice": 128.97,
+        "total": 128.97
       }
     ],
-    "subtotal": 138,
-    "taxAmount": 0,
+    "subtotal": 128.97,
+    "taxAmount": 9.03,
     "total": 138,
-    "taxRate": 0,
+    "taxRate": 7,
     "notes": "Factura de demostración",
     "status": "issued"
   }
