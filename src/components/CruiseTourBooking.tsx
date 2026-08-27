@@ -38,6 +38,10 @@ export function CruiseTourBooking({
   const { dict, href } = useLocale();
   const price = tour.pricePerPerson ?? tour.priceAdult ?? 0;
   const max = tour.maxGroup ?? 14;
+  const dateBlocked = useMemo(
+    () => (tour.blockedDates || []).some((b) => b.date === callDate),
+    [callDate, tour.blockedDates]
+  );
 
   const [passengers, setPassengers] = useState(2);
   const [name, setName] = useState("");
@@ -98,6 +102,10 @@ export function CruiseTourBooking({
   function handleAddToCart() {
     setError("");
     setCartMsg("");
+    if (dateBlocked) {
+      setError("Esta fecha no está disponible para la excursión");
+      return;
+    }
     if (!callDate || passengers < 1) {
       setError(dict.cruises.selectPassengers);
       return;
@@ -125,6 +133,10 @@ export function CruiseTourBooking({
   async function handleBookNow(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    if (dateBlocked) {
+      setError("Esta fecha no está disponible para la excursión");
+      return;
+    }
     if (!name || !email || !phone) {
       setError(dict.booking.fillRequired);
       return;
@@ -183,6 +195,12 @@ export function CruiseTourBooking({
           </button>
         )}
       </div>
+
+      {dateBlocked && (
+        <p className="mt-4 rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-800 ring-1 ring-rose-200">
+          Esta fecha no está disponible para la excursión.
+        </p>
+      )}
 
       <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
         <label className="text-sm">

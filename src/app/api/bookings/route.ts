@@ -11,7 +11,16 @@ import {
   createInvoiceForBooking,
 } from "@/lib/invoices";
 import { assessCancellation } from "@/lib/cancellation";
+import { getCruiseShoreTourById } from "@/lib/cruise-itineraries";
 import type { BookingStatus, PaymentMethod } from "@/types";
+
+function isDateBlocked(
+  blockedDates: Array<{ date: string; seats?: number }> | undefined,
+  date: string
+): boolean {
+  if (!blockedDates?.length) return false;
+  return blockedDates.some((b) => b.date === date);
+}
 
 export async function GET() {
   const bookings = await getBookings();
@@ -40,6 +49,16 @@ export async function POST(request: Request) {
         { error: "Faltan datos obligatorios" },
         { status: 400 }
       );
+    }
+
+    if (tourId) {
+      const shoreTour = await getCruiseShoreTourById(String(tourId));
+      if (shoreTour && isDateBlocked(shoreTour.blockedDates, String(date))) {
+        return NextResponse.json(
+          { error: "Esta fecha no está disponible para la excursión" },
+          { status: 400 }
+        );
+      }
     }
 
     const booking = await addBooking({

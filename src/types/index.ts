@@ -259,6 +259,9 @@ export interface CruiseShoreTourTranslation {
   description?: string;
   highlights?: string[];
   places?: string[];
+  included?: string[];
+  notIncluded?: string[];
+  recommendations?: string[];
 }
 
 export interface CruiseShoreTour {
@@ -278,6 +281,7 @@ export interface CruiseShoreTour {
   highlights: string[];
   included?: string[];
   notIncluded?: string[];
+  recommendations?: string[];
   bookingSlug?: string;
   maxGroup?: number;
   minPax?: number;
@@ -290,6 +294,23 @@ export interface CruiseShoreTour {
   allowBizum?: boolean;
   allowPayOnDay?: boolean;
   cancellationPolicy?: string;
+  youtubeUrl?: string;
+  mapUrl?: string;
+  /** Same shape as regular tours: zone → slot → 7 weekday flags. */
+  schedule?: Record<
+    string,
+    Partial<Record<TourScheduleSlot, boolean[]>>
+  >;
+  blockedDates?: Array<{
+    date: string;
+    language?: string;
+    seats: number;
+  }>;
+  seo?: {
+    title?: string;
+    description?: string;
+    keywords?: string;
+  };
   translations?: {
     en?: CruiseShoreTourTranslation;
     de?: CruiseShoreTourTranslation;

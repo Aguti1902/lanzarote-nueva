@@ -272,6 +272,7 @@ export async function POST(request: Request) {
         highlights: body.highlights || [],
         included: body.included || [],
         notIncluded: body.notIncluded || [],
+        recommendations: body.recommendations || [],
         bookingSlug: body.bookingSlug || "",
         maxGroup: Number(body.maxGroup) || 14,
         minPax: Number(body.minPax) || 8,
@@ -280,12 +281,17 @@ export async function POST(request: Request) {
         port: body.port || "Lanzarote",
         active: body.active !== false,
         currency: "EUR",
-        allowCard: true,
-        allowBizum: true,
-        allowPayOnDay: true,
+        allowCard: body.allowCard !== false,
+        allowBizum: body.allowBizum !== false,
+        allowPayOnDay: body.allowPayOnDay !== false,
         cancellationPolicy:
           body.cancellationPolicy ||
           "Cancelación gratuita hasta 48 horas antes.",
+        youtubeUrl: body.youtubeUrl || "",
+        mapUrl: body.mapUrl || "",
+        schedule: body.schedule || undefined,
+        blockedDates: body.blockedDates || [],
+        seo: body.seo || { title: "", description: "", keywords: "" },
         translations: body.translations || {},
       };
       data.shoreTours.push(tour);
