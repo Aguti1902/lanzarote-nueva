@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Check, Pencil, Trash2, X } from "lucide-react";
-import type { Booking, CruiseGroup, CruiseItineraryStop } from "@/types";
+import { Check, Copy, Pencil, Trash2, X } from "lucide-react";
+import type { Booking, CruiseGroup, CruiseItineraryStop, PaymentLink } from "@/types";
 import { formatDate, formatDateShort, formatPrice } from "@/lib/format";
 import { Field, adminInput } from "@/components/admin/Field";
 import {
@@ -20,6 +20,8 @@ import {
 
 type GroupsTab = "current" | "done" | "private";
 
+type GroupPaymentLink = PaymentLink & { url?: string };
+
 type GroupDetail = {
   group: CruiseGroup;
   bookings: Booking[];
@@ -32,6 +34,7 @@ type GroupDetail = {
     stops: CruiseItineraryStop[];
   } | null;
   livePax: number;
+  paymentLinks?: GroupPaymentLink[];
 };
 
 const TABS: { id: GroupsTab; label: string; listTitle: string }[] = [
@@ -107,6 +110,29 @@ export function GroupsPanel() {
     [items, tab, range]
   );
 
+  /** Ids de grupos que tienen hermano (misma serie barco+fecha+excursión). */
+  const multiSeriesIds = useMemo(() => {
+    const keyCount = new Map<string, number>();
+    for (const g of items) {
+      const key = `${g.date}|${g.shipName}|${g.excursionTitle}`.toLowerCase();
+      keyCount.set(key, (keyCount.get(key) || 0) + 1);
+    }
+    const ids = new Set<string>();
+    for (const g of items) {
+      const key = `${g.date}|${g.shipName}|${g.excursionTitle}`.toLowerCase();
+      if ((keyCount.get(key) || 0) > 1) ids.add(g.id);
+    }
+    return ids;
+  }, [items]);
+
+  function seriesLabel(g: CruiseGroup) {
+    const idx = g.seriesIndex ?? 1;
+    if (multiSeriesIds.has(g.id) || idx > 1 || g.spawnedFromId) {
+      return `Grupo ${idx}`;
+    }
+    return null;
+  }
+
   const load = useCallback(async () => {
     const res = await fetch("/api/admin/extras?resource=groups");
     const data = await res.json();
@@ -120,7 +146,10 @@ export function GroupsPanel() {
   const loadDetail = useCallback(async (id: string) => {
     setDetailLoading(true);
     try {
-      const res = await fetch(`/api/admin/cruise-groups?id=${encodeURIComponent(id)}`);
+      const origin = encodeURIComponent(window.location.origin);
+      const res = await fetch(
+        `/api/admin/cruise-groups?id=${encodeURIComponent(id)}&origin=${origin}`
+      );
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error");
       setDetail(data as GroupDetail);
@@ -167,14 +196,66 @@ export function GroupsPanel() {
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
-    await fetch("/api/admin/extras?resource=groups", {
-      method: editingId ? "PUT" : "POST",
+    const wasEditing = Boolean(editingId);
+    const res = await fetch("/api/admin/extras?resource=groups", {
+      method: wasEditing ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(editingId ? { id: editingId, ...form } : form),
+      body: JSON.stringify(wasEditing ? { id: editingId, ...form } : form),
     });
+    const data = await res.json().catch(() => ({}));
+    const createdId = !wasEditing
+      ? (data.item?.id as string | undefined)
+      : editingId;
     resetForm();
     await load();
-    if (detailId) await loadDetail(detailId);
+    if (createdId && !wasEditing) {
+      await fetch("/api/admin/cruise-groups", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          groupId: createdId,
+          action: "ensure-links",
+          origin: window.location.origin,
+        }),
+      });
+      setDetailId(createdId);
+      setMessage("Grupo creado. Enlaces de pago listos en detalles.");
+    } else if (detailId) {
+      await loadDetail(detailId);
+    }
+  }
+
+  async function ensurePaymentLinks(groupId: string, forcePerPerson = false) {
+    setMessage("");
+    const res = await fetch("/api/admin/cruise-groups", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        groupId,
+        action: "ensure-links",
+        forcePerPerson,
+        origin: window.location.origin,
+      }),
+    });
+    if (!res.ok) {
+      setMessage("No se pudieron generar los enlaces de pago");
+      return;
+    }
+    setMessage(
+      forcePerPerson
+        ? "Enlaces por persona generados"
+        : "Enlaces de pago actualizados"
+    );
+    await loadDetail(groupId);
+  }
+
+  async function copyText(text: string) {
+    try {
+      await navigator.clipboard.writeText(text);
+      setMessage("Enlace copiado al portapapeles");
+    } catch {
+      setMessage("No se pudo copiar el enlace");
+    }
   }
 
   async function remove(id: string) {
@@ -286,6 +367,13 @@ export function GroupsPanel() {
               >
                 Editar grupo
               </button>
+              <button
+                type="button"
+                onClick={() => ensurePaymentLinks(g.id)}
+                className="rounded border border-ocean/40 px-4 py-2 text-sm font-bold text-ocean hover:bg-sky-soft"
+              >
+                Generar enlaces de pago
+              </button>
             </div>
 
             <div className="grid gap-8 md:grid-cols-2">
@@ -296,6 +384,11 @@ export function GroupsPanel() {
                 <ul className="space-y-2 text-sm">
                   <li>
                     <b>Estado:</b> {statusLabel(g.status)}
+                    {seriesLabel(g) ? (
+                      <span className="ml-2 rounded bg-sky-soft px-2 py-0.5 text-xs font-bold text-ocean">
+                        {seriesLabel(g)}
+                      </span>
+                    ) : null}
                   </li>
                   <li>
                     <b>Puerto de escala:</b> {g.port}
@@ -389,6 +482,113 @@ export function GroupsPanel() {
                 )}
               </section>
             </div>
+
+            <section className="rounded-xl bg-white p-5 ring-1 ring-sand-line">
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-3 border-b border-sand-line pb-2">
+                <h2 className="text-sm font-bold uppercase tracking-wide">
+                  Enlaces de pago (enviar manualmente)
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => ensurePaymentLinks(g.id, true)}
+                  className="text-xs font-bold text-ocean hover:underline"
+                >
+                  Regenerar enlaces por persona
+                </button>
+              </div>
+              {(() => {
+                const links = detail.paymentLinks || [];
+                const groupAll = links.find((p) => p.mode === "group_all");
+                const perPerson = links
+                  .filter((p) => p.mode === "per_person")
+                  .sort(
+                    (a, b) => (a.personIndex || 0) - (b.personIndex || 0)
+                  );
+                if (!groupAll && perPerson.length === 0) {
+                  return (
+                    <p className="text-sm text-ink-muted">
+                      Aún no hay enlaces. Pulsa «Generar enlaces de pago».
+                    </p>
+                  );
+                }
+                return (
+                  <div className="space-y-4">
+                    {groupAll && (
+                      <div className="rounded-lg bg-sky-soft/60 p-4 ring-1 ring-sand-line">
+                        <p className="text-xs font-bold uppercase tracking-wide text-ocean">
+                          Pagar todo el grupo
+                        </p>
+                        <p className="mt-1 text-sm font-semibold">
+                          {formatPrice(groupAll.amount)} · {groupAll.locator} ·{" "}
+                          {groupAll.status === "paid" ? "Pagado" : "Pendiente"}
+                        </p>
+                        {groupAll.url && groupAll.status !== "paid" && (
+                          <div className="mt-2 flex flex-wrap items-center gap-2">
+                            <a
+                              href={groupAll.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="break-all text-sm text-ocean hover:underline"
+                            >
+                              {groupAll.url}
+                            </a>
+                            <button
+                              type="button"
+                              onClick={() => copyText(groupAll.url!)}
+                              className="inline-flex items-center gap-1 text-xs font-bold text-ocean"
+                            >
+                              <Copy className="h-3.5 w-3.5" /> Copiar
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {perPerson.length > 0 && (
+                      <div>
+                        <p className="mb-2 text-xs font-bold uppercase tracking-wide text-ink-muted">
+                          Pagar uno a uno
+                        </p>
+                        <ul className="divide-y divide-sand-line rounded-lg ring-1 ring-sand-line">
+                          {perPerson.map((p) => (
+                            <li
+                              key={p.id}
+                              className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-sm"
+                            >
+                              <div>
+                                <span className="font-semibold">
+                                  {p.personLabel || `Persona ${p.personIndex}`}
+                                </span>
+                                <span className="ml-2 text-ink-muted">
+                                  {formatPrice(p.amount)} · {p.locator}
+                                </span>
+                                <span
+                                  className={`ml-2 text-xs font-bold ${
+                                    p.status === "paid"
+                                      ? "text-emerald-700"
+                                      : "text-rose-700"
+                                  }`}
+                                >
+                                  {p.status === "paid" ? "Pagado" : "Pendiente"}
+                                </span>
+                              </div>
+                              {p.url && p.status !== "paid" && (
+                                <button
+                                  type="button"
+                                  onClick={() => copyText(p.url!)}
+                                  className="inline-flex items-center gap-1 text-xs font-bold text-ocean"
+                                >
+                                  <Copy className="h-3.5 w-3.5" /> Copiar enlace
+                                </button>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+            </section>
 
             <section className="space-y-3">
               <h2 className="text-lg font-bold">Reservas en este grupo</h2>
@@ -715,6 +915,7 @@ export function GroupsPanel() {
                       className="text-left font-semibold text-ocean hover:underline"
                     >
                       {g.shipName}
+                      {seriesLabel(g) ? ` · ${seriesLabel(g)}` : ""}
                     </button>
                     <div className="text-xs text-ink-muted">{g.company}</div>
                   </td>

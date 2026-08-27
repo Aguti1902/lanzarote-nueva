@@ -11,11 +11,24 @@ import {
   createInvoiceForBooking,
 } from "@/lib/invoices";
 import { assessCancellation } from "@/lib/cancellation";
+import {
+  assignBookingToCruiseGroup,
+  syncCruiseGroupCapacity,
+} from "@/lib/cruise-groups";
+import { getCruiseShoreTourById } from "@/lib/cruise-itineraries";
 import type { BookingStatus, PaymentMethod } from "@/types";
 
 export async function GET() {
   const bookings = await getBookings();
   return NextResponse.json({ bookings });
+}
+
+function isDateBlocked(
+  blockedDates: Array<{ date: string; seats?: number }> | undefined,
+  date: string
+): boolean {
+  if (!blockedDates?.length) return false;
+  return blockedDates.some((b) => b.date === date);
 }
 
 export async function POST(request: Request) {
@@ -33,6 +46,7 @@ export async function POST(request: Request) {
       customer,
       transfer,
       minibus,
+      groupId,
     } = body;
 
     if (!type || !tourTitle || !date || !customer?.name || !customer?.email) {
@@ -42,7 +56,17 @@ export async function POST(request: Request) {
       );
     }
 
-    const booking = await addBooking({
+    if (tourId) {
+      const shoreTour = await getCruiseShoreTourById(String(tourId));
+      if (shoreTour && isDateBlocked(shoreTour.blockedDates, String(date))) {
+        return NextResponse.json(
+          { error: "Esta fecha no está disponible para la excursión" },
+          { status: 400 }
+        );
+      }
+    }
+
+    let booking = await addBooking({
       type,
       tourId,
       tourTitle,
@@ -56,7 +80,13 @@ export async function POST(request: Request) {
       transfer,
       minibus,
       status: "confirmed",
+      groupId: groupId ? String(groupId) : undefined,
     });
+
+    if (customer?.cruiseShip || booking.groupId) {
+      const assigned = await assignBookingToCruiseGroup(booking);
+      booking = assigned.booking;
+    }
 
     const invoice = await createInvoiceForBooking(booking);
 
@@ -155,6 +185,13 @@ export async function PATCH(request: Request) {
       });
       if (!booking) {
         return NextResponse.json({ error: "No encontrada" }, { status: 404 });
+      }
+      if (booking.groupId) {
+        try {
+          await syncCruiseGroupCapacity(booking.groupId);
+        } catch {
+          /* ignore capacity sync errors on cancel */
+        }
       }
       let creditNote = null;
       if (assessment.refundAmount > 0) {
