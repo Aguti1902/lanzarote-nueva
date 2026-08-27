@@ -133,6 +133,7 @@ export function getStats(bookings: Booking[]) {
     card: active.filter((b) => b.paymentMethod === "card").length,
     bizum: active.filter((b) => b.paymentMethod === "bizum").length,
     pay_on_day: active.filter((b) => b.paymentMethod === "pay_on_day").length,
+    deposit_20: active.filter((b) => b.paymentMethod === "deposit_20").length,
     deposit_10: active.filter((b) => b.paymentMethod === "deposit_10").length,
   };
   const upcoming = active

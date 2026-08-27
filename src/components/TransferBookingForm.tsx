@@ -233,8 +233,6 @@ export function TransferBookingForm({
           >
             <option value="card">{dict.booking.card}</option>
             <option value="bizum">{dict.booking.bizum}</option>
-            <option value="deposit_10">{dict.booking.deposit}</option>
-            <option value="pay_on_day">{dict.booking.payOnDay}</option>
           </select>
         </label>
       </div>
@@ -247,14 +245,9 @@ export function TransferBookingForm({
             {dict.transfers.extraPerson}:{" "}
             {formatPrice(dest.priceExtraPerson ?? 10)}
           </p>
-          {paymentMethod === "deposit_10" && (
-            <p className="mt-1 text-xs text-ink-muted">
-              {dict.booking.payNow}{" "}
-              {formatPrice(Math.round(total * 0.1 * 100) / 100)} ·{" "}
-              {dict.booking.cashLater}{" "}
-              {formatPrice(Math.round(total * 0.9 * 100) / 100)}
-            </p>
-          )}
+          <p className="mt-1 text-xs font-medium text-ocean">
+            {dict.booking.card} / {dict.booking.bizum}
+          </p>
         </div>
         <button
           type="submit"

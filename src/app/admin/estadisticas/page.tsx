@@ -22,6 +22,7 @@ type Stats = {
     bizum: number;
     pay_on_day: number;
     deposit_10: number;
+    deposit_20?: number;
   };
   topTours: { title: string; count: number; revenue: number }[];
   byMonth: { month: string; amount: number }[];
@@ -163,8 +164,11 @@ export default function AdminEstadisticasPage() {
                   <b>{stats.byPayment.bizum}</b>
                 </li>
                 <li className="flex justify-between">
-                  <span>10% + efectivo</span>
-                  <b>{stats.byPayment.deposit_10 || 0}</b>
+                  <span>20% + efectivo</span>
+                  <b>
+                    {(stats.byPayment.deposit_20 || 0) +
+                      (stats.byPayment.deposit_10 || 0)}
+                  </b>
                 </li>
                 <li className="flex justify-between">
                   <span>Día del tour</span>

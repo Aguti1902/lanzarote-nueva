@@ -43,9 +43,7 @@ export function CruiseTourBooking({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
-    tour.allowPayOnDay === false ? "card" : "deposit_10"
-  );
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("deposit_20");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [cartMsg, setCartMsg] = useState("");
@@ -60,7 +58,7 @@ export function CruiseTourBooking({
   const methods = (
     [
       {
-        id: "deposit_10" as const,
+        id: "deposit_20" as const,
         label: dict.booking.deposit,
         icon: <Percent className="h-4 w-4" />,
         show: tour.allowCard !== false,
@@ -289,7 +287,7 @@ export function CruiseTourBooking({
               </label>
             ))}
           </div>
-          {paymentMethod === "deposit_10" && (
+          {(paymentMethod === "deposit_20" || paymentMethod === "deposit_10") && (
             <p className="text-xs text-ink-muted">
               {dict.cart.now} {formatPrice(split.amountPaidCard)} ·{" "}
               {dict.cart.cashDay} {formatPrice(split.amountDueCash)}

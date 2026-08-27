@@ -329,6 +329,7 @@ export type Dictionary = {
     bizum: string;
     pay_on_day: string;
     deposit_10: string;
+    deposit_20: string;
   };
   chat: {
     title: string;
@@ -434,7 +435,7 @@ const es: Dictionary = {
       },
       {
         q: "¿Cuáles son las formas de pago disponibles?",
-        a: "Puede pagar con tarjeta, Bizum, 10% + efectivo o, en muchas actividades, el día del tour.",
+        a: "En excursiones y cruceros: 20% con tarjeta y el resto en efectivo, o el 100% online (tarjeta/Bizum). Los traslados se pagan íntegros online.",
       },
       {
         q: "¿Dónde será el punto de encuentro?",
@@ -709,9 +710,9 @@ const es: Dictionary = {
     cruiseShip: "Barco de crucero (si aplica)",
     notes: "Notas",
     paymentMethod: "Método de pago",
-    card: "Tarjeta (100%)",
-    bizum: "Bizum (100%)",
-    deposit: "10% tarjeta + resto efectivo",
+    card: "100% online (tarjeta)",
+    bizum: "100% online (Bizum)",
+    deposit: "20% tarjeta + resto efectivo",
     payOnDay: "Pago el día del tour",
     addToCart: "Añadir al carrito",
     bookNow: "Reservar ahora",
@@ -719,7 +720,7 @@ const es: Dictionary = {
     selectDate: "Seleccione una fecha para añadir al carrito.",
     fillRequired: "Complete los campos obligatorios.",
     added: "Añadido al carrito.",
-    payNow: "Ahora (10% tarjeta)",
+    payNow: "Ahora (20% tarjeta)",
     cashLater: "Efectivo el día",
     perAdult: "por adulto",
     perVehicle: "por vehículo",
@@ -751,10 +752,11 @@ const es: Dictionary = {
     print: "Imprimir confirmación",
   },
   payments: {
-    card: "Tarjeta",
-    bizum: "Bizum",
+    card: "100% online (tarjeta)",
+    bizum: "100% online (Bizum)",
     pay_on_day: "Pago el día del tour",
     deposit_10: "10% tarjeta + resto efectivo",
+    deposit_20: "20% tarjeta + resto efectivo",
   },
   chat: {
     title: "Asistente LET",
@@ -767,7 +769,7 @@ const es: Dictionary = {
       "¿Timanfaya o Grand Tour?",
       "Traslado a Playa Blanca",
       "Vengo en crucero un día",
-      "¿Puedo pagar 10% y el resto en efectivo?",
+      "¿Puedo pagar 20% y el resto en efectivo?",
     ],
     error:
       "Ahora mismo no he podido responder. Pruebe de nuevo o llámenos al +34 646 08 05 85.",
@@ -867,7 +869,7 @@ const en: Dictionary = {
       },
       {
         q: "Which payment methods are available?",
-        a: "Card, Bizum, 10% deposit + cash on the day, or pay on the day for many activities.",
+        a: "For excursions and cruises: 20% by card and the rest in cash, or 100% online (card/Bizum). Transfers are paid in full online.",
       },
       {
         q: "Where is the meeting point?",
@@ -1133,9 +1135,9 @@ const en: Dictionary = {
     cruiseShip: "Cruise ship (if applicable)",
     notes: "Notes",
     paymentMethod: "Payment method",
-    card: "Card (100%)",
-    bizum: "Bizum (100%)",
-    deposit: "10% card + cash balance",
+    card: "100% online (card)",
+    bizum: "100% online (Bizum)",
+    deposit: "20% card + cash balance",
     payOnDay: "Pay on the day",
     addToCart: "Add to cart",
     bookNow: "Book now",
@@ -1143,7 +1145,7 @@ const en: Dictionary = {
     selectDate: "Please select a date to add to cart.",
     fillRequired: "Please complete the required fields.",
     added: "Added to cart.",
-    payNow: "Now (10% card)",
+    payNow: "Now (20% card)",
     cashLater: "Cash on the day",
     perAdult: "per adult",
     perVehicle: "per vehicle",
@@ -1175,10 +1177,11 @@ const en: Dictionary = {
     print: "Print confirmation",
   },
   payments: {
-    card: "Card",
-    bizum: "Bizum",
+    card: "100% online (card)",
+    bizum: "100% online (Bizum)",
     pay_on_day: "Pay on the day",
     deposit_10: "10% card + cash balance",
+    deposit_20: "20% card + cash balance",
   },
   chat: {
     title: "LET Assistant",
@@ -1191,7 +1194,7 @@ const en: Dictionary = {
       "Timanfaya or Grand Tour?",
       "Transfer to Playa Blanca",
       "I arrive by cruise for one day",
-      "Can I pay 10% and the rest in cash?",
+      "Can I pay 20% and the rest in cash?",
     ],
     error:
       "I could not reply right now. Please try again or call +34 646 08 05 85.",
@@ -1291,7 +1294,7 @@ const de: Dictionary = {
       },
       {
         q: "Welche Zahlungsmethoden gibt es?",
-        a: "Karte, Bizum, 10 % Anzahlung + Rest bar oder Zahlung am Tourtag.",
+        a: "Bei Ausflügen und Kreuzfahrten: 20 % per Karte und Rest bar, oder 100 % online (Karte/Bizum). Transfers werden vollständig online bezahlt.",
       },
       {
         q: "Wo ist der Treffpunkt?",
@@ -1566,9 +1569,9 @@ const de: Dictionary = {
     cruiseShip: "Kreuzfahrtschiff (falls zutreffend)",
     notes: "Notizen",
     paymentMethod: "Zahlungsmethode",
-    card: "Karte (100%)",
-    bizum: "Bizum (100%)",
-    deposit: "10% Karte + Rest bar",
+    card: "100% online (Karte)",
+    bizum: "100% online (Bizum)",
+    deposit: "20% Karte + Rest bar",
     payOnDay: "Zahlung am Tourtag",
     addToCart: "In den Warenkorb",
     bookNow: "Jetzt buchen",
@@ -1576,7 +1579,7 @@ const de: Dictionary = {
     selectDate: "Bitte wählen Sie ein Datum für den Warenkorb.",
     fillRequired: "Bitte füllen Sie die Pflichtfelder aus.",
     added: "Zum Warenkorb hinzugefügt.",
-    payNow: "Jetzt (10% Karte)",
+    payNow: "Jetzt (20% Karte)",
     cashLater: "Bar am Tag",
     perAdult: "pro Erwachsenem",
     perVehicle: "pro Fahrzeug",
@@ -1608,10 +1611,11 @@ const de: Dictionary = {
     print: "Bestätigung drucken",
   },
   payments: {
-    card: "Karte",
-    bizum: "Bizum",
+    card: "100% online (Karte)",
+    bizum: "100% online (Bizum)",
     pay_on_day: "Zahlung am Tourtag",
     deposit_10: "10% Karte + Rest bar",
+    deposit_20: "20% Karte + Rest bar",
   },
   chat: {
     title: "LET Assistent",
@@ -1624,7 +1628,7 @@ const de: Dictionary = {
       "Timanfaya oder Grand Tour?",
       "Transfer nach Playa Blanca",
       "Ich komme einen Tag mit dem Schiff",
-      "Kann ich 10% und den Rest bar zahlen?",
+      "Kann ich 20% und den Rest bar zahlen?",
     ],
     error:
       "Ich konnte gerade nicht antworten. Bitte erneut versuchen oder +34 646 08 05 85 anrufen.",
