@@ -181,6 +181,8 @@ export interface SiteSettings {
 
 export type PaymentLinkMode = "standard" | "group_all" | "per_person";
 
+export type PaymentServiceType = "custom" | "tour" | "shore" | "transfer";
+
 export interface PaymentLink {
   id: string;
   createdAt: string;
@@ -203,6 +205,15 @@ export interface PaymentLink {
   /** 1-based person index when mode is per_person. */
   personIndex?: number;
   personLabel?: string;
+  /** Servicio vinculado (pago 100% tarjeta / Stripe). */
+  serviceType?: PaymentServiceType;
+  serviceId?: string;
+  serviceTitle?: string;
+  /** Full amount charged online (admin payment links). */
+  chargeFull?: boolean;
+  stripeCheckoutSessionId?: string;
+  stripePaymentIntentId?: string;
+  stripeCheckoutUrl?: string;
 }
 
 export interface Collaborator {

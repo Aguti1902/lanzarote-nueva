@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { CreditCard, Smartphone, CheckCircle2 } from "lucide-react";
+import { CreditCard, CheckCircle2 } from "lucide-react";
 import { formatPrice } from "@/lib/format";
 import { useLocale } from "@/components/LocaleProvider";
 
@@ -16,8 +16,11 @@ type GatewayPayment = {
   customerEmail?: string;
   mode?: string;
   personLabel?: string;
+  serviceTitle?: string;
+  chargeFull?: boolean;
   paidAt?: string;
   paymentMethod?: string;
+  stripeCheckoutUrl?: string;
 };
 
 export default function GatewayClient() {
@@ -25,12 +28,13 @@ export default function GatewayClient() {
   const { dict } = useLocale();
   const hash = searchParams.get("h") || "";
   const emailParam = searchParams.get("email") || "";
+  const paidFlag = searchParams.get("paid") === "1";
 
   const [payment, setPayment] = useState<GatewayPayment | null>(null);
+  const [stripeConfigured, setStripeConfigured] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [paying, setPaying] = useState(false);
-  const [method, setMethod] = useState<"card" | "bizum">("card");
   const [name, setName] = useState("");
   const [email, setEmail] = useState(emailParam);
   const [done, setDone] = useState(false);
@@ -52,9 +56,10 @@ export default function GatewayClient() {
           return;
         }
         setPayment(data.payment);
+        setStripeConfigured(Boolean(data.stripeConfigured));
         setName(data.payment.customerName || "");
         setEmail(data.payment.customerEmail || emailParam);
-        setDone(data.payment.status === "paid");
+        setDone(data.payment.status === "paid" || paidFlag);
         setLoading(false);
       })
       .catch(() => {
@@ -66,7 +71,7 @@ export default function GatewayClient() {
     return () => {
       cancelled = true;
     };
-  }, [hash, emailParam]);
+  }, [hash, emailParam, paidFlag]);
 
   const title = useMemo(() => {
     if (!payment) return "Pago online";
@@ -75,7 +80,8 @@ export default function GatewayClient() {
       return payment.personLabel
         ? `Pago · ${payment.personLabel}`
         : "Pago por persona";
-    return "Pago online";
+    if (payment.serviceTitle) return "Pago del servicio";
+    return "Pago online · 100% tarjeta";
   }, [payment]);
 
   async function handlePay(e: FormEvent) {
@@ -89,13 +95,19 @@ export default function GatewayClient() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           h: hash,
-          paymentMethod: method,
+          action: stripeConfigured ? "stripe" : "pay",
+          paymentMethod: "card",
           customerName: name,
           customerEmail: email,
+          origin: window.location.origin,
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error al pagar");
+      if (data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+        return;
+      }
       setPayment(data.payment);
       setDone(true);
     } catch (err) {
@@ -134,7 +146,13 @@ export default function GatewayClient() {
       <div className="mt-8 rounded-xl bg-white p-6 ring-1 ring-sand-line">
         <p className="text-sm text-ink-muted">Concepto</p>
         <p className="mt-1 font-semibold text-ink">{payment.concept}</p>
-        <p className="mt-6 text-sm text-ink-muted">Importe</p>
+        {payment.serviceTitle && (
+          <p className="mt-2 text-sm text-ink-muted">
+            Servicio:{" "}
+            <span className="font-medium text-ink">{payment.serviceTitle}</span>
+          </p>
+        )}
+        <p className="mt-6 text-sm text-ink-muted">Importe (100% tarjeta)</p>
         <p className="font-display text-4xl font-extrabold text-ocean">
           {formatPrice(payment.amount)}
         </p>
@@ -180,31 +198,16 @@ export default function GatewayClient() {
               />
             </label>
 
-            <div className="grid gap-2 sm:grid-cols-2">
-              <button
-                type="button"
-                onClick={() => setMethod("card")}
-                className={`inline-flex items-center justify-center gap-2 rounded-lg border px-3 py-3 text-sm font-bold ${
-                  method === "card"
-                    ? "border-ocean bg-sky-soft text-ocean"
-                    : "border-sand-line text-ink-muted"
-                }`}
-              >
+            <div className="rounded-lg border border-ocean/30 bg-sky-soft/50 px-3 py-3 text-sm text-ocean-deep">
+              <p className="inline-flex items-center gap-2 font-bold">
                 <CreditCard className="h-4 w-4" />
-                {dict.booking.card}
-              </button>
-              <button
-                type="button"
-                onClick={() => setMethod("bizum")}
-                className={`inline-flex items-center justify-center gap-2 rounded-lg border px-3 py-3 text-sm font-bold ${
-                  method === "bizum"
-                    ? "border-ocean bg-sky-soft text-ocean"
-                    : "border-sand-line text-ink-muted"
-                }`}
-              >
-                <Smartphone className="h-4 w-4" />
-                {dict.booking.bizum}
-              </button>
+                Pago completo con tarjeta
+              </p>
+              <p className="mt-1 text-xs">
+                {stripeConfigured
+                  ? "Será redirigido a Stripe Checkout de forma segura."
+                  : "Modo local (Stripe no configurado)."}
+              </p>
             </div>
 
             {error && <p className="text-sm text-rose-600">{error}</p>}
