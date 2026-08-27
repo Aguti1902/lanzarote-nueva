@@ -13,6 +13,10 @@ import {
   type DateRange,
 } from "@/components/admin/DateRangeFilter";
 import { BookingDetailModal } from "@/components/admin/BookingDetailModal";
+import {
+  BookingStatusBadge,
+  bookingRowClassName,
+} from "@/components/admin/BookingStatusBadge";
 
 type GroupsTab = "current" | "done" | "private";
 
@@ -55,16 +59,6 @@ function matchesTab(group: CruiseGroup, tab: GroupsTab) {
   if (tab === "private") return group.status === "private";
   if (tab === "done") return group.status === "done";
   return group.status === "open" || group.status === "full";
-}
-
-function bookingStatusLabel(status: Booking["status"]) {
-  const map: Record<Booking["status"], string> = {
-    pending: "Pendiente",
-    confirmed: "Confirmado",
-    completed: "Completado",
-    cancelled: "Cancelado",
-  };
-  return map[status] || status;
 }
 
 function confirmationsMailto(bookings: Booking[], subject: string) {
@@ -426,7 +420,7 @@ export function GroupsPanel() {
                     {detail.bookings.map((b) => (
                       <tr
                         key={b.id}
-                        className="border-b border-sand-line align-middle"
+                        className={`border-b border-sand-line align-middle ${bookingRowClassName(b.status)}`}
                       >
                         <td className="px-4 py-3 font-semibold text-ocean">
                           {b.id}
@@ -434,12 +428,20 @@ export function GroupsPanel() {
                         <td className="px-4 py-3">
                           {formatDate(b.createdAt)}
                         </td>
-                        <td className="px-4 py-3">{b.customer.name}</td>
+                        <td
+                          className={`px-4 py-3 ${
+                            b.status === "cancelled"
+                              ? "text-red-800 line-through decoration-red-300"
+                              : ""
+                          }`}
+                        >
+                          {b.customer.name}
+                        </td>
                         <td className="px-4 py-3">
                           {(b.adults || 0) + (b.children || 0)}
                         </td>
                         <td className="px-4 py-3">
-                          {bookingStatusLabel(b.status)}
+                          <BookingStatusBadge status={b.status} size="sm" />
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex flex-wrap justify-end gap-2">
