@@ -21,6 +21,8 @@ export type CartItem = {
   priceAdult: number;
   priceChild: number;
   totalPrice: number;
+  /** Flat/closed price for private tours (ignores adults × rate). */
+  pricingMode?: "per_person" | "flat";
   cruiseShip?: string;
   cruiseCompany?: string;
   sailingId?: string;
@@ -41,6 +43,9 @@ const CartContext = createContext<CartContextValue | null>(null);
 const STORAGE_KEY = "let_cart";
 
 function calcTotal(item: Omit<CartItem, "id" | "totalPrice">) {
+  if (item.pricingMode === "flat") {
+    return Math.round(Number(item.priceAdult) * 100) / 100;
+  }
   return item.adults * item.priceAdult + item.children * item.priceChild;
 }
 

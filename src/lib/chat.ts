@@ -39,7 +39,11 @@ async function buildKnowledge(): Promise<string> {
       ]
         .filter(Boolean)
         .join(", ");
-      return `- ${t.shortTitle} (${group}): ${formatPrice(t.priceAdult)} adulto, ${t.duration}. Pagos: ${pay}. URL: /excursiones/${t.slug}. ${t.summary}`;
+      return `- ${t.shortTitle} (${group}): ${
+        t.category === "private" || t.isPrivateActivity
+          ? `${formatPrice(t.priceAdult)} precio cerrado (grupo completo)`
+          : `${formatPrice(t.priceAdult)} adulto`
+      }, ${t.duration}. Pagos: ${pay}. URL: /excursiones/${t.slug}. ${t.summary}`;
     })
     .join("\n");
 
