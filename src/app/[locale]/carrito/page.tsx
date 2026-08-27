@@ -113,17 +113,23 @@ export default function CarritoPage() {
                   <h2 className="truncate font-bold text-ink">{item.title}</h2>
                   <p className="mt-1 text-sm text-ink-muted">
                     {item.date} ·{" "}
-                    {item.source === "cruise"
+                    {item.pricingMode === "flat"
                       ? `${item.adults} ${
                           item.adults === 1
                             ? dict.cruises.passengerSingular
                             : dict.cruises.passengerPlural
-                        }`
-                      : `${item.adults} ${dict.common.adults}${
-                          item.children > 0
-                            ? `, ${item.children} ${dict.common.children}`
-                            : ""
-                        }`}
+                        } · ${dict.booking.flatPrice}`
+                      : item.source === "cruise"
+                        ? `${item.adults} ${
+                            item.adults === 1
+                              ? dict.cruises.passengerSingular
+                              : dict.cruises.passengerPlural
+                          }`
+                        : `${item.adults} ${dict.common.adults}${
+                            item.children > 0
+                              ? `, ${item.children} ${dict.common.children}`
+                              : ""
+                          }`}
                   </p>
                   {item.cruiseShip && (
                     <p className="mt-1 text-xs text-ink-muted">

@@ -18,6 +18,7 @@ import {
   linesToArray,
 } from "@/components/admin/Field";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
+import { isFlatPriceTour } from "@/lib/tour-pricing";
 
 type EditorTab =
   | "details"
@@ -192,6 +193,10 @@ export function TourEditor({ initial }: { initial?: Tour }) {
   const [blockLang, setBlockLang] = useState("Todos los idiomas");
   const [blockSeats, setBlockSeats] = useState(14);
   const isEdit = Boolean(initial);
+  const isFlat = isFlatPriceTour({
+    category: (tour.category as TourCategory) || "excursion",
+    isPrivateActivity: tour.isPrivateActivity,
+  });
 
   const tabs: { id: EditorTab; label: string }[] = [
     { id: "details", label: "Detalles" },
@@ -568,21 +573,28 @@ export function TourEditor({ initial }: { initial?: Tour }) {
                     ...prev,
                     isPrivateActivity: yes,
                     category: (yes ? "private" : "excursion") as TourCategory,
+                    priceChild: yes ? 0 : prev.priceChild,
+                    priceBaby: yes ? 0 : prev.priceBaby,
+                    priceChildOffer: yes ? 0 : prev.priceChildOffer,
+                    priceBabyOffer: yes ? 0 : prev.priceBabyOffer,
+                    paxPerPrice: yes ? 0 : prev.paxPerPrice,
                   }));
                 }}
               >
                 <option value="no">No</option>
-                <option value="yes">Sí</option>
+                <option value="yes">Sí — precio cerrado del grupo</option>
               </select>
             </Field>
-            <Field label="Número de pax por precio">
-              <input
-                type="number"
-                className={adminInput}
-                value={tour.paxPerPrice ?? 0}
-                onChange={(e) => set("paxPerPrice", Number(e.target.value))}
-              />
-            </Field>
+            {!isFlat && (
+              <Field label="Número de pax por precio">
+                <input
+                  type="number"
+                  className={adminInput}
+                  value={tour.paxPerPrice ?? 0}
+                  onChange={(e) => set("paxPerPrice", Number(e.target.value))}
+                />
+              </Field>
+            )}
             <Field label="URL del video en Youtube" className="md:col-span-2">
               <input
                 className={adminInput}
@@ -607,58 +619,76 @@ export function TourEditor({ initial }: { initial?: Tour }) {
               </p>
             </Field>
 
-            <Field label="Precio por adulto (anterior)">
+            <Field
+              label={
+                isFlat
+                  ? "Precio cerrado del tour (€)"
+                  : "Precio por adulto (anterior)"
+              }
+            >
               <input
                 type="number"
                 className={adminInput}
                 value={tour.priceAdult ?? 0}
                 onChange={(e) => set("priceAdult", Number(e.target.value))}
               />
+              {isFlat && (
+                <p className="mt-1 text-xs text-ink-muted">
+                  Precio fijo del grupo completo, da igual el número de
+                  personas.
+                </p>
+              )}
             </Field>
-            <Field label="Precio por niño (anterior)">
-              <input
-                type="number"
-                className={adminInput}
-                value={tour.priceChild ?? 0}
-                onChange={(e) => set("priceChild", Number(e.target.value))}
-              />
-            </Field>
-            <Field label="Precio por bebé (anterior)">
-              <input
-                type="number"
-                className={adminInput}
-                value={tour.priceBaby ?? 0}
-                onChange={(e) => set("priceBaby", Number(e.target.value))}
-              />
-            </Field>
-            <Field label="Precio por adulto (oferta)">
-              <input
-                type="number"
-                className={adminInput}
-                value={tour.priceAdultOffer ?? tour.priceAdult ?? 0}
-                onChange={(e) =>
-                  set("priceAdultOffer", Number(e.target.value))
-                }
-              />
-            </Field>
-            <Field label="Precio por niño (oferta)">
-              <input
-                type="number"
-                className={adminInput}
-                value={tour.priceChildOffer ?? tour.priceChild ?? 0}
-                onChange={(e) =>
-                  set("priceChildOffer", Number(e.target.value))
-                }
-              />
-            </Field>
-            <Field label="Precio por bebé (oferta)">
-              <input
-                type="number"
-                className={adminInput}
-                value={tour.priceBabyOffer ?? tour.priceBaby ?? 0}
-                onChange={(e) => set("priceBabyOffer", Number(e.target.value))}
-              />
-            </Field>
+            {!isFlat && (
+              <>
+                <Field label="Precio por niño (anterior)">
+                  <input
+                    type="number"
+                    className={adminInput}
+                    value={tour.priceChild ?? 0}
+                    onChange={(e) => set("priceChild", Number(e.target.value))}
+                  />
+                </Field>
+                <Field label="Precio por bebé (anterior)">
+                  <input
+                    type="number"
+                    className={adminInput}
+                    value={tour.priceBaby ?? 0}
+                    onChange={(e) => set("priceBaby", Number(e.target.value))}
+                  />
+                </Field>
+                <Field label="Precio por adulto (oferta)">
+                  <input
+                    type="number"
+                    className={adminInput}
+                    value={tour.priceAdultOffer ?? tour.priceAdult ?? 0}
+                    onChange={(e) =>
+                      set("priceAdultOffer", Number(e.target.value))
+                    }
+                  />
+                </Field>
+                <Field label="Precio por niño (oferta)">
+                  <input
+                    type="number"
+                    className={adminInput}
+                    value={tour.priceChildOffer ?? tour.priceChild ?? 0}
+                    onChange={(e) =>
+                      set("priceChildOffer", Number(e.target.value))
+                    }
+                  />
+                </Field>
+                <Field label="Precio por bebé (oferta)">
+                  <input
+                    type="number"
+                    className={adminInput}
+                    value={tour.priceBabyOffer ?? tour.priceBaby ?? 0}
+                    onChange={(e) =>
+                      set("priceBabyOffer", Number(e.target.value))
+                    }
+                  />
+                </Field>
+              </>
+            )}
 
             <Field label="Valoración">
               <input

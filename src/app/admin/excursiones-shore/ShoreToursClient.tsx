@@ -355,7 +355,7 @@ export function ShoreToursPanel() {
                   }
                 />
               </Field>
-              <Field label="Precio tour privado (€)">
+              <Field label="Precio cerrado tour privado (€)">
                 <input
                   type="number"
                   className={adminInput}
@@ -367,6 +367,9 @@ export function ShoreToursPanel() {
                     })
                   }
                 />
+                <p className="mt-1 text-xs text-ink-muted">
+                  Precio fijo del grupo privado (no por persona).
+                </p>
               </Field>
               <Field label="Máximo de personas tour privado">
                 <input

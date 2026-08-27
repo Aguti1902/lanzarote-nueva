@@ -296,6 +296,8 @@ export type Dictionary = {
     cashLater: string;
     perAdult: string;
     perVehicle: string;
+    flatPrice: string;
+    passengersInGroup: string;
     hoursMin: string;
     bookError: string;
   };
@@ -725,6 +727,8 @@ const es: Dictionary = {
     cashLater: "Efectivo el día",
     perAdult: "por adulto",
     perVehicle: "por vehículo",
+    flatPrice: "Precio cerrado",
+    passengersInGroup: "Personas en el grupo",
     hoursMin: "Horas (mín. 4)",
     bookError: "Error al reservar",
   },
@@ -1153,6 +1157,8 @@ const en: Dictionary = {
     cashLater: "Cash on the day",
     perAdult: "per adult",
     perVehicle: "per vehicle",
+    flatPrice: "Fixed price",
+    passengersInGroup: "People in the group",
     hoursMin: "Hours (min. 4)",
     bookError: "Booking failed",
   },
@@ -1589,6 +1595,8 @@ const de: Dictionary = {
     cashLater: "Bar am Tag",
     perAdult: "pro Erwachsenem",
     perVehicle: "pro Fahrzeug",
+    flatPrice: "Pauschalpreis",
+    passengersInGroup: "Personen in der Gruppe",
     hoursMin: "Stunden (min. 4)",
     bookError: "Buchung fehlgeschlagen",
   },

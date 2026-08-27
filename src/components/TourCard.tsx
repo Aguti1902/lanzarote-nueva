@@ -5,10 +5,12 @@ import Link from "next/link";
 import { ArrowUpRight, Clock, Star, Users } from "lucide-react";
 import type { Tour } from "@/types";
 import { formatPrice, groupSizeLabel } from "@/lib/format";
+import { isFlatPriceTour } from "@/lib/tour-pricing";
 import { useLocale } from "@/components/LocaleProvider";
 
 export function TourCard({ tour }: { tour: Tour }) {
   const { dict, href, locale } = useLocale();
+  const flat = isFlatPriceTour(tour);
 
   return (
     <Link
@@ -68,7 +70,7 @@ export function TourCard({ tour }: { tour: Tour }) {
         <div className="mt-auto flex items-end justify-between border-t border-sand-line pt-4">
           <div>
             <p className="text-[11px] font-semibold tracking-wide text-ink-muted uppercase">
-              {dict.common.from}
+              {flat ? dict.booking.flatPrice : dict.common.from}
             </p>
             <p className="font-display text-2xl font-extrabold text-ocean">
               {formatPrice(tour.priceAdult)}

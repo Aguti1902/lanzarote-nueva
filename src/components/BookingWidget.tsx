@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { CreditCard, Banknote, Percent, ShoppingCart, Smartphone } from "lucide-react";
 import type { CruiseCall, PaymentMethod, Tour } from "@/types";
 import { formatPrice } from "@/lib/format";
+import { isFlatPriceTour } from "@/lib/tour-pricing";
 import { useCart } from "@/components/CartProvider";
 import { useLocale } from "@/components/LocaleProvider";
 import { splitPaymentAmounts } from "@/lib/payments";
@@ -35,7 +36,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
   const [dayShips, setDayShips] = useState<CruiseCall[]>([]);
 
   const isMinibus = tour.category === "minibus";
-  const isPrivate = tour.category === "private";
+  const isPrivate = isFlatPriceTour(tour);
 
   useEffect(() => {
     if (!date || !tour.cruiseFriendly) {
@@ -67,6 +68,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
 
   const total = useMemo(() => {
     if (isMinibus) return tour.priceAdult + Math.max(0, hours - 4) * 60;
+    // Private / flat: closed price for the whole group (not × passengers)
     if (isPrivate) return tour.priceAdult;
     return adults * tour.priceAdult + children * tour.priceChild;
   }, [adults, children, hours, isMinibus, isPrivate, tour]);
@@ -118,10 +120,11 @@ export function BookingWidget({ tour }: { tour: Tour }) {
       title: tour.title,
       image: tour.image,
       date,
-      adults: isPrivate || isMinibus ? 1 : adults,
+      adults: isMinibus ? 1 : adults,
       children: isPrivate || isMinibus ? 0 : children,
       priceAdult: isPrivate || isMinibus ? total : tour.priceAdult,
       priceChild: isPrivate || isMinibus ? 0 : tour.priceChild,
+      pricingMode: isPrivate || isMinibus ? "flat" : "per_person",
     });
     setCartMsg(dict.booking.added);
   }
@@ -165,16 +168,22 @@ export function BookingWidget({ tour }: { tour: Tour }) {
     <aside className="sticky top-24 rounded-lg bg-white p-5 shadow-lg ring-1 ring-sand-line">
       <div className="mb-4 flex items-end justify-between border-b border-sand-line pb-4">
         <div>
-          <p className="text-sm text-ink-muted">{dict.common.from}</p>
+          <p className="text-sm text-ink-muted">
+            {isPrivate
+              ? dict.booking.flatPrice
+              : isMinibus
+                ? dict.booking.perVehicle
+                : dict.common.from}
+          </p>
           <p className="text-3xl font-bold text-ink">
-            {formatPrice(tour.priceAdult)}
+            {formatPrice(isPrivate || isMinibus ? total : tour.priceAdult)}
           </p>
         </div>
-        <p className="text-sm text-ink-muted">
-          {isPrivate || isMinibus
-            ? dict.booking.perVehicle
-            : dict.booking.perAdult}
-        </p>
+        {!isPrivate && (
+          <p className="text-sm text-ink-muted">
+            {isMinibus ? dict.booking.perVehicle : dict.booking.perAdult}
+          </p>
+        )}
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-3">
@@ -200,6 +209,21 @@ export function BookingWidget({ tour }: { tour: Tour }) {
               className={inputClass}
             />
           </Field>
+        ) : isPrivate ? (
+          <Field label={dict.booking.passengersInGroup}>
+            <input
+              type="number"
+              min={1}
+              max={tour.maxGroup ?? 20}
+              value={adults}
+              onChange={(e) => setAdults(Number(e.target.value))}
+              className={inputClass}
+            />
+            <p className="mt-1 text-xs text-ink-muted">
+              {dict.booking.flatPrice}: {formatPrice(tour.priceAdult)} (
+              {dict.common.total})
+            </p>
+          </Field>
         ) : (
           <div className="grid grid-cols-2 gap-3">
             <Field label={dict.common.adults}>
@@ -212,18 +236,16 @@ export function BookingWidget({ tour }: { tour: Tour }) {
                 className={inputClass}
               />
             </Field>
-            {!isPrivate && (
-              <Field label={dict.common.children}>
-                <input
-                  type="number"
-                  min={0}
-                  max={10}
-                  value={children}
-                  onChange={(e) => setChildren(Number(e.target.value))}
-                  className={inputClass}
-                />
-              </Field>
-            )}
+            <Field label={dict.common.children}>
+              <input
+                type="number"
+                min={0}
+                max={10}
+                value={children}
+                onChange={(e) => setChildren(Number(e.target.value))}
+                className={inputClass}
+              />
+            </Field>
           </div>
         )}
 
