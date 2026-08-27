@@ -105,7 +105,7 @@ export function CruiseTourBooking({
     setError("");
     setCartMsg("");
     if (dateBlocked) {
-      setError("Esta fecha no está disponible");
+      setError("Esta fecha no está disponible para la excursión");
       return;
     }
     if (!callDate || passengers < 1) {
@@ -136,7 +136,7 @@ export function CruiseTourBooking({
     e.preventDefault();
     setError("");
     if (dateBlocked) {
-      setError("Esta fecha no está disponible");
+      setError("Esta fecha no está disponible para la excursión");
       return;
     }
     if (!name || !email || !phone) {
@@ -197,6 +197,12 @@ export function CruiseTourBooking({
           </button>
         )}
       </div>
+
+      {dateBlocked && (
+        <p className="mt-4 rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-800 ring-1 ring-rose-200">
+          Esta fecha no está disponible para la excursión.
+        </p>
+      )}
 
       <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
         <label className="text-sm">

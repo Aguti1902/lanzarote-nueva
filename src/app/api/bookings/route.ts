@@ -18,17 +18,17 @@ import {
 import { getCruiseShoreTourById } from "@/lib/cruise-itineraries";
 import type { BookingStatus, PaymentMethod } from "@/types";
 
-export async function GET() {
-  const bookings = await getBookings();
-  return NextResponse.json({ bookings });
-}
-
 function isDateBlocked(
   blockedDates: Array<{ date: string; seats?: number }> | undefined,
   date: string
 ): boolean {
   if (!blockedDates?.length) return false;
   return blockedDates.some((b) => b.date === date);
+}
+
+export async function GET() {
+  const bookings = await getBookings();
+  return NextResponse.json({ bookings });
 }
 
 export async function POST(request: Request) {

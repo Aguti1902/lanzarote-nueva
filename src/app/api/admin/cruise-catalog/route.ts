@@ -13,6 +13,7 @@ import type {
   CruiseSailing,
   CruiseShoreTour,
 } from "@/types";
+import { syncShoreTourStructuredFields } from "@/lib/shore-tour-display";
 
 export const dynamic = "force-dynamic";
 
@@ -266,6 +267,7 @@ export async function POST(request: Request) {
         highlights: body.highlights || [],
         included: body.included || [],
         notIncluded: body.notIncluded || [],
+        recommendations: body.recommendations || [],
         bookingSlug: body.bookingSlug || "",
         maxGroup: Number(body.maxGroup) || 14,
         minPax: Number(body.minPax) || 8,
@@ -274,16 +276,22 @@ export async function POST(request: Request) {
         port: body.port || "Lanzarote",
         active: body.active !== false,
         currency: "EUR",
-        allowCard: true,
-        allowBizum: true,
-        allowPayOnDay: true,
+        allowCard: body.allowCard !== false,
+        allowBizum: body.allowBizum !== false,
+        allowPayOnDay: body.allowPayOnDay !== false,
         cancellationPolicy:
           body.cancellationPolicy ||
           "Cancelación gratuita hasta 48 horas antes.",
+        youtubeUrl: body.youtubeUrl || "",
+        mapUrl: body.mapUrl || "",
+        schedule: body.schedule || undefined,
         blockedDates: body.blockedDates || [],
+        seo: body.seo || { title: "", description: "", keywords: "" },
         translations: body.translations || {},
       };
-      data.shoreTours.push(tour);
+      data.shoreTours.push(
+        syncShoreTourStructuredFields(tour) as CruiseShoreTour
+      );
       await save(data);
       return NextResponse.json({ item: tour }, { status: 201 });
     }
@@ -413,7 +421,10 @@ export async function PUT(request: Request) {
         return NextResponse.json({ error: "No encontrado" }, { status: 404 });
       }
       const { kind: _kind, ...rest } = body;
-      data.shoreTours[idx] = { ...data.shoreTours[idx], ...rest };
+      data.shoreTours[idx] = syncShoreTourStructuredFields({
+        ...data.shoreTours[idx],
+        ...rest,
+      }) as CruiseShoreTour;
       await save(data);
       return NextResponse.json({ item: data.shoreTours[idx] });
     }

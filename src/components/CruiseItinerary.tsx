@@ -6,6 +6,10 @@ import { useState } from "react";
 import { MapPin, Ship, Waves } from "lucide-react";
 import type { CruiseSailing, CruiseShoreTour } from "@/types";
 import { formatDateShort, formatPrice } from "@/lib/format";
+import {
+  shoreTourDurationLabel,
+  shoreTourPublicHighlights,
+} from "@/lib/shore-tour-display";
 import { useLocale } from "@/components/LocaleProvider";
 import { CruiseTourBooking } from "@/components/CruiseTourBooking";
 
@@ -151,25 +155,42 @@ export function CruiseItinerary({ sailing, tours }: Props) {
                                     </p>
                                   )}
                                   <ul className="space-y-1.5 text-sm text-ink-muted">
-                                    {tour.duration && (
-                                      <li>
-                                        <span className="font-semibold text-ink">
-                                          {dict.cruises.durationLabel}:{" "}
-                                        </span>
-                                        {tour.duration}
-                                      </li>
-                                    )}
-                                    {tour.highlights.map((item) => (
-                                      <li key={item}>• {item}</li>
-                                    ))}
-                                    {tour.places.length > 0 && (
-                                      <li>
-                                        <span className="font-semibold text-ink">
-                                          {dict.cruises.placesToVisit}:{" "}
-                                        </span>
-                                        {tour.places.join(", ")}
-                                      </li>
-                                    )}
+                                    {(() => {
+                                      const duration = shoreTourDurationLabel(
+                                        tour,
+                                        dict.cruises.durationHours
+                                      );
+                                      const bullets = shoreTourPublicHighlights(
+                                        tour,
+                                        {
+                                          smallGroupMax:
+                                            dict.cruises.smallGroupMax,
+                                        }
+                                      );
+                                      return (
+                                        <>
+                                          {duration ? (
+                                            <li>
+                                              <span className="font-semibold text-ink">
+                                                {dict.cruises.durationLabel}:{" "}
+                                              </span>
+                                              {duration}
+                                            </li>
+                                          ) : null}
+                                          {bullets.map((item) => (
+                                            <li key={item}>• {item}</li>
+                                          ))}
+                                          {tour.places.length > 0 && (
+                                            <li>
+                                              <span className="font-semibold text-ink">
+                                                {dict.cruises.placesToVisit}:{" "}
+                                              </span>
+                                              {tour.places.join(", ")}
+                                            </li>
+                                          )}
+                                        </>
+                                      );
+                                    })()}
                                   </ul>
 
                                   {expanded && (
