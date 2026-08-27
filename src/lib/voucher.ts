@@ -371,12 +371,37 @@ export function buildVoucherHtml(
 </html>`;
 }
 
-export function openVoucherPrintWindow(html: string) {
-  const w = window.open("", "_blank", "noopener,noreferrer,width=900,height=1000");
+export function openVoucherPrintWindow(html: string, options?: { autoPrint?: boolean }) {
+  const autoPrint = options?.autoPrint !== false;
+  // Do NOT pass "noopener": many browsers then return null and the print button silently fails.
+  const w = window.open("", "_blank", "width=900,height=1000");
   if (!w) return false;
+
   w.document.open();
   w.document.write(html);
   w.document.close();
+
+  if (autoPrint) {
+    const triggerPrint = () => {
+      try {
+        w.focus();
+        w.print();
+      } catch {
+        // ignore — user can still use the on-page Imprimir button
+      }
+    };
+    // Wait until images/styles are ready enough for print preview.
+    if (w.document.readyState === "complete") {
+      setTimeout(triggerPrint, 250);
+    } else {
+      w.addEventListener("load", () => setTimeout(triggerPrint, 250), {
+        once: true,
+      });
+      // Fallback if load never fires (about:blank quirks).
+      setTimeout(triggerPrint, 600);
+    }
+  }
+
   return true;
 }
 

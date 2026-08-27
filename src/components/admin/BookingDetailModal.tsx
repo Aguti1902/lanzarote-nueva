@@ -276,7 +276,14 @@ export function BookingDetailModal({
               </Link>
               <button
                 type="button"
-                onClick={() => openVoucherPrintWindow(voucherHtml(booking))}
+                onClick={() => {
+                  const ok = openVoucherPrintWindow(voucherHtml(booking));
+                  if (!ok) {
+                    window.alert(
+                      "El navegador ha bloqueado la ventana de impresión. Permita ventanas emergentes para este sitio e inténtelo de nuevo."
+                    );
+                  }
+                }}
                 className="rounded border border-sand-line px-4 py-2 text-sm font-bold text-ink hover:bg-sky-soft"
               >
                 Imprimir voucher
