@@ -44179,60 +44179,6 @@
     "paymentMethod": "PP"
   },
   {
-    "id": "FAC-74402",
-    "number": 74402,
-    "type": "invoice",
-    "bookingId": "T22182723",
-    "createdAt": "2022-08-22T20:30:00.000Z",
-    "customer": {
-      "name": "Hakim Tarbet",
-      "email": "ha.tarbet@gmail.com",
-      "phone": "660936684"
-    },
-    "lines": [
-      {
-        "description": "Servicio de traslado ida",
-        "qty": 2,
-        "unitPrice": 0.5,
-        "total": 1
-      }
-    ],
-    "subtotal": 0.93,
-    "taxRate": 7,
-    "taxAmount": 0.07,
-    "total": 1,
-    "status": "issued",
-    "legacyHash": "e6c4fe8e081389b6446ed6d62ff532273accd7b7",
-    "paymentMethod": "CC"
-  },
-  {
-    "id": "FAC-74401",
-    "number": 74401,
-    "type": "invoice",
-    "bookingId": "T22182723",
-    "createdAt": "2022-08-22T20:29:59.000Z",
-    "customer": {
-      "name": "Hakim Tarbet",
-      "email": "ha.tarbet@gmail.com",
-      "phone": "660936684"
-    },
-    "lines": [
-      {
-        "description": "Servicio de traslado ida",
-        "qty": 2,
-        "unitPrice": 0.5,
-        "total": 1
-      }
-    ],
-    "subtotal": 0.93,
-    "taxRate": 7,
-    "taxAmount": 0.07,
-    "total": 1,
-    "status": "issued",
-    "legacyHash": "a3805fc491bcab3495e8cd5c4892655f9f46a145",
-    "paymentMethod": "CC"
-  },
-  {
     "id": "FAC-74400",
     "number": 74400,
     "type": "invoice",
@@ -123807,34 +123753,6 @@
     "paymentMethod": "CC"
   },
   {
-    "id": "FAC-71563",
-    "number": 71563,
-    "type": "invoice",
-    "bookingId": "T02122190",
-    "createdAt": "2020-11-16T10:47:59.000Z",
-    "customer": {
-      "name": "Hakim Tarbet",
-      "email": "ha.tarbet@gmail.com",
-      "phone": "660936684"
-    },
-    "lines": [
-      {
-        "description": "Servicio de traslado ida",
-        "qty": 2,
-        "unitPrice": -20,
-        "total": -40
-      }
-    ],
-    "subtotal": 37.38,
-    "taxRate": 7,
-    "taxAmount": 2.62,
-    "total": 40,
-    "notes": "Nota de abono por la cancelación de servicios de la reserva T02122190",
-    "status": "issued",
-    "legacyHash": "4b806736a2a94fa19b569c6654bedb9fff04de2a",
-    "paymentMethod": "PP"
-  },
-  {
     "id": "FAC-71562",
     "number": 71562,
     "type": "invoice",
@@ -124188,33 +124106,6 @@
     "status": "issued",
     "legacyHash": "cdd3f521a720be2e278a601dac50ae6d5e2d6bc9",
     "paymentMethod": "CC"
-  },
-  {
-    "id": "FAC-71549",
-    "number": 71549,
-    "type": "invoice",
-    "bookingId": "T02122190",
-    "createdAt": "2020-11-02T13:22:26.000Z",
-    "customer": {
-      "name": "Hakim Tarbet",
-      "email": "ha.tarbet@gmail.com",
-      "phone": "660936684"
-    },
-    "lines": [
-      {
-        "description": "Servicio de traslado ida",
-        "qty": 2,
-        "unitPrice": 20,
-        "total": 40
-      }
-    ],
-    "subtotal": 37.38,
-    "taxRate": 7,
-    "taxAmount": 2.62,
-    "total": 40,
-    "status": "issued",
-    "legacyHash": "7bb7f5ba7009be502bdc07211717f830e92b6546",
-    "paymentMethod": "PP"
   },
   {
     "id": "FAC-71548",
@@ -132317,60 +132208,6 @@
     "status": "issued",
     "legacyHash": "3564e945079508fcd503efac6da6842b837e6daf",
     "paymentMethod": "CC"
-  },
-  {
-    "id": "FAC-71250",
-    "number": 71250,
-    "type": "invoice",
-    "bookingId": "T15142897",
-    "createdAt": "2020-01-15T15:38:06.000Z",
-    "customer": {
-      "name": "Hakim Tarbet",
-      "email": "ha.tarbet@gmail.com",
-      "phone": "660936684"
-    },
-    "lines": [
-      {
-        "description": "Servicio de traslado ida",
-        "qty": 4,
-        "unitPrice": -4.75,
-        "total": -19
-      }
-    ],
-    "subtotal": 17.76,
-    "taxRate": 7,
-    "taxAmount": 1.24,
-    "total": 19,
-    "status": "issued",
-    "legacyHash": "3b9cf0933e25d4f0cebe16dcd49ba0a9a2d2fdde",
-    "paymentMethod": "PP"
-  },
-  {
-    "id": "FAC-71249",
-    "number": 71249,
-    "type": "invoice",
-    "bookingId": "T15142897",
-    "createdAt": "2020-01-15T15:34:43.000Z",
-    "customer": {
-      "name": "Hakim Tarbet",
-      "email": "ha.tarbet@gmail.com",
-      "phone": "660936684"
-    },
-    "lines": [
-      {
-        "description": "Servicio de traslado ida",
-        "qty": 4,
-        "unitPrice": 4.75,
-        "total": 19
-      }
-    ],
-    "subtotal": 17.76,
-    "taxRate": 7,
-    "taxAmount": 1.24,
-    "total": 19,
-    "status": "issued",
-    "legacyHash": "75696fa2aede95e3bd1ecdbccfbb303931d1cb0a",
-    "paymentMethod": "PP"
   },
   {
     "id": "FAC-71248",

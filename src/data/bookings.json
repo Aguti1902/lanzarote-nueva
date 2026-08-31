@@ -7465,110 +7465,6 @@
     }
   },
   {
-    "id": "R14101986",
-    "createdAt": "2025-04-14T12:19:34.000Z",
-    "type": "tour",
-    "tourId": "mercadillo-teguise",
-    "tourTitle": "Mercadillo de Teguise ",
-    "date": "2025-06-15",
-    "adults": 1,
-    "children": 0,
-    "totalPrice": 30,
-    "amountTotal": 30,
-    "amountPaidCard": 0,
-    "amountDueCash": 30,
-    "amountPaidCash": 0,
-    "paymentMethod": "pay_on_day",
-    "paymentStatus": "pay_on_day",
-    "cashStatus": "pending",
-    "status": "pending",
-    "customer": {
-      "name": "rahul prueba",
-      "email": "rahul_dak@hotmail.es",
-      "phone": "636690393",
-      "hotel": "sfsaf",
-      "notes": "Importado desde web antigua (MariaDB) · asfasfasf"
-    }
-  },
-  {
-    "id": "R14101727",
-    "createdAt": "2025-04-14T12:17:17.000Z",
-    "type": "tour",
-    "tourId": "timanfaya-experience",
-    "tourTitle": "Excursión a Timanfaya y las Montañas del Fuego Experience",
-    "date": "2025-06-20",
-    "adults": 1,
-    "children": 1,
-    "totalPrice": 160,
-    "amountTotal": 160,
-    "amountPaidCard": 0,
-    "amountDueCash": 160,
-    "amountPaidCash": 0,
-    "paymentMethod": "pay_on_day",
-    "paymentStatus": "pay_on_day",
-    "cashStatus": "pending",
-    "status": "pending",
-    "customer": {
-      "name": "prueba",
-      "email": "prueba@test.com",
-      "phone": "666999999",
-      "hotel": "sldsfsfas",
-      "notes": "Importado desde web antigua (MariaDB) · fasfasfasfasfsafsafsafsafsafasf"
-    }
-  },
-  {
-    "id": "R14100759-i5890",
-    "createdAt": "2025-04-14T12:07:44.000Z",
-    "type": "tour",
-    "tourId": "timanfaya-experience",
-    "tourTitle": "Excursión a Timanfaya y las Montañas del Fuego Experience",
-    "date": "2025-04-25",
-    "adults": 1,
-    "children": 1,
-    "totalPrice": 160,
-    "amountTotal": 160,
-    "amountPaidCard": 0,
-    "amountDueCash": 160,
-    "amountPaidCash": 0,
-    "paymentMethod": "pay_on_day",
-    "paymentStatus": "pay_on_day",
-    "cashStatus": "pending",
-    "status": "pending",
-    "customer": {
-      "name": "rahul prueba",
-      "email": "rahul_dak@hotmail.es",
-      "phone": "636690393",
-      "hotel": "prueba",
-      "notes": "Importado desde web antigua (MariaDB) · prueba"
-    }
-  },
-  {
-    "id": "R14100759-i5891",
-    "createdAt": "2025-04-14T12:07:44.000Z",
-    "type": "tour",
-    "tourId": "timanfaya-experience",
-    "tourTitle": "Excursión a Timanfaya y las Montañas del Fuego Experience",
-    "date": "2025-05-14",
-    "adults": 1,
-    "children": 0,
-    "totalPrice": 95,
-    "amountTotal": 95,
-    "amountPaidCard": 0,
-    "amountDueCash": 95,
-    "amountPaidCash": 0,
-    "paymentMethod": "pay_on_day",
-    "paymentStatus": "pay_on_day",
-    "cashStatus": "pending",
-    "status": "pending",
-    "customer": {
-      "name": "rahul prueba",
-      "email": "rahul_dak@hotmail.es",
-      "phone": "636690393",
-      "hotel": "prueba",
-      "notes": "Importado desde web antigua (MariaDB) · prueba"
-    }
-  },
-  {
     "id": "R09161395",
     "createdAt": "2025-04-09T18:13:21.000Z",
     "type": "tour",
@@ -69545,32 +69441,6 @@
     }
   },
   {
-    "id": "R28092593",
-    "createdAt": "2022-09-28T11:25:14.000Z",
-    "type": "tour",
-    "tourId": "timanfaya-experience",
-    "tourTitle": "Excursión a Timanfaya y las Montañas del Fuego Experience",
-    "date": "2022-09-30",
-    "adults": 1,
-    "children": 0,
-    "totalPrice": 65,
-    "amountTotal": 65,
-    "amountPaidCard": 0,
-    "amountDueCash": 65,
-    "amountPaidCash": 0,
-    "paymentMethod": "pay_on_day",
-    "paymentStatus": "pay_on_day",
-    "cashStatus": "pending",
-    "status": "pending",
-    "customer": {
-      "name": "Test",
-      "email": "testestestest@gmail.com",
-      "phone": "666000000",
-      "hotel": "Arrecife Gran Hotel",
-      "notes": "Importado desde web antigua (MariaDB)"
-    }
-  },
-  {
     "id": "T28072246",
     "createdAt": "2022-09-28T09:22:56.000Z",
     "type": "transfer",
@@ -74738,37 +74608,6 @@
     "transfer": {
       "destination": "Puerto Calero",
       "direction": "return"
-    }
-  },
-  {
-    "id": "T22182723",
-    "createdAt": "2022-08-22T20:27:36.000Z",
-    "type": "transfer",
-    "tourId": "playa-blanca",
-    "tourTitle": "Traslado Playa Blanca",
-    "date": "2022-08-31",
-    "adults": 2,
-    "children": 0,
-    "totalPrice": 1,
-    "amountTotal": 1,
-    "amountPaidCard": 1,
-    "amountDueCash": 0,
-    "amountPaidCash": 0,
-    "paymentMethod": "card",
-    "paymentStatus": "paid",
-    "cashStatus": "none",
-    "status": "completed",
-    "customer": {
-      "name": "Hakim Tarbet",
-      "email": "ha.tarbet@gmail.com",
-      "phone": "660936684",
-      "hotel": "Calle cualquiera 44",
-      "flightNumber": "FR15225",
-      "notes": "Importado desde web antigua (MariaDB) · Bultos de equipaje: 1, Sillas para niños: 1 · Stripe: pi_3LZfNAJZJeFDOrOW1jK3coOU"
-    },
-    "transfer": {
-      "destination": "Playa Blanca",
-      "direction": "airport_to_hotel"
     }
   },
   {
@@ -173087,32 +172926,6 @@
     }
   },
   {
-    "id": "R10172612",
-    "createdAt": "2020-12-10T18:26:13.000Z",
-    "type": "tour",
-    "tourId": "grand-tour-experience",
-    "tourTitle": "Excursión Grand Tour Experience: la huella del paisaje",
-    "date": "2020-12-12",
-    "adults": 1,
-    "children": 0,
-    "totalPrice": 75,
-    "amountTotal": 75,
-    "amountPaidCard": 0,
-    "amountDueCash": 75,
-    "amountPaidCash": 0,
-    "paymentMethod": "pay_on_day",
-    "paymentStatus": "pay_on_day",
-    "cashStatus": "pending",
-    "status": "pending",
-    "customer": {
-      "name": "prueba",
-      "email": "maribel@maribel.com",
-      "phone": "00000000",
-      "hotel": "dddd",
-      "notes": "Importado desde web antigua (MariaDB)"
-    }
-  },
-  {
     "id": "T09144543",
     "createdAt": "2020-12-09T15:45:52.000Z",
     "type": "transfer",
@@ -173826,38 +173639,6 @@
     "transfer": {
       "destination": "Puerto Del Carmen",
       "direction": "return"
-    }
-  },
-  {
-    "id": "T02122190",
-    "createdAt": "2020-11-02T13:21:46.000Z",
-    "type": "transfer",
-    "tourId": "playa-blanca",
-    "tourTitle": "Traslado Playa Blanca",
-    "date": "2020-11-25",
-    "adults": 2,
-    "children": 0,
-    "totalPrice": 40,
-    "amountTotal": 40,
-    "amountPaidCard": 40,
-    "amountDueCash": 0,
-    "amountPaidCash": 0,
-    "paymentMethod": "card",
-    "paymentStatus": "paid",
-    "cashStatus": "none",
-    "status": "cancelled",
-    "cancelledAt": "2020-11-16T09:47:59.000Z",
-    "customer": {
-      "name": "Hakim Tarbet",
-      "email": "ha.tarbet@gmail.com",
-      "phone": "660936684",
-      "hotel": "Reserva prueba",
-      "flightNumber": "FR2015",
-      "notes": "Importado desde web antigua (MariaDB) · Bultos de equipaje: 1 · PayPal: PAYID-L6P7T3Q7X213028L4941952R"
-    },
-    "transfer": {
-      "destination": "Playa Blanca",
-      "direction": "airport_to_hotel"
     }
   },
   {
@@ -178446,37 +178227,6 @@
     }
   },
   {
-    "id": "R21175653",
-    "createdAt": "2020-07-21T19:56:10.000Z",
-    "type": "transfer",
-    "tourId": "playa-blanca",
-    "tourTitle": "Traslado Playa Blanca",
-    "date": "2020-07-30",
-    "adults": 6,
-    "children": 0,
-    "totalPrice": 100,
-    "amountTotal": 100,
-    "amountPaidCard": 0,
-    "amountDueCash": 100,
-    "amountPaidCash": 0,
-    "paymentMethod": "pay_on_day",
-    "paymentStatus": "pay_on_day",
-    "cashStatus": "pending",
-    "status": "pending",
-    "customer": {
-      "name": "Hakim Tarbet",
-      "email": "ha.tarbet@gmail.com",
-      "phone": "660936684",
-      "hotel": "adsasd",
-      "flightNumber": "FR2015",
-      "notes": "Importado desde web antigua (MariaDB) · asdasdas"
-    },
-    "transfer": {
-      "destination": "Playa Blanca",
-      "direction": "return"
-    }
-  },
-  {
     "id": "T21151249",
     "createdAt": "2020-07-21T17:12:50.000Z",
     "type": "transfer",
@@ -181804,37 +181554,6 @@
     }
   },
   {
-    "id": "R01191828",
-    "createdAt": "2020-02-01T20:18:42.000Z",
-    "type": "transfer",
-    "tourId": "puerto-del-carmen",
-    "tourTitle": "Traslado Puerto Del Carmen",
-    "date": "2020-02-22",
-    "adults": 2,
-    "children": 0,
-    "totalPrice": 40,
-    "amountTotal": 40,
-    "amountPaidCard": 0,
-    "amountDueCash": 40,
-    "amountPaidCash": 0,
-    "paymentMethod": "pay_on_day",
-    "paymentStatus": "pay_on_day",
-    "cashStatus": "pending",
-    "status": "pending",
-    "customer": {
-      "name": "prueba ",
-      "email": "olayatb@gmail.com",
-      "phone": "121165651516511516515",
-      "hotel": "mkcsjdfnjsf",
-      "flightNumber": "ls4",
-      "notes": "Importado desde web antigua (MariaDB) · mnchgiuherighk"
-    },
-    "transfer": {
-      "destination": "Puerto Del Carmen",
-      "direction": "return"
-    }
-  },
-  {
     "id": "T01142615",
     "createdAt": "2020-02-01T15:26:26.000Z",
     "type": "transfer",
@@ -182583,38 +182302,6 @@
       "phone": "+17809514473",
       "cruiseShip": "Anthem Of The Seas",
       "notes": "Importado desde web antigua (cruceros) · Grupo legacy: 130"
-    }
-  },
-  {
-    "id": "T15142897",
-    "createdAt": "2020-01-15T15:28:26.000Z",
-    "type": "transfer",
-    "tourId": "puerto-del-carmen",
-    "tourTitle": "Traslado Puerto Del Carmen",
-    "date": "2020-01-29",
-    "adults": 4,
-    "children": 0,
-    "totalPrice": 19,
-    "amountTotal": 19,
-    "amountPaidCard": 19,
-    "amountDueCash": 0,
-    "amountPaidCash": 0,
-    "paymentMethod": "card",
-    "paymentStatus": "paid",
-    "cashStatus": "none",
-    "status": "cancelled",
-    "cancelledAt": "2020-01-15T14:38:06.000Z",
-    "customer": {
-      "name": "Hakim Tarbet",
-      "email": "ha.tarbet@gmail.com",
-      "phone": "660936684",
-      "hotel": "Calle Seguidilla 44",
-      "flightNumber": "FR201235",
-      "notes": "Importado desde web antigua (MariaDB) · Bultos de equipaje: 1 · PayPal: PAYID-LYPSDEA1GY7284328747931J"
-    },
-    "transfer": {
-      "destination": "Puerto Del Carmen",
-      "direction": "airport_to_hotel"
     }
   },
   {
@@ -186314,89 +186001,6 @@
     }
   },
   {
-    "id": "R10192621-i289",
-    "createdAt": "2019-09-10T21:26:31.000Z",
-    "type": "tour",
-    "tourId": "timanfaya-experience",
-    "tourTitle": "Excursión a Timanfaya y las Montañas del Fuego Experience",
-    "date": "2019-09-18",
-    "adults": 2,
-    "children": 2,
-    "totalPrice": 10,
-    "amountTotal": 10,
-    "amountPaidCard": 0,
-    "amountDueCash": 10,
-    "amountPaidCash": 0,
-    "paymentMethod": "pay_on_day",
-    "paymentStatus": "pay_on_day",
-    "cashStatus": "pending",
-    "status": "pending",
-    "customer": {
-      "name": "Hakim Tarbet",
-      "email": "prueba@mail.com",
-      "phone": "632030856",
-      "hotel": "Hotel del lejano oriente express",
-      "notes": "Importado desde web antigua (MariaDB) · asda sdasd"
-    }
-  },
-  {
-    "id": "R10192621-i290",
-    "createdAt": "2019-09-10T21:26:31.000Z",
-    "type": "tour",
-    "tourId": "grand-tour-experience",
-    "tourTitle": "Excursión Grand Tour Experience: la huella del paisaje",
-    "date": "2019-09-29",
-    "adults": 2,
-    "children": 2,
-    "totalPrice": 10,
-    "amountTotal": 10,
-    "amountPaidCard": 0,
-    "amountDueCash": 10,
-    "amountPaidCash": 0,
-    "paymentMethod": "pay_on_day",
-    "paymentStatus": "pay_on_day",
-    "cashStatus": "pending",
-    "status": "pending",
-    "customer": {
-      "name": "Hakim Tarbet",
-      "email": "prueba@mail.com",
-      "phone": "632030856",
-      "hotel": "Hotel del lejano oriente express",
-      "notes": "Importado desde web antigua (MariaDB) · asda sdasd"
-    }
-  },
-  {
-    "id": "R10192621-i291",
-    "createdAt": "2019-09-10T21:26:31.000Z",
-    "type": "transfer",
-    "tourId": "orzola",
-    "tourTitle": "Traslado Órzola",
-    "date": "2019-09-19",
-    "adults": 5,
-    "children": 0,
-    "totalPrice": 5,
-    "amountTotal": 5,
-    "amountPaidCard": 0,
-    "amountDueCash": 5,
-    "amountPaidCash": 0,
-    "paymentMethod": "pay_on_day",
-    "paymentStatus": "pay_on_day",
-    "cashStatus": "pending",
-    "status": "pending",
-    "customer": {
-      "name": "Hakim Tarbet",
-      "email": "prueba@mail.com",
-      "phone": "632030856",
-      "hotel": "Hotel del lejano oriente express",
-      "flightNumber": "2132132131",
-      "notes": "Importado desde web antigua (MariaDB) · asda sdasd"
-    },
-    "transfer": {
-      "destination": "Órzola",
-      "direction": "return"
-    }
-  },
-  {
     "id": "R05162921",
     "createdAt": "2019-09-05T18:29:25.000Z",
     "type": "tour",
@@ -188130,99 +187734,6 @@
       "phone": "0046735117329",
       "hotel": "Oasis Lanz Beach Mate",
       "notes": "Importado desde web antigua (MariaDB)"
-    }
-  },
-  {
-    "id": "R28183990-i239",
-    "createdAt": "2019-06-28T20:39:02.000Z",
-    "type": "transfer",
-    "tourId": "playa-blanca",
-    "tourTitle": "Traslado Playa Blanca",
-    "date": "2019-07-20",
-    "adults": 5,
-    "children": 0,
-    "totalPrice": 110,
-    "amountTotal": 110,
-    "amountPaidCard": 0,
-    "amountDueCash": 110,
-    "amountPaidCash": 0,
-    "paymentMethod": "pay_on_day",
-    "paymentStatus": "pay_on_day",
-    "cashStatus": "pending",
-    "status": "pending",
-    "customer": {
-      "name": "Prueba",
-      "email": "test@mail.com",
-      "phone": "655655655",
-      "hotel": "Hotel Iberostar",
-      "flightNumber": "21321231",
-      "notes": "Importado desde web antigua (MariaDB) · Prueba"
-    },
-    "transfer": {
-      "destination": "Playa Blanca",
-      "direction": "return"
-    }
-  },
-  {
-    "id": "R28183990-i240",
-    "createdAt": "2019-06-28T20:39:02.000Z",
-    "type": "transfer",
-    "tourId": "playa-blanca",
-    "tourTitle": "Traslado Playa Blanca",
-    "date": "2019-07-13",
-    "adults": 4,
-    "children": 0,
-    "totalPrice": 100,
-    "amountTotal": 100,
-    "amountPaidCard": 0,
-    "amountDueCash": 100,
-    "amountPaidCash": 0,
-    "paymentMethod": "pay_on_day",
-    "paymentStatus": "pay_on_day",
-    "cashStatus": "pending",
-    "status": "pending",
-    "customer": {
-      "name": "Prueba",
-      "email": "test@mail.com",
-      "phone": "655655655",
-      "hotel": "Hotel Iberostar",
-      "flightNumber": "2132132131",
-      "notes": "Importado desde web antigua (MariaDB) · Prueba"
-    },
-    "transfer": {
-      "destination": "Playa Blanca",
-      "direction": "return"
-    }
-  },
-  {
-    "id": "R28183990-i241",
-    "createdAt": "2019-06-28T20:39:02.000Z",
-    "type": "transfer",
-    "tourId": "playa-blanca",
-    "tourTitle": "Traslado Playa Blanca",
-    "date": "2019-07-20",
-    "adults": 4,
-    "children": 0,
-    "totalPrice": 50,
-    "amountTotal": 50,
-    "amountPaidCard": 0,
-    "amountDueCash": 50,
-    "amountPaidCash": 0,
-    "paymentMethod": "pay_on_day",
-    "paymentStatus": "pay_on_day",
-    "cashStatus": "pending",
-    "status": "pending",
-    "customer": {
-      "name": "Prueba",
-      "email": "test@mail.com",
-      "phone": "655655655",
-      "hotel": "Hotel Iberostar",
-      "flightNumber": "2132132131",
-      "notes": "Importado desde web antigua (MariaDB) · Prueba"
-    },
-    "transfer": {
-      "destination": "Playa Blanca",
-      "direction": "airport_to_hotel"
     }
   },
   {
