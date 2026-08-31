@@ -1,7 +1,12 @@
 import type { Booking, BookingStatus, CashStatus } from "@/types";
 import { buildBookingId } from "@/lib/booking-ids";
 import { splitPaymentAmounts } from "@/lib/payments";
-import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
+import {
+  readCmsJson,
+  readLocalCmsJson,
+  writeCmsJson,
+} from "@/lib/supabase/cms-store";
+import { isSupabaseConfigured, warnSupabaseFallback } from "@/lib/supabase/client";
 
 function normalizeBooking(b: Booking): Booking {
   const total = b.amountTotal ?? b.totalPrice ?? 0;
@@ -17,13 +22,85 @@ function normalizeBooking(b: Booking): Booking {
   };
 }
 
+/** Localizadores de la web antigua (R31105028, CR28060278, …). */
+export function isLegacyLocator(id: string): boolean {
+  return /^(R|CR|T)\d{5,}/i.test(id) || /-i\d+$/i.test(id);
+}
+
+function countLegacy(list: Booking[]): number {
+  return list.filter((b) => isLegacyLocator(b.id)).length;
+}
+
+let cmsSyncInFlight: Promise<void> | null = null;
+
+/**
+ * Si el JSON del deploy tiene la migración MariaDB y Supabase Storage aún no,
+ * usa el del deploy y lo sube a Storage (una vez) para no perder datos en prod.
+ */
+async function resolveBookingsList(): Promise<Booking[]> {
+  const local = await readLocalCmsJson<Booking[]>("bookings.json");
+
+  if (!isSupabaseConfigured()) {
+    return local;
+  }
+
+  let remote: Booking[] = [];
+  try {
+    remote = await readCmsJson<Booking[]>("bookings.json");
+    if (!Array.isArray(remote)) remote = [];
+  } catch (error) {
+    warnSupabaseFallback("bookings-resolve", error as Error);
+    return local;
+  }
+
+  const localLegacy = countLegacy(local);
+  const remoteLegacy = countLegacy(remote);
+  const localWins =
+    localLegacy > remoteLegacy + 50 ||
+    (local.length > remote.length + 200 && localLegacy >= 100);
+
+  if (!localWins) {
+    return remote.length ? remote : local;
+  }
+
+  if (!cmsSyncInFlight) {
+    cmsSyncInFlight = writeCmsJson("bookings.json", local)
+      .then(() => {
+        console.info(
+          `[bookings] Sincronizadas ${local.length} reservas del deploy → Supabase Storage (legacy ${localLegacy} vs remote ${remoteLegacy})`
+        );
+      })
+      .catch((error) => {
+        cmsSyncInFlight = null;
+        warnSupabaseFallback("bookings-cms-sync", error as Error);
+      });
+  }
+
+  return local;
+}
+
 export async function getBookings(): Promise<Booking[]> {
-  const list = await readCmsJson<Booking[]>("bookings.json");
+  const list = await resolveBookingsList();
   return list.map(normalizeBooking);
 }
 
 export async function saveBookings(bookings: Booking[]): Promise<void> {
   await writeCmsJson("bookings.json", bookings);
+}
+
+/** Fuerza subir el bookings.json del deploy a Supabase Storage. */
+export async function syncBookingsFromDeploy(): Promise<{
+  local: number;
+  legacy: number;
+  synced: boolean;
+}> {
+  const local = await readLocalCmsJson<Booking[]>("bookings.json");
+  const legacy = countLegacy(local);
+  if (isSupabaseConfigured()) {
+    await writeCmsJson("bookings.json", local);
+    return { local: local.length, legacy, synced: true };
+  }
+  return { local: local.length, legacy, synced: false };
 }
 
 /** Fusiona por id (idempotente). Sustituye existentes y añade nuevas. */

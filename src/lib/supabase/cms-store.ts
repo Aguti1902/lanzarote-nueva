@@ -35,6 +35,11 @@ async function readLocalJson<T>(file: string): Promise<T> {
   return JSON.parse(raw) as T;
 }
 
+/** Lectura directa de `src/data` (bundle del deploy), sin Supabase Storage. */
+export async function readLocalCmsJson<T>(file: string): Promise<T> {
+  return readLocalJson<T>(file);
+}
+
 async function writeLocalJson(file: string, data: unknown): Promise<void> {
   const full = path.join(dataDir, file);
   await fs.mkdir(path.dirname(full), { recursive: true });

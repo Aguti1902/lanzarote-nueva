@@ -31,6 +31,23 @@ Los localizadores antiguos (`R…`, `CR…`) se conservan. Si una reserva tenía
 
 Hay ~9.5k filas en `cruise_booking_items` cuyo `cruise_bookings` padre ya no existe (borrados). **No se importan**: no hay cliente/email. Son casi todas `PP`/`PC` históricas sin futuro.
 
+## Supabase (importante en producción)
+
+La web en Vercel puede leer reservas desde **Supabase Storage** (`bucket cms` → `bookings.json`). Si ese fichero sigue siendo el seed antiguo (~25 reservas), **pisa** el JSON grande del deploy.
+
+Tras desplegar esta rama / merge a `main`:
+
+1. En Admin → Reservas, pulsar **Sync CMS** (o `POST /api/admin/sync-bookings`).
+2. O ejecutar en local con las env de Supabase:
+
+```bash
+npm run seed:supabase
+```
+
+Eso sube todo `src/data/*.json` al bucket `cms` (incl. las ~7k reservas).
+
+En runtime, si el deploy tiene muchas más reservas legacy que Storage, la app **elige el del deploy y lo sube sola** a Storage.
+
 ## Cómo regenerar el JSON
 
 1. En el VPS, exportar tablas a JSON (PHP/`mysqli`, sin subir contraseñas al repo).
@@ -40,7 +57,15 @@ Hay ~9.5k filas en `cruise_booking_items` cuyo `cruise_bookings` padre ya no exi
 node scripts/migrate-legacy-mysql.mjs /ruta/al/export --write
 ```
 
-3. Opcional: en Admin → Importar reservas, subir el array JSON generado y confirmar (idempotente por `id`).
+3. Opcional: Admin → Importar reservas → JSON legacy (idempotente por `id`).
+4. Si usáis Supabase: **Sync CMS** o `npm run seed:supabase`.
+
+## Panel admin
+
+- Pestaña **Todos** (por defecto): ver el histórico completo.
+- **Reservas actuales** = solo `confirmed` (pocas tras migrar; el pasado está en **Realizadas**).
+- Buscador por id / cliente / email.
+- Paginación de 100 en 100.
 
 ## Pendiente con Angela (Strato / pagos)
 

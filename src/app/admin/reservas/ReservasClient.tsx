@@ -18,29 +18,35 @@ import {
   bookingRowClassName,
 } from "@/components/admin/BookingStatusBadge";
 
-type ReservasTab = "current" | "done" | "incomplete" | "cancelled";
+type ReservasTab = "all" | "current" | "done" | "incomplete" | "cancelled";
 
 const TABS: { id: ReservasTab; label: string }[] = [
+  { id: "all", label: "Todos" },
   { id: "current", label: "Reservas actuales" },
   { id: "done", label: "Realizadas" },
   { id: "incomplete", label: "Reservas sin completar" },
   { id: "cancelled", label: "Reservas Canceladas" },
 ];
 
+const PAGE_SIZE = 100;
+
 function parseTab(value: string | null): ReservasTab {
   if (
     value === "done" ||
     value === "incomplete" ||
     value === "cancelled" ||
-    value === "current"
+    value === "current" ||
+    value === "all"
   ) {
     return value;
   }
-  return "current";
+  return "all";
 }
 
 function matchesTab(booking: Booking, tab: ReservasTab): boolean {
   switch (tab) {
+    case "all":
+      return true;
     case "current":
       return booking.status === "confirmed";
     case "done":
@@ -68,6 +74,9 @@ export default function AdminReservasPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [modalView, setModalView] = useState<"details" | "cancel">("details");
   const [loading, setLoading] = useState(true);
+  const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
+  const [syncMsg, setSyncMsg] = useState("");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -83,10 +92,23 @@ export default function AdminReservasPage() {
 
   function setTab(next: ReservasTab) {
     const params = new URLSearchParams(searchParams.toString());
-    if (next === "current") params.delete("tab");
+    if (next === "all") params.delete("tab");
     else params.set("tab", next);
     const qs = params.toString();
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+    setPage(1);
+  }
+
+  async function syncFromDeploy() {
+    setSyncMsg("Sincronizando…");
+    const res = await fetch("/api/admin/sync-bookings", { method: "POST" });
+    const data = await res.json();
+    if (!res.ok) {
+      setSyncMsg(data.error || "Error al sincronizar");
+      return;
+    }
+    setSyncMsg(data.message || "OK");
+    await load();
   }
 
   async function setStatus(
@@ -138,6 +160,7 @@ export default function AdminReservasPage() {
 
   const tabCounts = useMemo(() => {
     const counts: Record<ReservasTab, number> = {
+      all: bookings.length,
       current: 0,
       done: 0,
       incomplete: 0,
@@ -153,12 +176,34 @@ export default function AdminReservasPage() {
   }, [bookings]);
 
   const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
     return bookings.filter((b) => {
       if (!matchesTab(b, tab)) return false;
       const dateValue = dateField === "service" ? b.date : b.createdAt;
-      return inDateRange(dateValue, range);
+      if (!inDateRange(dateValue, range)) return false;
+      if (!q) return true;
+      const hay = [
+        b.id,
+        b.tourTitle,
+        b.customer?.name,
+        b.customer?.email,
+        b.customer?.phone,
+        b.customer?.hotel,
+        b.customer?.cruiseShip,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      return hay.includes(q);
     });
-  }, [bookings, tab, dateField, range]);
+  }, [bookings, tab, dateField, range, query]);
+
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const pageSafe = Math.min(page, pageCount);
+  const paged = useMemo(() => {
+    const start = (pageSafe - 1) * PAGE_SIZE;
+    return filtered.slice(start, start + PAGE_SIZE);
+  }, [filtered, pageSafe]);
 
   const selected = useMemo(
     () => bookings.find((b) => b.id === selectedId) || null,
@@ -173,19 +218,43 @@ export default function AdminReservasPage() {
             Reservas
           </h1>
           <p className="mt-1 text-sm text-ink-muted">
-            Pulse el localizador para ver todos los detalles
+            Pulse el localizador para ver todos los detalles · {bookings.length}{" "}
+            en total
           </p>
+          {syncMsg && (
+            <p className="mt-1 text-xs text-ocean-deep">{syncMsg}</p>
+          )}
         </div>
-        <select
-          value={dateField}
-          onChange={(e) =>
-            setDateField(e.target.value as "service" | "created")
-          }
-          className="rounded border border-sand-line bg-white px-3 py-2 text-sm"
-        >
-          <option value="service">Filtrar por fecha servicio</option>
-          <option value="created">Filtrar por fecha reserva</option>
-        </select>
+        <div className="flex flex-wrap items-center gap-2">
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setPage(1);
+            }}
+            placeholder="Buscar id, cliente, email…"
+            className="rounded border border-sand-line bg-white px-3 py-2 text-sm min-w-[220px]"
+          />
+          <select
+            value={dateField}
+            onChange={(e) =>
+              setDateField(e.target.value as "service" | "created")
+            }
+            className="rounded border border-sand-line bg-white px-3 py-2 text-sm"
+          >
+            <option value="service">Filtrar por fecha servicio</option>
+            <option value="created">Filtrar por fecha reserva</option>
+          </select>
+          <button
+            type="button"
+            onClick={syncFromDeploy}
+            className="rounded bg-header px-3 py-2 text-xs font-bold text-white"
+            title="Sube el bookings.json del deploy a Supabase Storage"
+          >
+            Sync CMS
+          </button>
+        </div>
       </div>
 
       <nav
@@ -268,7 +337,7 @@ export default function AdminReservasPage() {
               </tr>
             )}
             {!loading &&
-              filtered.map((b) => (
+              paged.map((b) => (
                 <tr
                   key={b.id}
                   className={`border-b border-sand-line/70 align-top ${bookingRowClassName(b.status)}`}
@@ -421,6 +490,36 @@ export default function AdminReservasPage() {
           </tbody>
         </table>
       </div>
+
+      {!loading && filtered.length > PAGE_SIZE && (
+        <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
+          <p className="text-ink-muted">
+            Mostrando {(pageSafe - 1) * PAGE_SIZE + 1}–
+            {Math.min(pageSafe * PAGE_SIZE, filtered.length)} de {filtered.length}
+          </p>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              disabled={pageSafe <= 1}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              className="rounded bg-white px-3 py-1.5 font-bold ring-1 ring-sand-line disabled:opacity-40"
+            >
+              Anterior
+            </button>
+            <span className="px-2 py-1.5 text-ink-muted">
+              {pageSafe} / {pageCount}
+            </span>
+            <button
+              type="button"
+              disabled={pageSafe >= pageCount}
+              onClick={() => setPage((p) => Math.min(pageCount, p + 1))}
+              className="rounded bg-white px-3 py-1.5 font-bold ring-1 ring-sand-line disabled:opacity-40"
+            >
+              Siguiente
+            </button>
+          </div>
+        </div>
+      )}
 
       {selected && (
         <BookingDetailModal

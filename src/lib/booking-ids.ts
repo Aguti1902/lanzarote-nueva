@@ -25,7 +25,9 @@ export function isCruiseBooking(input: {
   type?: BookingType;
   tourId?: string;
   customer?: { cruiseShip?: string; notes?: string };
+  id?: string;
 }): boolean {
+  if (input.id && /^CR-?\d/i.test(input.id)) return true;
   if (input.customer?.cruiseShip?.trim()) return true;
   const notes = input.customer?.notes || "";
   if (/crucero|escala|shore|all.?aboard/i.test(notes)) return true;

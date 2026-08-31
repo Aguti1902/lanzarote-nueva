@@ -36,13 +36,22 @@ async function ensureBucket(name, options) {
 async function uploadCmsFile(relativePath) {
   const full = path.join(dataDir, relativePath);
   const raw = await readFile(full);
-  const { error } = await supabase.storage.from(CMS_BUCKET).upload(relativePath, raw, {
+  const options = {
     upsert: true,
     contentType: "application/json",
     cacheControl: "0",
-  });
-  if (error) throw new Error(`cms/${relativePath}: ${error.message}`);
-  console.log(`cms/${relativePath}`);
+  };
+  // update es más fiable con ficheros grandes ya existentes
+  const updated = await supabase.storage
+    .from(CMS_BUCKET)
+    .update(relativePath, raw, options);
+  if (updated.error) {
+    const { error } = await supabase.storage
+      .from(CMS_BUCKET)
+      .upload(relativePath, raw, options);
+    if (error) throw new Error(`cms/${relativePath}: ${error.message}`);
+  }
+  console.log(`cms/${relativePath} (${raw.byteLength} bytes)`);
 }
 
 async function uploadAllCmsJson() {

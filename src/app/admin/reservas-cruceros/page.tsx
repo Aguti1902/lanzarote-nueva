@@ -18,12 +18,15 @@ import {
 
 export default function AdminReservasCrucerosPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
-  const [tab, setTab] = useState<"current" | "done" | "cancelled">("current");
+  const [tab, setTab] = useState<"all" | "current" | "done" | "cancelled">(
+    "all"
+  );
   const [dateField, setDateField] = useState<"service" | "created">("service");
   const [range, setRange] = useState<DateRange>(emptyDateRange);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [modalView, setModalView] = useState<"details" | "cancel">("details");
   const [loading, setLoading] = useState(true);
+  const [query, setQuery] = useState("");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -68,26 +71,40 @@ export default function AdminReservasCrucerosPage() {
 
   const cruiseBookings = useMemo(() => {
     return bookings.filter((b) => {
-      if (b.id.startsWith("CR-")) return true;
+      // Nueva: CR-1001 · Antigua: CR28060278
+      if (/^CR-?\d/i.test(b.id)) return true;
       const ship = b.customer?.cruiseShip?.trim();
       const notes = b.customer?.notes || "";
-      return Boolean(ship) || /crucero|escala|ship/i.test(notes);
+      return Boolean(ship) || /crucero|escala|ship|shore/i.test(notes);
     });
   }, [bookings]);
 
   const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
     return cruiseBookings.filter((b) => {
       if (tab === "cancelled") {
         if (b.status !== "cancelled") return false;
       } else if (tab === "done") {
         if (b.status !== "completed") return false;
-      } else if (!(b.status === "pending" || b.status === "confirmed")) {
-        return false;
+      } else if (tab === "current") {
+        if (!(b.status === "pending" || b.status === "confirmed")) return false;
       }
       const dateValue = dateField === "service" ? b.date : b.createdAt;
-      return inDateRange(dateValue, range);
+      if (!inDateRange(dateValue, range)) return false;
+      if (!q) return true;
+      const hay = [
+        b.id,
+        b.tourTitle,
+        b.customer?.name,
+        b.customer?.email,
+        b.customer?.cruiseShip,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      return hay.includes(q);
     });
-  }, [cruiseBookings, tab, dateField, range]);
+  }, [cruiseBookings, tab, dateField, range, query]);
 
   const selected = useMemo(
     () => bookings.find((b) => b.id === selectedId) || null,
@@ -100,22 +117,43 @@ export default function AdminReservasCrucerosPage() {
         <div>
           <h1 className="text-3xl font-bold">Reservas de cruceros</h1>
           <p className="mt-1 text-sm text-ink-muted">
-            Pulse el localizador para ver el detalle completo
+            Pulse el localizador para ver el detalle completo ·{" "}
+            {cruiseBookings.length} de crucero
           </p>
         </div>
-        <select
-          value={dateField}
-          onChange={(e) =>
-            setDateField(e.target.value as "service" | "created")
-          }
-          className="rounded border border-sand-line bg-white px-3 py-2 text-sm"
-        >
-          <option value="service">Filtrar por fecha servicio</option>
-          <option value="created">Filtrar por fecha reserva</option>
-        </select>
+        <div className="flex flex-wrap items-center gap-2">
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Buscar id, cliente, barco…"
+            className="rounded border border-sand-line bg-white px-3 py-2 text-sm min-w-[200px]"
+          />
+          <select
+            value={dateField}
+            onChange={(e) =>
+              setDateField(e.target.value as "service" | "created")
+            }
+            className="rounded border border-sand-line bg-white px-3 py-2 text-sm"
+          >
+            <option value="service">Filtrar por fecha servicio</option>
+            <option value="created">Filtrar por fecha reserva</option>
+          </select>
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={() => setTab("all")}
+          className={`rounded-full px-4 py-2 text-sm font-bold ${
+            tab === "all"
+              ? "bg-ocean text-white"
+              : "bg-white text-ink ring-1 ring-sand-line"
+          }`}
+        >
+          Todos ({cruiseBookings.length})
+        </button>
         <button
           type="button"
           onClick={() => setTab("current")}
