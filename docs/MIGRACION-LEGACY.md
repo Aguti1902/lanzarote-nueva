@@ -87,6 +87,8 @@ Ver sección histórica y `scripts/migrate-legacy-mysql.mjs`.
 
 Las facturas importadas usan `FAC-{número}` (p. ej. `FAC-75991`). Las nuevas continúan el mismo ciclo (`FAC-75992`, …). Los abonos usan `ABO-{número}` en la misma secuencia.
 
+## Pendiente con Angela (Strato / pagos)
+
 - Credenciales panel Strato (DNS del dominio → Vercel).
 - Stripe / PayPal (claves live) para la web nueva.
 - Acceso admin WordPress / panel antiguo si hace falta cortar la web vieja.
