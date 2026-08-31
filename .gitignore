@@ -41,3 +41,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 admin-ui-verification-screenshots/
+
+# export intermedio de migración (el canónico es bookings.json)
+src/data/bookings.migrated.json
+/tmp/

@@ -26,6 +26,24 @@ export async function saveBookings(bookings: Booking[]): Promise<void> {
   await writeCmsJson("bookings.json", bookings);
 }
 
+/** Fusiona por id (idempotente). Sustituye existentes y añade nuevas. */
+export async function upsertBookings(
+  incoming: Booking[]
+): Promise<{ upserted: number; total: number }> {
+  const normalized = incoming.map(normalizeBooking);
+  if (!normalized.length) {
+    return { upserted: 0, total: (await getBookings()).length };
+  }
+  const existing = await getBookings();
+  const map = new Map(existing.map((b) => [b.id, b]));
+  for (const b of normalized) map.set(b.id, b);
+  const merged = [...map.values()].sort((a, b) =>
+    a.createdAt < b.createdAt ? 1 : -1
+  );
+  await saveBookings(merged);
+  return { upserted: normalized.length, total: merged.length };
+}
+
 export async function addBooking(
   booking: Omit<
     Booking,

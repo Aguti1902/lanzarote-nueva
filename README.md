@@ -25,7 +25,7 @@ Desde el panel puedes:
 | Reservas | Ver todas, confirmar / completar / cancelar |
 | Reservas cruceros | Filtro de reservas con barco/escala |
 | Grupos cruceros | Grupos de pax por barco/fecha/excursión |
-| Importar reservas | CSV/Excel de proveedores → reservas |
+| Importar reservas | CSV/Excel de proveedores → reservas; JSON de la web antigua (MariaDB) |
 | Pagos online | Crear enlaces de pago y marcar estados |
 | Cobros efectivo | Seguir depósitos 10% y cobros del día |
 | Facturas | Emitir / abonar |
@@ -68,3 +68,7 @@ Botón flotante **Chat IA** en la web pública. Responde sobre excursiones, tras
 En Ruta Sur y Grand Tour de **grupo grande** el widget permite tarjeta, Bizum o pago el día del tour. En grupo reducido: tarjeta o Bizum.
 
 > La pasarela real (Redsys/Stripe/Bizum) se puede conectar después; ahora las reservas se guardan en `src/data/bookings.json`.
+
+## Migración desde la web antigua
+
+Clientes y reservas históricas/futuras se importan desde MariaDB del VPS. Ver `docs/MIGRACION-LEGACY.md` y el script `scripts/migrate-legacy-mysql.mjs`.

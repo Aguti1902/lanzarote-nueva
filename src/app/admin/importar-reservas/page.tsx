@@ -33,6 +33,9 @@ export default function AdminImportarReservasPage() {
   const [preview, setPreview] = useState<PreviewRow[]>([]);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const [legacyFileName, setLegacyFileName] = useState("");
+  const [legacyBookings, setLegacyBookings] = useState<unknown[]>([]);
+  const [legacyMessage, setLegacyMessage] = useState("");
 
   useEffect(() => {
     fetch("/api/admin/extras?resource=collaborators")
@@ -106,13 +109,84 @@ export default function AdminImportarReservasPage() {
     setPreview([]);
   }
 
+  async function onLegacyFile(file: File | null) {
+    if (!file) return;
+    setLegacyMessage("");
+    setLegacyFileName(file.name);
+    try {
+      const parsed = JSON.parse(await file.text());
+      const list = Array.isArray(parsed)
+        ? parsed
+        : Array.isArray(parsed?.bookings)
+          ? parsed.bookings
+          : null;
+      if (!list) {
+        setLegacyBookings([]);
+        setLegacyMessage("El JSON debe ser un array de reservas o { bookings: [] }");
+        return;
+      }
+      setLegacyBookings(list);
+      setLegacyMessage(`${list.length} reservas leídas. Pulse previsualizar o importar.`);
+    } catch {
+      setLegacyBookings([]);
+      setLegacyMessage("JSON inválido");
+    }
+  }
+
+  async function previewLegacy() {
+    if (!legacyBookings.length) return;
+    setBusy(true);
+    setLegacyMessage("");
+    const res = await fetch("/api/admin/import-legacy", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ bookings: legacyBookings }),
+    });
+    const data = await res.json();
+    setBusy(false);
+    if (!res.ok) {
+      setLegacyMessage(data.error || "Error al previsualizar");
+      return;
+    }
+    setLegacyMessage(
+      `Vista previa legacy: ${data.previewCount} válidas · ${data.invalidCount} inválidas`
+    );
+  }
+
+  async function confirmLegacy() {
+    if (!legacyBookings.length) return;
+    if (
+      !confirm(
+        `¿Fusionar ${legacyBookings.length} reservas legacy? Se actualizarán por id.`
+      )
+    ) {
+      return;
+    }
+    setBusy(true);
+    setLegacyMessage("");
+    const res = await fetch("/api/admin/import-legacy", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ bookings: legacyBookings, confirm: true }),
+    });
+    const data = await res.json();
+    setBusy(false);
+    if (!res.ok) {
+      setLegacyMessage(data.error || "Error al importar legacy");
+      return;
+    }
+    setLegacyMessage(
+      `Importadas/actualizadas ${data.imported}. Total en sistema: ${data.total}. Ver en Reservas.`
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Importar reservas</h1>
         <p className="mt-1 text-sm text-ink-muted">
           Importe reservas de proveedores desde Excel exportado a CSV (separador{" "}
-          <code>;</code> o <code>,</code>)
+          <code>;</code> o <code>,</code>), o el JSON de la web antigua.
         </p>
       </div>
 
@@ -242,6 +316,55 @@ export default function AdminImportarReservasPage() {
           </table>
         </div>
       )}
+
+      <div className="rounded-xl bg-white p-5 ring-1 ring-sand-line">
+        <h2 className="text-lg font-bold">Web antigua (MariaDB → JSON)</h2>
+        <p className="mt-1 text-sm text-ink-muted">
+          Suba el JSON generado con{" "}
+          <code className="text-xs">scripts/migrate-legacy-mysql.mjs</code>. La
+          fusión es por id (localizadores R… / CR…). Detalles en{" "}
+          <code className="text-xs">docs/MIGRACION-LEGACY.md</code>.
+        </p>
+        {legacyMessage && (
+          <p className="mt-3 rounded-lg bg-sky-soft px-4 py-2 text-sm text-ocean-deep ring-1 ring-sand-line">
+            {legacyMessage}{" "}
+            {legacyMessage.includes("Reservas") && (
+              <Link href="/admin/reservas" className="underline">
+                Ir a reservas
+              </Link>
+            )}
+          </p>
+        )}
+        <div className="mt-4 flex flex-wrap items-end gap-3">
+          <Field label="Archivo JSON migrado">
+            <input
+              type="file"
+              accept=".json,application/json"
+              className="block w-full text-sm"
+              onChange={(e) => onLegacyFile(e.target.files?.[0] || null)}
+            />
+            {legacyFileName && (
+              <p className="mt-1 text-xs text-ink-muted">{legacyFileName}</p>
+            )}
+          </Field>
+          <button
+            type="button"
+            disabled={busy || !legacyBookings.length}
+            onClick={previewLegacy}
+            className="inline-flex items-center gap-2 rounded bg-ocean px-4 py-2 text-sm font-bold text-white disabled:opacity-50"
+          >
+            Previsualizar legacy
+          </button>
+          <button
+            type="button"
+            disabled={busy || !legacyBookings.length}
+            onClick={confirmLegacy}
+            className="inline-flex items-center gap-2 rounded bg-header px-4 py-2 text-sm font-bold text-white disabled:opacity-50"
+          >
+            Importar / actualizar legacy
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
