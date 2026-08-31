@@ -1,30 +1,6 @@
 {
   "paymentLinks": [
     {
-      "id": "pay-leg-1",
-      "createdAt": "2018-11-14T21:13:28.000Z",
-      "locator": "P14211312",
-      "concept": "Prueba de pago online Tarjeta",
-      "amount": 0.15,
-      "status": "pending",
-      "customerEmail": "ha.tarbet@gmail.com",
-      "customerLocale": "es",
-      "paymentHash": "6bc4f3948ac0457a7e87992bcccb59bcffab78e1",
-      "chargeFull": true
-    },
-    {
-      "id": "pay-leg-2",
-      "createdAt": "2018-11-14T21:30:18.000Z",
-      "locator": "P14213050",
-      "concept": "Prueba de pago PayPal",
-      "amount": 0.5,
-      "status": "pending",
-      "customerEmail": "ha.tarbet@gmail.com",
-      "customerLocale": "es",
-      "paymentHash": "0907d874fa3ac7604333cbe4244073a233f47f4a",
-      "chargeFull": true
-    },
-    {
       "id": "pay-leg-5",
       "createdAt": "2018-11-28T11:05:43.000Z",
       "locator": "P28110593",

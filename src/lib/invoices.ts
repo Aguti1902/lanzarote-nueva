@@ -51,11 +51,28 @@ export async function getInvoicesByBooking(
   return (await getInvoices()).filter((i) => i.bookingId === bookingId);
 }
 
-function nextNumber(invoices: Invoice[], year: number): number {
-  const nums = invoices
-    .filter((i) => i.id.includes(`-${year}-`))
-    .map((i) => i.number);
-  return (nums.length ? Math.max(...nums) : 0) + 1;
+/**
+ * Continúa el ciclo de numeración de la web antigua (último importado ~75991).
+ * Un solo contador global para facturas y abonos.
+ */
+export function nextInvoiceNumber(invoices: Invoice[]): number {
+  let max = 0;
+  for (const inv of invoices) {
+    const n = Number(inv.number);
+    if (Number.isFinite(n) && n > max) max = n;
+    // Por si algún id legacy no tiene number coherente: FAC-75991 / ABO-75992
+    const m = String(inv.id).match(/^(?:FAC|ABO)-(\d+)$/i);
+    if (m) {
+      const fromId = Number(m[1]);
+      if (fromId > max) max = fromId;
+    }
+  }
+  return max + 1;
+}
+
+function formatInvoiceId(type: Invoice["type"], number: number): string {
+  const prefix = type === "credit_note" ? "ABO" : "FAC";
+  return `${prefix}-${number}`;
 }
 
 export async function createInvoiceForBooking(
@@ -70,9 +87,8 @@ export async function createInvoiceForBooking(
 
   const taxRate = IGIC_RATE;
   const invoices = await getInvoices();
-  const year = new Date().getFullYear();
-  const number = nextNumber(invoices, year);
-  const id = `FAC-${year}-${String(number).padStart(4, "0")}`;
+  const number = nextInvoiceNumber(invoices);
+  const id = formatInvoiceId("invoice", number);
 
   const amountTotal = booking.amountTotal ?? booking.totalPrice;
   const { subtotal, taxAmount, total } = splitIgic(amountTotal, taxRate);
@@ -145,9 +161,8 @@ export async function createCreditNoteForBooking(
   if (refundAmount <= 0 && !related) return null;
 
   const invoices = await getInvoices();
-  const year = new Date().getFullYear();
-  const number = nextNumber(invoices, year);
-  const id = `ABO-${year}-${String(number).padStart(4, "0")}`;
+  const number = nextInvoiceNumber(invoices);
+  const id = formatInvoiceId("credit_note", number);
 
   let credit: Invoice;
 
