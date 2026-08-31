@@ -83,7 +83,9 @@ Ver sección histórica y `scripts/migrate-legacy-mysql.mjs`.
 - Buscador por id / cliente / email.
 - Paginación de 100 en 100.
 
-## Pendiente con Angela (Strato / pagos)
+## Numeración de facturas
+
+Las facturas importadas usan `FAC-{número}` (p. ej. `FAC-75991`). Las nuevas continúan el mismo ciclo (`FAC-75992`, …). Los abonos usan `ABO-{número}` en la misma secuencia.
 
 - Credenciales panel Strato (DNS del dominio → Vercel).
 - Stripe / PayPal (claves live) para la web nueva.
