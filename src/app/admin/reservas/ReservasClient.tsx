@@ -100,8 +100,8 @@ export default function AdminReservasPage() {
   }
 
   async function syncFromDeploy() {
-    setSyncMsg("Sincronizando…");
-    const res = await fetch("/api/admin/sync-bookings", { method: "POST" });
+    setSyncMsg("Sincronizando CMS completo…");
+    const res = await fetch("/api/admin/sync-cms", { method: "POST" });
     const data = await res.json();
     if (!res.ok) {
       setSyncMsg(data.error || "Error al sincronizar");

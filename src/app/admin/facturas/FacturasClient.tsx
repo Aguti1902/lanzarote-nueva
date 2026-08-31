@@ -16,6 +16,8 @@ export function FacturasClient() {
   const focusId = searchParams.get("id");
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [range, setRange] = useState<DateRange>(emptyDateRange);
+  const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
   const [stats, setStats] = useState({
     countInvoices: 0,
     countCredits: 0,
@@ -26,10 +28,27 @@ export function FacturasClient() {
   const [selected, setSelected] = useState<Invoice | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const filteredInvoices = useMemo(
-    () => invoices.filter((inv) => inDateRange(inv.createdAt, range)),
-    [invoices, range]
-  );
+  const PAGE_SIZE = 100;
+
+  const filteredInvoices = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return invoices.filter((inv) => {
+      if (!inDateRange(inv.createdAt, range)) return false;
+      if (!q) return true;
+      const hay = [inv.id, inv.bookingId, inv.customer?.name, inv.customer?.email]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      return hay.includes(q);
+    });
+  }, [invoices, range, query]);
+
+  const pageCount = Math.max(1, Math.ceil(filteredInvoices.length / PAGE_SIZE));
+  const pageSafe = Math.min(page, pageCount);
+  const paged = useMemo(() => {
+    const start = (pageSafe - 1) * PAGE_SIZE;
+    return filteredInvoices.slice(start, start + PAGE_SIZE);
+  }, [filteredInvoices, pageSafe]);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -64,7 +83,8 @@ export function FacturasClient() {
       <div>
         <h1 className="text-3xl font-bold text-ink">Facturas</h1>
         <p className="mt-1 text-sm text-ink-muted">
-          Facturas emitidas y abonos (facturas negativas) por cancelación
+          Facturas emitidas y abonos (facturas negativas) por cancelación ·{" "}
+          {invoices.length} en total
         </p>
       </div>
 
@@ -85,9 +105,25 @@ export function FacturasClient() {
         ))}
       </div>
 
+      <div className="flex flex-wrap items-end gap-3">
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setPage(1);
+          }}
+          placeholder="Buscar nº, cliente, reserva…"
+          className="rounded border border-sand-line bg-white px-3 py-2 text-sm min-w-[240px]"
+        />
+      </div>
+
       <DateRangeFilter
         value={range}
-        onChange={setRange}
+        onChange={(next) => {
+          setRange(next);
+          setPage(1);
+        }}
         label="Calendario de facturación"
         hint="Filtre facturas por fecha de emisión"
         resultCount={filteredInvoices.length}
@@ -121,7 +157,7 @@ export function FacturasClient() {
                 </tr>
               )}
               {!loading &&
-                filteredInvoices.map((inv) => (
+                paged.map((inv) => (
                   <tr
                     key={inv.id}
                     className={`cursor-pointer border-b border-sand-line/70 hover:bg-sky-soft/50 ${
@@ -146,6 +182,36 @@ export function FacturasClient() {
                 ))}
             </tbody>
           </table>
+          {!loading && filteredInvoices.length > PAGE_SIZE && (
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-sand-line px-4 py-3 text-sm">
+              <p className="text-ink-muted">
+                {(pageSafe - 1) * PAGE_SIZE + 1}–
+                {Math.min(pageSafe * PAGE_SIZE, filteredInvoices.length)} de{" "}
+                {filteredInvoices.length}
+              </p>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  disabled={pageSafe <= 1}
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  className="rounded bg-white px-3 py-1.5 font-bold ring-1 ring-sand-line disabled:opacity-40"
+                >
+                  Anterior
+                </button>
+                <span className="px-2 py-1.5 text-ink-muted">
+                  {pageSafe} / {pageCount}
+                </span>
+                <button
+                  type="button"
+                  disabled={pageSafe >= pageCount}
+                  onClick={() => setPage((p) => Math.min(pageCount, p + 1))}
+                  className="rounded bg-white px-3 py-1.5 font-bold ring-1 ring-sand-line disabled:opacity-40"
+                >
+                  Siguiente
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         <aside className="h-fit rounded-lg bg-white p-5 ring-1 ring-sand-line">

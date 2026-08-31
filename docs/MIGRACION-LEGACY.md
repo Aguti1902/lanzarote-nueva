@@ -48,17 +48,33 @@ Eso sube todo `src/data/*.json` al bucket `cms` (incl. las ~7k reservas).
 
 En runtime, si el deploy tiene muchas más reservas legacy que Storage, la app **elige el del deploy y lo sube sola** a Storage.
 
-## Cómo regenerar el JSON
+## Migración completa (todo el CMS)
 
-1. En el VPS, exportar tablas a JSON (PHP/`mysqli`, sin subir contraseñas al repo).
-2. En este proyecto:
+Además de reservas, el script `scripts/migrate-legacy-full.mjs` importa:
+
+| Origen legacy | Destino |
+|---------------|---------|
+| tours + traducciones + media + reviews + días/disponibilidad | `tours.json` (36) |
+| transfers | `transfers.json` |
+| invoices + customers | `invoices.json` (~4991) |
+| posts | `blog.json` |
+| contacts | `messages.json` |
+| payments / feedback / redirects / suppliers | `adminExtras.json` |
+| banners | `settings.json` (banner ES/EN/DE) |
+| cruise_calls (Lanzarote ≥2024) | `cruises.json` |
+| cruise_tours + traducciones | `cruiseItineraries.json` → shoreTours |
+| cruise_ports / cruise_groups | `adminExtras` |
+| bookings (ya migrado) | `bookings.json` |
 
 ```bash
-node scripts/migrate-legacy-mysql.mjs /ruta/al/export --write
+node scripts/migrate-legacy-full.mjs /tmp/legacy-export --write
 ```
 
-3. Opcional: Admin → Importar reservas → JSON legacy (idempotente por `id`).
-4. Si usáis Supabase: **Sync CMS** o `npm run seed:supabase`.
+Tras el deploy: Admin → Reservas → **Sync CMS** (`POST /api/admin/sync-cms`) sube **todos** los JSON a Supabase Storage.
+
+## Migración solo reservas (anterior)
+
+Ver sección histórica y `scripts/migrate-legacy-mysql.mjs`.
 
 ## Panel admin
 

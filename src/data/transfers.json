@@ -4,151 +4,161 @@
       "id": "playa-blanca",
       "name": "Playa Blanca",
       "slug": "playa-blanca",
-      "priceOneWay": 55,
-      "priceReturn": 100,
+      "priceOneWay": 80,
+      "priceReturn": 160,
+      "priceExtraPerson": 10,
       "duration": "35–45 min",
-      "distance": "≈ 35 km",
-      "priceExtraPerson": 10
+      "distance": "≈ 35 km"
     },
     {
       "id": "puerto-del-carmen",
-      "name": "Puerto del Carmen",
+      "name": "Puerto Del Carmen",
       "slug": "puerto-del-carmen",
-      "priceOneWay": 40,
-      "priceReturn": 75,
+      "priceOneWay": 50,
+      "priceReturn": 100,
+      "priceExtraPerson": 10,
       "duration": "20–30 min",
-      "distance": "≈ 18 km",
-      "priceExtraPerson": 10
+      "distance": "≈ 18 km"
     },
     {
       "id": "costa-teguise",
       "name": "Costa Teguise",
       "slug": "costa-teguise",
-      "priceOneWay": 40,
-      "priceReturn": 75,
+      "priceOneWay": 50,
+      "priceReturn": 100,
+      "priceExtraPerson": 10,
       "duration": "20–25 min",
-      "distance": "≈ 15 km",
-      "priceExtraPerson": 10
+      "distance": "≈ 15 km"
     },
     {
       "id": "puerto-calero",
       "name": "Puerto Calero",
       "slug": "puerto-calero",
-      "priceOneWay": 45,
-      "priceReturn": 85,
+      "priceOneWay": 60,
+      "priceReturn": 120,
+      "priceExtraPerson": 8,
       "duration": "25–35 min",
-      "distance": "≈ 25 km",
-      "priceExtraPerson": 10
+      "distance": "≈ 25 km"
     },
     {
       "id": "arrecife",
       "name": "Arrecife",
       "slug": "arrecife",
       "priceOneWay": 30,
-      "priceReturn": 55,
+      "priceReturn": 60,
+      "priceExtraPerson": 10,
       "duration": "10–15 min",
-      "distance": "≈ 6 km",
-      "priceExtraPerson": 10
+      "distance": "≈ 6 km"
     },
     {
       "id": "la-santa",
       "name": "La Santa",
       "slug": "la-santa",
-      "priceOneWay": 50,
-      "priceReturn": 95,
+      "priceOneWay": 80,
+      "priceReturn": 160,
+      "priceExtraPerson": 10,
       "duration": "30–40 min",
-      "distance": "≈ 28 km",
-      "priceExtraPerson": 10
+      "distance": "≈ 28 km"
     },
     {
       "id": "charco-del-palo",
       "name": "Charco del Palo",
       "slug": "charco-del-palo",
-      "priceOneWay": 55,
-      "priceReturn": 100,
+      "priceOneWay": 70,
+      "priceReturn": 140,
+      "priceExtraPerson": 10,
       "duration": "35–45 min",
-      "distance": "≈ 32 km",
-      "priceExtraPerson": 10
+      "distance": "≈ 32 km"
     },
     {
       "id": "haria",
       "name": "Haría",
       "slug": "haria",
-      "priceOneWay": 55,
-      "priceReturn": 100,
+      "priceOneWay": 90,
+      "priceReturn": 180,
+      "priceExtraPerson": 10,
       "duration": "40–50 min",
-      "distance": "≈ 35 km",
-      "priceExtraPerson": 10
+      "distance": "≈ 35 km"
     },
     {
       "id": "orzola",
       "name": "Órzola",
       "slug": "orzola",
-      "priceOneWay": 60,
-      "priceReturn": 110,
+      "priceOneWay": 70,
+      "priceReturn": 140,
+      "priceExtraPerson": 10,
       "duration": "45–55 min",
-      "distance": "≈ 40 km",
-      "priceExtraPerson": 10
+      "distance": "≈ 40 km"
     },
     {
       "id": "famara",
       "name": "Famara",
       "slug": "famara",
-      "priceOneWay": 50,
-      "priceReturn": 95,
+      "priceOneWay": 70,
+      "priceReturn": 140,
+      "priceExtraPerson": 10,
       "duration": "30–40 min",
-      "distance": "≈ 28 km",
-      "priceExtraPerson": 10
+      "distance": "≈ 28 km"
     },
     {
       "id": "yaiza",
       "name": "Yaiza",
       "slug": "yaiza",
-      "priceOneWay": 50,
-      "priceReturn": 95,
+      "priceOneWay": 55,
+      "priceReturn": 110,
+      "priceExtraPerson": 10,
       "duration": "30–40 min",
-      "distance": "≈ 30 km",
-      "priceExtraPerson": 10
+      "distance": "≈ 30 km"
     },
     {
       "id": "tias",
-      "name": "Tías",
+      "name": "Tias",
       "slug": "tias",
-      "priceOneWay": 40,
-      "priceReturn": 75,
+      "priceOneWay": 35,
+      "priceReturn": 70,
+      "priceExtraPerson": 10,
       "duration": "20–30 min",
-      "distance": "≈ 16 km",
-      "priceExtraPerson": 10
+      "distance": "≈ 16 km"
     },
     {
       "id": "playa-honda",
       "name": "Playa Honda",
       "slug": "playa-honda",
       "priceOneWay": 25,
-      "priceReturn": 45,
+      "priceReturn": 50,
+      "priceExtraPerson": 10,
       "duration": "10–15 min",
-      "distance": "≈ 5 km",
-      "priceExtraPerson": 10
+      "distance": "≈ 5 km"
     },
     {
-      "id": "puerto-marmoles",
+      "id": "puerto-de-los-marmoles",
       "name": "Puerto de Los Mármoles",
-      "slug": "puerto-los-marmoles",
-      "priceOneWay": 35,
-      "priceReturn": 65,
-      "duration": "15–20 min",
-      "distance": "≈ 8 km",
-      "priceExtraPerson": 10
+      "slug": "puerto-de-los-marmoles",
+      "priceOneWay": 30,
+      "priceReturn": 60,
+      "priceExtraPerson": 10,
+      "duration": "",
+      "distance": ""
     },
     {
       "id": "punta-mujeres",
       "name": "Punta Mujeres",
       "slug": "punta-mujeres",
-      "priceOneWay": 55,
-      "priceReturn": 100,
+      "priceOneWay": 70,
+      "priceReturn": 140,
+      "priceExtraPerson": 10,
       "duration": "40–50 min",
-      "distance": "≈ 34 km",
-      "priceExtraPerson": 10
+      "distance": "≈ 34 km"
+    },
+    {
+      "id": "pabellon-de-tias",
+      "name": "Pabellon de Tias",
+      "slug": "pabellon-de-tias",
+      "priceOneWay": 85,
+      "priceReturn": 170,
+      "priceExtraPerson": 0,
+      "duration": "",
+      "distance": ""
     }
   ],
   "highlights": [

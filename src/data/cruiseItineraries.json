@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-08-13",
-  "source": "Importado desde itinerarios públicos de lanzaroteexperiencetours.com",
+  "updatedAt": "2026-08-31",
+  "source": "Importado desde itinerarios públicos de lanzaroteexperiencetours.com · Shore tours importados desde web antigua",
   "companies": [
     {
       "slug": "aida-cruises",
@@ -352,279 +352,193 @@
   ],
   "shoreTours": [
     {
-      "id": "excursion-sur-de-lanzarote-parque-nacional-de-timanfaya",
+      "id": "shore-1",
       "title": "Excursión Sur de Lanzarote, Parque Nacional de Timanfaya",
+      "shortTitle": "Sur Lanz",
+      "summary": "<p>Disfrute de este recorrido que le llevará al paisaje lunar del Parque Nacional de Timanfaya, al volcán El Golfo con la laguna verde, a los acantilados de Los Hervideros y a la región vinícola de La Geria.&#13;&#10;</p><p>Llegaremos al Parque Nacional de Timanfaya, donde será t",
+      "description": "<p>Disfrute de este recorrido que le llevará al paisaje lunar del Parque Nacional de Timanfaya, al volcán El Golfo con la laguna verde, a los acantilados de Los Hervideros y a la región vinícola de La Geria.&#13;&#10;</p><p>Llegaremos al Parque Nacional de Timanfaya, donde será testigo de algunos experimentos geotérmicos que revelan temperaturas entre 50 y 600 grados centígrados, a solo unos pocos metros por debajo de la superficie!&#13;&#10;</p><p>Continuaremos hacia la costa para conocer los acantilados Los Hervideros y el impresionante volcán El Golfo, donde las algas microscópicas hacen que las aguas de la laguna parezcan de un verde casi fluorescente.&#13;&#10;</p><p>Así llegaremos al paisaje protegido de La Geria donde nos sorprende las viñas cultivadas en agujeros y protegidas del viento con paredes de piedra vocánicas.<strong> &#13;&#10;</strong></p><p><br></p><p><strong>&#13;&#10;</strong></p><p><strong>Datos importantes:&#13;&#10;</strong></p><ul><li><strong>Salida de la excursión</strong>: media hora después de la llegada del crucero&nbsp;<br></li><li><strong>Punto de encuentro con la guía</strong>: El control de policía&nbsp;<br></li><li><strong>Punto para coger el transporte</strong>: El transporte estará en el aparcamiento externo, pasado el control de policía ( caminata de aprox 10 minutos desde el barco, dependiendo de donde atraque el crucero, se proporcionarán todos los detalles con la confirmación de la excursión)&nbsp;</li><li><strong>Nivel de actividad:</strong> moderado &#13;&#10;</li><li><strong>Duración de la excursió</strong>n: 5 horas&nbsp;</li><li>Alimentos / bebidas no incluidos&nbsp;<br></li><li><strong>Vestimenta recomendada:</strong> Recomendamos gorra, gafas de sol, calzado cómodo para caminar y protector solar.&nbsp;<br></li><li>&nbsp;<strong>Importante:</strong>&nbsp;Esta excursión no es apta para personas con movilidad reducida.&nbsp;</li></ul><p><strong>Lugares a visitar:</strong><br></p><ul><li>Parque Nacional de Timanfaya, demostraciones geotérmicas y ruta de los volcanes<br></li><li>Echadero de camellos, a pie de las Montañas del Fuego (posibilidad de realizar el paseo opcional en camellos, 6 Euros por persona)<br></li><li>Recorrido panorámico de la costa de la Lava y Salinas de Janubio<br></li><li>Parada de fotos en los acantilados Los Hervideros<br></li><li>Parada de fotos en el volcán El Golfo para disfrutar de las vistas del Lago Verde<br></li><li>Parada en la Geria para degustar el vino de Malvasia<br></li></ul><p><strong>Incluido en el precio:</strong></p><ul><li>Transporte climatizado con WIFI<br></li><li>Servicio de guía local<br></li><li>Entradas al Parque Nacional de Timanfaya<br></li><li>Seguro turístico.<br></li></ul><p><strong>No incluido en el precio:</strong></p><ol><li>Paseo en camellos, opcional 11 Euros por persona.<br></li></ol><p><strong>¿ Por qué reservar con nosotros ?</strong></p><ul><li>Grupos pequeños hasta 20 personas, excursiones personalizadas<br></li><li>Su tiempo es oro, especialmente cuando no se dispone de muchas horas para visitar la isla, por ello no hacemos paradas comerciales<br></li><li>Evitamos las colas para que disfrute de mas tiempo en los lugares que visitamos<br></li><li>No mezclamos turistas locales con pasajeros de cruceros para evitar retrasos&nbsp;<br></li><li>Le garantizamos que volverás a tu barco a tiempo<br></li><li>Precios más bajos que las líneas de cruceros<br></li><li>Reembolso completo si su barco no atraca en el puerto<br></li></ul><br><br><br><br><br><br><br><br>",
       "priceAdult": 120,
-      "image": "/images/tours/cruise/excursion-sur-de-lanzarote-parque-nacional-de-timanfaya.jpg",
+      "pricePerPerson": 120,
+      "image": "https://www.lanzaroteexperiencetours.com/uploads/cruise/1/sur-lanzarote.jpg",
+      "gallery": [
+        "https://www.lanzaroteexperiencetours.com/uploads/cruise/1/10-1-sur-timanfaya-camels.jpg",
+        "https://www.lanzaroteexperiencetours.com/uploads/cruise/1/11-1-lanzarote-timanfaya.jpg",
+        "https://www.lanzaroteexperiencetours.com/uploads/cruise/1/12-2-lanzarote-timanfaya.jpg",
+        "https://www.lanzaroteexperiencetours.com/uploads/cruise/1/13-1-el-golfo-charco-clicos.jpg",
+        "https://www.lanzaroteexperiencetours.com/uploads/cruise/1/14-1-hervideros.jpg",
+        "https://www.lanzaroteexperiencetours.com/uploads/cruise/1/15-2-hervideros.jpg",
+        "https://www.lanzaroteexperiencetours.com/uploads/cruise/1/16-1-salinas-janubio.jpg"
+      ],
       "duration": "5 horas",
+      "durationHours": 5,
       "places": [
         "Timanfaya",
         "Islote de Hilario",
         "El Golfo",
         "Los Hervideros",
-        "La Geria",
-        "Salinas de Janubio"
-      ],
-      "highlights": [
-        "Excursión en grupos pequeños, máximo 25 personas",
-        "Sólo 1 idioma por tour",
-        "Regreso al barco a tiempo GARANTIZADO.",
-        "Devolución del dinero si el barco no atraca.",
-        "Salida de la excursión : media hora después de la llegada del crucero",
-        "Punto de encuentro con la guía : El control de policía"
-      ],
-      "bookingSlug": "excursion-timanfaya-montanas-del-fuego",
-      "maxGroup": 14,
-      "currency": "EUR",
-      "description": "Disfrute de este recorrido que le llevará al paisaje lunar del Parque Nacional de Timanfaya, al volcán El Golfo con la laguna verde, a los acantilados de Los Hervideros y a la región vinícola de La Geria.\n\nLlegaremos al Parque Nacional de Timanfaya, donde será testigo de experimentos geotérmicos que revelan temperaturas entre 50 y 600 °C a pocos metros bajo la superficie.\n\nContinuaremos hacia la costa para conocer Los Hervideros y el volcán El Golfo, con su lago de aguas casi fluorescentes. Terminaremos en La Geria, con viñas cultivadas en hoyos protegidos del viento.\n\nDatos importantes:\n• Salida: media hora después de la llegada del crucero\n• Punto de encuentro: control de policía del puerto\n• Transporte: aparcamiento externo (aprox. 10 min a pie)\n• Nivel de actividad: moderado\n• Duración: 5 horas\n• No apta para personas con movilidad reducida",
-      "summary": "Parque Nacional de Timanfaya, El Golfo, Los Hervideros y La Geria. Ideal para escalas de crucero (~5 h), con regreso al barco garantizado.",
-      "priceChild": 120,
-      "pricePerPerson": 120,
-      "allowCard": true,
-      "allowBizum": true,
-      "allowPayOnDay": true,
-      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes. Devolución íntegra si el barco no atraca.",
-      "included": [
-        "Transporte climatizado con WIFI",
-        "Guía local",
-        "Entradas al Parque Nacional de Timanfaya",
-        "Seguro turístico",
-        "Regreso al barco a tiempo garantizado"
-      ],
-      "notIncluded": [
-        "Comida y bebidas",
-        "Paseo en camello (opcional, ~6 €)"
-      ],
-      "shortTitle": "Sur de Lanzarote · Timanfaya",
-      "port": "Lanzarote",
-      "active": true,
-      "gallery": [
-        "/images/tours/cruise/excursion-sur-de-lanzarote-parque-nacional-de-timanfaya.jpg"
-      ],
-      "durationHours": 5,
-      "minPax": 8,
-      "privatePrice": 0,
-      "privateMaxPax": 0,
-      "translations": {
-        "en": {
-          "title": "South Lanzarote Excursion — Timanfaya National Park",
-          "shortTitle": "South Lanzarote · Timanfaya",
-          "summary": "Timanfaya National Park, El Golfo, Los Hervideros and La Geria. Ideal for cruise calls (~5 h), with guaranteed return to the ship.",
-          "description": "Small-group shore excursion across southern Lanzarote: geothermal landscapes of Timanfaya, the green lagoon at El Golfo, Los Hervideros and La Geria wine country. Return to the ship on time guaranteed.",
-          "duration": "5 hours",
-          "highlights": [
-            "Small groups, max. 25 people",
-            "One language per tour",
-            "Guaranteed return to the ship on time",
-            "Money-back if delayed back to the ship"
-          ],
-          "places": [
-            "Timanfaya",
-            "Islote de Hilario",
-            "El Golfo",
-            "Los Hervideros",
-            "La Geria",
-            "Janubio Salt Pans"
-          ]
-        },
-        "de": {
-          "title": "Süd-Lanzarote-Ausflug — Nationalpark Timanfaya",
-          "shortTitle": "Süd-Lanzarote · Timanfaya",
-          "summary": "Nationalpark Timanfaya, El Golfo, Los Hervideros und La Geria. Ideal für Kreuzfahrtstops (~5 Std.), mit garantierter Rückkehr zum Schiff.",
-          "description": "Landausflug in kleinen Gruppen durch Süd-Lanzarote: geothermische Landschaften Timanfayas, die grüne Lagune von El Golfo, Los Hervideros und das Weinland La Geria. Pünktliche Rückkehr zum Schiff garantiert.",
-          "duration": "5 Stunden",
-          "highlights": [
-            "Kleine Gruppen, max. 25 Personen",
-            "Nur eine Sprache pro Tour",
-            "Garantierte pünktliche Rückkehr zum Schiff",
-            "Geld zurück bei Verspätung zum Schiff"
-          ],
-          "places": [
-            "Timanfaya",
-            "Islote de Hilario",
-            "El Golfo",
-            "Los Hervideros",
-            "La Geria",
-            "Salinas de Janubio"
-          ]
-        }
-      }
-    },
-    {
-      "id": "lanzarote-experience-tour-nuestra-excursion-mas-completa-para-cruceristas",
-      "title": "Lanzarote Experience Tour: Nuestra excursión mas completa para cruceristas",
-      "priceAdult": 195,
-      "image": "/images/tours/cruise/lanzarote-experience-tour-nuestra-excursion-mas-completa-para-cruceristas.jpg",
-      "duration": "8 horas",
-      "places": [
-        "Parque Nacional de Timanfaya",
-        "Jameos del Agua",
-        "Jardín de Cactus",
         "La Geria"
       ],
       "highlights": [
-        "Excursión en grupos pequeños, máximo 25 personas",
-        "Sólo 1 idioma por tour",
-        "Regreso al barco a tiempo GARANTIZADO.",
-        "Devolución del dinero si el barco no atraca.",
-        "Salida de la excursión : media hora después de la llegada del crucero",
-        "Punto de encuentro con la guía : El control de policía"
+        "Timanfaya",
+        "Islote de Hilario",
+        "El Golfo",
+        "Los Hervideros",
+        "La Geria"
       ],
-      "bookingSlug": "excursion-grand-tour-experience",
       "maxGroup": 14,
+      "minPax": 10,
+      "port": "Lanzarote",
+      "active": true,
       "currency": "EUR",
-      "description": "Visite los lugares más simbólicos de Lanzarote en este tour de día completo. Descubra el Parque Nacional de Timanfaya, sus anomalías geotérmicas y la Ruta de los Volcanes. Sorpréndase con La Geria, el Jardín de Cactus y los Jameos del Agua, obras de César Manrique.\n\nDurante la excursión disfrutará de paisajes únicos, pueblos con historia y la cultura de la isla.\n\nDatos importantes:\n• Salida: media hora después de la llegada del crucero\n• Punto de encuentro: control de policía del puerto\n• Transporte: aparcamiento externo (aprox. 10 min a pie)\n• Nivel de actividad: moderado\n• Duración: 8 horas\n• No apta para personas con movilidad reducida\n\n¿Por qué reservar con nosotros?\n• Sin paradas comerciales\n• Grupos reducidos\n• Evitamos las colas\n• No mezclamos turistas locales con pasajeros de crucero\n• Regreso al barco a tiempo garantizado",
-      "summary": "La excursión más completa para cruceristas: Timanfaya, Jameos del Agua y Jardín de Cactus en un día (~8 h), con entradas incluidas.",
-      "priceChild": 195,
-      "pricePerPerson": 195,
       "allowCard": true,
       "allowBizum": true,
       "allowPayOnDay": true,
-      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes. Devolución íntegra si el barco no atraca.",
-      "included": [
-        "Transporte climatizado con WIFI",
-        "Guía local",
-        "Entradas a Timanfaya, Jameos del Agua y Jardín de Cactus",
-        "Seguro turístico",
-        "Regreso al barco a tiempo garantizado"
-      ],
-      "notIncluded": [
-        "Comida y bebidas"
-      ],
-      "shortTitle": "Lanzarote Experience Tour",
-      "port": "Lanzarote",
-      "active": true,
-      "gallery": [
-        "/images/tours/cruise/lanzarote-experience-tour-nuestra-excursion-mas-completa-para-cruceristas.jpg"
-      ],
-      "durationHours": 8,
-      "minPax": 8,
-      "privatePrice": 0,
-      "privateMaxPax": 0,
       "translations": {
         "en": {
-          "title": "Lanzarote Experience Tour: our most complete shore excursion",
-          "shortTitle": "Lanzarote Experience Tour",
-          "summary": "The most complete cruise excursion: Timanfaya, Jameos del Agua and the Cactus Garden in one day (~8 h), with admissions included.",
-          "description": "Full-day shore excursion combining Timanfaya National Park with César Manrique highlights in the north. Designed around your all-aboard time with pickup at the pier.",
-          "duration": "8 hours",
-          "highlights": [
-            "Small groups, max. 25 people",
-            "One language per tour",
-            "Guaranteed return to the ship on time",
-            "Key admissions included"
-          ],
-          "places": [
-            "Timanfaya National Park",
-            "Jameos del Agua",
-            "Cactus Garden",
-            "La Geria"
-          ]
+          "title": "Lanzarote South tour.",
+          "description": "<p>Delight in this Lanzarote south tour featuring the volcanic landscape of <strong>Timanfaya National Park</strong>  among other highlights like t<strong>he volcano El Golfo with the green lagoon,</strong> <strong>Hervideros Cliffs</strong> and La <strong>Geria wine region</strong>.&#13;&#10;</p><p>&#13;&#10;You&#39;ll reach Timanfaya National Park which is a near Martian-like setting with rare plants that have adapted to the area&#39;s high temperatures. Witness a few geothermal experiments revealing temperatures between 700 and 1100 degrees Fahrenheit, just a few feet below the surface!&nbsp;</p><p>Moving along, encounter the stunning volcanoe El Golfo where the microscopic algae causes the waters in the lagoon to appear almost fluorescent green.&#13;&#10;</p><p>Upon driving along the lava coast of Los Hervideros, you&#39;ll reach the protected landscape of La Geria. These vineyards have been cultivated by the Lanzarote farmers for nearly three centuries. The opportunity to taste their Volcanic Malvasia should not be missed, as it is produced by the most prestigious winery in the Canary Islands.&#13;&#10;</p><p>Reserve this volcanic excursion today for an incredible excursion in Lanzarote<strong>.</strong></p><p><strong><br></strong></p><p><strong>Important information:&#13;&#10;</strong></p><ul><li><strong>Start of the tour: </strong>half an hour after the arrival of the cruise&nbsp;<br></li><li><strong>Meeting point with the guide:  </strong>Police control&nbsp;<br></li><li><strong>Point to take the transport: </strong>The transport will be in the external parking, past the police control (walk of approx 10 minutes from the boat, depending on where the cruise docks, all the details will be provided with the confirmation of the excursion)<br></li></ul><ul><li><strong>Shore Excursion Type: </strong>Cultural, Active, Scenic&nbsp;</li><li><strong>Activity Level: </strong>Moderate&nbsp;<br></li><li><strong>Shore Excursion Duration: </strong>5 Hours&nbsp;</li><li><strong>Food/Beverage Provided </strong>Not Included&nbsp;<br></li><li><strong>Recommended Dress </strong>We recommend wearing comfortable weather-appropriate clothing, cap, sunglasses, walking shoes and sunscreen.<strong>&nbsp;</strong><br></li><li><strong>Restrictions </strong>Guests must be capable of walking short distances and be able to get in and out of public transport as well as walk up and down steps and uneven terrain. This tour is not handicap accessible.<br></li></ul><p><strong>We visit:</strong><br></p><ul><li>The Timanfaya National Park, the Islet of Hilario where we make the geothermal and the Route of the Volcanoes<br></li><li>Panoramic view of the lava coast and Janubio salt pans<br></li><li>Photo stop at the volcano El Golfo to enjoy the view of the Green Lagoon<br></li><li>Photo stop at the impressive cliffs Hervideros<br></li><li>Stop at the wine district of La Geria to taste the Malvasia wine</li></ul><p><strong>Included in the price:</strong></p><ul><li>Air-conditioned vehicle</li><li>Free WIFI<br></li><li>Guides certified and authorized by the Canary Islands Government&#13;&#10;</li><li>Entry/Admission - Timanfaya National Park</li><li>Insurance</li></ul><p><strong>It is not included:</strong></p><ul><li>Camel ride is optional and costs 11 Euro per person.<br></li><li>Lunch&nbsp;&nbsp;<br></li></ul><p><strong>Reasons to book with us:&#13;&#10;</strong></p><ul><li>High Quality, Small groups up to 20 people&nbsp;<br></li><li>Lower Prices than Cruise Lines&nbsp;&nbsp;<br></li><li>We do not mix local tourists with cruise passengers&nbsp;<br></li><li>Guaranteed Return to Ship&nbsp;<br></li><li>Full refund if your ship doesn&#39;t port for any reason&nbsp;<br></li><li>None comercial stops&nbsp;<br></li><li>We avoid the queues</li></ul>"
         },
         "de": {
-          "title": "Lanzarote Experience Tour: unser komplettester Landausflug",
-          "shortTitle": "Lanzarote Experience Tour",
-          "summary": "Der kompletteste Kreuzfahrtausflug: Timanfaya, Jameos del Agua und Kakteengarten an einem Tag (~8 Std.), inkl. Eintritte.",
-          "description": "Ganztägiger Landausflug mit Timanfaya und César-Manrique-Highlights im Norden. Abgestimmt auf Ihre All-aboard-Zeit mit Abholung am Pier.",
-          "duration": "8 Stunden",
-          "highlights": [
-            "Kleine Gruppen, max. 25 Personen",
-            "Nur eine Sprache pro Tour",
-            "Garantierte pünktliche Rückkehr zum Schiff",
-            "Wichtige Eintritte inklusive"
-          ],
-          "places": [
-            "Nationalpark Timanfaya",
-            "Jameos del Agua",
-            "Kakteengarten",
-            "La Geria"
-          ]
+          "title": "Lanzarote Südtour",
+          "description": "<p>Erfreuen Sie sich an dieser Ausflug, mit der Vulkanlandschaft des Timanfaya-Nationalparks und anderen Highlights wie dem Vulkan El Golfo mit der grünen Lagune, den Hervideros-Klippen und der Weinregion La Geria.<br></p><p>Sie erreichen den Timanfaya National Park, wo Sie geothermische Erscheinungen beobachten können, die bei Temperaturen von 50 bis 600 Cº nur wenige Meter unter der Erdoberfläche stattfinden.&nbsp;</p><p>Weiter geht es entlang der Lavaküste damit Sie die  beeindruckenden  Los Hervideros und den Vulkan El Golfo , wo die mikroskopisch kleinen Algen das Wasser in der Lagune leuchtend grün erscheinen lassen, kenenlernen.</p><p>Wir erreichen dann Sie die geschützte Landschaft von La Geria. Diese Weinberge werden seit fast drei Jahrhunderten von den Bauern Lanzarotes angelegt. Die Gelegenheit, ihren vulkanischen Malvasia zu probieren, sollte nicht versäumt werden, da sie von der renommiertesten Weinkellerei der Kanarischen Inseln produziert wird.<strong></strong></p><br><br><p><strong>Wichtige Hinweise:&#13;&#10;</strong></p><ul><li><strong>Abfahrt des Ausfluges</strong>: Halbe Stunde nach dem Anlegen des Kreusfahrtschiffes<br></li><li><strong>Treffpunt mit der Reiseleitung</strong> : Bei der Polizeikontrolle<br></li><li><strong>Treffpunkt mit dem Tranport:</strong> Der Transport wird am äußeren Parkplatz sein, nach der Polizeikontrolle (Fußweg höchstens 10 Minuten vom Schiff, abhängig von der Anlegestelle, genaue Daten werden bei der Buchungsbestätigung gegeben)<br></li><li><strong>Aktivitätsstufe</strong>: Mittel<br></li><li><strong>Dauer des Ausfluges</strong>: 5 Stunden<br></li><li><strong>Essen und Getränke: </strong>Nicht inbegriffen<br></li><li><strong>Empfohlene Kleidung</strong>: Es wird zu Hut, Sonnenbrille, bequemem Schuhwerk zum Laufen und Sonnenschutz geraten.<br></li><li><strong>Wichtig: </strong>Die Gäste müssen in der Lage sein, mittelmäßige strecken (200-1000m) laufen zu können, sie müssen in und aus einem Bus und Treppen steigen. Dieser Ausflug ist nicht für Personen mit Gehbehinderung zu empfehlen.<br></li></ul>&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;<p><strong>Was wir auf  der Südtour besuchen werden:</strong><br></p><ul><li>Der Nationalpark  Timanfaya, das Inselchen von Hilario, die Vulkanroute,&nbsp;<br></li><li>Der Vulkan El Golfo,&nbsp;<br></li><li>Die Klippen Hervideros,<br></li><li>Die Weinregion von La Geria.<br></li></ul><p><strong>Im Preis inbegriffen sind:</strong></p><ul><li>Klimatisierter Transport mit WIFI.<br></li><li>Tour&nbsp; geführt durch einen ortskundigen Reiseleiter.<br></li><li>Eintritt zum Nationalpark von Timanfaya.<br></li><li>Versicherung.<br></li></ul><p><strong>Im Preis nicht inbegriffen sind:</strong></p><ul><li>Kamelritt. Die Kosten sind 11 Euros Pro Person.<br></li><li>Mittagessen.</li></ul><p><strong>Warum mit uns ?</strong></p><ul><li>Höhere Quälität, kleine Gruppe max 20 Personen&nbsp;</li><li>Keine kommerzielle Stopps.&nbsp;</li><li>An diesem Ausflug nehmen ausschließlich Kreuzfahrtpassagiere teil.</li><li>Wir vermeiden die Warteschlangen.<br></li><li>Wir garantieren, dass Sie pünktlich zu Ihrem Schiff zurückkommen.&nbsp;<br></li><li>Preise niedriger als ihre Kreuzfahrtschiffe.<br></li><li>Volle Rückerstattung, wenn Ihr Schiff aus irgendeinem Grund nicht auf Lanzarote angelegen kann.<br></li></ul><br><br><br>"
         }
       }
     },
     {
-      "id": "parque-nacional-de-garajonay-la-gomera",
-      "title": "Parque Nacional de Garajonay — La Gomera",
-      "port": "La Gomera",
-      "priceAdult": 85,
+      "id": "shore-2",
+      "title": "Lanzarote Experience Tour: Nuestra excursión mas completa para cruceristas",
+      "shortTitle": "GTour Lanz",
+      "summary": "<p>Visite los lugares más simbólicos que Lanzarote tiene para ofrecer en este tour de día completo. Descubra el Parque Nacional de Timanfaya, sus anomalías geotérmicas y la Ruta de los volcanes. Sorpréndase con el paisaje único de La Geria,  visite el Jardín de Cactus y los Jameo",
+      "description": "<p>Visite los lugares más simbólicos que Lanzarote tiene para ofrecer en este tour de día completo. Descubra el Parque Nacional de Timanfaya, sus anomalías geotérmicas y la Ruta de los volcanes. Sorpréndase con el paisaje único de La Geria,  visite el Jardín de Cactus y los Jameos del Aqua, obras maestras del artista  César Manrique,y un paraíso volcánico subterráneo en el norte de la isla.</p><p>Durante esta excursión, disfrutará de una variedad de paisajes diseminados por la geografía de Lanzarote, recorrer pueblos de importancia histórica, conocer la cultura de la isla y explorar las curiosidades que hacen de Lanzarote un destino único.</p><br><p><strong>Datos importantes:&#13;&#10;</strong></p><ul><li><strong>Salida de la excursión</strong>: media hora después de la llegada del crucero&nbsp;&nbsp;<br></li><li><strong>Punto de encuentro con la guía</strong>: El control de policía&nbsp;&nbsp;<br></li><li><strong>Punto para coger el transporte:</strong>&nbsp;El transporte estará en el aparcamiento externo, pasado el control de policía ( caminata de aprox 10 minutos desde el barco, dependiendo de donde atraque el crucero, se proporcionarán todos los detalles con la confirmación de la excursión)&nbsp;<br></li><li><strong>Nivel de actividad</strong>: moderado&nbsp;<br></li><li><strong>Duración de la excursión:</strong> 8 horas&nbsp;&nbsp;<br></li><li><strong>Alimentos / bebidas</strong> no incluidos&nbsp;&nbsp;<br></li><li><strong>Vestimenta recomendada</strong>: Recomendamos gorra, gafas de sol, calzado cómodo para caminar y protector solar.&nbsp;&nbsp;<br></li><li><strong>&nbsp;Importante:&nbsp;</strong>Esta excursión no es apta para personas con movilidad reducida.&nbsp;</li></ul><p><strong>Visitamos</strong>:<br></p><ul><li>Parque Nacional de Timanfaya<br></li><li>Jameos del Agua</li><li>Jardin de Cactus</li></ul><p><strong>Hemos incluido en el precio todas las entradas además de:</strong></p><ul><li>Trasporte climatizado con WIFI<br></li><li>Servicio de guía local<br></li><li>Entradas al Parque Nacional de Timanfaya, Jameos del Agua y Jardín de Cactus<br></li><li>Seguro Turístico<br></li></ul><p><strong>El precio de la excursión&nbsp; no incluye:</strong></p><ul><li>Comida<br></li></ul><p><strong>¿ Por qué reservar con nosotros ?</strong></p><ul><li>No hacemos paradas comerciales</li><li>Grupos max 20 personas</li><li>Evitamos las colas<br></li><li>No mezclamos turistas locales con pasajeros de cruceros.<br></li><li>Te garantizamos que volverás a tu barco a tiempo<br></li><li>Precios más bajos que las líneas de cruceros<br></li><li>Reembolso completo si su barco no atraca en el puerto</li></ul><br>",
+      "priceAdult": 195,
+      "pricePerPerson": 195,
+      "image": "https://www.lanzaroteexperiencetours.com/uploads/cruise/2/lanzarote-gran-tour.jpg",
+      "gallery": [
+        "https://www.lanzaroteexperiencetours.com/uploads/cruise/2/20-timanfaya.jpg",
+        "https://www.lanzaroteexperiencetours.com/uploads/cruise/2/21-cueva-de-los-verdes.jpg",
+        "https://www.lanzaroteexperiencetours.com/uploads/cruise/2/22-jameos-del-agua.jpg",
+        "https://www.lanzaroteexperiencetours.com/uploads/cruise/2/23-jardin-de-cactus.jpg",
+        "https://www.lanzaroteexperiencetours.com/uploads/cruise/2/24-jardin-de-cactus-2.jpg"
+      ],
+      "duration": "8 horas",
+      "durationHours": 8,
+      "places": [
+        "Parque nacional de Timanfaya",
+        "Jameos del Agua",
+        "Jardín de Cactus"
+      ],
+      "highlights": [
+        "Parque nacional de Timanfaya",
+        "Jameos del Agua",
+        "Jardín de Cactus"
+      ],
+      "maxGroup": 14,
+      "minPax": 10,
+      "port": "Lanzarote",
+      "active": true,
+      "currency": "EUR",
+      "allowCard": true,
+      "allowBizum": true,
+      "allowPayOnDay": true,
+      "translations": {
+        "en": {
+          "title": "Lanzarote Experience Grand Tour: Our Best Excursion for Cruise Passengers",
+          "description": "<p>See the most symbolic places Lanzarote has to offer on this full day tour. Discover <strong>Timanfaya National Park</strong>, its geothermal anomalies, and the panoramic Route of the Volcanoes. View the unusual volcanic landscape used to produce Lanzarote&#39;s local wines. Experience the masterpieces <strong>Cactus Garden</strong> and&nbsp;<strong>Jameos del Aqua</strong>, designed by César Manrique&nbsp;an underground volcanic paradise also awaits.</p><p>During this journey, you&#39;ll get to enjoy a variety of landscapes dotted across Lanzarote&#39;s geography, drive through villages of historic importance, learn about the culture of the island, and explore the curiosities making Lanzarote a unique destination..</p><p>Book this tour for an unforgettable Lanzarote excursion.</p><br><p><strong>Important information:&#13;&#10;</strong></p><ul><li><strong>Start of the tour:</strong> half an hour after the arrival of the cruise&nbsp;<br></li><li><strong>Meeting point with the guide:</strong>  Police control&nbsp;<br></li><li><strong>Point to take the transport</strong>: The transport will be in the external parking, past the police control (walk of approx 10 minutes from the boat, depending on where the cruise docks, all the details will be provided with the confirmation of the excursion)<br></li></ul><ul><li><strong>Shore Excursion Type</strong>: Cultural, Active, Scenic</li><li><strong>Activity Level:</strong> Moderate<br></li><li><strong>Shore Excursion Duration</strong>: 8 Hours</li><li><strong>Food/Beverage Provided</strong> Not Included&nbsp;<br></li><li><strong>Recommended Dress</strong> We recommend wearing comfortable weather-appropriate clothing, cap, sunglasses, walking shoes and sunscreen.&nbsp;<br></li><li><strong>Restrictions</strong> Guests must be capable of walking short distances and be able to get in and out of public transport as well as walk up and down steps and uneven terrain. This tour is not handicap accessible.<br></li></ul><p><strong>We visit:</strong></p><ul><li>Timanfaya National Park</li><li>Cactus Garden</li><li>Jameos del Agua</li></ul><p><strong>It is included in the price:</strong></p><ul><li>Air-conditioned transportation with WIFI<br></li><li>Local Guide Service<br></li><li>Entrance to the Timanfaya National Park, Cactus Garden and Jameos del Agua&nbsp;<br></li><li>Insurance&nbsp;<br></li></ul><p><strong>The price does not include:</strong></p><ul><li>Lunch&nbsp;<br></li></ul><p><strong>Reasons to book with us:</strong></p><ul><li>High Quality, Small groups up to 20 people&nbsp;&nbsp;</li><li>Lower Prices than Cruise Lines&nbsp;</li><li>We do not mix local tourists with cruise passengers<br></li><li>Guaranteed Return to Ship&#13;&#10;</li><li>Full refund if your ship doesn&#39;t port for any reason</li><li>None comercial stops</li><li>We avoid the queues</li></ul><br><br>"
+        },
+        "de": {
+          "title": "Lanzarote Experience Grand Tour: Unsere vollständige Tour für Kreuzfahrtpassagiere",
+          "description": "&#13;&#10;<p>Sehen Sie die wunderschönsten Orte, die Lanzarote auf dieser ganztägigen Tour zu bieten hat. Entdecken Sie den Timanfaya-Nationalpark, seine geothermischen Anomalien und die Panorama-Route der Vulkane. Sehen Sie sich die ungewöhnliche, vulkanische Landschaft an, in der Lanzarotes lokale Weine hergestellt werden. Erleben Sie die Meisterwerke des Kaktus Garten und Jameos del Aqua, entworfen von César Manrique, einem unterirdischen Vulkantunnel, der mit wunderschönem Licht und Musik ausgestaltet wurde.</p><br><p>Während dieser Reise können Sie eine Vielzahl von Landschaften über Lanzarotes Geographie genießen, Dörfer von historischer Bedeutung durchqueren, etwas über die Kultur der Insel erfahren und die Kuriositäten erkunden, die Lanzarote zu einem einzigartigen Reiseziel machen.<br></p><p><strong><br></strong></p><p><strong>Wichtige Hinweise:</strong><br></p><p><strong></strong></p><ul><li><strong>Abfahrt des Ausfluges: </strong>Halbe Stunde nach dem Anlegen des Kreusfahrtschiffes<br></li><li><strong>Treffpunt mit der Reiseleitung : </strong>Bei der Polizeikontrolle<br></li><li><strong>Treffpunkt mit dem Tranport: </strong>Der Transport wird am äußeren Parkplatz sein, nach der Polizeikontrolle (Fußweg höchstens 10 Minuten vom Schiff, abhängig von der Anlegestelle, genaue Daten werden bei der Buchungsbestätigung gegeben)<br></li><li><strong>Aktivitätsstufe: </strong>Mittel<br></li><li><strong>Dauer des Ausfluges:</strong> 8&nbsp;Stunden<br></li><li><strong>Essen und Getränke: </strong>Nicht inbegriffen<br></li><li><strong>Empfohlene Kleidung: </strong>Es wird zu Hut, Sonnenbrille, bequemem Schuhwerk zum Laufen und Sonnenschutz geraten.<br></li><li><strong>Wichtig: </strong>Die Gäste müssen in der Lage sein, mittelmäßige strecken (200-1000m) laufen zu können, sie müssen in und aus einem Bus und Treppen steigen. Dieser Ausflug ist nicht für Personen mit Gehbehinderung zu empfehlen.<br></li></ul><p><strong></strong></p><p><strong></strong></p><p><strong></strong></p><p><strong></strong></p><p><strong></strong></p><p><strong></strong></p><p><strong></strong></p><p><strong>Was wir auf der Inselrundfahrt besuchen werden:</strong><br></p><ul><li>Der Nationalpark Timanfaya, das Inselchen von Hilario und die Vulkanroute,&nbsp;</li><li>Jameos del Agua<br></li><li>Kaktusgarten.<br></li></ul><p><strong>Im Preis inbegriffen sind:</strong></p><ul><li>Klimatisierter Transport mit WIFI</li><li>Tour gefährt durch ortskundigenguide,<br></li><li>Eintritt zum Nationalpark von Timanfaya,Cueva de los Verdes, und Jameos del Agua&nbsp;<br></li><li>Versicherung.<br></li></ul><p><strong>Im Preis nicht inbegriffen sind:</strong></p><ul><li>Mittagessen.<br></li></ul><p><strong>Warum mit uns ?</strong></p><ul><li>Höhere Quälität, kleine Gruppe max 20 Personen&nbsp;&nbsp;</li><li>Keine kommerzielle Stopps.&nbsp;&#13;&#10;</li><li>An diesem Ausflug nehmen ausschließlich Kreuzfahrtpassagiere teil.&#13;&#10;</li><li>Wir vermeiden die Warteschlangen.&nbsp;</li><li>Wir garantieren, dass Sie pünktlich zu Ihrem Schiff zurückkommen.&nbsp;&nbsp;</li><li>Preise niedriger als ihre Kreuzfahrtschiffe.&nbsp;</li><li>Volle Rückerstattung, wenn Ihr Schiff aus irgendeinem Grund nicht auf Lanzarote angelegen kann.&nbsp;</li><li>Ein lokales Familienunternehmen. Wir sind die 7 Generation auf der Insel.</li></ul><br><br><p></p>"
+        }
+      }
+    },
+    {
+      "id": "shore-3",
+      "title": "Excursión Norte de Lanzarote",
+      "shortTitle": "Norte Lanz",
+      "summary": "<p>Siga los pasos del hombre que cambió el destino de Lanzarote, Cesar Manrique. Este recorrido comienza con la visita de Los Jameos del Agua ubicada dentro de un túnel volcánico, para luego continuar hacia la Cueva de los Verdes. Disfrutaremos igualmente de las vistas panorámica",
+      "description": "<p>Siga los pasos del hombre que cambió el destino de Lanzarote, Cesar Manrique. Este recorrido comienza con la visita de Los Jameos del Agua ubicada dentro de un túnel volcánico, para luego continuar hacia la Cueva de los Verdes. Disfrutaremos igualmente de las vistas panorámicas sobre la isla de La Graciosa.</p><p><strong>Información importante:&#13;&#10;</strong></p>&#13;&#10;<ul><li><strong>Comienzo de la excursión</strong>: media hora después de la llegada del crucero<br></li><li><strong>Punto de encuentro con la guía</strong>: El control de policía<br></li><li><strong>Punto para coger el transporte: </strong>El transporte estará en el aparcamiento externo, pasado el control de policía ( caminata de aprox 10 minutos desde el barco, dependiendo de donde atraque el crucero, se proporcionarán todos los detalles con la confirmación de la excursión)&nbsp;<br></li><li><strong>Nivel de actividad</strong>: moderado&nbsp;<br></li><li><strong>Duración de la excursión</strong>: 5 horas&nbsp;&nbsp;<br></li><li><strong>Alimentos / bebidas </strong>no incluidos&nbsp;&nbsp;<br></li><li><strong>Vestimenta recomendada</strong>: Recomendamos gorra, gafas de sol, calzado cómodo para caminar y protector solar.&nbsp;&nbsp;<br></li><li><strong>Importante</strong>: Esta excursión no es apta para personas con movilidad reducida.&nbsp;&nbsp;</li></ul><p><strong>Lugares a visitar:</strong></p><ul><li>Jameos del Agua</li><li>Cueva de Los Verdes</li></ul><p><strong>Incluido en el precio:</strong></p><ul><li>Transporte climatizado con WIFI<br></li><li>Servicio de guía local<br></li><li>Entradas a Jameos del Agua, Cueva de los Verdes<br></li><li>Seguro turí­stico.<br></li></ul><p><strong>¿ Por qué reservar con nosotros ?</strong><br></p><ul><li>No hacemos paradas comerciales<br></li><li>Evitamos las colas<br></li><li>No mezclamos turistas locales con pasajeros de cruceros.<br></li><li>Te garantizamos que volverás a tu barco a tiempo<br></li><li>Precios más bajos que las líneas de cruceros<br></li><li>Reembolso completo si su barco no atraca en el puerto<br></li></ul><br><br><br><br>",
+      "priceAdult": 70,
+      "pricePerPerson": 70,
+      "image": "https://www.lanzaroteexperiencetours.com/uploads/cruise/3/norte-lanzarote.jpg",
+      "gallery": [],
       "duration": "4 horas",
       "durationHours": 4,
       "places": [
-        "Garajonay",
-        "Valle Gran Rey",
-        "Mirador"
+        "Jameos del Agua",
+        "Cueva de Los Verdes"
       ],
       "highlights": [
-        "Bosque laurisilva UNESCO",
-        "Regreso al barco garantizado"
+        "Jameos del Agua",
+        "Cueva de Los Verdes"
       ],
-      "image": "/images/tours/timanfaya.jpg",
-      "shortTitle": "Parque Nacional de Garajonay — La Gomera",
-      "summary": "Parque Nacional de Garajonay — La Gomera",
-      "description": "Bosque laurisilva UNESCO\nRegreso al barco garantizado",
-      "priceChild": 59,
-      "pricePerPerson": 85,
-      "active": true,
-      "gallery": [
-        "/images/tours/timanfaya.jpg"
-      ],
-      "minPax": 8,
-      "maxGroup": 14,
-      "privatePrice": 0,
-      "privateMaxPax": 0,
-      "included": [
-        "Guía",
-        "Transporte"
-      ],
-      "notIncluded": [
-        "Comidas",
-        "Entradas opcionales"
-      ],
+      "maxGroup": 24,
+      "minPax": 10,
+      "port": "Lanzarote",
+      "active": false,
       "currency": "EUR",
       "allowCard": true,
       "allowBizum": true,
       "allowPayOnDay": true,
-      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
       "translations": {
         "en": {
-          "title": "Garajonay National Park — La Gomera",
-          "shortTitle": "Garajonay National Park",
-          "summary": "UNESCO laurel forest and viewpoints on La Gomera, timed for your cruise call.",
-          "description": "Explore Garajonay National Park’s unique laurel forest and scenic viewpoints, with guaranteed return to the ship.",
-          "duration": "4 hours",
-          "highlights": [
-            "UNESCO laurel forest",
-            "Guaranteed return to the ship"
-          ],
-          "places": [
-            "Garajonay",
-            "Valle Gran Rey",
-            "Viewpoint"
-          ]
+          "title": "North Lanzarote Tour",
+          "description": "<p><strong></strong></p><p>Follow in the footsteps of the man that changed the fate of Lanzarote, Cesar Manrique, during this half day  tour. We visit&nbsp;<strong>Jameos del Agua </strong>located inside a volcanic tunnel, then we visit Cueva de los Verdes (the Green Cave) and enjoy the stunning views of Famara Cliffs and the Archipelago Chinijo, which happens to be Europe&#39;s largest Marine Reserve.</p><p>Reserve this incredible memorable excursion today for an lovely excursion in Lanzarote<strong>.&#13;&#10;</strong></p><p><strong><br></strong></p><p><strong>Important information:&#13;&#10;</strong></p><ul><li><strong>Start of the tour: </strong>half an hour after the arrival of the cruise&nbsp;<br></li><li><strong>Meeting point with the guide:  </strong>Police control&nbsp;<br></li><li><strong>Point to take the transport: </strong>The transport will be in the external parking, past the police control (walk of approx 10 minutes from the boat, depending on where the cruise docks, all the details will be provided with the confirmation of the excursion)<br></li></ul><ul><li><strong>Shore Excursion Type: </strong>Cultural, Active, Scenic&nbsp;&nbsp;<br></li><li><strong>Food/Beverage: </strong>None&nbsp;<br></li><li><strong>Activity Level: </strong>Moderate&nbsp;&nbsp;<br></li><li><strong>Shore Excursion Duration: </strong>5 Hours</li><li><strong>Recommended Dress</strong> We recommend wearing comfortable weather-appropriate clothing, cap, sunglasses, walking shoes and sunscreen.&nbsp;<br></li><li><strong>Restrictions</strong> Guests must be capable of walking short distances and be able to get in and out of public transport as well as walk up and down steps and uneven terrain. This tour is not handicap accessible.<br></li></ul><p><strong>We visit:</strong></p><ul><li>Jameos del Agua<br></li><li>Cueva de los Verdes</li></ul><p><strong>Included in the price:</strong></p><ul><li>Air-conditioned transport with WIFI<br></li><li>Local Guide Service<br></li><li>Entrace fee to Jameos del Agua, Mirador del Río and The Cactus Garden<br></li><li>Insurance<br></li></ul><p><strong></strong></p><p><strong>The price does not include</strong>:&#13;&#10;</p><ul><li>Lunch&nbsp;&nbsp;<br></li></ul><p><strong>Reasons to book with us</strong>:&#13;&#10;</p><ul><li>High Quality, Small groups&nbsp;</li><li>Lower Prices than Cruise Lines&nbsp;&nbsp;<br></li><li>We do not mix local tourists with cruise passengers&nbsp;<br></li><li>Guaranteed Return to Ship&nbsp;<br></li><li>Full refund if your ship doesn&#39;t port for any reason&nbsp;<br></li><li>None comercial stops&nbsp;<br></li><li>We avoid the queues&nbsp;<br></li></ul><br><br><br>"
         },
         "de": {
-          "title": "Nationalpark Garajonay — La Gomera",
-          "shortTitle": "Nationalpark Garajonay",
-          "summary": "UNESCO-Lorbeerwald und Aussichtspunkte auf La Gomera, abgestimmt auf Ihren Hafenstopp.",
-          "description": "Erkunden Sie den einzigartigen Lorbeerwald des Nationalparks Garajonay mit garantierter Rückkehr zum Schiff.",
-          "duration": "4 Stunden",
-          "highlights": [
-            "UNESCO-Lorbeerwald",
-            "Garantierte Rückkehr zum Schiff"
-          ],
-          "places": [
-            "Garajonay",
-            "Valle Gran Rey",
-            "Aussichtspunkt"
-          ]
+          "title": "Nordtour",
+          "description": "<p><strong><br></strong></p><p>Folgen Sie den Spuren des Mannes Cesar Manrique, der das Schicksal von Lanzarote, während dieser halbtägigen Tour verändert hat. Mit Cesars küntslerischen Verstandnis für Natur und einem sehr realen Wunsch der Integration in die umliegenden Naturlandschaften Lanzarotes, gelang es ihm, die Kunstwelt zu erobern. Diese Tour besucht&nbsp; Jameos del Agua und Cueva de los Verdes das sich in einem Vulkantunnel befindet. Dann fahren wir Sie zum den Klippen von Famara.</p><p>Ein luxuriöser Aufenthaltsort mit atemberaubenden Blick auf die Klippen von Famara und den Archipel Chinijo, der Europas größtes Meeresschutzgebiet ist.&nbsp;</p><p>Reservieren Sie diesen unvergessliche Ausflug heute für&nbsp; einen schönen Ausflug auf Lanzarote.</p><br><p><strong>Wichtige Hinweise:&#13;&#10;</strong></p><ul><li><strong>Abfahrt des Ausfluges</strong>: Halbe Stunde nach dem Anlegen des Kreusfahrtschiffes<br></li><li><strong>Treffpunt mit der Reiseleitung</strong><strong>:</strong> Bei der Polizeikontrolle<br></li><li><strong>Treffpunkt mit dem Tranport:</strong> Der Transport wird am äußeren Parkplatz sein, nach der Polizeikontrolle (Fußweg höchstens 10 Minuten vom Schiff, abhängig von der Anlegestelle, genaue Daten werden bei der Buchungsbestätigung gegeben)<br></li><li><strong>Aktivitätsstufe</strong>: Mittel<br></li><li><strong>Dauer des Ausfluges</strong><strong>:</strong> 5 Stunden<br></li><li><strong>Essen und Getränke</strong><strong>:</strong> Nicht inbegriffen<br></li><li><strong>Empfohlene Kleidung: </strong>Es wird zu Hut, Sonnenbrille, bequemem Schuhwerk zum Laufen und Sonnenschutz geraten.<br></li><li><strong>Wichtig:&nbsp;</strong>Die Gäste müssen in der Lage sein, mittelmäßige strecken (200-1000m) laufen zu können, sie müssen in und aus einem Bus und Treppen steigen. Dieser Ausflug ist nicht für Personen mit Gehbehinderung zu empfehlen.</li></ul><p><strong>Was wir auf der Nordtour besuchen werden:</strong></p><ul><li>Jameos del Agua<br></li><li>Cueva de los Verdes&nbsp;</li></ul><p><strong>Im Preis inbegriffen sind:</strong></p><ul><li>Klimatisierter Transport mit WIFI,<br></li><li>Tour gefährt durch ortskundigenguide,<br></li><li>Eintritt zum Jameos del Agua&#13;&#10;, Mirador del Río&#13;&#10; und Kaktusgarten<br></li><li>Versicherung.<br></li></ul><p><strong>Warum mit uns ?</strong><br></p><ul><li>Höhere Quälität, kleine Gruppe.&nbsp;&#13;&#10;</li><li>Keine kommerzielle Stopps.&nbsp;&#13;&#10;</li><li>An diesem Ausflug nehmen ausschließlich Kreuzfahrtpassagiere teil.&#13;&#10;</li><li>Wir vermeiden die Warteschlangen.&#13;&#10;</li><li>Wir garantieren, dass Sie pünktlich zu Ihrem Schiff zurückkommen.&nbsp;&#13;&#10;</li><li>Preise niedriger als ihre Kreuzfahrtschiffe.&#13;&#10;</li><li>Volle Rückerstattung, wenn Ihr Schiff aus irgendeinem Grund nicht auf Lanzarote angelegen kann.&#13;&#10;</li></ul><br><br><br>"
         }
       }
     },
     {
-      "id": "dunas-de-corralejo-fuerteventura",
-      "title": "Parque natural de las Dunas de Corralejo",
-      "port": "Puerto del Rosario",
+      "id": "shore-4",
+      "title": "Parque nacional de Garajonay",
+      "shortTitle": "La Gomera",
+      "summary": "<p>Partimos desde el muelle de San Sebastián para llegar a la parte norte de la isla para visitar el&nbsp; Valle Hermigua, con sus plantaciones de plátanos. Luego pasamos por el pueblo más pequeño de La Gomera, Agulo, con sus calles adoquinadas, y una pared hecha de piedra basált",
+      "description": "<p>Partimos desde el muelle de San Sebastián para llegar a la parte norte de la isla para visitar el&nbsp; Valle Hermigua, con sus plantaciones de plátanos. Luego pasamos por el pueblo más pequeño de La Gomera, Agulo, con sus calles adoquinadas, y una pared hecha de piedra basáltica, de 300 pies de altura. Desde este punto de vista, podemos disfrutar del fantástico paisaje de La Gomera y la cercana isla de Tenerife.&#13;&#10;</p>&#13;&#10;<p>Continuamos nuestra excursión visitando el Centro de Visitantes en el Parque Nacional Garajonay, creado para proteger el bosque de laureles, donde tendremos demostraciones sobre los orígenes y la evolución de la isla y sus bosques. Pasaremos por el fantástico paisaje de Agando, Ojilla, Carmona y Zarzita antes de regresar al puerto.</p><br><p><strong>Datos importantes:&#13;&#10;</strong></p><p><ol><li><strong>Salida de la excursión:</strong> media hora después de la llegada del crucero&nbsp;&nbsp;<br></li><li><strong>Punto de encuentro con la guía</strong>: El control de policía&nbsp;&nbsp;<br></li><li><strong>Punto para coger el transporte</strong>: El transporte estará en el aparcamiento externo, pasado el control de policía ( caminata de aprox 10 minutos desde el barco, dependiendo de donde atraque el crucero, se proporcionarán todos los detalles con la confirmación de la excursión)&nbsp;&nbsp;<br></li><li><strong>Nivel de actividad:</strong> moderado&nbsp;<br></li><li><strong>Duración de la excursión</strong>: 7 horas&nbsp;&nbsp;<br></li><li><strong>Alimentos / bebidas</strong> no incluidos&nbsp;&nbsp;<br></li><li><strong>Vestimenta recomendada:</strong> Recomendamos gorra, gafas de sol, calzado cómodo para caminar y protector solar.&nbsp;&nbsp;<br></li><li><strong>Importante</strong>: Esta excursión no es apta para personas con movilidad reducida.&nbsp;<br></li></ol></p><p><strong>Visitamos</strong>:</p><ul><li>Parque nacional de Garajonay<br></li></ul><p><strong>Hemos incluido en el precio:</strong></p><ul><li>Trasporte climatizado<br></li><li>Servicio de guí­a local<br></li><li>Servicio Turístico<br></li></ul><p><strong>¿ Por qué reservar con nosotros ?&#13;&#10;</strong></p><ul><li>No hacemos paradas comerciales&nbsp;</li><li>Evitamos las colas&nbsp;</li><li>No mezclamos turistas locales con pasajeros de cruceros.&nbsp;</li><li>Te garantizamos que volverás a tu barco a tiempo&nbsp;</li><li>Precios más bajos que las líneas de cruceros&nbsp;</li><li>Reembolso completo si su barco no atraca en el puerto<br></li></ul>",
       "priceAdult": 75,
+      "pricePerPerson": 75,
+      "image": "https://www.lanzaroteexperiencetours.com/uploads/cruise/4/la-gomera.jpeg",
+      "gallery": [],
+      "duration": "7 horas",
+      "durationHours": 7,
+      "places": [
+        "Parque Nacional de Garajonay"
+      ],
+      "highlights": [
+        "Parque Nacional de Garajonay"
+      ],
+      "maxGroup": 14,
+      "minPax": 10,
+      "port": "La Gomera",
+      "active": false,
+      "currency": "EUR",
+      "allowCard": true,
+      "allowBizum": true,
+      "allowPayOnDay": true,
+      "translations": {
+        "en": {
+          "title": "Garajonay National Park",
+          "description": "<p>We depart from the pier of San Sebastian to reach the northern part of the island to visit the \"Enchanted Valley of La Gomera\" Valle Hermigua, with its banana plantations. We then pass through the smallest village of La Gomera, Agulo, with its cobbled streets, and  a wall made out of basaltic stone, 300 feet high. From this viewpoint, we can enjoy the fantastic scenery of La Gomera and the nearby island of Tenerife.&#13;&#10;</p>&#13;&#10;<p>We continue our excursion by visiting the Visitors Center in the Garajonay National Park, created to protect the laurel forest, where we will have demonstrations on the origins and evolution of the island and its forests. We will pass by the fantastic scenery of Agando, Ojilla, Carmona and Zarzita before returning to port.</p><br><p><strong>Important information:&#13;&#10;</strong></p><ul><li><strong>Start of the tour:</strong> half an hour after the arrival of the cruise&nbsp;<br></li><li><strong>Meeting point with the guide:</strong>  Police control&nbsp;<br></li><li><strong>Point to take the transport:</strong> The transport will be in the external parking, past the police control (walk of approx 10 minutes from the boat, depending on where the cruise docks, all the details will be provided with the confirmation of the excursion)<br></li><li><strong>Shore Excursion Type</strong>: Cultural, Active, Scenic&nbsp;&nbsp;</li></ul><ul><li><strong>Activity Level:</strong> Moderate&nbsp;<br></li><li><strong>Shore Excursion Duration:</strong> 7 Hours&nbsp;</li><li><strong>Food/Beverage Provided</strong> Not Included&nbsp;<br></li><li><strong>Recommended Dress</strong> We recommend wearing comfortable weather-appropriate clothing, cap, sunglasses, walking shoes and sunscreen.&nbsp;<br></li><li><strong>Restrictions</strong> Guests must be capable of walking short distances and be able to get in and out of public transport as well as walk up and down steps and uneven terrain. This tour is not handicap accessible.&nbsp;</li></ul><p><strong>We visit:</strong></p><ul><li>Garajonay National Park<br></li></ul><p><strong>It is included in the price:</strong></p><ul><li>Air-conditioned transportation<br></li><li>Local Guide Service<br></li><li>Insurance&nbsp;</li></ul><p><strong>Reasons to book with us:&#13;&#10;</strong></p><ul><li>High Quality, Small groups&nbsp;</li><li>Lower Prices than Cruise Lines&nbsp;&nbsp;<br></li><li>We do not mix local tourists with cruise passengers&nbsp;<br></li><li>Guaranteed Return to Ship&nbsp;<br></li><li>Full refund if your ship doesn&#39;t port for any reason&nbsp;<br></li></ul><br><br><br><br><br>"
+        },
+        "de": {
+          "title": "Garajonay National Park",
+          "description": "<p>Wir fahren vom  Hafen in San Sebastian ab, um den nördlichen Teil der Insel zu erreichen, um das \"Enchanted Tal von La Gomera\" Valle Hermigua mit seinen Bananenplantagen zu besuchen. Wir gehen dann durch das kleinste Dorf von La Gomera, Agulo, mit seinen gepflasterten Straßen, und einer Wand aus Basaltstein, die 300 Meter hoch ist. Von diesem Aussichtspunkt können wir die fantastische Landschaft von La Gomera und der nahe gelegenen Insel Teneriffa genießen.</p>&#13;&#10;<p>Wir setzen unseren Ausflug fort, indem wir das Besucherzentrum im Garajonay-Nationalpark besuchen, der zum Schutz des Lorbeerwaldes angelegt wurde und wo man uns die Ursprünge und die Entwicklung der Insel und ihrer Wälder erklärt. Vor der Rückkehr in den Hafen erleben wir die fantastische Landschaft von Agando, Ojilla, Carmona und Zarzita.&#13;&#10;</p><br><br><p><strong>Wichtige Hinweise:</strong><strong></strong></p><ul><li><strong>Abfahrt des Ausfluges:</strong> Halbe Stunde nach dem Anlegen des Kreusfahrtschiffes<br></li><li><strong>Treffpunt mit der Reiseleitung : </strong>Bei der Polizeikontrolle<br></li><li><strong>Treffpunkt mit dem Tranport: </strong>Der Transport wird am äußeren Parkplatz sein, nach der Polizeikontrolle (Fußweg höchstens 10 Minuten vom Schiff, abhängig von der Anlegestelle, genaue Daten werden bei der Buchungsbestätigung gegeben)<br></li><li><strong>Aktivitätsstufe: </strong>Mittel<br></li><li><strong>Dauer des Ausfluges: </strong>7&nbsp;Stunden<br></li><li><strong>Essen und Getränke: </strong>Nicht inbegriffen<br></li><li><strong>Empfohlene Kleidung: </strong>Es wird zu Hut, Sonnenbrille, bequemem Schuhwerk zum Laufen und Sonnenschutz geraten.<br></li></ul><p><strong></strong></p><p><strong></strong></p><p><strong></strong></p><p><strong></strong></p><p><strong></strong></p><p><strong></strong></p><p><strong></strong></p><p><strong>Wichtig:&nbsp;</strong>Die Gäste müssen in der Lage sein, mittelmäßige strecken (200-1000m) laufen zu können, sie müssen in und aus einem Bus und Treppen steigen. Dieser Ausflug ist nicht für Personen mit Gehbehinderung zu empfehlen.</p><p><strong>Was wir besuchen werden:</strong></p><ul><li>Den Nationalpark Garajonay<br></li><li><strong>Im Preis inbegriffen:</strong><br></li><li>Klimatisierter Transport&nbsp;<br></li><li>Tour  geführt durch einen ortskundigen Reiseleiter.</li><li>Versicherung<br></li></ul><p>&#13;&#10;<strong>Warum bei uns buchen?</strong>&#13;&#10;</p><ul><li>Höhere Quälität, kleine Gruppe. &#13;&#10;</li><li>Keine kommerzielle Stopps. &#13;&#10;</li><li>An diesem Ausflug nehmen ausschließlich Kreuzfahrtpassagiere teil.&#13;&#10;</li><li>Wir vermeiden die Warteschlangen.&#13;&#10;</li><li>Wir garantieren, dass Sie pünktlich zu Ihrem Schiff zurückkommen. &#13;&#10;</li><li>Preise niedriger als ihre Kreuzfahrtschiffe.&#13;&#10;</li><li>Volle Rückerstattung, wenn Ihr Schiff aus irgendeinem Grund nicht auf Lanzarote angelegen kann&#13;&#10;.</li></ul><br><br><br>"
+        }
+      }
+    },
+    {
+      "id": "shore-5",
+      "title": "Playas de Fuerteventura",
+      "shortTitle": "Playas FTV",
+      "summary": "<p>Fuerteventura cuenta con las mejores playas de Canarias y es un paraí­so para los deportes acuáticos como el surf, windsurf y kitesurf.&nbsp;</p><p>Nuestra excursión nos lleva en primer lugar hacia el norte para disfrutar de la primera parada en las Dunas de Corralejo.</p><p>U",
+      "description": "<p>Fuerteventura cuenta con las mejores playas de Canarias y es un paraí­so para los deportes acuáticos como el surf, windsurf y kitesurf.&nbsp;</p><p>Nuestra excursión nos lleva en primer lugar hacia el norte para disfrutar de la primera parada en las Dunas de Corralejo.</p><p>Una de las mejores zonas para practicar los deportes acuáticos que mencionamos es el parque natural de las Dunas de Corralejo, desde donde se divisa la Isla de Lobos y Lanzarote. Las dunas son de una arena blanquísima de origen marino, formada por moluscos y conchas pulverizados por las corrientes marinas y que han sido depositados en la costa norte ocupando una superficie de 2668 km2 y extendiéndose a lo largo de casi 8 kilómetros de costa.</p><p>Este paisaje de dunas que alcanzan en algunas zonas hasta 50 metros contrastan con el azul turquesa del mar.&nbsp;</p><p>En noviembre se celebra el Festival internacional de cometas y entonces el cielo se convierte en un espectáculo lleno de colorido.</p><p>Continuamos nuestra excursión hacia Corralejo donde tendrán tiempo libre para recorrer sus calles o simplemente tomar un café en uno de los muchos cafés situados a pie de mar. Desde Corralejo continuamos hacia el noroeste para visitar El Cotillo. El Cotillo es un pintoresco pueblo de pescadores famoso por su impresionante costa y la Torre El Tostón, del siglo XVIII, construida para defender el puerto de los continuos ataques de piratas.&nbsp;</p><p>En el Cotillo podrá disfrutar de un poco de tiempo libre para dar un paseo antes regresar al muelle para seguir a su crucero.</p><br><p><strong>Datos importantes:&#13;&#10;</strong></p><p><ul><li><strong>Salida de la excursión</strong>: media hora después de la llegada del crucero&nbsp;&nbsp;<br></li><li><strong>Punto de encuentro con la guía</strong>: El control de policía&nbsp;&nbsp;<br></li><li><strong>Punto para coger el transporte:</strong> El transporte estará en el aparcamiento externo, pasado el control de policía ( caminata de aprox 10 minutos desde el barco, dependiendo de donde atraque el crucero, se proporcionarán todos los detalles con la confirmación de la excursión)&nbsp;&nbsp;<br></li><li><strong>Nivel de actividad:</strong> moderado&nbsp;<br></li><li><strong>Duración de la excursión</strong>: 7 horas&nbsp;&nbsp;<br></li><li><strong>Alimentos / bebidas</strong> no incluidos&nbsp;&nbsp;<br></li><li><strong>Vestimenta recomendada</strong>: Recomendamos gorra, gafas de sol, calzado cómodo para caminar y protector solar.&nbsp;&nbsp;<br></li><li><strong>Importante</strong>: Esta excursión no es apta para personas con movilidad reducida.&nbsp;<br></li></ul></p><p><strong>Lugares a visitar:&#13;&#10;</strong></p><ul><li>Dunas de Corralejo,<br></li><li>Corralejo,&nbsp;<br></li><li>El Cotillo<br></li></ul><p><strong>Incluido en el precio:&nbsp;</strong></p><ul><li>Transporte climatizado<br></li><li>Servicio de guÍa local<br></li><li>Seguro turÍ­stico<br></li></ul><p><strong>¿ Por qué reservar con nosotros ?&#13;&#10;</strong></p><ul><li>No hacemos paradas comerciales&nbsp;<br></li><li>Evitamos las colas&nbsp;<br></li><li>No mezclamos turistas locales con pasajeros de cruceros.&nbsp;<br></li><li>Te garantizamos que volverás a tu barco a tiempo&nbsp;<br></li><li>Precios más bajos que las líneas de cruceros&nbsp;<br></li><li>Reembolso completo si su barco no atraca en el puerto<br></li></ul><br><br>",
+      "priceAdult": 75,
+      "pricePerPerson": 75,
+      "image": "https://www.lanzaroteexperiencetours.com/uploads/cruise/5/5-EL COTILLO COSTA.jpg",
+      "gallery": [
+        "https://www.lanzaroteexperiencetours.com/uploads/cruise/5/50-dunas 4.jpg"
+      ],
       "duration": "4 horas",
       "durationHours": 4,
       "places": [
@@ -633,692 +547,333 @@
         "El Cotillo"
       ],
       "highlights": [
-        "Dunas y pueblos del norte",
-        "Ideal para escalas cortas"
+        "Parque natural de las Dunas de Corralejo",
+        "Corralejo",
+        "El Cotillo"
       ],
-      "image": "/images/tours/timanfaya.jpg",
-      "minPax": 10,
       "maxGroup": 20,
-      "shortTitle": "Parque natural de las Dunas de Corralejo",
-      "summary": "Parque natural de las Dunas de Corralejo",
-      "description": "Dunas y pueblos del norte\nIdeal para escalas cortas",
-      "priceChild": 53,
-      "pricePerPerson": 75,
-      "active": true,
-      "gallery": [
-        "/images/tours/timanfaya.jpg"
-      ],
-      "privatePrice": 0,
-      "privateMaxPax": 0,
-      "included": [
-        "Guía",
-        "Transporte"
-      ],
-      "notIncluded": [
-        "Comidas",
-        "Entradas opcionales"
-      ],
+      "minPax": 10,
+      "port": "Puerto del Rosario",
+      "active": false,
       "currency": "EUR",
       "allowCard": true,
       "allowBizum": true,
       "allowPayOnDay": true,
-      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
       "translations": {
         "en": {
-          "title": "Corralejo Natural Dunes Park",
-          "shortTitle": "Corralejo Dunes",
-          "summary": "White sand dunes and northern Fuerteventura villages — ideal for shorter port calls.",
-          "description": "Visit the Corralejo Natural Park dunes and nearby coastal towns on a shore excursion tailored to your ship’s schedule.",
-          "duration": "4 hours",
-          "highlights": [
-            "Dunes and northern villages",
-            "Ideal for short calls"
-          ],
-          "places": [
-            "Corralejo Natural Dunes Park",
-            "Corralejo",
-            "El Cotillo"
-          ]
+          "title": "Golden Sands beaches in the north of Fuerteventura",
+          "description": "<p>Fuerteventura has the best beaches in the Canary Islands and is a paradise for water sports such as surfing, windsurfing and kite surfing.&#13;&#10;</p><p>&#13;&#10;Our tour takes us to the north of the island to enjoy our first stop in the Dunes of Corralejo, one of the best areas for water sports and from where we can enjoy the panoramic views over the island of Lobos and Lanzarote. The dunes are of a very white sand of marine origin, formed by mollusks and shells pulverized by the marine currents and that have been deposited in the northern coast occupying a surface of 2668 km2, along almost 8 kilometers of coast.&nbsp;</p><p>&#13;&#10;This landscape of dunes that reach in some areas up to 50 meters contrast with the turquoise color of the sea.&nbsp;</p><p>&#13;&#10;In November the International Kite Festival is celebrated and then, the sky becomes a colorful spectacle.&nbsp;</p><p>&#13;&#10;We continue our excursion to Corralejo where we will have free time to explore its streets or simply to have a coffee in any of the many cafes located at the foot of the sea. From Corralejo we continue towards the northwest to visit El Cotillo. El Cotillo is a picturesque fishing village famous for its stunning coastline and the El Tostón tower, built in the 18th century, to defend the port from the constant attacks of pirates.&nbsp;</p><p>In El Cotillo you can enjoy some free time to take a walk before returning to the dock to continue your cruise</p><br><p><strong>Important information</strong>:&#13;&#10;</p><ul><li><strong>&nbsp;Start of the tour:</strong> half an hour after the arrival of the cruise&nbsp;<br></li><li><strong>Meeting point with the guide:</strong>  Police control&nbsp;<br></li><li><strong>Point to take the transport: </strong>The transport will be in the external parking, past the police control (walk of approx 10 minutes from the boat, depending on where the cruise docks, all the details will be provided with the confirmation of the excursion)<br></li></ul><ul><li><strong>Shore Excursion Type</strong>: Cultural, Active, Scenic&nbsp;&nbsp;</li><li><strong>Activity Level:</strong> Moderate&nbsp;<br></li><li><strong>Shore Excursion Duration:</strong> 7 Hours&nbsp;</li><li><strong>Food/Beverage Provided</strong> Not Included&nbsp;<br></li><li><strong>Recommended Dress</strong> We recommend wearing comfortable weather-appropriate clothing, cap, sunglasses, walking shoes and sunscreen.&nbsp;<br></li><li><strong>Restrictions</strong> Guests must be capable of walking short distances and be able to get in and out of public transport as well as walk up and down steps and uneven terrain. This tour is not handicap accessible.&nbsp;<br></li></ul><p><strong>We visit:&#13;&#10;</strong></p><ul><li>Sand dunes of Corralejo<br></li><li>Corralejo town<br></li><li>Cotillo beach and town<br></li></ul><p><strong>Included in the price:&#13;&#10;</strong></p><ul><li>Air-conditioned transport<br></li><li>Local Guide Service<br></li><li>Insurance</li></ul><p><strong>Reasons to book with us:&#13;&#10;</strong></p><ul><li>High Quality, Small groups&nbsp;</li><li>Lower Prices than Cruise Lines&nbsp;&nbsp;<br></li><li>We do not mix local tourists with cruise passengers&nbsp;<br></li><li>Guaranteed Return to Ship&nbsp;<br></li><li>Full refund if your ship doesn&#39;t port for any reason&nbsp;</li></ul><br><br><br>"
         },
         "de": {
-          "title": "Naturpark Dünen von Corralejo",
-          "shortTitle": "Dünen von Corralejo",
-          "summary": "Weiße Sanddünen und Dörfer im Norden Fuerteventuras — ideal für kürzere Hafenstops.",
-          "description": "Besuch der Dünen von Corralejo und benachbarter Küstenorte, abgestimmt auf Ihren Schiffplan.",
-          "duration": "4 Stunden",
-          "highlights": [
-            "Dünen und Norddörfer",
-            "Ideal für kurze Stops"
-          ],
-          "places": [
-            "Naturpark Dünen von Corralejo",
-            "Corralejo",
-            "El Cotillo"
-          ]
+          "title": "Goldene Sandstrände im Norden von Fuerteventura.",
+          "description": "<p>Fuerteventura hat die besten Strände der Kanarischen Inseln und ist ein Paradies für Wassersportarten wie Surfen, Windsurfen und Kitesurfen.&#13;&#10;</p><br><p>Unsere Tour führt uns zuerts in den Norden der Insel, wo wir bei unserem ersten Stopp die Dünen von Corralejo genießen, einer der besten Gegenden für Wassersport und von wo aus wir den Panoramablick über die Insel Lobos und Lanzarote genießen können. Die Dünen bestehen aus einem sehr weißen Sand marinen Ursprungs, der aus Mollusken und Muscheln besteht, die durch die Meeresströmungen pulverisiert wurden und die sich an der Nordküste mit einer Fläche von 2668 km2 an fast 8 km Küste abgelagert haben.&#13;&#10;</p><br><p>Diese Dünenlandschaft reicht bis zu 50 Meter ins Land hinein und bildet einen schönen kontrast zum türkisfarbenen Meer.&#13;&#10;</p><br><p>Im November wird das International Kite Festival gefeiert und dann wird der Himmel zu einem farbenprächtigen Spektakel.&#13;&#10;</p><br><p>Wir setzen unseren Ausflug nach Corralejo fort, wo wir etwas Zeit haben werden, um die Straßen zu erkunden oder um einfach nur einen Kaffee in einem der vielen Cafés am Ufer des Meeres zu trinken. Von Corralejo fahren wir weiter Richtung Nordwesten, um El Cotillo zu besuchen. El Cotillo ist ein malerisches Fischerdorf, das für seine atemberaubende Küste und den im 18. Jahrhundert erbauten Turm El Tostón bekannt ist, um den Hafen vor den ständigen Angriffen der Piraten zu schützen.&#13;&#10;</p><br><p>In El Cotillo können Sie etwas Freizeit genießen, bevor Sie zum Hafen zurückkehren, um Ihre Kreuzfahrt fortzusetzen.</p><br><p><strong>Wichtige Hinweise:&#13;&#10;</strong></p><ul><li><strong>Abfahrt des Ausfluges:</strong> Halbe Stunde nach dem Anlegen des Kreusfahrtschiffes<br></li><li><strong>Treffpunt mit der Reiseleitung:</strong> Bei der Polizeikontrolle<br></li><li><strong>Treffpunkt mit dem Tranport:</strong> Der Transport wird am äußeren Parkplatz sein, nach der Polizeikontrolle (Fußweg höchstens 10 Minuten vom Schiff, abhängig von der Anlegestelle, genaue Daten werden bei der Buchungsbestätigung gegeben)<br></li><li><strong>Aktivitätsstufe:</strong> Mittel&nbsp;<br></li><li><strong>Dauer des Ausfluges:</strong>&nbsp;7 Stunden<br></li><li><strong>Essen und Getränke: </strong>Nicht inbegriffen<br></li><li><strong>Empfohlene Kleidung:</strong> Es wird zu Hut, Sonnenbrille, bequemem Schuhwerk zum Laufen und Sonnenschutz geraten.<br></li><li><strong>Wichtig: </strong>Die Gäste müssen in der Lage sein, mittelmäßige strecken (200-1000m) laufen zu können, sie müssen in und aus einem Bus und Treppen steigen. Dieser Ausflug ist nicht für Personen mit Gehbehinderung zu empfehlen.</li></ul><p><strong>Was wir auf der Südtour besuchen werden:&#13;&#10;</strong></p><ul><li>Dünen von Corralejo<br></li><li>Dorf Corralejo<br></li><li>Dorf El Cotillo&nbsp;<br></li></ul><p><strong>Im Preis inbegriffen:&#13;&#10;</strong></p><ul><li>Klimatisierter Transport&nbsp;&nbsp;<br></li><li>Tour  geführt durch einen ortskundigen Reiseleiter.&nbsp;<br></li><li>Versicherung&nbsp;<br></li></ul><p><strong>Warum bei uns buchen?&nbsp;</strong><br></p><ul><li>Höhere Quälität, kleine Gruppe. &#13;&#10;</li><li>Keine kommerzielle Stopps. &#13;&#10;</li><li>An diesem Ausflug nehmen ausschließlich Kreuzfahrtpassagiere teil.&#13;&#10;</li><li>Wir vermeiden die Warteschlangen.&#13;&#10;</li><li>Wir garantieren, dass Sie pünktlich zu Ihrem Schiff zurückkommen. &#13;&#10;</li><li>Preise niedriger als ihre Kreuzfahrtschiffe.&#13;&#10;</li><li>Volle Rückerstattung, wenn Ihr Schiff aus irgendeinem Grund nicht auf Lanzarote angelegen kann&#13;&#10;.</li></ul><br><br><br>"
         }
       }
     },
     {
-      "id": "teide-y-norte-tenerife",
-      "title": "Teide y Norte de Tenerife",
-      "port": "Tenerife",
-      "priceAdult": 95,
+      "id": "shore-6",
+      "title": "Caldera de Taburiente",
+      "shortTitle": "Taburiente",
+      "summary": "<p>Después de que nuestro guía local nos encuentre en el puerto, nos llevarán a ver el santuario de la Virgen de las Nieves, patrona de la isla, que alberga una antigua tradición, el \"Descenso de la Virgen\", recreada cada 5 años desde 1680 (la próxima celebración será en 2020).&n",
+      "description": "<p>Después de que nuestro guía local nos encuentre en el puerto, nos llevarán a ver el santuario de la Virgen de las Nieves, patrona de la isla, que alberga una antigua tradición, el \"Descenso de la Virgen\", recreada cada 5 años desde 1680 (la próxima celebración será en 2020).&nbsp; Continuaremos hacia Concepción, y el Mirador de Buenavista, para disfrutar de las hermosas vistas de Santa Cruz de La Palma y Las Breñas. Luego iremos al Centro de Visitantes para aprender más sobre la historia de esta increíble burbuja volcánica. También tendremos la oportunidad de disfrutar del fantástico paisaje de La Caldera antes de regresar al puerto.</p><br><p><strong>Datos importantes</strong>:&#13;&#10;</p><p></p><ul><li><strong>Salida de la excursión</strong>: media hora después de la llegada del crucero&nbsp;&nbsp;<br></li><li><strong>Punto de encuentro con la guía</strong>: El control de policía&nbsp;&nbsp;<br></li><li><strong>Punto para coger el transporte</strong>: El transporte estará en el aparcamiento externo, pasado el control de policía ( caminata de aprox 10 minutos desde el barco, dependiendo de donde atraque el crucero, se proporcionarán todos los detalles con la confirmación de la excursión)&nbsp;&nbsp;<br></li><li><strong>Nivel de actividad</strong>: moderado&nbsp;<br></li><li><strong>Duración de la excursión</strong>: 7horas&nbsp;&nbsp;<br></li><li><strong>Alimentos / bebidas</strong> no incluidos&nbsp;&nbsp;<br></li><li><strong>Vestimenta recomendada</strong>: Recomendamos gorra, gafas de sol, calzado cómodo para caminar y protector solar.&nbsp;&nbsp;<br></li><li><strong>Importante:</strong> Esta excursión no es apta para personas con movilidad reducida.&nbsp;<br></li></ul><p></p><p><strong>Lugares a visitar:&#13;&#10;</strong></p><ul><li>Santuario Virgen de las Nieves<br></li><li>Mirador de Buenavista<br></li><li>Centro de Visitante de Taburiente<br></li></ul><p><strong>Incluido en el precio: &#13;&#10;</strong></p><ul><li>&nbsp;Transporte climatizado&nbsp;<br></li><li>Servicio de guÍa local&nbsp;<br></li><li>Seguro turÍ­stico&nbsp;<br></li></ul><p><strong>¿ Por qué reservar con nosotros ?&#13;&#10;</strong></p><ul><li>No hacemos paradas comerciales&nbsp;&nbsp;<br></li><li>Evitamos las colas&nbsp;&nbsp;<br></li><li>No mezclamos turistas locales con pasajeros de cruceros.&nbsp;&nbsp;<br></li><li>Te garantizamos que volverás a tu barco a tiempo&nbsp;&nbsp;<br></li><li>Precios más bajos que las líneas de cruceros&nbsp;&nbsp;<br></li><li>Reembolso completo si su barco no atraca en el puerto&nbsp;<br></li></ul><br>",
+      "priceAdult": 100,
+      "pricePerPerson": 100,
+      "image": "https://www.lanzaroteexperiencetours.com/uploads/cruise/6/caldera-taburiente.jpeg",
+      "gallery": [],
+      "duration": "7 horas",
+      "durationHours": 7,
+      "places": [
+        "Taburiente National Park",
+        "Santuario Virgen de las Nieves",
+        "Mirador de Buenavista",
+        "Centro de Visitante de Taburiente"
+      ],
+      "highlights": [
+        "Taburiente National Park",
+        "Santuario Virgen de las Nieves",
+        "Mirador de Buenavista",
+        "Centro de Visitante de Taburiente"
+      ],
+      "maxGroup": 25,
+      "minPax": 10,
+      "port": "La Palma, Canary Islands",
+      "active": false,
+      "currency": "EUR",
+      "allowCard": true,
+      "allowBizum": true,
+      "allowPayOnDay": true,
+      "translations": {
+        "en": {
+          "title": "Taburiente National Park",
+          "description": "<p>After our local guide meets us at the port, we will be taken to see the sanctuary of the Virgen de las Nieves, patron saint of the island, which hosts an ancient tradition, the “Descent of the Virgin”, reenacted every 5 years since 1680 (the next celebration will be in 2020). Here some other typical celebrations such as the “Dwarf Festival Minuet Dance” will also be explained. We&#39;ll then go on to Conception, and the Mirador de Buenavista, to enjoy the lovely views over Santa Cruz de La Palma and Las Breñas. Afterwards we´ll go on to the Visitors Center of Taburiente National Park to learn more about the history of this amazing volcanic bubble. We´ll also be given the oportunity to take in the  fantastic landscape of  La Caldera before returning to port.</p><br><p><strong>Important information:&#13;&#10;</strong></p>&#13;&#10;<ul><li><strong>Start of the tour</strong>: half an hour after the arrival of the cruise&nbsp;<br></li><li><strong>Meeting point with the guide</strong>:  Police control&nbsp;<br></li><li><strong>Point to take the transport: </strong>The transport will be in the external parking, past the police control (walk of approx 10 minutes from the boat, depending on where the cruise docks, all the details will be provided with the confirmation of the excursion)<br></li></ul><ul><li><strong>Shore Excursion Type:</strong> Cultural, Active, Scenic&nbsp;</li><li><strong>Activity Level: </strong>Moderate&nbsp;<br></li><li><strong>Shore Excursion Duration:&nbsp;</strong>7 Hours&nbsp;</li><li><strong>Food/Beverage Provided</strong> Not Included&nbsp;<br></li><li><strong>Recommended Dress</strong> We recommend wearing comfortable weather-appropriate clothing, cap, sunglasses, walking shoes and sunscreen.&nbsp;<br></li><li><strong>Restrictions</strong> Guests must be capable of walking short distances and be able to get in and out of public transport as well as walk up and down steps and uneven terrain. This tour is not handicap accessible.&nbsp;<br></li></ul><p><strong>We visit:&#13;&#10;</strong></p><ul><li>Sanctuary of the patron saint of the island<br></li><li>Mirador de Buenavista<br></li><li>Visitors Center of Taburiente<br></li></ul><p><strong>Included in the price:&#13;&#10;</strong></p><ul><li>Air-conditioned transport&nbsp;<br></li><li>Local Guide Service&nbsp;<br></li><li>Insurance<br></li></ul>&#13;&#10;<p><strong>Reasons to book with us:&#13;&#10;</strong></p><ul><li>High Quality, Small groups&nbsp;</li><li>Lower Prices than Cruise Lines&nbsp;&nbsp;<br></li><li>We do not mix local tourists with cruise passengers&nbsp;<br></li><li>Guaranteed Return to Ship&nbsp;<br></li><li>Full refund if your ship doesn&#39;t port for any reason&nbsp;<br></li></ul><br><br>"
+        },
+        "de": {
+          "title": "Caldera de Taburiente Nationalpark",
+          "description": "<p>Nachdem Sie sich mit  unserer örtlichen Reiseleitung im Hafen getroffen haben, werden wir zum Schutzheiligtum der Virgen de las Nieves, Schutzpatronin der Insel, gebracht, wo eine alte Tradition, der \"Abstieg der Jungfrau Maria\", alle 5 Jahre nach 1680 nachgestellt wird (die nächste Feier wird 2020 stattfinden). Wir fahren weiter nach Conception und zum Mirador de Buenavista, um die schöne Aussicht über Santa Cruz de La Palma und Las Breñas zu genießen. Danach geht es weiter zum Besucherzentrum des Taburiente Nationalparks, um mehr über die Geschichte dieser erstaunlichen Vulkanblase zu erfahren. Wir werden auch die Möglichkeit haben, die fantastische Landschaft von La Caldera zu genießen, bevor wir zum Hafen zurückkehren.&nbsp;<br></p><br><p><strong><br></strong></p><p><strong>Wichtige Hinweise:</strong></p><ul><li><strong>Abfahrt des Ausfluges:</strong> Halbe Stunde nach dem Anlegen des Kreusfahrtschiffes<br></li><li><strong>Treffpunt mit der Reiseleitung:</strong> Bei der Polizeikontrolle<br></li><li><strong>Treffpunkt mit dem Tranport: </strong>Der Transport wird am äußeren Parkplatz sein, nach der Polizeikontrolle (Fußweg höchstens 10 Minuten vom Schiff, abhängig von der Anlegestelle, genaue Daten werden bei der Buchungsbestätigung gegeben)<br></li><li><strong>Aktivitätsstufe:</strong> Mittel<br></li><li><strong>Dauer des Ausfluges:</strong> 7&nbsp;Stunden<br></li><li><strong>Essen und Getränke:</strong> Nicht inbegriffen<br></li><li><strong>Empfohlene Kleidung: </strong>Es wird zu Hut, Sonnenbrille, bequemem Schuhwerk zum Laufen und Sonnenschutz geraten<br></li><li><strong>Wichtig: </strong>Die Gäste müssen in der Lage sein, mittelmäßige strecken (200-1000m) laufen zu können, sie müssen in und aus einem Bus und Treppen steigen. Dieser Ausflug ist nicht für Personen mit Gehbehinderung zu empfehlen.&nbsp;</li></ul><p><strong>Was wir besuchen werden</strong></p><ul><li>Heiligtum des Schutzpatrons der Insel&#13;&#10;</li><li>Mirador de Buenavista&#13;&#10;</li><li>Besucherzentrum von Taburiente&nbsp;</li></ul><p><strong>Im Preis inbegriffen:</strong>&nbsp;</p><ul><li>Klimatisierter Transport&nbsp;</li><li>Tour geführt durch einen ortskundigen Reiseleiter.&#13;&#10;</li><li>Versicherung&#13;&#10;</li></ul><p><strong>Warum bei uns buchen?&nbsp;</strong></p><ul><li>&#13;&#10;Höhere Quälität, kleine Gruppe.&nbsp;</li><li>Keine kommerzielle Stopps.&#13;&#10;</li><li>An diesem Ausflug nehmen ausschließlich Kreuzfahrtpassagiere teil.&#13;&#10;</li><li>Wir vermeiden die Warteschlangen.&#13;&#10;</li><li>Wir garantieren, dass Sie pünktlich zu Ihrem Schiff zurückkommen.&#13;&#10;</li><li>Preise niedriger als ihre Kreuzfahrtschiffe.&#13;&#10;</li><li>Volle Rückerstattung, wenn Ihr Schiff aus irgendeinem Grund nicht auf Lanzarote angelegen kann .&#13;&#10;</li></ul>"
+        }
+      }
+    },
+    {
+      "id": "shore-7",
+      "title": "Parque nacional Las Cañadas del Teide",
+      "shortTitle": "Teide",
+      "summary": "<p>El Teide es sin duda el lugar que más identifica a Tenerife.&nbsp; El parque nacional del Teide está situado en el centro de la isla y su cima representa el pico más alto de España, con 3.715 metros. Fue declarado Patrimonio Mundial de la Humanidad por la Unesco en 2007.&nbsp;",
+      "description": "<p>El Teide es sin duda el lugar que más identifica a Tenerife.&nbsp; El parque nacional del Teide está situado en el centro de la isla y su cima representa el pico más alto de España, con 3.715 metros. Fue declarado Patrimonio Mundial de la Humanidad por la Unesco en 2007.&nbsp;</p><p>Por un lado, estamos ante una maravilla de la naturaleza. La estructura de la caldera y el estrato-volcán Teide-Pico-Viejo son únicos en el planeta. A ello se añaden su riqueza de fauna y flora, con una gran cantidad de endemismos canarios y especies exclusivas del parque. El parque se creó en 1954 en reconocimiento a su singularidad volcánica y biológica. Su extensión es de casi 19.000 hectáreas, lo que lo convierte en el mayor y más antiguo de entre todos los parques nacionales de las Islas Canarias.&nbsp;</p><p>Con esta excursión al Teide disfrutarás contemplando los volcanes y conociendo la historia de cómo se formó la isla más elevada del archipiélago canario, además de recorrer paisajes de gran contraste y gran valor paisajístico.</p><p>Por último, en el Parque Nacional se realizarán múltiples paradas, principalmente en un Centro de Visitantes, abiertos todos los días (excepto el 25 de diciembre y 1 de enero): El Centro de Visitantes de Cañada Blanca, donde se muestra la interacción e influencia entre el hombre y las Cañadas y el Teide.<br><p><strong></strong></p><strong>Datos importantes:&#13;&#10;</strong></p><p>·         Grupo mínimo desde 4 pax: Esta ruta puede realizarse incluso siendo dos pax, siempre y cuando asuman el importe mínimo de 300 €.&#13;&#10;</p><p>·         Salida de la excursión: media hora después de la llegada del crucero  &#13;&#10;</p><p>·         Punto de encuentro con la guía: ver en el mapa, terminal de cruceros de Santa Cruz de Tenerife&#13;&#10;</p><p>·         Punto para coger el transporte: El transporte estará en el aparcamiento externo, pasado el control de policía ( caminata de aprox 10 minutos desde el barco, dependiendo de donde atraque el crucero, se proporcionarán todos los detalles con la confirmación de la excursión)  &#13;&#10;</p><p>·         Nivel de actividad: moderado &#13;&#10;</p><p>·         Duración de la excursión: 6 horas  &#13;&#10;</p><p>·         Alimentos / bebidas no incluidos  &#13;&#10;</p><p>·         Vestimenta recomendada: Recomendamos gorra, gafas de sol, calzado cómodo para caminar y protector solar.  &#13;&#10;</p><p>·         Importante: Esta excursión es apta para personas con movilidad reducida. &#13;&#10;</p><p><strong>Visitamos:&#13;&#10;</strong></p><p>·         El parque nacional del Teide y uno de los centros de visitantes&#13;&#10;</p><p><strong>Hemos incluido en el precio:&#13;&#10;</strong></p><p>·         Transporte climatizado&#13;&#10;</p><p>·         Servicio de guí­a oficial &#13;&#10;</p><p>·         Seguro turí­stico&#13;&#10;</p><p><strong>El precio no incluye</strong>:&#13;&#10;</p><p>·         Comida&#13;&#10;</p><p>·         Cualquier otra cosa que no aparezca en el apartado de “incluido”&#13;&#10;</p><p><strong>¿ Por qué reservar con nosotros ? &#13;&#10;</strong></p><p>·         No hacemos paradas comerciales  &#13;&#10;</p><p>·         Evitamos las colas  &#13;&#10;</p><p>·         No mezclamos turistas locales con pasajeros de cruceros.  &#13;&#10;</p><p>·         Te garantizamos que volverás a tu barco a tiempo  &#13;&#10;</p><p>·         Precios más bajos que las líneas de cruceros  &#13;&#10;</p><p>·         Reembolso completo si su barco no atraca en el puerto por causas meteorológicas. Si son otros los motivos, dependerá de la fecha con la que se anticipe dicha cancelación.&#13;&#10;</p>&nbsp;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;",
+      "priceAdult": 75,
+      "pricePerPerson": 75,
+      "image": "https://www.lanzaroteexperiencetours.com/uploads/cruise/7/parque-nacional-canadas-teide.jpeg",
+      "gallery": [],
       "duration": "6 horas",
       "durationHours": 6,
       "places": [
-        "Teide",
-        "La Orotava",
-        "Puerto de la Cruz"
+        "Monte de La Esperanza",
+        "Teide National Park (multiple stops including the Visitor Center/Centro de Visitantes)"
       ],
       "highlights": [
-        "Parque Nacional del Teide",
-        "Pueblos del norte"
+        "Monte de La Esperanza",
+        "Teide National Park (multiple stops including the Visitor Center/Centro de Visitantes)"
       ],
-      "image": "/images/tours/timanfaya.jpg",
-      "shortTitle": "Teide y Norte de Tenerife",
-      "summary": "Teide y Norte de Tenerife",
-      "description": "Parque Nacional del Teide\nPueblos del norte",
-      "priceChild": 67,
-      "pricePerPerson": 95,
-      "active": true,
-      "gallery": [
-        "/images/tours/timanfaya.jpg"
-      ],
+      "maxGroup": 25,
       "minPax": 8,
-      "maxGroup": 14,
-      "privatePrice": 0,
-      "privateMaxPax": 0,
-      "included": [
-        "Guía",
-        "Transporte"
-      ],
-      "notIncluded": [
-        "Comidas",
-        "Entradas opcionales"
-      ],
+      "port": "Tenerife",
+      "active": false,
       "currency": "EUR",
       "allowCard": true,
       "allowBizum": true,
       "allowPayOnDay": true,
-      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
       "translations": {
         "en": {
-          "title": "Teide and North Tenerife",
-          "shortTitle": "Teide & North Tenerife",
-          "summary": "Teide National Park and charming northern towns of Tenerife.",
-          "description": "From the volcanic landscapes of Teide to La Orotava and Puerto de la Cruz, a classic shore excursion for Tenerife calls.",
-          "duration": "7 hours",
-          "highlights": [
-            "Teide National Park",
-            "Northern villages"
-          ],
-          "places": [
-            "Teide",
-            "La Orotava",
-            "Puerto de la Cruz"
-          ]
+          "title": "Teide Mountain National Park.",
+          "description": "<p><strong>Tour description</strong><br></p><p>Mount Teide is undoubtedly the place that most identifies Tenerife. The Teide National Park is located in the center of the island and its summit represents the highest peak in Spain, at 3,715 meters. It was declared a World Heritage Site by UNESCO in 2007.&#13;&#10;</p><p>On the one hand, we are facing a wonder of nature. The structure of the caldera and the Teide-Pico-Viejo strato-volcano are unique on the planet. Added to this is its richness of fauna and flora, with a large number of Canarian endemisms and species exclusive to the park. The park was established in 1954, in recognition of its volcanic and biological uniqueness. Its area is almost 19,000 hectares, which makes it the largest and oldest of all the national parks of the Canary Islands.&#13;&#10;</p><p>With this excursion to Teide you will enjoy contemplating the volcanoes and learning the history of how the highest island of the Canary archipelago was formed, in addition to traveling through landscapes of great contrast and amazing scenic value.&#13;&#10;</p><p>Finally, in the National Park there will be multiple stops, mainly at its Visitor Center, open daily (except December 25 and January 1): The Cañada Blanca Visitor Center, where the interaction and influence between man and Teide National Park.&#13;&#10;</p><p><strong>Important data:&#13;&#10;</strong></p><p>• Minimum group of 4 people: This route can be done even with two people, as long as they assume the minimum amount of €300.&#13;&#10;</p><p>• Excursion departure: half an hour after the arrival of the cruise&#13;&#10;</p><p>• Meeting point with the guide: see on the map, Santa Cruz de Tenerife cruise terminal&#13;&#10;</p><p>• Pick-up point: The shuttle will be in the external parking lot, past the police checkpoint (approx. 10 minute walk from the ship, depending on where the cruise ship docks, all details will be provided with the tour confirmation)&#13;&#10;</p><p>• Activity level: moderate&#13;&#10;</p><p>• Duration of the excursion: 6 hours&#13;&#10;</p><p>• Food/drinks not included&#13;&#10;</p><p>• Recommended clothing: We recommend a hat, sunglasses, comfortable walking shoes and sunscreen.&#13;&#10;</p><p>• Important: This excursion is suitable for people with reduced mobility.&#13;&#10;</p><p><strong>We will visit:&#13;&#10;</strong></p><p>• Teide National Park and one of the visitor centers&#13;&#10;</p><p><strong>We have included in the price</strong>:&#13;&#10;</p><p>• Air-conditioned transport&#13;&#10;</p><p>• Official guide service&#13;&#10;</p><p>• Tourist insurance&#13;&#10;</p><p><strong>Price does not include</strong>:&#13;&#10;</p><p>• Meal&#13;&#10;</p><p>• Anything else that does not appear in the “included” section&#13;&#10;</p><p><strong>Why book with us ?&#13;&#10;</strong></p><p>• We do not make commercial stops&#13;&#10;</p><p>• We avoid queues&#13;&#10;</p><p>• We do not mix local tourists with cruise passengers.&#13;&#10;</p><p>• We guarantee that you will return to your boat on time&#13;&#10;</p><p>• Lower prices than cruise lines&#13;&#10;</p><p>• Full refund if your boat does not dock at the port due to weather conditions. If there are other reasons, it will depend on the date with which said cancellation is anticipated.</p>&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10; &#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10; &#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10; &#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;"
         },
         "de": {
-          "title": "Teide und Norden Teneriffas",
-          "shortTitle": "Teide & Norden Teneriffa",
-          "summary": "Nationalpark Teide und charmante Orte im Norden Teneriffas.",
-          "description": "Von den Vulkanlandschaften des Teide nach La Orotava und Puerto de la Cruz — ein klassischer Landausflug.",
-          "duration": "7 Stunden",
-          "highlights": [
-            "Nationalpark Teide",
-            "Dörfer im Norden"
-          ],
-          "places": [
-            "Teide",
-            "La Orotava",
-            "Puerto de la Cruz"
-          ]
+          "title": "Teide Nationalpark",
+          "description": "<p>Der Teide ist zweifellos der Ort, der Teneriffa am meisten identifiziert.&#13;&#10;<br></p><p>Der Teide-Nationalpark befindet sich im Zentrum der Insel und sein Gipfel ist mit 3.715 Metern der höchste Gipfel Spaniens.&#13;&#10;</p><p>Der Teide-Nationalpark wurde 2007 von der UNESCO zum Weltkulturerbe erklärt. Die Struktur des kraters ist einzigartig auf der Erde. &#13;&#10;</p><p>Hierzu kommt noch die reichhaltige Fauna und Flora mit einer großen Anzahl an nur am Teide vorkommenden Pflanzen und Tieren.&#13;&#10;</p><p>Dieses Gebiet  wurde 1954 aufgrund seiner vulkanischen und biologischen Einzigartigkeit zum Nationalpark erklärt. Er ist der größte und älteste Nationalpark der Kanarischen Inseln.&#13;&#10;</p><p>Eine der aufregendsten Erfahrungen, die Sie im Nationalpark erwartet, ist die Fahrt mit der  Seilbahn. Die Talstation befindet sich auf 2.356 m Höhe und die Bergstation auf 3.555 m. Die Auffahrt zwischen den beide Stationen dauert ca. 8 Minuten und sie ist atemberaubend. Wenn Sie die Tour beendet haben, haben Sie vom Aussichtspunkt aus einen außergewöhnlichen Ausblick.&#13;&#10;</p><p>&nbsp;Auch wenn Sie mit der die Seilbahn bis zur Bergstation gekommen sind, können Sie noch nicht sagen, dass Sie auf dem höchsten Punkt Spaniens waren. &#13;&#10;</p><p>Von hier aus beginnt ein Pfad, der zu Fuß bis zum Krater führt, und es dauert noch einmal min. Mit einem hohen Schwierigkeitsgrad bis Sie zum Gipfel gelangen. Erst dann könnten Sie bei Ihren Freunden damit angeben, dass Sie den Gipfel des Teides zu Fu? erklommen haben.&#13;&#10;</p><p>Wenn Sie Glück haben, und es ust ein Klaser Tag, können Sie sich von dem Anblick von bis zu 4 Inseln verzaubern lassen: Gran Canaria, La Palma, El Hierro und La Gomera sowie die Insel Teneriffa selbst. Um dieses unvergessliche Erlebnis zu genießen, ist es notwendig, eine spezielle Genehmigung zu erhalten, die im Internet unter <strong>www.reservasparquesnacionales.es</strong> angefordert werden muss. Es ist ratsam, abhängig von der Jahreszeit, ein oder zwei Monate im Voraus zu buchen. Die Genehmigung ist kostenlos und gilt nur für das ausgewählte Datum. Kann der Besuch aus Witterungsgründen oder aus anderen Gründen nicht durchgeführt werden, erlischt die Genehmigung.&#13;&#10;</p><br><p>Mit diesem Ausflug zum Teide genießen Sie die Betrachtung der Vulkane und die Geschichte der Entstehung der Inseln des kanarischen Archipels.&#13;&#10;</p><br><p>Schließlich gibt es im Nationalpark zwei Besucherzentren, die täglich geöffnet sind (außer am 25. Dezember und am 1. Januar). Das Besucherzentrum Portillo zeigt die geologische Geschichte des Parks und die Beziehungen zwischen den Lebewesen, die ihn bewohnen, und seiner Umgebung. Das Cañada Blanca Besucherzentrum zeigt die Interaktion und den Einfluss zwischen Mensch und Cañadas del Teide.&#13;&#10;</p><br>&#13;&#10;<p><strong>Wir besuchen:&nbsp;</strong></p><p>&#13;&#10;Der Teide-Nationalpark und beide Besucherzentren&nbsp;</p>&#13;&#10;<p><strong>Wir haben im Preis inbegriffen:&nbsp;</strong></p><p>&#13;&#10;Klimatisierter Transport&nbsp;</p><p>&#13;&#10;Offizieller Reiseleiter&nbsp;</p><p>&#13;&#10;Touristenversicherung&nbsp;</p>&#13;&#10;<p><strong>Preis beinhaltet nicht:&nbsp;</strong></p><p>&#13;&#10;Teide Seilbahnticket (optional)&nbsp;</p><p>&#13;&#10;Sie müssen die Sondergenehmigung des Parks für den Weg zum Pico del Teide direkt auf der Website www.reservasparquesnacionales.es anfordern&nbsp;</p><p>&#13;&#10;Essen&nbsp;</p>&#13;&#10;<p><strong>Was zu bringen?&nbsp;</strong></p><p>&nbsp;Bringen Sie Wasser oder isotonische Getränke und energiereiche Lebensmittel zB Obst&nbsp; mit. Verwenden Sie geeignetes Schuhwerk für das lockere und steinige Terrain von Bergen. Im Winter extreme Vorsichtsmaßnahmen, besonders wenn es geschneit hat; Und vergessen Sie im Sommer nicht, dass die Sonnenstrahlung sehr stark ist und schwere Verbrennungen verursachen kann. Daher wird dringend empfohlen, Sonnenschutz und Hut zu verwenden. In jedem Fall ist es ratsam, zu jeder Jahreszeit warme Kleidung und Regenjacke zu tragen, da das Wetter sehr wechselhaft sein kann. Schließlich vergessen Sie nicht Ihr Handy .&nbsp;</p>&#13;&#10;<p><strong>Was nicht zu nehmen?&nbsp;</strong></p><p>&#13;&#10;Steine. Das ist verboten. .</p><br><p><strong>Wichtig</strong>: Die Gäste müssen in der Lage sein, mittelmäßige strecken (200-1000m) laufen zu können, sie müssen in und aus einem Bus und Treppen steigen. Dieser Ausflug ist nicht für Personen mit Gehbehinderung zu empfehlen.</p><p><strong>Warum bei uns buchen? &#13;&#10;</strong></p><ul><li>Höhere Quälität, kleine Gruppe.&nbsp;&nbsp;<br></li><li>Keine kommerzielle Stopps.&nbsp;&nbsp;<br></li><li>An diesem Ausflug nehmen ausschließlich Kreuzfahrtpassagiere teil.&nbsp;&nbsp;</li><li>Wir vermeiden die Warteschlangen.&nbsp;&nbsp;</li><li>Wir garantieren, dass Sie pünktlich zu Ihrem Schiff zurückkommen.&nbsp;&nbsp;<br></li><li>Preise niedriger als ihre Kreuzfahrtschiffe.&nbsp;&nbsp;</li><li>Volle Rückerstattung, wenn Ihr Schiff aus irgendeinem Grund nicht auf Lanzarote angelegen kann .&nbsp;&nbsp;</li></ul><br>"
         }
       }
     },
     {
-      "id": "sur-tenerife-los-gigantes",
-      "title": "Sur de Tenerife y Los Gigantes",
-      "port": "Tenerife",
-      "priceAdult": 80,
+      "id": "shore-8",
+      "title": "La Laguna y La Orotava",
+      "shortTitle": "La Laguna",
+      "summary": "<p>Las más importantes calles del centro de La Laguna son peatonales. Eso posibilita que la puedas explorar sin el agobio de los coches. Lo agradecerás porque requiere su tiempo para conocer y apreciar. La ciudad es Patrimonio de la Humanidad por la UNESCO desde 1999 como ejemplo",
+      "description": "<p>Las más importantes calles del centro de La Laguna son peatonales. Eso posibilita que la puedas explorar sin el agobio de los coches. Lo agradecerás porque requiere su tiempo para conocer y apreciar. La ciudad es Patrimonio de la Humanidad por la UNESCO desde 1999 como ejemplo único de ciudad colonial no amurallada. Conserva casi intacto el trazado original del siglo XV que ya reflejó por entonces el maestro Leonardo Torriani en su mapa de La Laguna. Sirvió además de referencia a ciudades coloniales americanas, como la Habana Vieja, Lima o Cartagena de Indias; con ellas comparte similar estática de casas y calles. La Catedral, la iglesia de la Concepción, el Ayuntamiento, son algunos de los edificios que agradecerás incluir en tu recorrido.</p><p>A medida que te acercas a La Orotava ya aprecias las preciosas cúpulas de sus iglesias. Su casco es coqueto y acogedor, con muchas de sus calles empedradas. Declarado conjunto Histórico-artístico, el recorrido te lleva a lugares como la iglesia de la Concepción, la ermita del Calvario, la iglesia de San Agustí­n, el Liceo Taoro o el ex convento de San Benito Abad. Visitar La Orotava durante el Corpus Christi es recomendable al cien por cien. En la Octava del Corpus la plaza del Ayuntamiento acoge el gran tapiz en el que se representan diferentes motivos religiosos pintados con arena de colores (hasta 41 diferentes, desde el verde al rojo pasando por el amarillo o el negro), que se extrae del Parque Nacional del Teide. En los alrededores de la plaza, los vecinos confeccionan a su vez deslumbrantes alfombras de flores, diseñadas con precisión milimétrica.</p><p><strong><br></strong></p><p><strong>Datos importantes:&#13;&#10;</strong></p><p><ul><li><strong>Salida de la excursión: </strong>media hora después de la llegada del crucero&nbsp;&nbsp;<br></li><li><strong>Punto de encuentro con la guía: </strong>El control de policía<strong>&nbsp;&nbsp;</strong><br></li><li><strong>Punto para coger el transporte: </strong>El transporte estará en el aparcamiento externo, pasado el control de policía ( caminata de aprox 10 minutos desde el barco, dependiendo de donde atraque el crucero, se proporcionarán todos los detalles con la confirmación de la excursión)&nbsp;&nbsp;<br></li><li><strong>Nivel de actividad: </strong>moderado<strong>&nbsp;</strong><br></li><li><strong>Duración de la excursión: </strong>5 horas&nbsp;&nbsp;<br></li><li><strong>Alimentos / bebidas </strong>no incluidos&nbsp;<strong></strong><br></li><li><strong>Vestimenta recomendada: </strong>Recomendamos gorra, gafas de sol, calzado cómodo para caminar y protector solar.&nbsp;&nbsp;<br></li><li><strong>Importante: </strong>Esta excursión no es apta para personas con movilidad reducida.<strong>&nbsp;</strong><br></li></ul></p><p><strong>Lugares a visitar:&#13;&#10;</strong></p><ul><li>La Laguna<br></li><li>La Orotava<br></li></ul><p><strong>Incluido en el precio: &#13;&#10;</strong></p><ul><li>Transporte climatizado&nbsp;<br></li></ul><ul><li>Servicio de guÍa local&nbsp;<br></li><li>Seguro turÍ­stico&nbsp;<br></li></ul><p><strong>¿ Por qué reservar con nosotros ?&#13;&#10;</strong></p><ul><li>No mezclamos turistas locales con pasajeros de cruceros.&nbsp;&nbsp;<br></li><li>Te garantizamos que volverás a tu barco a tiempo&nbsp;&nbsp;<br></li><li>Precios más bajos que las líneas de cruceros&nbsp;&nbsp;<br></li><li>Reembolso completo si su barco no atraca en el puerto&nbsp;<br></li></ul><br>",
+      "priceAdult": 75,
+      "pricePerPerson": 75,
+      "image": "https://www.lanzaroteexperiencetours.com/uploads/cruise/8/laguna-orotava.jpeg",
+      "gallery": [],
       "duration": "5 horas",
       "durationHours": 5,
       "places": [
-        "Los Gigantes",
-        "Costa Adeje",
-        "Mirador"
+        "La Laguna",
+        "La Orotava"
       ],
       "highlights": [
-        "Acantilados de Los Gigantes",
-        "Costa sur"
+        "La Laguna",
+        "La Orotava"
       ],
-      "image": "/images/tours/timanfaya.jpg",
-      "shortTitle": "Sur de Tenerife y Los Gigantes",
-      "summary": "Sur de Tenerife y Los Gigantes",
-      "description": "Acantilados de Los Gigantes\nCosta sur",
-      "priceChild": 56,
-      "pricePerPerson": 80,
-      "active": true,
-      "gallery": [
-        "/images/tours/timanfaya.jpg"
-      ],
-      "minPax": 8,
-      "maxGroup": 14,
-      "privatePrice": 0,
-      "privateMaxPax": 0,
-      "included": [
-        "Guía",
-        "Transporte"
-      ],
-      "notIncluded": [
-        "Comidas",
-        "Entradas opcionales"
-      ],
+      "maxGroup": 25,
+      "minPax": 10,
+      "port": "Tenerife",
+      "active": false,
       "currency": "EUR",
       "allowCard": true,
       "allowBizum": true,
       "allowPayOnDay": true,
-      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
       "translations": {
         "en": {
-          "title": "South Tenerife and Los Gigantes",
-          "shortTitle": "South Tenerife · Los Gigantes",
-          "summary": "Los Gigantes cliffs and the sunny south coast of Tenerife.",
-          "description": "Shore excursion along Tenerife’s south coast with views of the famous Los Gigantes cliffs.",
-          "duration": "5 hours",
-          "highlights": [
-            "Los Gigantes cliffs",
-            "South coast"
-          ],
-          "places": [
-            "Los Gigantes",
-            "Costa Adeje",
-            "Viewpoint"
-          ]
+          "title": "The historic quarter of La Laguna and La Orotava",
+          "description": "<p>Discover the best of Tenerife and beautiful nearby areas. Visit La Laguna, and the gorgeous valley of La Orotava, among other notable landmarks.&#13;&#10;</p><p>La Laguna is a meeting place where modern minds and young students gather around the first university in the Canary Islands. The pedestrian streets in the city centre are always bustling with life, street musicians and hundreds of taverns, restaurants and bars. The original 15th century layout remains almost intact, just as it was depicted by Master Leonardo Torriani in his map of La Laguna. The city was also used as a template for the colonial cities founded in America, such as Old Havana, Lima and Cartagena, which is why their houses and streets looks so similar. It is nice to simply explore the churches, mansions and historic buildings that make this old and dazzling city a UNESCO World Heritage Site.&#13;&#10;</p><p>La Orotava is one of the most beautiful towns, located in the Valley of La Orotava, is made up of wonderfully kept traditional houses, leading the town centre to be declared a Historic-Artistic Site. The atmosphere is full of that stately air that settled after the conquest and has pervaded ever since. The old town is quaint and welcoming, with its maze of cobbled streets. A tour around this Historic-Artistic Site leads you to places such as the La Concepción church, the Calvario chapel, the estate of Liceo Taoro or the former San Benito Abad monastery. Visiting La Orotava during the Corpus Christi celebrations is highly recommendable. On the occasion known as La Octava del Corpus, the square outside the Town Hall is adorned with a huge carpet representing religious symbols that are made of sand from Teide National Park, using 41 different colours. All around the square, the locals make fabulous painstakingly detailed carpets of flowers to adorn their streets.&#13;&#10;</p><p>Book this Tenerife shore excursion today for an incredible journey through 2 beautiful cities. Awesome memories await.&#13;&#10;</p><p><strong>Please Note</strong>: Order of itinerary may vary on any given day to suit conditions.<br><strong></strong></p><br><p><strong>Important information</strong>:&#13;&#10;</p>&#13;&#10;<p><ul><li><strong>Start of the tour:</strong> half an hour after the arrival of the cruise&nbsp;<br></li><li><strong>Meeting point with the guide:</strong>  Police control&nbsp;<br></li><li><strong>Point to take the transport:</strong> The transport will be in the external parking, past the police control (walk of approx 10 minutes from the boat, depending on where the cruise docks, all the details will be provided with the confirmation of the excursion)<br></li></ul></p><ul><li><strong>Shore Excursion Type</strong>: Cultural, Scenic&nbsp;</li><li><strong>Activity Level:</strong> Moderate&nbsp;<br></li><li><strong>Shore Excursion Duration:</strong> 5 Hours&nbsp;</li><li><strong>Food/Beverage Provided</strong> Not Included&nbsp;<br></li><li><strong>Recommended Dress</strong> We recommend wearing comfortable weather-appropriate clothing, cap, sunglasses, walking shoes and sunscreen.&nbsp;<br></li><li><strong>Restrictions</strong> Guests must be capable of walking short distances and be able to get in and out of public transport as well as walk up and down steps and uneven terrain. This tour is NOT wheelchair accessible.<br></li></ul><p><strong>We visit:&#13;&#10;</strong></p><p><ul><li>La Laguna and La Orotava<br></li></ul></p><p><strong>Included in the price:</strong></p><p><ul><li>Air-conditioned transport&nbsp;<br></li><li>Official guide service<br></li><li>Tourist insurance<br></li></ul></p><p><strong>Reasons to book with us:&#13;&#10;</strong></p><ul><li>Higher Quality, Smaller Tours&nbsp;<br></li><li>Lower Prices than Cruise Lines&nbsp;&nbsp;<br></li><li>We do not mix local tourists with cruise passengers&nbsp;<br></li><li>Guaranteed Return to Ship&nbsp;<br></li><li>Full refund if your ship doesn&#39;t port for any reason&nbsp;<br></li></ul><br><br>"
         },
         "de": {
-          "title": "Süden Teneriffas und Los Gigantes",
-          "shortTitle": "Süden Teneriffa · Los Gigantes",
-          "summary": "Die Klippen von Los Gigantes und die sonnige Südküste Teneriffas.",
-          "description": "Landausflug entlang der Südküste mit Blick auf die berühmten Klippen von Los Gigantes.",
-          "duration": "5 Stunden",
-          "highlights": [
-            "Klippen von Los Gigantes",
-            "Südküste"
-          ],
-          "places": [
-            "Los Gigantes",
-            "Costa Adeje",
-            "Aussichtspunkt"
-          ]
+          "title": "Das historische Viertel von La Laguna und La Orotava",
+          "description": "<p>Entdecken Sie das Beste von Teneriffa und die schöne Umgebung. Besuchen Sie La Laguna und das wunderschöne Tal von La Orotava, neben anderen bemerkenswerten Sehenswürdigkeiten.&#13;&#10;</p><p>La Laguna ist ein Treffpunkt, an dem sich junge Studenten in der ersten Universität der Kanarischen Inseln versammeln. Die Fußgängerzonen in der Innenstadt sind immer voller Leben, Straßenmusikanten und Hunderte von Tavernen, Restaurants und Bars. Die ursprüngliche Stadt aus dem 15. Jahrhundert ist fast vollständig erhalten, genauso wie sie von Meister Leonardo Torriani in seiner Karte von La Laguna dargestellt wurde. Die Stadt diente auch als Vorlage für die in Amerika gegründeten Kolonialstädte wie Alt-Havanna, Lima und Cartagena, weshalb ihre Häuser und Straßen sich so ähnlich sehen. Es ist schön, einfach die Kirchen, Herrenhäuser und historischen Gebäude zu erkunden, die diese alte und schillernde Stadt zum UNESCO-Weltkulturerbe machten.&#13;&#10;</p><p>La Orotava ist eine der schönsten Städte im Tal von La Orotava. Sie besteht aus wunderschönen traditionellen Häusern, die das Stadtzentrum zum kunsthistorischen Ort machen. Die Altstadt ist malerisch und einladend mit einem Labyrinth aus gepflasterten Straßen. Ein Rundgang durch diese kunsthistorische Stätte führt Sie zu Orten wie der Kirche La Concepción, der Kapelle Calvario, dem Anwesen von Liceo Taoro oder dem ehemaligen Kloster San Benito Abad. Der Besuch von La Orotava während der Fronleichnamfeier ist sehr zu empfehlen. Bei der Gelegenheit, die als La Octava del Corpus bekannt ist, ist der Platz vor dem Rathaus mit einem riesigen Teppich geschmückt, der religiöse Symbole darstellt, die aus Sand des Teide-Nationalparks mit 41 verschiedenen Farben bestehen. Überall auf dem Platz machen die Einheimischen fabelhafte, sorgfältig detaillierte Blumenteppiche, um ihre Straßen zu schmücken.&#13;&#10;</p><p>Buchen Sie diesen Teneriffa Landausflug heute für eine unglaubliche Reise durch 2 schöne Städte. Tolle Erinnerungen erwarten Sie.&#13;&#10;</p><p>Bitte beachten Sie: Die Reiseroute kann an jedem beliebigen Tag variieren, um den Bedingungen zu entsprechen.&#13;&#10;</p><p><br></p><p><strong>Wichtige Hinweise:</strong>&nbsp;&#13;&#10;</p><ul><li><strong>Abfahrt des Ausfluges: </strong>Halbe Stunde nach dem Anlegen des Kreusfahrtschiffes<br></li><li><strong>Treffpunt mit der Reiseleitung:</strong> Bei der Polizeikontrolle<br></li><li><strong>Treffpunkt mit dem Tranport:</strong> Der Transport wird am äußeren Parkplatz sein, nach der Polizeikontrolle (Fußweg höchstens 10 Minuten vom Schiff, abhängig von der Anlegestelle, genaue Daten werden bei der Buchungsbestätigung gegeben)<br></li><li><strong>Aktivitätsstufe:</strong> Mittel<br></li><li><strong>Dauer des Ausfluges:</strong> 5 Stunden&nbsp;<br></li><li><strong>Essen und Getränke:</strong> Nicht inbegriffen<br></li><li><strong>Empfohlene Kleidung:</strong> Es wird zu Hut, Sonnenbrille, bequemem Schuhwerk zum Laufen und Sonnenschutz geraten<br></li><li><strong>Wichtig:</strong>&nbsp;Die Gäste müssen in der Lage sein, mittelmäßige strecken (200-1000m) laufen zu können, sie müssen in und aus einem Bus und Treppen steigen. Dieser Ausflug ist nicht für Personen mit Gehbehinderung zu empfehlen.&nbsp;<br></li></ul>&#13;&#10;<p><strong>Besuchte Orte:&#13;&#10;</strong></p><ul><li>La Laguna<br></li><li>La Orotava<br></li></ul><p><strong>Im Preis inbegriffen:&#13;&#10;</strong></p><ul><li>Klimatisierter Transport<br></li><li>Tour geführt durch einen ortskundigen Reiseleiter</li><li>Touristenversicherung<br></li></ul><p><strong>Warum bei uns buchen?&#13;&#10;</strong></p><ul><li>Höhere Quälität, kleine Gruppe. &#13;&#10;</li><li>Keine kommerzielle Stopps. &#13;&#10;</li><li>An diesem Ausflug nehmen ausschließlich Kreuzfahrtpassagiere teil. &#13;&#10;</li><li>Wir vermeiden die Warteschlangen. &#13;&#10;</li><li>Wir garantieren, dass Sie pünktlich zu Ihrem Schiff zurückkommen. &#13;&#10;</li><li>Preise niedriger als ihre Kreuzfahrtschiffe. &#13;&#10;</li><li>Volle Rückerstattung, wenn Ihr Schiff aus irgendeinem Grund nicht auf Lanzarote angelegen kann . &#13;&#10;</li></ul>"
         }
       }
     },
     {
-      "id": "funchal-y-monte-madeira",
-      "title": "Funchal y Monte — Madeira",
-      "port": "Funchal",
-      "priceAdult": 90,
+      "id": "shore-9",
+      "title": "Norte de Gran Canaria",
+      "shortTitle": "Norte GC",
+      "summary": "<p>Explore la isla de Gran Canaria desde la cima con esta expedición al Pico de las Nieves. En el camino verá el Roque Nublo, la Cruz de Tejeda y el encantador pueblo de Teror. Vea las maravillas naturales de Gran Canaria en este tour de un día para grupos pequeños. Saldremos en ",
+      "description": "<p>Explore la isla de Gran Canaria desde la cima con esta expedición al Pico de las Nieves. En el camino verá el Roque Nublo, la Cruz de Tejeda y el encantador pueblo de Teror. Vea las maravillas naturales de Gran Canaria en este tour de un día para grupos pequeños. Saldremos en dirección centro, para parar en el imponente volcán de Bandama. Posteriormente visitaremos San Mateo y pasear por su gran mercadillo de productos canarios (sólo abierto los sábados). Seguiremos subiendo para llegar al Pico de las Nieves, el punto más alto de la isla (1.959 m.); las vistas a las vertientes oeste y sur de la isla le cautivarán. Desde aquí seguiremos para llegar al Mirador del Roque Nublo, una enorme roca basáltica en forma de monolito de más de 65 metros de altura surgida como consecuencia de la actividad volcánica y la erosión. Bajaremos a la Cruz de Tejeda y su Parador Nacional, donde podrán degustar productos como quesos, aceitunas, almendras…, así como comprar artesanía típica canaria. Nuestro tour pondrá fin con la visita a Teror, pueblo con mucho encanto que alberga la Basílica de Nuestra Señora la Virgen del Pino. Regreso al muelle.</p><br><p><strong>Datos importantes:&#13;&#10;</strong></p>&#13;&#10;<ul><li><strong>Salida de la excursión</strong>: media hora después de la llegada del crucero&nbsp;&nbsp;<br></li><li><strong>Punto de encuentro con la guía</strong>: El control de policía&nbsp;&nbsp;<br></li><li><strong>Punto para coger el transporte:</strong> El transporte estará en el aparcamiento externo, pasado el control de policía ( caminata de aprox 10 minutos desde el barco, dependiendo de donde atraque el crucero, se proporcionarán todos los detalles con la confirmación de la excursión)&nbsp;&nbsp;<br></li><li><strong>Nivel de actividad:</strong> moderado&nbsp;<br></li><li><strong>Duración de la excursión</strong>: 7 horas&nbsp;&nbsp;<br></li><li><strong>Alimentos / bebida</strong>s no incluidos&nbsp;&nbsp;<br></li><li><strong>Vestimenta recomendada</strong>: Recomendamos gorra, gafas de sol, calzado cómodo para caminar y protector solar.&nbsp;&nbsp;<br></li><li><strong>Importante</strong>: Esta excursión no es apta para personas con movilidad reducida.&nbsp;<br></li></ul><p><strong>Lugares a visitar:&#13;&#10;</strong></p><ul><li>Bandama</li><li>Pico de las Nieves&nbsp;</li><li>Roque Nublo</li><li>Tejeda</li><li>Teror</li></ul><p><strong>Incluido en el precio:&#13;&#10;</strong></p><ul><li>Transporte climatizado&nbsp;&nbsp;<br></li><li>Servicio de guía local&nbsp;&nbsp;<br></li><li>Seguro turístico&nbsp;&nbsp;<br></li></ul><p><strong>¿ Por qué reservar con nosotros ?&#13;&#10;</strong></p><ul><li>Grupos pequeños&nbsp; &nbsp;<br></li><li>Te garantizamos que volverás a tu barco a tiempo&nbsp; &nbsp;<br></li><li>Precios más bajos que las líneas de cruceros&nbsp; &nbsp;<br></li><li>Reembolso completo si su barco no atraca en el puerto&nbsp;<br></li></ul>",
+      "priceAdult": 75,
+      "pricePerPerson": 75,
+      "image": "https://www.lanzaroteexperiencetours.com/uploads/cruise/9/norte-gran-canaria.jpeg",
+      "gallery": [],
+      "duration": "7 horas",
+      "durationHours": 7,
+      "places": [
+        "Las Palmas",
+        "Bandama",
+        "San Mateo",
+        "Picos de las Nieves",
+        "Cruz de Tejeda",
+        "Valleseco",
+        "Teror",
+        "Arucas",
+        "Playa de las Canteras"
+      ],
+      "highlights": [
+        "Las Palmas",
+        "Bandama",
+        "San Mateo",
+        "Picos de las Nieves",
+        "Cruz de Tejeda",
+        "Valleseco",
+        "Teror",
+        "Arucas",
+        "Playa de las Canteras"
+      ],
+      "maxGroup": 25,
+      "minPax": 10,
+      "port": "Gran Canaria",
+      "active": false,
+      "currency": "EUR",
+      "allowCard": true,
+      "allowBizum": true,
+      "allowPayOnDay": true,
+      "translations": {
+        "en": {
+          "title": "Gran Canaria North",
+          "description": "<p>Survey the island of Gran Canaria from the top with this expedition to Pico de las Nieves. Along the way you will see the Roque Nublo, Cross of Tejeda and the charming village of Teror. See the natural wonders of Gran Canaria on this full-day small group tour.&#13;&#10;</p><p>Your journey begins with a comfortable, scenic drive to the mountains. This island is often called a \"Miniature Continent\" due to the different climates and variety of landscapes found. Gran Canaria agriculture is unique among the Canaries islands in that it was traditionally dominated by plantations, with much of these being grains as well as sugarcane, rather than by animal stock. Make a quick stop at a local farmers market full of fruits, vegetables and local products.&#13;&#10;</p><p>Continue to Pico de las Nieves, or the highest peak of the island, and be rewarded with breathtaking panoramic views of the Canary Islands. Make your way down the 1,949-meter volcano to the famous landmark Roque Nublo, an 80-meter-high basalt rock monolith. Located in the central municipality of Tejeda, Roque Nublo is considered one of the biggest natural crags in the world. An ancient place of worship for the aborigines, it was declared a protected natural space in 1987 and a rural park seven years later.&#13;&#10;</p><p>While in the town of Tejeda you will be greeted by the large stone Cross of Tejeda marking the entrance to the state run hotel the Parador National. Take a few minutes to visit the vendors and sample local Canarian products such as cheese, honey and fruits. Finally, you will make your way to the village of Teror, a place of pilgrimage for all the residents of Gran Canaria as the municipality holds in its Basilica the statue of the Virgen del Pino, Patron of the Diocese of the Canary Islands. Therefore, a visit to Teror means a visit to the Basilica.&#13;&#10;</p><p>Sign up today and be sure not to miss out on this experience, and don&#39;t forget your camera!</p><br><p><strong>Important information:&#13;&#10;</strong></p><p><ul><li><strong>Start of the tour:</strong> half an hour after the arrival of the cruise&nbsp;<br></li><li><strong>Meeting point with the guide:</strong>  Police control&nbsp;<br></li><li><strong>Point to take the transport:</strong> The transport will be in the external parking, past the police control (walk of approx 10 minutes from the boat, depending on where the cruise docks, all the details will be provided with the confirmation of the excursion)<br></li></ul></p><ul><li><strong>Shore Excursion Type: </strong>Cultural, Scenic&nbsp;</li><li><strong>Activity Level: </strong>Moderate&nbsp; &nbsp;<br></li><li><strong>Shore Excursion Duration: </strong>7 Hours&nbsp; &nbsp;</li><li><strong>Food/Beverage Provided </strong>Not Included&nbsp;<strong></strong><br></li><li><strong>Recommended Dress </strong>We recommend wearing comfortable weather-appropriate clothing, cap, sunglasses, walking shoes and sunscreen.&nbsp; &nbsp;<br></li><li><strong>Restrictions </strong>Guests must be capable of walking short distances and be able to get in and out of public transport as well as walk up and down steps and uneven terrain. This tour is NOT wheelchair accessible.&nbsp;<br></li></ul><p><strong>We visit</strong>:</p><ol><li>Roque Nublo, Tejeda and the Village of Teror<br></li></ol><p><strong style=\"font-family: Montserrat, sans-serif; font-size: 15px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal;\">We have included in the price:</strong></p><ul><li>Air-conditioned transport&nbsp;<br></li><li>Official guide service&nbsp;<br></li><li>Tourist insurance&nbsp;<br></li></ul><p><strong>Reasons to book with us:&nbsp;</strong><br></p><ul><li>Higher Quality, Smaller Tours&nbsp;&nbsp;<br></li><li>Lower Prices than Cruise Lines&nbsp; &nbsp;<br></li><li>We do not mix local tourists with cruise passengers&nbsp;&nbsp;<br></li><li>Guaranteed Return to Ship&nbsp;&nbsp;<br></li><li>Full refund if your ship doesn&#39;t port for any reason<br></li></ul>"
+        },
+        "de": {
+          "title": "Gran Canaria Nordtour",
+          "description": "<p>Erkunden Sie die Insel Gran Canaria vom Gipfel des  Pico de las Nieve, ein vulkan, der 1949 m. Hoch ist. Auf dem Weg dahin sehen Sie den Roque Nublo, das Kreuz von Tejeda und das charmante Dorf Teror. Erleben Sie die Naturwunder von Gran Canaria auf dieser ganztägigen Tour in kleiner Gruppe.&#13;&#10;</p><p>Ihre Ausflug beginnt mit einer gemütlichen Fahrt in die Berge. Diese Insel wird wegen der unterschiedlichen Klimazonen und der Vielfalt der Landschaften oft als \"Miniaturkontinent\" bezeichnet. Die Landwirtschaft von Gran Canaria ist einzigartig auf den kanarischen Inseln, da sie traditionell von Plantagen dominiert wurde, wobei viele von ihnen Getreide und Zuckerrohr anbauten und nicht von Viehbestand lebten. Machen Sie einen kurzen Halt auf einem lokalen Bauernmarkt voller Obst, Gemüse und lokalen Produkten.&#13;&#10;</p><p>Weiter geht es zum Pico de las Nieves, dem höchsten Gipfel der Insel, und Sie werden mit einem atemberaubenden Panoramablick auf die Kanarischen Inseln belohnt. Gehen Sie den 1.949 Meter hohen Vulkan hinunter zum berühmten Wahrzeichen Roque Nublo, einem 80 Meter hohen Basaltfelsen. Roque Nublo liegt in der zentralen Gemeinde Tejeda und gilt als einer der größten natürlichen Felsen der Welt. Ein uralter Kultort für die Ureinwohner, der  1987 zum geschützten Naturraum und sieben Jahre später zum ländlichen Park erklärt wurde.&#13;&#10;</p><p>In der Stadt Tejeda begrüßt Sie das große Tejeda-Steinkreuz, das den Eingang zum staatlichen Hotel Parador National markiert. Nehmen Sie sich ein paar Minuten Zeit, um die Händler zu besuchen und lokale kanarische Produkte wie Käse, Honig und Früchte zu probieren. Schließlich gelangen Sie in das Dorf Teror, ein Wallfahrtsort für alle Einwohner von Gran Canaria, da die Gemeinde in ihrer Basilika die Statue der Virgen del Pino, Schutzpatronin der Diözese der Kanarischen Inseln, beherbergt. Ein Besuch in Teror bedeutet daher einen Besuch der Basilika.&#13;&#10;</p><p>Melden Sie sich noch heute an , und vegessen Sie Ihre Kamera nicht!</p><br><p><strong>Wichtige Hinweise:</strong></p><ul><li><strong>Abfahrt des Ausfluges:</strong> Halbe Stunde nach dem Anlegen des Kreusfahrtschiffes<br></li><li><strong>Treffpunt mit der Reiseleitung:</strong> Bei der Polizeikontrolle<br></li><li><strong>Treffpunkt mit dem Tranport:</strong> Der Transport wird am äußeren Parkplatz sein, nach der Polizeikontrolle (Fußweg höchstens 10 Minuten vom Schiff, abhängig von der Anlegestelle, genaue Daten werden bei der Buchungsbestätigung gegeben)<br></li><li><strong>Aktivitätsstufe: </strong>Mittel<br></li><li><strong>Dauer des Ausfluges: </strong>5 Stunden<br></li><li><strong>Essen und Getränke:</strong> Nicht inbegriffen<br></li><li><strong>Empfohlene Kleidung:</strong> Es wird zu Hut, Sonnenbrille, bequemem Schuhwerk zum Laufen und Sonnenschutz geraten<br></li><li><strong>Wichtig: </strong>Die Gäste müssen in der Lage sein, mittelmäßige strecken (200-1000m) laufen zu können, sie müssen in und aus einem Bus und Treppen steigen. Dieser Ausflug ist nicht für Personen mit Gehbehinderung zu empfehlen.&nbsp;<br></li></ul><p><strong>Besuchte Orte:&#13;&#10;</strong></p><ul><li>Pico de Las Nieves<br></li><li>Tejeda<br></li><li>Teror<br></li></ul><p><strong>Im Preis inbegriffen:&#13;&#10;</strong></p><ul><li>Klimatisierter Transport<br></li><li>Tour geführt durch einen ortskundigen Reiseleiter.&nbsp;</li><li>Touristenversicherung<br></li></ul><p><strong>Warum bei uns buchen?&#13;&#10;</strong></p><ul><li>Höhere Quälität, kleine Gruppe. &#13;&#10;</li><li>Keine kommerzielle Stopps. &#13;&#10;</li><li>An diesem Ausflug nehmen ausschließlich Kreuzfahrtpassagiere teil. &#13;&#10;</li><li>Wir vermeiden die Warteschlangen. &#13;&#10;</li><li>Wir garantieren, dass Sie pünktlich zu Ihrem Schiff zurückkommen. &#13;&#10;</li><li>Preise niedriger als ihre Kreuzfahrtschiffe. &#13;&#10;</li><li>Volle Rückerstattung, wenn Ihr Schiff aus irgendeinem Grund nicht auf Lanzarote angelegen kann.&#13;&#10;</li></ul>"
+        }
+      }
+    },
+    {
+      "id": "shore-10",
+      "title": "Excursiones privadas para pasajeros de cruceros en Lanzarote",
+      "shortTitle": "Panoramica",
+      "summary": "<p>El turismo de masas está quedando atrás, ya que muchos viajeros hoy en día optan por excursiones privadas que les permiten personalizar horarios e itinerarios a su gusto.</p><br><p>Ofrecemos la oportunidad de explorar Lanzarote a través de un tour privado, diseñado específicam",
+      "description": "<p>El turismo de masas está quedando atrás, ya que muchos viajeros hoy en día optan por excursiones privadas que les permiten personalizar horarios e itinerarios a su gusto.</p><br><p>Ofrecemos la oportunidad de explorar Lanzarote a través de un tour privado, diseñado específicamente para satisfacer sus intereses y deseos, lo que le permitirá disfrutar de la isla de una manera más íntima. Las visitas se adaptan a su ritmo, sin presiones, y si lo desea, puede modificar el recorrido en cualquier momento durante la excursión.</p><br><p>Con nuestra excursión privada, evitamos las largas colas en los centros turísticos y, si eligen visitar el parque nacional de Timanfaya, podrán hacerlo sin necesidad de comprar las entradas con antelación, ni hacer trasbordo ya que contamos con la autorización para realizar la ruta de los volcanes en nuestro propio transporte. Nuestros vehículos garantizan un viaje cómodo, y nuestros guías profesionales, expertos en la zona, están listos para crear un itinerario que se ajuste a sus preferencias, brindando atención personalizada y compartiendo información sobre los lugares de interés.</p><br><p>Si lo desea, le ayudaremos a planificar su recorrido para que aproveche al máximo su día en Lanzarote, descubriendo tanto los lugares emblemáticos como los rincones menos conocidos. En nuestros tours privados, un guía oficial le acompañará para enriquecer su experiencia con datos sobre los sitios que visitará. La seguridad es primordial, por lo que nuestras excursiones se realizan en minibús, ya que la normativa prohíbe el uso de coches de alquiler para este tipo de actividades.</p><br><p>Al elegir una excursión privada, disfrutará de un guía oficial exclusivo, adaptaremos el recorrido a su disponibilidad y gestionaremos las entradas para que su experiencia sea lo más fluida posible.</p>",
+      "priceAdult": 700,
+      "pricePerPerson": 700,
+      "image": "/images/heroes/cruise.jpg",
+      "gallery": [],
+      "duration": "5 horas",
+      "durationHours": 5,
+      "places": [
+        "Lanzarote"
+      ],
+      "highlights": [
+        "Lanzarote"
+      ],
+      "maxGroup": 8,
+      "privatePrice": 700,
+      "privateMaxPax": 8,
+      "port": "Lanzarote",
+      "active": false,
+      "currency": "EUR",
+      "allowCard": true,
+      "allowBizum": true,
+      "allowPayOnDay": true,
+      "translations": {
+        "en": {
+          "title": "Private shore excursions for cruise passengers in Lanzarote",
+          "description": "<p>Mass tourism is becoming a thing of the past, as many travelers now prefer private excursions that allow them to customize their schedules and itineraries to their liking.</p><br><p>We offer the chance to explore Lanzarote through a private tour tailored specifically to your interests and desires, enabling you to experience the island in a more intimate way. The visits are paced according to your preferences, free from pressure, and you can modify the route at any time during the excursion. With our private tour, you can skip the long lines at tourist hotspots, and if you choose to visit the Timanfaya National Park, you won’t need to buy tickets in advance as we have the authorization to conduct the volcanic route in our own transport. Our vehicles ensure a comfortable journey, and our professional guides, who are experts in the area, are ready to create an itinerary that fits your preferences, providing personalized attention and sharing insights about the attractions.</p><br><p>If you wish, we can assist you in planning your route to make the most of your day in Lanzarote, uncovering both iconic sites and hidden gems. During our private tours, an official guide will accompany you to enhance your experience with information about the places you visit. Safety is our top priority, which is why our excursions are conducted in minibuses, as regulations prohibit the use of rental cars for such activities. By choosing a private excursion, you will enjoy an exclusive official guide, we will pick you up from your specified location to save you time, adapt the itinerary to your availability, and manage the tickets to ensure your experience is as smooth as possible.</p>"
+        },
+        "de": {
+          "title": "Private Landausflüge für Kreuzfahrtgäste auf Lanzarote",
+          "description": "<p>Der Massentourismus verliert zunehmend an Bedeutung, da viele Reisende heutzutage private Ausflüge bevorzugen, die es ihnen ermöglichen, Zeitpläne und Routen nach ihren Wünschen zu gestalten.</p>&#13;&#10;<br><p>Wir bieten Ihnen die Möglichkeit, Lanzarote durch eine maßgeschneiderte private Tour zu erkunden, die speziell auf Ihre Interessen und Wünsche abgestimmt ist. So können Sie die Insel auf eine intimere Weise genießen, ohne Zeitdruck, und haben die Freiheit, den Verlauf der Tour jederzeit anzupassen.</p><br><p>Mit unserer privaten Tour umgehen Sie lange Warteschlangen an den Sehenswürdigkeiten. Wenn Sie den Nationalpark Timanfaya besuchen möchten, können Sie dies ohne vorherige Ticketbuchung tun, da wir die Genehmigung haben, die Vulkanroute mit unserem eigenen Transportmittel zu befahren. Unsere Fahrzeuge sorgen für eine bequeme Reise, und unsere professionellen Guides, die sich bestens in der Region auskennen, sind bereit, ein individuelles Programm zu erstellen, das auf Ihre Vorlieben abgestimmt ist, während sie Ihnen interessante Informationen über die besuchten Orte vermitteln.</p><br><p>Gerne unterstützen wir Sie bei der Planung Ihrer Route, damit Sie Ihren Tag auf Lanzarote optimal nutzen können, indem Sie sowohl die berühmten Sehenswürdigkeiten als auch weniger bekannte Ecken entdecken. Bei unseren privaten Touren begleitet Sie ein offizieller Guide, der Ihre Erfahrung mit wertvollen Informationen bereichert. Sicherheit hat für uns höchste Priorität, weshalb unsere Ausflüge in einem Minibus durchgeführt werden, da die Vorschriften die Nutzung von Mietwagen für solche Aktivitäten untersagen.</p><br><p>Wenn Sie sich für eine private Tour entscheiden, profitieren Sie von einem exklusiven offiziellen Guide, wir holen Sie an einem von Ihnen gewünschten Ort ab, um Zeit zu sparen, passen die Route an Ihre Verfügbarkeit an und kümmern uns um die Ticketbuchungen, damit Ihr Erlebnis so reibungslos wie möglich verläuft.</p>"
+        }
+      }
+    },
+    {
+      "id": "shore-11",
+      "title": "Excursión por Curral das Freiras, Madeira",
+      "shortTitle": "Madeira 4h",
+      "summary": "<br><p>Este es un viaje al centro de la isla de <strong>Madeira</strong>, donde espectaculares montañas con sus cumbres rodeadas de nubes descienden hacia verdes valles de la forma más espectacular.&#13;&#10;</p>&#13;&#10;<p>Tras subir al minibús en el centro del Lido primerament",
+      "description": "<br><p>Este es un viaje al centro de la isla de <strong>Madeira</strong>, donde espectaculares montañas con sus cumbres rodeadas de nubes descienden hacia verdes valles de la forma más espectacular.&#13;&#10;</p>&#13;&#10;<p>Tras subir al minibús en el centro del Lido primeramente nos dirigimos carretera arriba hacia <strong>Eira do Serrado</strong>, donde encontrará una de las vistas más exclusivas y hermosas, sin mencionar una preciosa ubicación \"verde\", sin parangón en Madeira.&#13;&#10;</p>&#13;&#10;<p>El viaje hacia <strong>Curral das Freiras </strong>dura aproximadamente 20 minutos. Allí podrá disfrutar del campo, zonas boscosas mezcladas con zonas más pobladas con pintorescas casas típicas de Madeira.&#13;&#10; Una vez en Curral das Freiras, enseguida verá un pequeño pueblo enclavado entre montañas casi perpendiculares en el corazón de la isla.&nbsp;</p>&#13;&#10;<p>La enorme caldera en la que está situado Curral das Feriras se ha formado o por erosión, que es la teoría más reciente, o como muchos aún creen, debido a la actividad volcánica. El pueblo está muy aislado y muchos habitantes viven principalmente de lo que ellos mismos cultivan. Las castañas de allí son deliciosas y se utilizan en la cocina diaria. Todos los habitantes del lugar celebran el \"Festival de la castaña\", por el que es conocido el pueblo.&#13;&#10;</p>&#13;&#10;<p>De regreso pararemos en el asombroso pueblo de pescadores de <strong>Câmara de Lobos</strong>. Fue aquí donde Winston Churchill pintó sus hermosos paisajes y donde usted podrá probar la famosa bebida local: la poncha.</p><br>",
+      "priceAdult": 24,
+      "pricePerPerson": 24,
+      "image": "https://www.lanzaroteexperiencetours.com/uploads/cruise/11/madeira-4-horas.jpeg",
+      "gallery": [],
       "duration": "4 horas",
       "durationHours": 4,
       "places": [
         "Funchal",
-        "Monte",
-        "Jardines botánicos"
+        "Eira do Serrado",
+        "Tal der Nonnen (Curral da Freiras)",
+        "Câmara de Lobos"
       ],
       "highlights": [
-        "Ciudad de Funchal",
-        "Tradición del carro de cesto"
+        "Funchal",
+        "Eira do Serrado",
+        "Tal der Nonnen (Curral da Freiras)",
+        "Câmara de Lobos"
       ],
-      "image": "/images/tours/timanfaya.jpg",
-      "shortTitle": "Funchal y Monte — Madeira",
-      "summary": "Funchal y Monte — Madeira",
-      "description": "Ciudad de Funchal\nTradición del carro de cesto",
-      "priceChild": 63,
-      "pricePerPerson": 90,
-      "active": true,
-      "gallery": [
-        "/images/tours/timanfaya.jpg"
-      ],
+      "maxGroup": 70,
       "minPax": 8,
-      "maxGroup": 14,
-      "privatePrice": 0,
-      "privateMaxPax": 0,
-      "included": [
-        "Guía",
-        "Transporte"
-      ],
-      "notIncluded": [
-        "Comidas",
-        "Entradas opcionales"
-      ],
+      "port": "Funchal (Madeira)",
+      "active": false,
       "currency": "EUR",
       "allowCard": true,
       "allowBizum": true,
       "allowPayOnDay": true,
-      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
       "translations": {
         "en": {
-          "title": "Funchal and Monte — Madeira",
-          "shortTitle": "Funchal & Monte",
-          "summary": "Funchal city highlights and the Monte tradition of basket sledges.",
-          "description": "Discover Funchal and Monte with botanical gardens and the island’s emblematic mountain village experience.",
-          "duration": "4 hours",
-          "highlights": [
-            "Funchal city",
-            "Basket sledge tradition"
-          ],
-          "places": [
-            "Funchal",
-            "Monte",
-            "Botanical gardens"
-          ]
+          "title": "Nuns Valley Tour Madeira",
+          "description": "<p>Your local tour guide will pick you up after you leave the terminal building and off you go on your today’s excursion to Madeira.&nbsp;<br></p>&#13;&#10;<p>You will be taken to the center of Madeira, where dramatic, cloud-covered mountains fall down into green valleys – a spectacular sight.&#13;&#10;</p>&#13;&#10;<p>Your first stop is at the lookout point <strong>Eira do Serrado</strong>, one of the most beautiful places in Madeira with breathtaking views of the fascinating mountains, the lush green valleys and the village in the Valley of the Nuns.&#13;&#10;</p>&#13;&#10;<p>The journey from here down to the village in the <strong>Valley of the Nuns (Curral da Freiras)</strong> takes about 20 minutes. The Nonnental, a small secluded village in the heart of the island, where in the 16th century, the nuns sought refuge from the pirates who often attacked Madeira. Here you can still experience the rural side of Madeira and the typical village life, because the locals live of primarily from what they grow themselves. Every year, the locals celebrate the ‘Chestnut Festival’, which the village is famous for. There are many traditional recipes containing chestnuts which you can almost make anything out of, mainly different liqueurs, cakes, puddings and soups. The native chestnuts are very tasty and are used widely in the everyday kitchen.&#13;&#10;</p>&#13;&#10;<p>On the way back you will stop in the charming fishing village of <strong>Câmara de Lobos.</strong> Characteristic of this place are the many colorful fishing boats docking at the harbor and the Lobos‘ Stockfish -which traditionally is hung out here to dry. This place is proudly remembered at the time when Winston Churchill was inspired to paint. Câmara de Lobos is also home to the “Ponchas“, a drink made from freshly squeezed lemon juice, honey and sugar cane brandy, which you can try in one of the many small bars.&#13;&#10;</p>&#13;&#10;<p>At the agreed time your tour guide will then bring you back to your ship.</p><br><p><strong>Overview of the highlights&#13;&#10;</strong></p><p></p><ul><li>Breathtaking views from Eira do Serrado&#13;&#10;</li><li>Visit to the ancient Valley of the Nuns&#13;&#10;</li><li>Stop in the charming fishing village of Câmara de Lobos</li></ul><br><br><p><strong>&nbsp;Schedule&#13;&#10;</strong></p><p>09:00 - 12:30&#13;&#10;</p><p>13:30 - 17:00&#13;&#10;</p><p>&nbsp;<br></p><p></p>"
         },
         "de": {
-          "title": "Funchal und Monte — Madeira",
-          "shortTitle": "Funchal & Monte",
-          "summary": "Highlights von Funchal und die Monte-Tradition der Korbschlitten.",
-          "description": "Entdecken Sie Funchal und Monte mit Botanischen Gärten und dem typischen Bergdorf-Erlebnis.",
-          "duration": "4 Stunden",
-          "highlights": [
-            "Stadt Funchal",
-            "Korbschlitten-Tradition"
-          ],
-          "places": [
-            "Funchal",
-            "Monte",
-            "Botanische Gärten"
-          ]
+          "title": "Tour ins Curral das Freiras auf Madeira",
+          "description": "<p>Ihr örtlicher Reiseleiter nimmt Sie nach Verlassen des Terminalgebäudes in Empfang und schon geht es los auf Ihren heutigen Landausflug auf Madeira.&#13;&#10;</p>&#13;&#10;<p>Sie fahren ins Zentrum der Insel Madeira, wo dramatische, mit Wolken verhangene Berge in grüne Täler hinab fallen – ein spektakulärer Anblick.&#13;&#10;</p>&#13;&#10;<p>Erster Stopp ist am Aussichtspunkt <strong>Eira do Serrado</strong>, einer der schönsten Plätze auf Madeira mit atemberaubender Sicht auf die faszinierenden Berge, die üppig bewachsenen grünen Täler und das Dorf im Tal der Nonnen.&#13;&#10;</p>&#13;&#10;<p>Die Reise von hier hinunter ins Dorf im <strong>Tal der Nonnen (Curral da Freiras</strong>) dauert ca. 20 Minuten. Das Nonnental, ein kleines abgeschiedenes Dorf im Herzen der Insel, wo im 16. Jahrhundert die Nonnen Zuflucht vor den Piraten suchten, die Madeira häufig überfielen. Hier können Sie noch heute die ländliche Seite Madeiras und das typische Dorfleben erleben, denn die Einheimischen leben primär von dem, was sie selber anbauen. Jedes Jahr feiern die Einheimischen das ‚Kastanien Festival‘, für welches das Dorf berühmt ist. Viele traditionelle Rezepte enthalten Kastanien und man kann daraus fast alles machen, hauptsächlich verschiedene Likörs, Kuchen, Puddings und Suppen. Die einheimischen Kastanien sind sehr schmackhaft und werden in der Alltagsküche vielseitig verwendet.&#13;&#10;</p>&#13;&#10;<p>Auf dem Rückweg halten wir in dem charmanten Fischerdorf <strong>Câmara de Lobos</strong>. Charakteristisch für diesen Ort sind die vielen bunten Fischerboote am Hafen und der Lobos-Stockfisch – der noch ganz traditionell hier zum trocknen aufgehangen wird. Mit Stolz erinnert sich dieser Ort an die Zeit, als Winston Churchill sich hier zum Malen inspirieren ließ. Câmara de Lobos ist zudem die Heimat des „Ponchas“, ein Getränk aus frisch gepresstem Zitronensaft, Honig und Zuckerrohrschnaps, das Sie gerne in einer der vielen kleinen Bars probieren können.&#13;&#10;</p>&#13;&#10;<p>Zur vereinbarten Zeit bringt Sie Ihr Reiseleiter dann wieder zurück zu Ihrem Schiff.</p><br><p><strong>Übersicht der Highlights&#13;&#10;</strong></p><p><ul><li>Atemberaubende Ausblicke vom Eira do Serrado&#13;&#10;</li><li>Besuch des urigen Tal der Nonnen&#13;&#10;</li><li>Stopp im charmanten Fischerdorf Câmara de Lobos</li></ul></p>"
         }
       }
     },
     {
-      "id": "este-madeira-machico",
-      "title": "Este de Madeira — Machico y Ponta de São Lourenço",
-      "port": "Funchal",
-      "priceAdult": 100,
-      "duration": "5 horas",
-      "durationHours": 5,
+      "id": "shore-12",
+      "title": "Excursion por el oeste de la isla de Madeira",
+      "shortTitle": "Madeira Full",
+      "summary": "<p>Su guía turístico local se encontrará con usted después de abandonar el edificio de la terminal.&#13;&#10;</p>&#13;&#10;<p>Comenzamos nuestro recorrido a través del primer pueblo pesquero tradicional Câmara de Lobos (\"Cueva de las focas monje\"). Câmara de Lobos está a cinco ki",
+      "description": "<p>Su guía turístico local se encontrará con usted después de abandonar el edificio de la terminal.&#13;&#10;</p>&#13;&#10;<p>Comenzamos nuestro recorrido a través del primer pueblo pesquero tradicional Câmara de Lobos (\"Cueva de las focas monje\"). Câmara de Lobos está a cinco kilómetros de Funchal y recibió su nombre de los exploradores João Gonçalves Zarco y Tristão Vaz Teixeira, debido a la forma de su bahía y a las numerosas focas monje que vivían aquí en ese momento. El pueblo de pescadores se hizo famoso porque Winston Churchill inmortalizó el lugar en muchas de sus fotos.&#13;&#10;</p>&#13;&#10;<p>Nuestro viaje continúa a Cabo Girão, una de las atracciones turísticas más famosas de Madeira. A 580 metros sobre el nivel del mar, Cabo Girão es el segundo acantilado más alto del mundo y el acantilado más alto de Europa. Los valientes pueden atreverse con una vista llena de adrenalina sobre el acantilado desde la plataforma de observación con un piso de vidrio.&#13;&#10;</p>&#13;&#10;<p>Luego continuamos hacia Ribeira Brava y luego al norte a través del profundo y estrecho valle de Serra D’Água. Manejamos hasta 1007 metros a Encumeada. El punto de vista desde el Paso de Encumeada está en la cresta de la montaña que atraviesa Madeira. Desde aquí puede disfrutar de una increíble vista tanto de la costa sur como de la costa norte de la isla.&#13;&#10;</p>&#13;&#10;<p>Continuamos hacia la costa norte, donde hay una pintoresca costa atlántica de un kilómetro de largo, donde las montañas caen directamente al mar. Después de São Vicente, uno de los pueblos predominantes en la costa norte de Madeira, continuamos hacia el hermoso pueblo de Porto Moniz. Aquí tiene aproximadamente 1 hora de tiempo libre para almorzar, así como tiempo para admirar las piscinas naturales rodeadas de extrañas rocas de lava. Las piscinas poco profundas, cuyas aguas cristalinas son reemplazadas por la marea todos los días, son un popular balneario para los lugareños.&#13;&#10;</p>&#13;&#10;<p>Continuamos por un camino panorámico hasta Paul da Serra, una llanura de páramo alto a casi 1400 metros con vistas impresionantes y un paisaje incomparable. La última parada de este maravilloso recorrido es en Bica da Cana, con una maravillosa vista del Macizo Central, antes de que su recorrido finalice nuevamente en el puerto.</p>",
+      "priceAdult": 36,
+      "pricePerPerson": 36,
+      "image": "https://www.lanzaroteexperiencetours.com/uploads/cruise/12/madeira-excursion-dia-completo.jpeg",
+      "gallery": [],
+      "duration": "8 horas",
+      "durationHours": 8,
       "places": [
-        "Machico",
-        "Ponta de São Lourenço",
-        "Caniçal"
+        "Cabo Girão",
+        "Ribeira Brava",
+        "Paúl da Serra",
+        "Porto Moniz",
+        "Ribeira da Janela",
+        "Seixal",
+        "Véu da Noiva",
+        "São Vicente",
+        "Encumeada"
       ],
       "highlights": [
-        "Paisaje volcánico",
-        "Miradores del este"
-      ],
-      "image": "/images/tours/timanfaya.jpg",
-      "shortTitle": "Este de Madeira — Machico y Ponta de São Lourenço",
-      "summary": "Este de Madeira — Machico y Ponta de São Lourenço",
-      "description": "Paisaje volcánico\nMiradores del este",
-      "priceChild": 70,
-      "pricePerPerson": 100,
-      "active": true,
-      "gallery": [
-        "/images/tours/timanfaya.jpg"
+        "Cabo Girão",
+        "Ribeira Brava",
+        "Paúl da Serra",
+        "Porto Moniz",
+        "Ribeira da Janela",
+        "Seixal",
+        "Véu da Noiva",
+        "São Vicente",
+        "Encumeada"
       ],
       "minPax": 8,
-      "maxGroup": 14,
-      "privatePrice": 0,
-      "privateMaxPax": 0,
-      "included": [
-        "Guía",
-        "Transporte"
-      ],
-      "notIncluded": [
-        "Comidas",
-        "Entradas opcionales"
-      ],
+      "port": "Funchal (Madeira)",
+      "active": false,
       "currency": "EUR",
       "allowCard": true,
       "allowBizum": true,
       "allowPayOnDay": true,
-      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
       "translations": {
         "en": {
-          "title": "East Madeira — Machico and Ponta de São Lourenço",
-          "shortTitle": "East Madeira",
-          "summary": "Volcanic scenery and viewpoints on Madeira’s dramatic eastern tip.",
-          "description": "Shore excursion to Machico and the spectacular Ponta de São Lourenço peninsula.",
-          "duration": "5 hours",
-          "highlights": [
-            "Volcanic landscapes",
-            "Eastern viewpoints"
-          ],
-          "places": [
-            "Machico",
-            "Ponta de São Lourenço",
-            "Caniçal"
-          ]
+          "title": "Western island tour",
+          "description": "<p>The Western island tour is the most popular trip amongst first-time visitors. This tour was designed to show you the best highlights of the NorthWest of the Island.</p><br><p>We drive to the Cabo Girão viewpoint. It is the highest sea cliff in Europe (and the second-highest in the world) at 580 meters. On the edge, there is a suspended glass platform. This skywalk is a perfect photo location. Even if you are not comfortable enough to stand on the glass, you can still enjoy the surrounding views of Câmara de Lobos and Funchal.</p><br><p>Traveling along the coast, we reach Ribeira Brava, its name means “wild river”, it derives from the stream of water that crosses the village. You may visit the local church, built in the 15th century. Behind the church, there is the City Hall, which is surrounded by their well-kept gardens.</p><br><p>Around the same area, you will find the Municipal Market where people can buy fruit, vegetables, meat, fish, handicrafts, and plenty more. You will see several clothing and shoe shops, cafés, and restaurants by the main road.</p><br><p>Contrasting from the previous stops, we drive to 1300-1500 meters high. Paúl da Serra plateau is the flattest area in the entire Island. It is also where some of the most beautiful Levada walks are located. You will see breathtaking views over lush green valleys and mountains.</p><br><p>At lunchtime, we arrive at a village located by the sea on the Northside of the Island. Porto Moniz is famous for its natural swimming pools formed many years ago by volcanic lava and filled by seawater.</p><br><p>It is lunch break time, therefore we stay in Porto Moniz for about 90 minutes. There are plenty of restaurants to choose from. If you wish you may go into the pools for a swim.</p><br><p>After lunch, we drive to one of the most beautiful viewpoints of Madeira. This viewpoint overlooks Véu da Noiva (Bride’s Veil) waterfall. The waterfalls down from 30 meters high into the Atlantic Ocean.</p><br><p>The next stop is the village of São Vicente. You will be in-between the mountains and the ocean. On the main road, by the sea, you will find several cafés, restaurants, and little shops. You may also visit the church, which features an eclectic construction dating to 1692, with a simple facade and Mannerism portal.</p><br><p>Afterward, we drive to Encumeada’s viewpoint at 1007 meters. It offers an astonishing view of both the North and the South sides of Madeira.<br><p><strong>Overview of the highlights&#13;&#10;</strong></p><ul><li>Fishing village Câmara de Lobos&#13;&#10;</li><li>Great views from various vantage points&#13;&#10;</li><li>Stunning cliff Cabo Girão&#13;&#10;</li><li>Picturesque village of São Vicente&#13;&#10;</li><li>Natural swimming pool of Porto Moniz&#13;&#10;</li><li>Highland plains Paul da Serra</li></ul></p>"
         },
         "de": {
-          "title": "Osten Madeiras — Machico und Ponta de São Lourenço",
-          "shortTitle": "Osten Madeira",
-          "summary": "Vulkanische Landschaft und Aussichtspunkte an Madeiras dramatischem Ostrand.",
-          "description": "Landausflug nach Machico und zur spektakulären Halbinsel Ponta de São Lourenço.",
-          "duration": "5 Stunden",
-          "highlights": [
-            "Vulkanische Landschaft",
-            "Aussichten im Osten"
-          ],
-          "places": [
-            "Machico",
-            "Ponta de São Lourenço",
-            "Caniçal"
-          ]
-        }
-      }
-    },
-    {
-      "id": "jameos-y-cactus-lanzarote",
-      "title": "Jameos del Agua y Jardín de Cactus",
-      "port": "Lanzarote",
-      "priceAdult": 110,
-      "duration": "5 horas",
-      "durationHours": 5,
-      "places": [
-        "Jameos del Agua",
-        "Jardín de Cactus",
-        "Arrieta"
-      ],
-      "highlights": [
-        "Obras de César Manrique",
-        "Grupos reducidos"
-      ],
-      "image": "/images/tours/timanfaya.jpg",
-      "shortTitle": "Jameos del Agua y Jardín de Cactus",
-      "summary": "Jameos del Agua y Jardín de Cactus",
-      "description": "Obras de César Manrique\nGrupos reducidos",
-      "priceChild": 77,
-      "pricePerPerson": 110,
-      "active": true,
-      "gallery": [
-        "/images/tours/timanfaya.jpg"
-      ],
-      "minPax": 8,
-      "maxGroup": 14,
-      "privatePrice": 0,
-      "privateMaxPax": 0,
-      "included": [
-        "Guía",
-        "Transporte"
-      ],
-      "notIncluded": [
-        "Comidas",
-        "Entradas opcionales"
-      ],
-      "currency": "EUR",
-      "allowCard": true,
-      "allowBizum": true,
-      "allowPayOnDay": true,
-      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
-      "translations": {
-        "en": {
-          "title": "Jameos del Agua and Cactus Garden",
-          "shortTitle": "Jameos & Cactus Garden",
-          "summary": "Two César Manrique masterpieces in northern Lanzarote, in small groups.",
-          "description": "Visit Jameos del Agua and the Cactus Garden with time to enjoy Manrique’s vision of art and nature.",
-          "duration": "5 hours",
-          "highlights": [
-            "César Manrique works",
-            "Small groups"
-          ],
-          "places": [
-            "Jameos del Agua",
-            "Cactus Garden",
-            "Arrieta"
-          ]
-        },
-        "de": {
-          "title": "Jameos del Agua und Kakteengarten",
-          "shortTitle": "Jameos & Kakteengarten",
-          "summary": "Zwei Meisterwerke César Manriques im Norden Lanzarotes, in kleinen Gruppen.",
-          "description": "Besuch der Jameos del Agua und des Kakteengartens mit Zeit für Manriques Verbindung von Kunst und Natur.",
-          "duration": "5 Stunden",
-          "highlights": [
-            "Werke von César Manrique",
-            "Kleine Gruppen"
-          ],
-          "places": [
-            "Jameos del Agua",
-            "Kakteengarten",
-            "Arrieta"
-          ]
-        }
-      }
-    },
-    {
-      "id": "wine-and-volcano-lanzarote",
-      "title": "La Geria y volcanes — ruta del vino",
-      "port": "Lanzarote",
-      "priceAdult": 115,
-      "duration": "4 horas",
-      "durationHours": 4,
-      "places": [
-        "La Geria",
-        "Bodega",
-        "Timanfaya vistas"
-      ],
-      "highlights": [
-        "Cata de vinos",
-        "Paisaje volcánico"
-      ],
-      "image": "/images/tours/timanfaya.jpg",
-      "shortTitle": "La Geria y volcanes — ruta del vino",
-      "summary": "La Geria y volcanes — ruta del vino",
-      "description": "Cata de vinos\nPaisaje volcánico",
-      "priceChild": 81,
-      "pricePerPerson": 115,
-      "active": true,
-      "gallery": [
-        "/images/tours/timanfaya.jpg"
-      ],
-      "minPax": 8,
-      "maxGroup": 14,
-      "privatePrice": 0,
-      "privateMaxPax": 0,
-      "included": [
-        "Guía",
-        "Transporte"
-      ],
-      "notIncluded": [
-        "Comidas",
-        "Entradas opcionales"
-      ],
-      "currency": "EUR",
-      "allowCard": true,
-      "allowBizum": true,
-      "allowPayOnDay": true,
-      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
-      "translations": {
-        "en": {
-          "title": "La Geria and volcanoes — wine route",
-          "shortTitle": "La Geria wine route",
-          "summary": "Volcanic vineyards of La Geria with wine tasting and lunar landscapes.",
-          "description": "Shore-friendly wine route through La Geria with vineyard views and tasting.",
-          "duration": "4 hours",
-          "highlights": [
-            "Wine tasting",
-            "Volcanic landscape"
-          ],
-          "places": [
-            "La Geria",
-            "Winery",
-            "Timanfaya views"
-          ]
-        },
-        "de": {
-          "title": "La Geria und Vulkane — Weinroute",
-          "shortTitle": "Weinroute La Geria",
-          "summary": "Vulkanische Weinberge von La Geria mit Verkostung und Mondlandschaft.",
-          "description": "Kreuzfahrtfreundliche Weinroute durch La Geria mit Weinbergblicken und Verkostung.",
-          "duration": "4 Stunden",
-          "highlights": [
-            "Weinverkostung",
-            "Vulkanlandschaft"
-          ],
-          "places": [
-            "La Geria",
-            "Weingut",
-            "Timanfaya-Ausblick"
-          ]
-        }
-      }
-    },
-    {
-      "id": "betancuria-fuerteventura",
-      "title": "Betancuria y interior de Fuerteventura",
-      "port": "Puerto del Rosario",
-      "priceAdult": 70,
-      "duration": "4 horas",
-      "durationHours": 4,
-      "places": [
-        "Betancuria",
-        "Antigua",
-        "Mirador"
-      ],
-      "highlights": [
-        "Antigua capital",
-        "Paisaje de interior"
-      ],
-      "image": "/images/tours/timanfaya.jpg",
-      "shortTitle": "Betancuria y interior de Fuerteventura",
-      "summary": "Betancuria y interior de Fuerteventura",
-      "description": "Antigua capital\nPaisaje de interior",
-      "priceChild": 49,
-      "pricePerPerson": 70,
-      "active": true,
-      "gallery": [
-        "/images/tours/timanfaya.jpg"
-      ],
-      "minPax": 8,
-      "maxGroup": 14,
-      "privatePrice": 0,
-      "privateMaxPax": 0,
-      "included": [
-        "Guía",
-        "Transporte"
-      ],
-      "notIncluded": [
-        "Comidas",
-        "Entradas opcionales"
-      ],
-      "currency": "EUR",
-      "allowCard": true,
-      "allowBizum": true,
-      "allowPayOnDay": true,
-      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
-      "translations": {
-        "en": {
-          "title": "Betancuria and inland Fuerteventura",
-          "shortTitle": "Betancuria inland",
-          "summary": "Historic Betancuria, the former capital, and inland mountain scenery.",
-          "description": "Discover Betancuria and the quiet interior of Fuerteventura on a shore excursion away from the beaches.",
-          "duration": "5 hours",
-          "highlights": [
-            "Former capital",
-            "Inland landscapes"
-          ],
-          "places": [
-            "Betancuria",
-            "Antigua",
-            "Viewpoint"
-          ]
-        },
-        "de": {
-          "title": "Betancuria und das Inland Fuerteventuras",
-          "shortTitle": "Betancuria Inland",
-          "summary": "Historisches Betancuria, die ehemalige Hauptstadt, und Berglandschaft im Inland.",
-          "description": "Entdecken Sie Betancuria und das ruhige Inland Fuerteventuras — abseits der Strände.",
-          "duration": "5 Stunden",
-          "highlights": [
-            "Ehemalige Hauptstadt",
-            "Inlandslandschaft"
-          ],
-          "places": [
-            "Betancuria",
-            "Antigua",
-            "Aussichtspunkt"
-          ]
-        }
-      }
-    },
-    {
-      "id": "vallehermoso-la-gomera",
-      "title": "Vallehermoso y norte de La Gomera",
-      "port": "La Gomera",
-      "priceAdult": 80,
-      "duration": "5 horas",
-      "durationHours": 5,
-      "places": [
-        "Vallehermoso",
-        "Agulo",
-        "Mirador"
-      ],
-      "highlights": [
-        "Valle norte",
-        "Vistas atlánticas"
-      ],
-      "image": "/images/tours/timanfaya.jpg",
-      "shortTitle": "Vallehermoso y norte de La Gomera",
-      "summary": "Vallehermoso y norte de La Gomera",
-      "description": "Valle norte\nVistas atlánticas",
-      "priceChild": 56,
-      "pricePerPerson": 80,
-      "active": true,
-      "gallery": [
-        "/images/tours/timanfaya.jpg"
-      ],
-      "minPax": 8,
-      "maxGroup": 14,
-      "privatePrice": 0,
-      "privateMaxPax": 0,
-      "included": [
-        "Guía",
-        "Transporte"
-      ],
-      "notIncluded": [
-        "Comidas",
-        "Entradas opcionales"
-      ],
-      "currency": "EUR",
-      "allowCard": true,
-      "allowBizum": true,
-      "allowPayOnDay": true,
-      "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
-      "translations": {
-        "en": {
-          "title": "Vallehermoso and northern La Gomera",
-          "shortTitle": "Vallehermoso north",
-          "summary": "Northern valleys of La Gomera with Atlantic views.",
-          "description": "Explore Vallehermoso, Agulo and scenic viewpoints on the greener north of La Gomera.",
-          "duration": "4 hours",
-          "highlights": [
-            "Northern valley",
-            "Atlantic views"
-          ],
-          "places": [
-            "Vallehermoso",
-            "Agulo",
-            "Viewpoint"
-          ]
-        },
-        "de": {
-          "title": "Vallehermoso und Norden La Gomeras",
-          "shortTitle": "Vallehermoso Norden",
-          "summary": "Nördliche Täler La Gomeras mit Atlantikblicken.",
-          "description": "Erkunden Sie Vallehermoso, Agulo und Aussichtspunkte im grüneren Norden La Gomeras.",
-          "duration": "4 Stunden",
-          "highlights": [
-            "Nördliches Tal",
-            "Atlantikblicke"
-          ],
-          "places": [
-            "Vallehermoso",
-            "Agulo",
-            "Aussichtspunkt"
-          ]
+          "title": "Westliche Inselrundfahrt",
+          "description": "<p>Ihr örtlicher Reiseleiter nimmt Sie nach Verlassen des Terminalgebäudes in Empfang und schon geht es los auf Ihren heutigen Landausflug in den Westen von Madeira.&#13;&#10;</p>&#13;&#10;<p>Wir kommen auf unserem Weg mit einem Halt am Aussichtspunkt Pico da Torre durch das erste traditionelle Fischerdorf Câmara de Lobos („Höhle der Mönchsrobben“). Câmara de Lobos liegt fünf Kilometer von Funchal entfernt und erhielt seinen Namen von den Entdeckern João Gonçalves Zarco und Tristão Vaz Teixeira, und zwar aufgrund der Form seiner Bucht und der vielen Mönchsrobben, die hier zu dieser Zeit lebten. Der Fischerort erlangte Berühmtheit, da Winston Churchill den Ort auf vielen seiner Bilder verewigte.&#13;&#10;</p>&#13;&#10;<p>Unsere Fahrt geht weiter zur Cabo Girão, eine von Madeiras berühmtesten Touristenattraktionen. Cabo Girão ist mit 580 Metern über dem Meeresspiegel die zweithöchste Steilklippe der Welt und und die höchste Meeresklippe in Europa. Mutige können von der Aussichtsplattform mit Glasboden einen adrenalinreichen Blick über die Steilklippe wagen.&#13;&#10;</p>&#13;&#10;<p>Danach geht es nach Ribeira Brava und dann nordwärts durch das tiefe und enge Serra D’Água Tal. Wir fahren bis auf 1007 Meter hinauf nach Encumeada. Der Aussichtspunkt vom Encumeada-Pass befindet sich auf dem Gebirgskamm, der Madeira im Inneren durchzieht. Von hier aus genießt man eine unglaubliche Aussicht, sowohl an die Süd- wie auch an die Nordküste der Insel.&#13;&#10;</p>&#13;&#10;<p>Weiter geht es hinunter an die Nordküste wo sich eine kilometerlange, pittoreske Atlantikküste befindet, wo die Berge direkt ins Meer abfallen. Nach São Vicente, eines der vorherrschenden Dörfer an der Nordküste Madeiras, geht es weiter ins schöne Dorf Porto Moniz. Hier haben Sie ca. 1 Stunde Freizeit für ein Mittagessen sowie auch Zeit, die von bizarren Lavafelsen umgebenen Naturschwimmbecken zu bewundern. Die seichten Pools, deren kristallklares Wasser durch die Flut täglich ausgetauscht wird, sind ein beliebter Badeort der Einheimischen.&#13;&#10;</p>&#13;&#10;<p>Weiter geht es auf einer Panoramastraße hinauf nach Paul da Serra, eine Hochmoorebene auf fast 1400 Metern mit atemberaubenden Ausblicken und unvergleichlicher Landschaft. Der letzte Halt auf dieser herrlichen Tour ist in Bica da Cana, mit einem traumhaften Blick auf das Zentralmassiv, bevor Ihre Tour wieder am Hafen endet.</p><br><p><strong>Übersicht der Highlights&#13;&#10;</strong></p><p><ul><li>Fischerdörfchen Câmara de Lobos&#13;&#10;</li><li>Tolle Ausblicke von diversen Aussichtspunkten&#13;&#10;</li><li>Atemberaubende Steilklippe Cabo Girão&#13;&#10;</li><li>Malerisches Dorf São Vicente&#13;&#10;</li><li>Naturschwimmbecken von Porto Moniz&#13;&#10;</li><li>Hochmoorebene Paul da Serra</li></ul></p><br><br>"
         }
       }
     }
