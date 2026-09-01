@@ -697,19 +697,11 @@ function migrateShoreTours(exportDir) {
     const langs = trBy.get(tid) || {};
     const es = langs.es || {};
     const media = parseMaybeJson(t.media) || [];
-<<<<<<< HEAD
     const gallery = media.map(
       (f) => `${MEDIA_CRUISE_TOUR}/${tid}/${f}`
     );
     const thumb = t.thumb_image
       ? `${MEDIA_CRUISE_THUMB}/${t.thumb_image}`
-=======
-    const gallery = media
-      .map((f) => `${MEDIA_CRUISE}/tours/${tid}/${f}`)
-      .filter(Boolean);
-    const thumb = t.thumb_image
-      ? `${MEDIA_CRUISE}/thumb/${t.thumb_image}`
->>>>>>> origin/cursor/shore-escalas-cruceros-5b40
       : gallery[0] || "/images/heroes/cruise.jpg";
     return {
       id: `shore-${tid}`,
