@@ -20,10 +20,18 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 const dataDir = path.join(root, "src/data");
 
-const MEDIA_TOUR = "https://www.lanzaroteexperiencetours.com/uploads/tours";
-const MEDIA_CRUISE = "https://www.lanzaroteexperiencetours.com/uploads/cruise";
-const MEDIA_BLOG = "https://www.lanzaroteexperiencetours.com/uploads/blog";
-const MEDIA_POSTS = "https://www.lanzaroteexperiencetours.com/uploads/posts";
+// Rutas reales en el VPS (no /uploads/tours/{id}/). Tras migrar media,
+// scripts/migrate-legacy-media.mjs reescribe a Supabase Storage.
+const MEDIA_TOUR_THUMB =
+  "https://www.lanzaroteexperiencetours.com/uploads/excursions/thumb";
+const MEDIA_TOUR_GALLERY =
+  "https://www.lanzaroteexperiencetours.com/uploads/excursions/gallery";
+const MEDIA_CRUISE_THUMB =
+  "https://www.lanzaroteexperiencetours.com/uploads/cruise/thumb";
+const MEDIA_CRUISE_TOUR =
+  "https://www.lanzaroteexperiencetours.com/uploads/cruise/tours";
+const MEDIA_POSTS =
+  "https://www.lanzaroteexperiencetours.com/uploads/posts";
 
 const LEGACY_TOUR_IDS = {
   1: "timanfaya-experience",
@@ -212,19 +220,26 @@ function migrateTours(exportDir) {
       slugify(es.slug || es.name || t.name || `tour-${tid}`);
     const prev = existingById.get(id);
 
-    const imgs = (mediaByTour.get(tid) || [])
-      .sort((a, b) => num(a.priority) - num(b.priority))
-      .map((m) => `${MEDIA_TOUR}/${tid}/${m.url}`);
+    const mediaRows = (mediaByTour.get(tid) || []).sort(
+      (a, b) => num(a.priority) - num(b.priority)
+    );
+    const thumbs = mediaRows
+      .filter((m) => String(m.type) === "0")
+      .map((m) => `${MEDIA_TOUR_THUMB}/${m.url}`);
+    const galleryImgs = mediaRows
+      .filter((m) => String(m.type) !== "0")
+      .map((m) => `${MEDIA_TOUR_GALLERY}/${tid}/${m.url}`);
+    const imgs = [...thumbs, ...galleryImgs];
     const image =
-      prev?.image?.startsWith("/images/")
-        ? prev.image
-        : imgs[0] || prev?.image || "/images/tours/landscape-1.jpg";
-    const gallery =
-      prev?.gallery?.length && prev.gallery[0]?.startsWith("/images/")
-        ? prev.gallery
-        : imgs.length
-          ? imgs
-          : [image];
+      thumbs[0] ||
+      galleryImgs[0] ||
+      prev?.image ||
+      "/images/tours/landscape-1.jpg";
+    const gallery = galleryImgs.length
+      ? galleryImgs
+      : imgs.length
+        ? imgs
+        : [image];
 
     const stats = reviewStats.get(tid);
     const rating = stats?.n
@@ -680,10 +695,10 @@ function migrateShoreTours(exportDir) {
     const es = langs.es || {};
     const media = parseMaybeJson(t.media) || [];
     const gallery = media.map(
-      (f) => `${MEDIA_CRUISE}/${tid}/${f}`
+      (f) => `${MEDIA_CRUISE_TOUR}/${tid}/${f}`
     );
     const thumb = t.thumb_image
-      ? `${MEDIA_CRUISE}/${tid}/${t.thumb_image}`
+      ? `${MEDIA_CRUISE_THUMB}/${t.thumb_image}`
       : gallery[0] || "/images/heroes/cruise.jpg";
     return {
       id: `shore-${tid}`,
