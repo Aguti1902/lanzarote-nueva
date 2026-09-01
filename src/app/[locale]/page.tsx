@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { TourCard } from "@/components/TourCard";
 import { ReviewsSection } from "@/components/ReviewsSection";
+import { HomeIslandVideo } from "@/components/HomeIslandVideo";
 import { getFeaturedTours, getSettings } from "@/lib/content";
 import {
   getFeaturedReviews,
@@ -259,16 +260,8 @@ export default async function HomePage({ params }: Props) {
       />
 
       <section className="border-t border-sand-line bg-white py-20 md:py-24">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 md:grid-cols-[0.9fr_1.1fr] md:px-6">
-          <div className="relative mx-auto aspect-square w-full max-w-sm">
-            <Image
-              src="/images/home/lanzarote-mi-amor.png"
-              alt="Lanzarote"
-              fill
-              className="object-contain drop-shadow-xl"
-              sizes="400px"
-            />
-          </div>
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 md:grid-cols-[1.15fr_0.85fr] md:px-6">
+          <HomeIslandVideo title={dict.home.islandTitle} />
           <div>
             <p className="section-kicker">{dict.home.islandKicker}</p>
             <h2 className="section-title mt-3">{dict.home.islandTitle}</h2>
