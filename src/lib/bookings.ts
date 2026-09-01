@@ -198,12 +198,20 @@ export async function markCashCollected(id: string): Promise<Booking | null> {
 }
 
 export function getCashPending(bookings: Booking[]): Booking[] {
-  return bookings.filter(
-    (b) =>
-      b.status !== "cancelled" &&
-      b.cashStatus === "pending" &&
-      (b.amountDueCash ?? 0) > 0
-  );
+  const today = new Date().toISOString().slice(0, 10);
+  return bookings.filter((b) => {
+    if (b.status === "cancelled") return false;
+    if (b.cashStatus !== "pending") return false;
+    if ((b.amountDueCash ?? 0) <= 0) return false;
+    const day = (b.date || "").slice(0, 10);
+    // Solo cobros reales por cobrar: fecha de servicio válida y no pasada
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) return false;
+    if (day < "2018-01-01") return false;
+    if (day < today) return false;
+    const email = (b.customer?.email || "").toLowerCase();
+    if (email === "testing@example.com") return false;
+    return true;
+  });
 }
 
 export function getStats(bookings: Booking[]) {
