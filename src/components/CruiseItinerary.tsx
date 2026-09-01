@@ -10,6 +10,7 @@ import {
   shoreTourDurationLabel,
   shoreTourPublicHighlights,
 } from "@/lib/shore-tour-display";
+import { resolveShoreToursForStop } from "@/lib/cruise-shore-match";
 import { useLocale } from "@/components/LocaleProvider";
 import { CruiseTourBooking } from "@/components/CruiseTourBooking";
 
@@ -23,7 +24,6 @@ export function CruiseItinerary({ sailing, tours }: Props) {
   const [openTour, setOpenTour] = useState<string | null>(null);
   const [bookingTour, setBookingTour] = useState<string | null>(null);
   const [meetingOpen, setMeetingOpen] = useState(false);
-  const tourMap = new Map(tours.map((t) => [t.id, t]));
 
   const nightsLabel =
     sailing.nights == null
@@ -79,9 +79,11 @@ export function CruiseItinerary({ sailing, tours }: Props) {
         </h2>
         <ol className="relative mt-8 space-y-5 before:absolute before:top-3 before:bottom-3 before:left-[18px] before:w-px before:bg-sand-line">
           {sailing.stops.map((stop) => {
-            const stopTours = stop.tourIds
-              .map((id) => tourMap.get(id))
-              .filter(Boolean) as CruiseShoreTour[];
+            const stopTours = resolveShoreToursForStop(
+              stop.tourIds,
+              stop.port,
+              tours
+            );
 
             return (
               <li key={`${stop.day}-${stop.date}-${stop.portKey}`}>
@@ -113,7 +115,7 @@ export function CruiseItinerary({ sailing, tours }: Props) {
                         <p className="mt-1 text-sm text-ink-muted">{stop.time}</p>
                       ) : null}
 
-                      {stop.isSeaDay ? null : stop.hasTours && stopTours.length > 0 ? (
+                      {stop.isSeaDay ? null : stopTours.length > 0 ? (
                         <div className="mt-5 space-y-5">
                           {stopTours.map((tour) => {
                             const expanded = openTour === tour.id;
