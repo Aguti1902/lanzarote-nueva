@@ -93,3 +93,82 @@ export function paymentLabel(
   const L = map[locale as string] || map.es;
   return L[method] ?? method;
 }
+
+const LANG_LABELS: Record<string, Record<string, string>> = {
+  es: {
+    es: "Español",
+    en: "Inglés",
+    de: "Alemán",
+    it: "Italiano",
+    fr: "Francés",
+    pt: "Portugués",
+    español: "Español",
+    espanol: "Español",
+    english: "Inglés",
+    deutsch: "Alemán",
+    german: "Alemán",
+  },
+  en: {
+    es: "Spanish",
+    en: "English",
+    de: "German",
+    it: "Italian",
+    fr: "French",
+    pt: "Portuguese",
+    español: "Spanish",
+    espanol: "Spanish",
+    english: "English",
+    deutsch: "German",
+    german: "German",
+  },
+  de: {
+    es: "Spanisch",
+    en: "Englisch",
+    de: "Deutsch",
+    it: "Italienisch",
+    fr: "Französisch",
+    pt: "Portugiesisch",
+    español: "Spanisch",
+    espanol: "Spanisch",
+    english: "Englisch",
+    deutsch: "Deutsch",
+    german: "Deutsch",
+  },
+};
+
+/** Normaliza códigos/nombres de idioma para la UI pública. */
+export function formatTourLanguages(
+  languages: string[] | undefined,
+  locale: Locale | string = "es"
+): string {
+  if (!languages?.length) return "";
+  const table = LANG_LABELS[locale as string] || LANG_LABELS.es;
+  const seen = new Set<string>();
+  const labels: string[] = [];
+  for (const raw of languages) {
+    const key = raw.trim().toLowerCase();
+    if (!key) continue;
+    const label = table[key] || raw.trim();
+    const dedupe = label.toLowerCase();
+    if (seen.has(dedupe)) continue;
+    seen.add(dedupe);
+    labels.push(label);
+  }
+  return labels.join(", ");
+}
+
+/** Quita bloques legacy de salidas/precios pegados al final de la descripción. */
+export function cleanTourDescription(text: string): string {
+  if (!text) return "";
+  let out = text
+    .replace(/\r\n/g, "\n")
+    .replace(/\u00ad/g, "")
+    .replace(/í­/g, "í");
+
+  out = out.replace(
+    /\n?\s*(Salidas|Incluido|Precios|Departures|Included|Prices|Abfahrt|Inbegriffen|Preise)\s*:\s*[\s\S]*$/i,
+    ""
+  );
+
+  return out.replace(/\n{3,}/g, "\n\n").trim();
+}

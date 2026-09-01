@@ -14,7 +14,12 @@ import {
 import { BookingWidget } from "@/components/BookingWidget";
 import { ReviewsSection } from "@/components/ReviewsSection";
 import { getTourBySlug, getPublicTours } from "@/lib/content";
-import { formatPrice, groupSizeLabel } from "@/lib/format";
+import {
+  cleanTourDescription,
+  formatPrice,
+  formatTourLanguages,
+  groupSizeLabel,
+} from "@/lib/format";
 import {
   isHttpUrl,
   mapEmbedUrl,
@@ -78,10 +83,12 @@ export default async function TourDetailPage({ params }: Props) {
   const mapSrc = mapEmbedUrl(tour.mapUrl);
   const mapLink =
     !mapSrc && isHttpUrl(tour.mapUrl) ? tour.mapUrl!.trim() : null;
+  const description = cleanTourDescription(tour.description || tour.summary);
+  const languagesLabel = formatTourLanguages(tour.languages, locale);
 
   return (
     <div>
-      <div className="relative h-[42vh] min-h-[280px] w-full overflow-hidden bg-bg-deep md:h-[50vh]">
+      <div className="relative h-[38vh] min-h-[260px] w-full overflow-hidden bg-bg-deep md:h-[46vh]">
         <Image
           src={tour.image}
           alt={tour.title}
@@ -90,25 +97,26 @@ export default async function TourDetailPage({ params }: Props) {
           className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg-deep/80 via-bg-deep/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-bg-deep via-bg-deep/55 to-bg-deep/25" />
+        <div className="absolute inset-0 bg-gradient-to-r from-bg-deep/50 via-transparent to-transparent" />
         <div className="absolute inset-x-0 bottom-0 mx-auto max-w-6xl px-4 pb-8 md:px-6">
           {tour.groupSize && (
-            <span className="mb-3 inline-block rounded-md bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur">
+            <span className="mb-3 inline-block rounded-md bg-black/35 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
               {groupSizeLabel(tour.groupSize, locale)}
               {tour.maxGroup
                 ? ` · ${dict.tourDetail.maxAbbrev} ${tour.maxGroup}`
                 : ""}
             </span>
           )}
-          <h1 className="max-w-3xl font-display text-3xl text-white md:text-5xl">
+          <h1 className="max-w-3xl font-display text-3xl text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.55)] md:text-5xl">
             {tour.title}
           </h1>
         </div>
       </div>
 
-      <div className="mx-auto grid max-w-6xl items-start gap-10 px-4 py-10 md:grid-cols-[1fr_360px] md:px-6 lg:gap-14">
-        <article>
-          <div className="flex flex-wrap items-center gap-4 text-sm text-ink-muted">
+      <div className="mx-auto grid max-w-6xl items-start gap-10 px-4 py-10 md:grid-cols-[minmax(0,1fr)_360px] md:px-6 lg:gap-14">
+        <article className="min-w-0">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-ink-muted">
             <span className="inline-flex items-center gap-1 font-semibold text-ink">
               <Star className="h-4 w-4 fill-rating text-rating" />
               {tour.rating.toFixed(1)}
@@ -126,14 +134,16 @@ export default async function TourDetailPage({ params }: Props) {
                 {dict.tourDetail.maxPeople.replace("{n}", String(tour.maxGroup))}
               </span>
             )}
-            <span className="inline-flex items-center gap-1">
-              <Languages className="h-4 w-4" />
-              {tour.languages.join(", ")}
-            </span>
+            {languagesLabel && (
+              <span className="inline-flex items-center gap-1">
+                <Languages className="h-4 w-4" />
+                {languagesLabel}
+              </span>
+            )}
           </div>
 
-          <div className="mt-6 space-y-4 text-lg leading-relaxed text-ink-muted">
-            {tour.description
+          <div className="mt-6 space-y-4 text-base leading-relaxed text-ink-muted md:text-lg">
+            {description
               .split(/\n+/)
               .map((p) => p.trim())
               .filter(Boolean)
@@ -198,47 +208,57 @@ export default async function TourDetailPage({ params }: Props) {
             </section>
           )}
 
-          <section className="mt-10">
-            <h2 className="font-display text-2xl">{dict.tourDetail.places}</h2>
-            <ul className="mt-4 grid gap-2 sm:grid-cols-2">
-              {tour.places.map((p) => (
-                <li
-                  key={p}
-                  className="flex items-start gap-2 rounded-lg bg-surface px-3 py-2.5 text-sm ring-1 ring-sand-line"
-                >
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-ocean" />
-                  {p}
-                </li>
-              ))}
-            </ul>
-          </section>
+          {tour.places.length > 0 && (
+            <section className="mt-10">
+              <h2 className="font-display text-2xl">{dict.tourDetail.places}</h2>
+              <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+                {tour.places.map((p) => (
+                  <li
+                    key={p}
+                    className="flex items-start gap-2 rounded-lg bg-surface px-3 py-2.5 text-sm ring-1 ring-sand-line"
+                  >
+                    <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-ocean" />
+                    {p}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
-          <section className="mt-10 grid gap-6 sm:grid-cols-2">
-            <div>
-              <h2 className="font-display text-2xl">{dict.tourDetail.included}</h2>
-              <ul className="mt-4 space-y-2 text-sm text-ink-muted">
-                {tour.included.map((i) => (
-                  <li key={i} className="flex gap-2">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" />
-                    {i}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h2 className="font-display text-2xl">
-                {dict.tourDetail.notIncluded}
-              </h2>
-              <ul className="mt-4 space-y-2 text-sm text-ink-muted">
-                {tour.notIncluded.map((i) => (
-                  <li key={i} className="flex gap-2">
-                    <X className="mt-0.5 h-4 w-4 shrink-0 text-coral" />
-                    {i}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
+          {(tour.included.length > 0 || tour.notIncluded.length > 0) && (
+            <section className="mt-10 grid gap-6 sm:grid-cols-2">
+              {tour.included.length > 0 && (
+                <div>
+                  <h2 className="font-display text-2xl">
+                    {dict.tourDetail.included}
+                  </h2>
+                  <ul className="mt-4 space-y-2 text-sm text-ink-muted">
+                    {tour.included.map((i) => (
+                      <li key={i} className="flex gap-2">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                        {i}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {tour.notIncluded.length > 0 && (
+                <div>
+                  <h2 className="font-display text-2xl">
+                    {dict.tourDetail.notIncluded}
+                  </h2>
+                  <ul className="mt-4 space-y-2 text-sm text-ink-muted">
+                    {tour.notIncluded.map((i) => (
+                      <li key={i} className="flex gap-2">
+                        <X className="mt-0.5 h-4 w-4 shrink-0 text-coral" />
+                        {i}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </section>
+          )}
 
           <ReviewsSection
             compact
@@ -254,16 +274,18 @@ export default async function TourDetailPage({ params }: Props) {
             }}
           />
 
-          <section className="mt-10">
-            <h2 className="font-display text-2xl">
-              {dict.tourDetail.recommendations}
-            </h2>
-            <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-ink-muted">
-              {tour.recommendations.map((r) => (
-                <li key={r}>{r}</li>
-              ))}
-            </ul>
-          </section>
+          {tour.recommendations.length > 0 && (
+            <section className="mt-10">
+              <h2 className="font-display text-2xl">
+                {dict.tourDetail.recommendations}
+              </h2>
+              <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-ink-muted">
+                {tour.recommendations.map((r) => (
+                  <li key={r}>{r}</li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           {videoSrc && (
             <section className="mt-10">
@@ -316,19 +338,21 @@ export default async function TourDetailPage({ params }: Props) {
             </section>
           )}
 
-          <section className="mt-10 rounded-xl bg-surface p-5 ring-1 ring-sand-line">
-            <h2 className="font-display text-xl">
-              {dict.tourDetail.cancellation}
-            </h2>
-            <p className="mt-2 text-sm text-ink-muted">
-              {tour.cancellationPolicy}
-            </p>
-          </section>
+          {tour.cancellationPolicy?.trim() && (
+            <section className="mt-10 rounded-xl bg-surface p-5 ring-1 ring-sand-line">
+              <h2 className="font-display text-xl">
+                {dict.tourDetail.cancellation}
+              </h2>
+              <p className="mt-2 text-sm text-ink-muted">
+                {tour.cancellationPolicy}
+              </p>
+            </section>
+          )}
         </article>
 
-        <div className="md:sticky md:top-24 md:self-start">
+        <aside className="md:sticky md:top-24 md:self-start">
           <BookingWidget tour={tour} />
-        </div>
+        </aside>
       </div>
     </div>
   );
