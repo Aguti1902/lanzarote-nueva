@@ -1,6 +1,12 @@
 import type { Booking } from "@/types";
 import { formatDateShort, paymentLabel } from "@/lib/format";
 import { BRAND_LOGO_DATA_URI } from "@/lib/brand-logo-data";
+import {
+  bookingReturnDate,
+  bookingReturnTime,
+  bookingServiceTime,
+} from "@/lib/booking-time";
+import { bookingLocaleLabel } from "@/lib/booking-display";
 
 export type VoucherCompany = {
   brandName: string;
@@ -16,11 +22,15 @@ export type VoucherLabels = {
   subtitle: string;
   locator: string;
   issued: string;
+  bookingDate: string;
   customer: string;
   email: string;
   phone: string;
   service: string;
   date: string;
+  time: string;
+  returnDate: string;
+  returnTime: string;
   people: string;
   adults: string;
   children: string;
@@ -30,6 +40,8 @@ export type VoucherLabels = {
   flight: string;
   cruise: string;
   notes: string;
+  language: string;
+  pickupZone: string;
   present: string;
   status: string;
   print: string;
@@ -41,11 +53,15 @@ const DEFAULT_LABELS: VoucherLabels = {
   subtitle: "Presente este documento el día del servicio",
   locator: "Localizador",
   issued: "Emitido",
+  bookingDate: "Fecha de reserva",
   customer: "Cliente",
   email: "Email",
   phone: "Teléfono",
   service: "Servicio",
   date: "Fecha del servicio",
+  time: "Hora del servicio",
+  returnDate: "Fecha de regreso",
+  returnTime: "Hora de regreso",
   people: "Personas",
   adults: "adultos",
   children: "niños",
@@ -55,6 +71,8 @@ const DEFAULT_LABELS: VoucherLabels = {
   flight: "Nº de vuelo",
   cruise: "Crucero / barco",
   notes: "Notas",
+  language: "Idioma",
+  pickupZone: "Zona de recogida",
   present:
     "Presente este voucher el día del servicio. Conservamos su localizador en nuestros sistemas.",
   status: "Estado",
@@ -129,13 +147,30 @@ export function buildVoucherHtml(
   const peopleLabel = `${people} (${booking.adults} ${labels.adults}${
     booking.children ? ` + ${booking.children} ${labels.children}` : ""
   })`;
+  const serviceTime = bookingServiceTime(booking);
+  const returnTime = bookingReturnTime(booking);
+  const returnDate = bookingReturnDate(booking);
 
   const rows: [string, string][] = [
     [labels.customer, esc(booking.customer.name)],
     [labels.email, esc(booking.customer.email)],
     [labels.phone, esc(booking.customer.phone || "—")],
     [labels.service, esc(`${serviceKind(booking)}: ${booking.tourTitle}`)],
+    [labels.bookingDate, formatDateShort(booking.createdAt)],
     [labels.date, formatDateShort(booking.date)],
+  ];
+
+  if (serviceTime) {
+    rows.push([labels.time, esc(serviceTime)]);
+  }
+  if (returnDate) {
+    rows.push([labels.returnDate, formatDateShort(returnDate)]);
+  }
+  if (returnTime) {
+    rows.push([labels.returnTime, esc(returnTime)]);
+  }
+
+  rows.push(
     [labels.people, esc(peopleLabel)],
     [
       labels.status,
@@ -144,11 +179,17 @@ export function buildVoucherHtml(
         : esc(statusEs(booking.status)),
     ],
     [labels.total, money(total)],
-    [labels.payment, esc(paymentLabel(booking.paymentMethod))],
-  ];
+    [labels.payment, esc(paymentLabel(booking.paymentMethod))]
+  );
 
   if (booking.customer.hotel) {
     rows.push([labels.hotel, esc(booking.customer.hotel)]);
+  }
+  if (booking.pickupZone) {
+    rows.push([labels.pickupZone, esc(booking.pickupZone)]);
+  }
+  if (bookingLocaleLabel(booking.locale)) {
+    rows.push([labels.language, esc(bookingLocaleLabel(booking.locale))]);
   }
   if (booking.customer.flightNumber) {
     rows.push([labels.flight, esc(booking.customer.flightNumber)]);

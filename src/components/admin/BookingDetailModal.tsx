@@ -8,6 +8,12 @@ import {
   formatDateShort,
   paymentLabel,
 } from "@/lib/format";
+import {
+  bookingReturnDate,
+  bookingReturnTime,
+  bookingServiceTime,
+} from "@/lib/booking-time";
+import { bookingLocaleLabel } from "@/lib/booking-display";
 import type { CancelReasonId } from "@/lib/cancellation";
 import {
   buildVoucherHtml,
@@ -314,6 +320,24 @@ export function BookingDetailModal({
                     label="Fecha del servicio"
                     value={formatDateShort(booking.date)}
                   />
+                  {bookingServiceTime(booking) && (
+                    <Row
+                      label="Hora del servicio"
+                      value={bookingServiceTime(booking)}
+                    />
+                  )}
+                  {bookingReturnDate(booking) && (
+                    <Row
+                      label="Fecha de regreso"
+                      value={formatDateShort(bookingReturnDate(booking))}
+                    />
+                  )}
+                  {bookingReturnTime(booking) && (
+                    <Row
+                      label="Hora de regreso"
+                      value={bookingReturnTime(booking)}
+                    />
+                  )}
                   <div className="flex gap-3">
                     <dt className="w-44 shrink-0 text-ink-muted">Estado</dt>
                     <dd>
@@ -522,6 +546,12 @@ export function BookingDetailModal({
                       label="Teléfono"
                       value={booking.customer.phone || "—"}
                     />
+                    <Row
+                      label="Idioma"
+                      value={
+                        bookingLocaleLabel(booking.locale) || "—"
+                      }
+                    />
                     {booking.customer.taxId && (
                       <Row label="NIF / CIF" value={booking.customer.taxId} />
                     )}
@@ -583,7 +613,28 @@ export function BookingDetailModal({
                     {booking.children ? ` + ${booking.children} niños` : ""})
                   </li>
                   <li>Precio: {money(total)}</li>
+                  <li>Fecha de reserva: {formatDateShort(booking.createdAt)}</li>
                   <li>Fecha de servicio: {formatDateShort(booking.date)}</li>
+                  {bookingServiceTime(booking) && (
+                    <li>Horario: {bookingServiceTime(booking)}</li>
+                  )}
+                  {booking.pickupZone && (
+                    <li>Zona de recogida: {booking.pickupZone}</li>
+                  )}
+                  {bookingLocaleLabel(booking.locale) && (
+                    <li>
+                      Idioma del tour: {bookingLocaleLabel(booking.locale)}
+                    </li>
+                  )}
+                  {bookingReturnDate(booking) && (
+                    <li>
+                      Fecha de regreso:{" "}
+                      {formatDateShort(bookingReturnDate(booking))}
+                    </li>
+                  )}
+                  {bookingReturnTime(booking) && (
+                    <li>Hora de regreso: {bookingReturnTime(booking)}</li>
+                  )}
                   {booking.customer.flightNumber && (
                     <li>Número de vuelo: {booking.customer.flightNumber}</li>
                   )}

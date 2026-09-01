@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Booking, BookingStatus } from "@/types";
 import { formatDate, formatPrice, paymentLabel } from "@/lib/format";
+import { compareBookingsByServiceAsc } from "@/lib/booking-display";
 import {
   DateRangeFilter,
   emptyDateRange,
@@ -81,7 +82,7 @@ export default function AdminReservasCrucerosPage() {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return cruiseBookings.filter((b) => {
+    const list = cruiseBookings.filter((b) => {
       if (tab === "cancelled") {
         if (b.status !== "cancelled") return false;
       } else if (tab === "done") {
@@ -98,12 +99,15 @@ export default function AdminReservasCrucerosPage() {
         b.customer?.name,
         b.customer?.email,
         b.customer?.cruiseShip,
+        b.locale,
+        b.pickupZone,
       ]
         .filter(Boolean)
         .join(" ")
         .toLowerCase();
       return hay.includes(q);
     });
+    return [...list].sort(compareBookingsByServiceAsc);
   }, [cruiseBookings, tab, dateField, range, query]);
 
   const selected = useMemo(

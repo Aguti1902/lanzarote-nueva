@@ -488,7 +488,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
                 }
               >
                 <option value="online">Reservar online</option>
-                <option value="request">Solicitud</option>
+                <option value="request">Bajo petición</option>
                 <option value="phone">Teléfono</option>
               </select>
             </Field>

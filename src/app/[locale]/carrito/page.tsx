@@ -16,7 +16,7 @@ const inputClass =
 
 export default function CarritoPage() {
   const { items, removeItem, clear } = useCart();
-  const { dict, href } = useLocale();
+  const { dict, href, locale } = useLocale();
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -51,10 +51,12 @@ export default function CarritoPage() {
             tourId: item.tourId,
             tourTitle: item.title,
             date: item.date,
+            time: item.time,
             adults: item.adults,
             children: item.children,
             totalPrice: item.totalPrice,
             paymentMethod,
+            locale,
             customer: {
               name,
               email,

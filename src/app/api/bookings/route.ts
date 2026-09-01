@@ -39,6 +39,7 @@ export async function POST(request: Request) {
       tourId,
       tourTitle,
       date,
+      time,
       adults,
       children,
       totalPrice,
@@ -47,6 +48,9 @@ export async function POST(request: Request) {
       transfer,
       minibus,
       groupId,
+      locale,
+      status: requestedStatus,
+      pickupZone,
     } = body;
 
     if (!type || !tourTitle || !date || !customer?.name || !customer?.email) {
@@ -66,20 +70,59 @@ export async function POST(request: Request) {
       }
     }
 
+    const normalizedTime =
+      typeof time === "string" && time.trim() ? time.trim() : undefined;
+    const transferPayload =
+      transfer && typeof transfer === "object"
+        ? {
+            ...transfer,
+            time:
+              (typeof transfer.time === "string" && transfer.time.trim()) ||
+              normalizedTime,
+            returnDate:
+              typeof transfer.returnDate === "string" && transfer.returnDate.trim()
+                ? transfer.returnDate.trim().slice(0, 10)
+                : undefined,
+            returnTime:
+              typeof transfer.returnTime === "string" && transfer.returnTime.trim()
+                ? transfer.returnTime.trim()
+                : undefined,
+          }
+        : transfer;
+
+    const status =
+      requestedStatus === "pending" ||
+      requestedStatus === "confirmed" ||
+      requestedStatus === "completed" ||
+      requestedStatus === "cancelled"
+        ? requestedStatus
+        : "confirmed";
+
+    const localeNorm =
+      typeof locale === "string" && locale.trim()
+        ? locale.trim().toLowerCase().slice(0, 5)
+        : undefined;
+
     let booking = await addBooking({
       type,
       tourId,
       tourTitle,
       date,
+      time: normalizedTime || transferPayload?.time,
       adults: Number(adults) || 1,
       children: Number(children) || 0,
       totalPrice: Number(totalPrice) || 0,
       paymentMethod: (paymentMethod as PaymentMethod) || "card",
-      paymentStatus: "paid",
+      paymentStatus: status === "pending" ? "unpaid" : "paid",
       customer,
-      transfer,
+      transfer: transferPayload,
       minibus,
-      status: "confirmed",
+      status,
+      locale: localeNorm,
+      pickupZone:
+        typeof pickupZone === "string" && pickupZone.trim()
+          ? pickupZone.trim()
+          : undefined,
       groupId: groupId ? String(groupId) : undefined,
     });
 

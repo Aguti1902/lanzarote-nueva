@@ -16,6 +16,7 @@ export type CartItem = {
   title: string;
   image: string;
   date: string;
+  time?: string;
   adults: number;
   children: number;
   priceAdult: number;

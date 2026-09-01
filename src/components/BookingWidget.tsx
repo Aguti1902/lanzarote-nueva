@@ -16,8 +16,9 @@ const inputClass =
 export function BookingWidget({ tour }: { tour: Tour }) {
   const router = useRouter();
   const { addItem } = useCart();
-  const { dict, href } = useLocale();
+  const { dict, href, locale } = useLocale();
   const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
   const [hours, setHours] = useState(4);
@@ -35,6 +36,8 @@ export function BookingWidget({ tour }: { tour: Tour }) {
 
   const isMinibus = tour.category === "minibus";
   const isPrivate = isFlatPriceTour(tour);
+  const isOnRequest =
+    tour.bookingMethod === "request" || tour.bookingMethod === "phone";
 
   useEffect(() => {
     if (!date || !tour.cruiseFriendly) {
@@ -108,6 +111,10 @@ export function BookingWidget({ tour }: { tour: Tour }) {
   function handleAddToCart() {
     setError("");
     setCartMsg("");
+    if (isOnRequest) {
+      setError(dict.booking.requestHint);
+      return;
+    }
     if (!date) {
       setError(dict.booking.selectDate);
       return;
@@ -118,6 +125,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
       title: tour.title,
       image: tour.image,
       date,
+      time: time || undefined,
       adults: isMinibus ? 1 : adults,
       children: isPrivate || isMinibus ? 0 : children,
       priceAdult: isPrivate || isMinibus ? total : tour.priceAdult,
@@ -144,10 +152,13 @@ export function BookingWidget({ tour }: { tour: Tour }) {
           tourId: tour.id,
           tourTitle: tour.title,
           date,
+          time: time || undefined,
           adults,
           children: isPrivate || isMinibus ? 0 : children,
           totalPrice: total,
-          paymentMethod,
+          paymentMethod: isOnRequest ? "pay_on_day" : paymentMethod,
+          status: isOnRequest ? "pending" : "confirmed",
+          locale,
           customer: { name, email, phone, hotel, cruiseShip, notes },
           minibus: isMinibus ? { hours } : undefined,
         }),
@@ -192,6 +203,15 @@ export function BookingWidget({ tour }: { tour: Tour }) {
             value={date}
             min={new Date().toISOString().slice(0, 10)}
             onChange={(e) => setDate(e.target.value)}
+            className={inputClass}
+          />
+        </Field>
+
+        <Field label={dict.booking.time}>
+          <input
+            type="time"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
             className={inputClass}
           />
         </Field>
@@ -337,33 +357,39 @@ export function BookingWidget({ tour }: { tour: Tour }) {
           />
         </Field>
 
-        <div>
-          <p className="mb-2 text-sm font-bold text-ink">
-            {dict.booking.paymentMethod}
+        {isOnRequest ? (
+          <p className="rounded-lg bg-sky-soft/80 px-3 py-2.5 text-sm text-ink-muted ring-1 ring-sand-line">
+            {dict.booking.requestHint}
           </p>
-          <div className="space-y-2">
-            {methods.map((m) => (
-              <label
-                key={m.id}
-                className={`flex cursor-pointer items-center gap-3 rounded border px-3 py-2.5 text-sm transition ${
-                  paymentMethod === m.id
-                    ? "border-ocean bg-ocean/5 text-ocean-deep"
-                    : "border-sand-line hover:border-ocean/40"
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="payment"
-                  className="accent-[var(--ocean)]"
-                  checked={paymentMethod === m.id}
-                  onChange={() => setPaymentMethod(m.id)}
-                />
-                {m.icon}
-                {m.label}
-              </label>
-            ))}
+        ) : (
+          <div>
+            <p className="mb-2 text-sm font-bold text-ink">
+              {dict.booking.paymentMethod}
+            </p>
+            <div className="space-y-2">
+              {methods.map((m) => (
+                <label
+                  key={m.id}
+                  className={`flex cursor-pointer items-center gap-3 rounded border px-3 py-2.5 text-sm transition ${
+                    paymentMethod === m.id
+                      ? "border-ocean bg-ocean/5 text-ocean-deep"
+                      : "border-sand-line hover:border-ocean/40"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="payment"
+                    className="accent-[var(--ocean)]"
+                    checked={paymentMethod === m.id}
+                    onChange={() => setPaymentMethod(m.id)}
+                  />
+                  {m.icon}
+                  {m.label}
+                </label>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="space-y-1 border-t border-sand-line pt-3">
           <div className="flex items-center justify-between">
@@ -372,7 +398,9 @@ export function BookingWidget({ tour }: { tour: Tour }) {
               {formatPrice(total)}
             </span>
           </div>
-          {(paymentMethod === "deposit_20" || paymentMethod === "deposit_10") && (
+          {!isOnRequest &&
+            (paymentMethod === "deposit_20" ||
+              paymentMethod === "deposit_10") && (
             <>
               <div className="flex justify-between text-sm">
                 <span className="text-ink-muted">{dict.booking.payNow}</span>
@@ -393,21 +421,27 @@ export function BookingWidget({ tour }: { tour: Tour }) {
         {error && <p className="text-sm text-red-600">{error}</p>}
         {cartMsg && <p className="text-sm text-success">{cartMsg}</p>}
 
-        <button
-          type="button"
-          onClick={handleAddToCart}
-          className="flex w-full items-center justify-center gap-2 rounded border border-ocean py-3 font-bold text-ocean transition hover:bg-ocean/5"
-        >
-          <ShoppingCart className="h-4 w-4" />
-          {dict.booking.addToCart}
-        </button>
+        {!isOnRequest && (
+          <button
+            type="button"
+            onClick={handleAddToCart}
+            className="flex w-full items-center justify-center gap-2 rounded border border-ocean py-3 font-bold text-ocean transition hover:bg-ocean/5"
+          >
+            <ShoppingCart className="h-4 w-4" />
+            {dict.booking.addToCart}
+          </button>
+        )}
 
         <button
           type="submit"
           disabled={loading}
           className="w-full rounded bg-ocean py-3 font-bold text-white transition hover:bg-ocean-deep disabled:opacity-60"
         >
-          {loading ? dict.common.processing : dict.booking.bookNow}
+          {loading
+            ? dict.common.processing
+            : isOnRequest
+              ? dict.booking.requestTour
+              : dict.booking.bookNow}
         </button>
         <p className="text-center text-xs text-ink-muted">
           {dict.booking.cancelPolicy}

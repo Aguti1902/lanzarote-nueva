@@ -252,8 +252,14 @@ export type Dictionary = {
     title: string;
     subtitle: string;
     issued: string;
+    bookingDate: string;
     customer: string;
     serviceDate: string;
+    serviceTime: string;
+    returnDate: string;
+    returnTime: string;
+    language: string;
+    pickupZone: string;
     flight: string;
     present: string;
     print: string;
@@ -292,6 +298,7 @@ export type Dictionary = {
   };
   booking: {
     date: string;
+    time: string;
     name: string;
     hotel: string;
     cruiseShip: string;
@@ -303,6 +310,8 @@ export type Dictionary = {
     payOnDay: string;
     addToCart: string;
     bookNow: string;
+    requestTour: string;
+    requestHint: string;
     cancelPolicy: string;
     selectDate: string;
     fillRequired: string;
@@ -324,6 +333,9 @@ export type Dictionary = {
     passengers: string;
     flight: string;
     hotelAddress: string;
+    time: string;
+    returnDate: string;
+    returnTime: string;
     payment: string;
     confirm: string;
   };
@@ -703,8 +715,14 @@ const es: Dictionary = {
     title: "VOUCHER / CONFIRMACIÓN",
     subtitle: "Presente este documento el día del servicio",
     issued: "Emitido",
+    bookingDate: "Fecha de reserva",
     customer: "Cliente",
     serviceDate: "Fecha del servicio",
+    serviceTime: "Hora del servicio",
+    returnDate: "Fecha de regreso",
+    returnTime: "Hora de regreso",
+    language: "Idioma",
+    pickupZone: "Zona de recogida",
     flight: "Nº de vuelo",
     present:
       "Presente este voucher el día del servicio. Conservamos su localizador en nuestros sistemas.",
@@ -745,6 +763,7 @@ const es: Dictionary = {
   },
   booking: {
     date: "Fecha *",
+    time: "Hora del servicio",
     name: "Nombre completo *",
     hotel: "Hotel / punto de recogida",
     cruiseShip: "Barco de crucero (si aplica)",
@@ -756,6 +775,9 @@ const es: Dictionary = {
     payOnDay: "Pago el día del tour",
     addToCart: "Añadir al carrito",
     bookNow: "Reservar ahora",
+    requestTour: "Solicitar excursión",
+    requestHint:
+      "Esta excursión es bajo petición. Envíe su solicitud y le confirmaremos disponibilidad.",
     cancelPolicy: "Cancelación gratis hasta 48 h antes",
     selectDate: "Seleccione una fecha para añadir al carrito.",
     fillRequired: "Complete los campos obligatorios.",
@@ -777,6 +799,9 @@ const es: Dictionary = {
     passengers: "Pasajeros",
     flight: "Nº de vuelo",
     hotelAddress: "Hotel / dirección *",
+    time: "Hora del servicio *",
+    returnDate: "Fecha de regreso",
+    returnTime: "Hora de regreso",
     payment: "Pago",
     confirm: "Confirmar traslado",
   },
@@ -1154,8 +1179,14 @@ const en: Dictionary = {
     title: "VOUCHER / CONFIRMATION",
     subtitle: "Please present this document on the day of the service",
     issued: "Issued",
+    bookingDate: "Booking date",
     customer: "Customer",
     serviceDate: "Service date",
+    serviceTime: "Service time",
+    returnDate: "Return date",
+    returnTime: "Return time",
+    language: "Language",
+    pickupZone: "Pick-up zone",
     flight: "Flight number",
     present:
       "Please present this voucher on the day of the service. We keep your locator in our systems.",
@@ -1196,6 +1227,7 @@ const en: Dictionary = {
   },
   booking: {
     date: "Date *",
+    time: "Service time",
     name: "Full name *",
     hotel: "Hotel / pick-up point",
     cruiseShip: "Cruise ship (if applicable)",
@@ -1207,6 +1239,9 @@ const en: Dictionary = {
     payOnDay: "Pay on the day",
     addToCart: "Add to cart",
     bookNow: "Book now",
+    requestTour: "Request excursion",
+    requestHint:
+      "This excursion is on request. Send your request and we will confirm availability.",
     cancelPolicy: "Free cancellation up to 48 h before",
     selectDate: "Please select a date to add to cart.",
     fillRequired: "Please complete the required fields.",
@@ -1228,6 +1263,9 @@ const en: Dictionary = {
     passengers: "Passengers",
     flight: "Flight number",
     hotelAddress: "Hotel / address *",
+    time: "Service time *",
+    returnDate: "Return date",
+    returnTime: "Return time",
     payment: "Payment",
     confirm: "Confirm transfer",
   },
@@ -1614,8 +1652,14 @@ const de: Dictionary = {
     title: "VOUCHER / BESTÄTIGUNG",
     subtitle: "Bitte legen Sie dieses Dokument am Servicetag vor",
     issued: "Ausgestellt",
+    bookingDate: "Buchungsdatum",
     customer: "Kunde",
     serviceDate: "Servicedatum",
+    serviceTime: "Servicezeit",
+    returnDate: "Rückreisedatum",
+    returnTime: "Rückreisezeit",
+    language: "Sprache",
+    pickupZone: "Abholzone",
     flight: "Flugnummer",
     present:
       "Bitte legen Sie diesen Voucher am Servicetag vor. Wir speichern Ihren Locator in unseren Systemen.",
@@ -1656,6 +1700,7 @@ const de: Dictionary = {
   },
   booking: {
     date: "Datum *",
+    time: "Servicezeit",
     name: "Vollständiger Name *",
     hotel: "Hotel / Abholpunkt",
     cruiseShip: "Kreuzfahrtschiff (falls zutreffend)",
@@ -1667,6 +1712,9 @@ const de: Dictionary = {
     payOnDay: "Zahlung am Tourtag",
     addToCart: "In den Warenkorb",
     bookNow: "Jetzt buchen",
+    requestTour: "Ausflug anfragen",
+    requestHint:
+      "Dieser Ausflug ist auf Anfrage. Senden Sie Ihre Anfrage und wir bestätigen die Verfügbarkeit.",
     cancelPolicy: "Kostenlose Stornierung bis 48 Std. vorher",
     selectDate: "Bitte wählen Sie ein Datum für den Warenkorb.",
     fillRequired: "Bitte füllen Sie die Pflichtfelder aus.",
@@ -1688,6 +1736,9 @@ const de: Dictionary = {
     passengers: "Passagiere",
     flight: "Flugnummer",
     hotelAddress: "Hotel / Adresse *",
+    time: "Servicezeit *",
+    returnDate: "Rückreisedatum",
+    returnTime: "Rückreisezeit",
     payment: "Zahlung",
     confirm: "Transfer bestätigen",
   },
