@@ -12,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { BookingWidget } from "@/components/BookingWidget";
+import { ReviewsSection } from "@/components/ReviewsSection";
 import { getTourBySlug, getPublicTours } from "@/lib/content";
 import { formatPrice, groupSizeLabel } from "@/lib/format";
 import {
@@ -20,6 +21,10 @@ import {
   youtubeEmbedUrl,
 } from "@/lib/media-embeds";
 import { localizeTour, localizeTours } from "@/lib/localize-content";
+import {
+  getReviewsForTour,
+  getTripadvisorMeta,
+} from "@/lib/reviews";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
@@ -45,9 +50,11 @@ export default async function TourDetailPage({ params }: Props) {
   const base = await getTourBySlug(slug);
   if (!base) notFound();
 
-  const [tour, tours] = await Promise.all([
+  const [tour, tours, tourReviews, tripadvisor] = await Promise.all([
     localizeTour(base, locale),
     localizeTours(await getPublicTours(), locale),
+    getReviewsForTour(base.id, locale, 6),
+    getTripadvisorMeta(),
   ]);
 
   const sibling =
@@ -286,6 +293,20 @@ export default async function TourDetailPage({ params }: Props) {
               )}
             </section>
           )}
+
+          <ReviewsSection
+            compact
+            reviews={tourReviews}
+            tripadvisor={tripadvisor}
+            copy={{
+              kicker: dict.tourDetail.reviewsKicker,
+              title: dict.tourDetail.reviewsTitle,
+              subtitle: dict.tourDetail.reviewsSubtitle,
+              basedOn: dict.tourDetail.reviewsBasedOn,
+              cta: dict.tourDetail.reviewsCta,
+              traveler: dict.tourDetail.reviewsTraveler,
+            }}
+          />
 
           <section className="mt-10 rounded-xl bg-surface p-5 ring-1 ring-sand-line">
             <h2 className="font-display text-xl">

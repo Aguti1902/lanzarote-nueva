@@ -52,6 +52,12 @@ export type Dictionary = {
     islandTitle: string;
     islandBody: string;
     islandCta: string;
+    reviewsKicker: string;
+    reviewsTitle: string;
+    reviewsSubtitle: string;
+    reviewsBasedOn: string;
+    reviewsCta: string;
+    reviewsTraveler: string;
   };
   footer: {
     blurb: string;
@@ -271,6 +277,12 @@ export type Dictionary = {
     video: string;
     map: string;
     openMap: string;
+    reviewsKicker: string;
+    reviewsTitle: string;
+    reviewsSubtitle: string;
+    reviewsBasedOn: string;
+    reviewsCta: string;
+    reviewsTraveler: string;
   };
   blog: {
     eyebrow: string;
@@ -415,6 +427,13 @@ const es: Dictionary = {
     islandBody:
       "Reserva de la Biosfera, silencio, calma y un paisaje volcánico moldeado por César Manrique y Jesús Soto. Timanfaya, Cueva de los Verdes, Jardín de Cactus o Jameos del Agua: la isla se vive mejor con quien la conoce.",
     islandCta: "Empezar a planificar",
+    reviewsKicker: "Tripadvisor",
+    reviewsTitle: "Lo que dicen los viajeros",
+    reviewsSubtitle:
+      "Reseñas reales de quienes ya descubrieron Lanzarote con nosotros.",
+    reviewsBasedOn: "Basado en {n} opiniones en Tripadvisor",
+    reviewsCta: "Ver todas las reseñas en Tripadvisor",
+    reviewsTraveler: "Viajero",
   },
   footer: {
     blurb:
@@ -702,6 +721,13 @@ const es: Dictionary = {
     video: "Vídeo de la excursión",
     map: "Mapa del recorrido",
     openMap: "Abrir mapa",
+    reviewsKicker: "Tripadvisor",
+    reviewsTitle: "Opiniones de esta excursión",
+    reviewsSubtitle:
+      "Experiencias de viajeros en Tripadvisor y en nuestras salidas.",
+    reviewsBasedOn: "Basado en {n} opiniones en Tripadvisor",
+    reviewsCta: "Leer más en Tripadvisor",
+    reviewsTraveler: "Viajero",
   },
   blog: {
     eyebrow: "Blog",
@@ -853,6 +879,13 @@ const en: Dictionary = {
     islandBody:
       "A Biosphere Reserve of silence, calm and volcanic landscapes shaped by César Manrique. Timanfaya, Cueva de los Verdes, Cactus Garden or Jameos del Agua: the island is better with those who know it.",
     islandCta: "Start planning",
+    reviewsKicker: "Tripadvisor",
+    reviewsTitle: "What travellers say",
+    reviewsSubtitle:
+      "Real reviews from people who have already discovered Lanzarote with us.",
+    reviewsBasedOn: "Based on {n} Tripadvisor reviews",
+    reviewsCta: "See all reviews on Tripadvisor",
+    reviewsTraveler: "Traveller",
   },
   footer: {
     blurb:
@@ -1131,6 +1164,13 @@ const en: Dictionary = {
     video: "Tour video",
     map: "Tour map",
     openMap: "Open map",
+    reviewsKicker: "Tripadvisor",
+    reviewsTitle: "Reviews for this tour",
+    reviewsSubtitle:
+      "Traveller experiences from Tripadvisor and our own departures.",
+    reviewsBasedOn: "Based on {n} Tripadvisor reviews",
+    reviewsCta: "Read more on Tripadvisor",
+    reviewsTraveler: "Traveller",
   },
   blog: {
     eyebrow: "Blog",
@@ -1282,6 +1322,13 @@ const de: Dictionary = {
     islandBody:
       "Biosphärenreservat, Stille, Ruhe und eine vulkanische Landschaft geprägt von César Manrique. Timanfaya, Cueva de los Verdes, Kakteengarten oder Jameos del Agua: die Insel erlebt man besser mit Kennern.",
     islandCta: "Jetzt planen",
+    reviewsKicker: "Tripadvisor",
+    reviewsTitle: "Das sagen Reisende",
+    reviewsSubtitle:
+      "Echte Bewertungen von Gästen, die Lanzarote mit uns entdeckt haben.",
+    reviewsBasedOn: "Basierend auf {n} Tripadvisor-Bewertungen",
+    reviewsCta: "Alle Bewertungen auf Tripadvisor",
+    reviewsTraveler: "Reisender",
   },
   footer: {
     blurb:
@@ -1569,6 +1616,13 @@ const de: Dictionary = {
     video: "Video der Tour",
     map: "Kartenübersicht",
     openMap: "Karte öffnen",
+    reviewsKicker: "Tripadvisor",
+    reviewsTitle: "Bewertungen zu dieser Tour",
+    reviewsSubtitle:
+      "Erfahrungen von Reisenden auf Tripadvisor und bei unseren Touren.",
+    reviewsBasedOn: "Basierend auf {n} Tripadvisor-Bewertungen",
+    reviewsCta: "Mehr auf Tripadvisor lesen",
+    reviewsTraveler: "Reisender",
   },
   blog: {
     eyebrow: "Blog",
