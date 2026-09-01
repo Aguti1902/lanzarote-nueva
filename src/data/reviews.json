@@ -2567,6 +2567,58 @@
       "date": "2017-10-18",
       "source": "tripadvisor",
       "featured": false
+    },
+    {
+      "id": "rev-02de066a8d65",
+      "tourId": "tour-privado",
+      "author": "SILVIA GRACIA PRADO",
+      "title": null,
+      "text": "Hice dos excelentes excursiones, el sur de Lanzarote y el norte. Me gustó mucho el trato personalizado y las informaciones detalladas que se nos proporcionaron durante todo el recorrido. Muchísimas gracias a Cristina, nuestra guía, por todas sus atenciones y por las paradas improvisadas que hicimos para que yo pudiera hacer fotos.",
+      "rating": 5,
+      "ratingScale": 5,
+      "locale": "es",
+      "date": "2017-08-11",
+      "source": "tripadvisor",
+      "featured": false
+    },
+    {
+      "id": "rev-2e5f1b79d695",
+      "tourId": "tour-privado",
+      "author": "Adela Lupascu",
+      "title": null,
+      "text": "Itinerario muy completo que ayuda a entender y disfrutar de la isla! El servicio de nuestra guía Cristina fue excelente: siempre se mostró muy flexible, comunicativa, amable y dispuesta a informarnos lo mejor y contarnos lo más anecdótico de cada sitio visitado. 100% recomendado.",
+      "rating": 5,
+      "ratingScale": 5,
+      "locale": "es",
+      "date": "2018-01-23",
+      "source": "tripadvisor",
+      "featured": false
+    },
+    {
+      "id": "rev-517547df8a90",
+      "tourId": "tour-privado",
+      "author": "Jordi Manchon",
+      "title": null,
+      "text": "Es dificil que sepan a que servicio me refiero con la fecha que me indican. Veamos, mi primera excursion fue a Lanzarote Cesar Manrique, muy bien organizada y dirigida por su guia Razmila. Calificación excelente. Saludos Jordi Manchon",
+      "rating": 5,
+      "ratingScale": 5,
+      "locale": "es",
+      "date": "2015-10-18",
+      "source": "tripadvisor",
+      "featured": false
+    },
+    {
+      "id": "rev-687ac0bcdbc1",
+      "tourId": "tour-privado",
+      "author": "José Santacruz Cutillas",
+      "title": null,
+      "text": "Ha sido todo excelente, destacando especialmente la atención recibida en la contratación por Carol, así como la calidad y explicaciones dadas por el guía a lo largo de toda la excursión. Gracias, ha sido todo un placer.",
+      "rating": 5,
+      "ratingScale": 5,
+      "locale": "es",
+      "date": "2015-08-18",
+      "source": "tripadvisor",
+      "featured": false
     }
   ]
 }
