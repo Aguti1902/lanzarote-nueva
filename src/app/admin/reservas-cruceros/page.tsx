@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Booking, BookingStatus } from "@/types";
 import { formatDate, formatPrice, paymentLabel } from "@/lib/format";
-import { compareBookingsByServiceAsc } from "@/lib/booking-display";
+import { compareBookingsByServiceDesc } from "@/lib/booking-display";
 import {
   DateRangeFilter,
   emptyDateRange,
@@ -107,7 +107,7 @@ export default function AdminReservasCrucerosPage() {
         .toLowerCase();
       return hay.includes(q);
     });
-    return [...list].sort(compareBookingsByServiceAsc);
+    return [...list].sort(compareBookingsByServiceDesc);
   }, [cruiseBookings, tab, dateField, range, query]);
 
   const selected = useMemo(

@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Booking, BookingStatus } from "@/types";
 import { formatDate, formatPrice, paymentLabel } from "@/lib/format";
-import { compareBookingsByServiceAsc } from "@/lib/booking-display";
+import { compareBookingsByServiceDesc } from "@/lib/booking-display";
 import {
   DateRangeFilter,
   emptyDateRange,
@@ -24,7 +24,6 @@ type ReservasTab =
   | "current"
   | "done"
   | "incomplete"
-  | "not_done"
   | "cancelled";
 
 const TABS: { id: ReservasTab; label: string }[] = [
@@ -32,36 +31,17 @@ const TABS: { id: ReservasTab; label: string }[] = [
   { id: "current", label: "Reservas actuales" },
   { id: "done", label: "Realizadas" },
   { id: "incomplete", label: "Reservas sin completar" },
-  { id: "not_done", label: "No realizadas" },
   { id: "cancelled", label: "Reservas Canceladas" },
 ];
 
 const PAGE_SIZE = 100;
 
-function todayIso(): string {
-  const d = new Date();
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${y}-${m}-${day}`;
-}
-
-function serviceDay(booking: Booking): string {
-  return (booking.date || "").slice(0, 10);
-}
-
-function isPastPending(booking: Booking, today = todayIso()): boolean {
-  const day = serviceDay(booking);
-  return (
-    booking.status === "pending" && Boolean(day) && day < today
-  );
-}
-
 function parseTab(value: string | null): ReservasTab {
+  // "not_done" legacy → sin completar (pendientes con fecha pasada)
+  if (value === "not_done") return "incomplete";
   if (
     value === "done" ||
     value === "incomplete" ||
-    value === "not_done" ||
     value === "cancelled" ||
     value === "current" ||
     value === "all"
@@ -71,7 +51,7 @@ function parseTab(value: string | null): ReservasTab {
   return "all";
 }
 
-function matchesTab(booking: Booking, tab: ReservasTab, today = todayIso()): boolean {
+function matchesTab(booking: Booking, tab: ReservasTab): boolean {
   switch (tab) {
     case "all":
       return true;
@@ -80,9 +60,8 @@ function matchesTab(booking: Booking, tab: ReservasTab, today = todayIso()): boo
     case "done":
       return booking.status === "completed";
     case "incomplete":
-      return booking.status === "pending" && !isPastPending(booking, today);
-    case "not_done":
-      return isPastPending(booking, today);
+      // Pendientes (incl. fecha de servicio ya pasada)
+      return booking.status === "pending";
     case "cancelled":
       return booking.status === "cancelled";
   }
@@ -189,30 +168,26 @@ export default function AdminReservasPage() {
   }
 
   const tabCounts = useMemo(() => {
-    const today = todayIso();
     const counts: Record<ReservasTab, number> = {
       all: bookings.length,
       current: 0,
       done: 0,
       incomplete: 0,
-      not_done: 0,
       cancelled: 0,
     };
     for (const b of bookings) {
-      if (matchesTab(b, "current", today)) counts.current += 1;
-      if (matchesTab(b, "done", today)) counts.done += 1;
-      if (matchesTab(b, "incomplete", today)) counts.incomplete += 1;
-      if (matchesTab(b, "not_done", today)) counts.not_done += 1;
-      if (matchesTab(b, "cancelled", today)) counts.cancelled += 1;
+      if (matchesTab(b, "current")) counts.current += 1;
+      if (matchesTab(b, "done")) counts.done += 1;
+      if (matchesTab(b, "incomplete")) counts.incomplete += 1;
+      if (matchesTab(b, "cancelled")) counts.cancelled += 1;
     }
     return counts;
   }, [bookings]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const today = todayIso();
     const list = bookings.filter((b) => {
-      if (!matchesTab(b, tab, today)) return false;
+      if (!matchesTab(b, tab)) return false;
       const dateValue = dateField === "service" ? b.date : b.createdAt;
       if (!inDateRange(dateValue, range)) return false;
       if (!q) return true;
@@ -232,7 +207,7 @@ export default function AdminReservasPage() {
         .toLowerCase();
       return hay.includes(q);
     });
-    return [...list].sort(compareBookingsByServiceAsc);
+    return [...list].sort(compareBookingsByServiceDesc);
   }, [bookings, tab, dateField, range, query]);
 
   const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
@@ -346,11 +321,12 @@ export default function AdminReservasPage() {
       />
 
       <div className="overflow-x-auto rounded-lg bg-white shadow-sm ring-1 ring-sand-line">
-        <table className="w-full min-w-[1000px] text-left text-sm">
+        <table className="w-full min-w-[1100px] text-left text-sm">
           <thead className="border-b border-sand-line bg-sky-soft text-ink-muted">
             <tr>
               <th className="px-4 py-3 font-medium">ID</th>
-              <th className="px-4 py-3 font-medium">Fecha</th>
+              <th className="px-4 py-3 font-medium">Fecha servicio</th>
+              <th className="px-4 py-3 font-medium">Fecha reserva</th>
               <th className="px-4 py-3 font-medium">Servicio / Cliente</th>
               <th className="px-4 py-3 font-medium">Pago</th>
               <th className="px-4 py-3 font-medium">Importes</th>
@@ -361,14 +337,14 @@ export default function AdminReservasPage() {
           <tbody>
             {loading && (
               <tr>
-                <td colSpan={7} className="px-4 py-8 text-center text-ink-muted">
+                <td colSpan={8} className="px-4 py-8 text-center text-ink-muted">
                   Cargando…
                 </td>
               </tr>
             )}
             {!loading && filtered.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-4 py-8 text-center text-ink-muted">
+                <td colSpan={8} className="px-4 py-8 text-center text-ink-muted">
                   No hay reservas en esta vista
                 </td>
               </tr>
@@ -398,6 +374,9 @@ export default function AdminReservasPage() {
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">
                     {formatDate(b.date)}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-ink-muted">
+                    {b.createdAt ? formatDate(b.createdAt.slice(0, 10)) : "—"}
                   </td>
                   <td className="px-4 py-3 max-w-[260px]">
                     <button

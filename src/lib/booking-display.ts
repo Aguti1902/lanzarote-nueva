@@ -28,3 +28,8 @@ export function compareBookingsByServiceAsc(a: Booking, b: Booking): number {
   else if (timeB) return 1;
   return (a.createdAt || "").localeCompare(b.createdAt || "");
 }
+
+/** Más nuevo → más antiguo (fecha servicio DESC, luego creación). */
+export function compareBookingsByServiceDesc(a: Booking, b: Booking): number {
+  return compareBookingsByServiceAsc(b, a);
+}
