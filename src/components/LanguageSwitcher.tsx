@@ -21,6 +21,7 @@ export function LanguageSwitcher() {
     const target = parts.join("/") || `/${next}`;
     document.cookie = `NEXT_LOCALE=${next}; path=/; max-age=31536000`;
     router.push(target);
+    router.refresh();
   }
 
   return (

@@ -17,7 +17,7 @@ import type { Booking } from "@/types";
 import { formatDate, formatPrice, paymentLabel } from "@/lib/format";
 import {
   DateRangeFilter,
-  emptyDateRange,
+  lastNDaysRange,
   type DateRange,
 } from "@/components/admin/DateRangeFilter";
 
@@ -40,8 +40,8 @@ type Stats = {
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
-  const [range, setRange] = useState<DateRange>(emptyDateRange);
-  const [dateField, setDateField] = useState<"service" | "created">("service");
+  const [range, setRange] = useState<DateRange>(() => lastNDaysRange(7));
+  const [dateField, setDateField] = useState<"service" | "created">("created");
   const [loadingStats, setLoadingStats] = useState(true);
   const [counts, setCounts] = useState({
     tours: 0,
@@ -120,7 +120,7 @@ export default function AdminDashboard() {
       <div>
         <h1 className="text-3xl font-bold text-ink">Dashboard</h1>
         <p className="mt-1 text-sm text-ink-muted">
-          Resumen operativo de Lanzarote Experience Tours
+          Resumen operativo de los últimos 7 días (ajustable)
         </p>
       </div>
 
@@ -132,9 +132,16 @@ export default function AdminDashboard() {
           }
           className="rounded border border-sand-line bg-white px-3 py-2 text-sm"
         >
-          <option value="service">Filtrar por fecha servicio</option>
           <option value="created">Filtrar por fecha reserva</option>
+          <option value="service">Filtrar por fecha servicio</option>
         </select>
+        <button
+          type="button"
+          onClick={() => setRange(lastNDaysRange(7))}
+          className="rounded border border-sand-line bg-white px-3 py-2 text-sm font-medium hover:ring-1 hover:ring-ocean/30"
+        >
+          Últimos 7 días
+        </button>
       </div>
 
       <DateRangeFilter
@@ -144,7 +151,7 @@ export default function AdminDashboard() {
         hint={
           dateField === "service"
             ? "Filtre métricas y listados por fecha de servicio"
-            : "Filtre métricas y listados por fecha de creación de la reserva"
+            : "Por defecto: actividad de los últimos 7 días (fecha de reserva)"
         }
         resultCount={stats?.totalBookings}
       />

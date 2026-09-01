@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { formatPrice } from "@/lib/format";
 import {
   DateRangeFilter,
-  emptyDateRange,
+  lastNDaysRange,
   type DateRange,
 } from "@/components/admin/DateRangeFilter";
 
@@ -39,8 +39,8 @@ type InvoiceStats = {
 export default function AdminEstadisticasPage() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [inv, setInv] = useState<InvoiceStats | null>(null);
-  const [range, setRange] = useState<DateRange>(emptyDateRange);
-  const [dateField, setDateField] = useState<"service" | "created">("service");
+  const [range, setRange] = useState<DateRange>(() => lastNDaysRange(7));
+  const [dateField, setDateField] = useState<"service" | "created">("created");
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(async () => {
@@ -70,19 +70,28 @@ export default function AdminEstadisticasPage() {
         <div>
           <h1 className="text-3xl font-bold text-ink">Estadísticas</h1>
           <p className="mt-1 text-sm text-ink-muted">
-            Ingresos, pagos, efectivo y facturación
+            Ingresos, pagos, efectivo y facturación · últimos 7 días por defecto
           </p>
         </div>
-        <select
-          value={dateField}
-          onChange={(e) =>
-            setDateField(e.target.value as "service" | "created")
-          }
-          className="rounded border border-sand-line bg-white px-3 py-2 text-sm"
-        >
-          <option value="service">Filtrar por fecha servicio</option>
-          <option value="created">Filtrar por fecha reserva</option>
-        </select>
+        <div className="flex flex-wrap gap-2">
+          <select
+            value={dateField}
+            onChange={(e) =>
+              setDateField(e.target.value as "service" | "created")
+            }
+            className="rounded border border-sand-line bg-white px-3 py-2 text-sm"
+          >
+            <option value="created">Filtrar por fecha reserva</option>
+            <option value="service">Filtrar por fecha servicio</option>
+          </select>
+          <button
+            type="button"
+            onClick={() => setRange(lastNDaysRange(7))}
+            className="rounded border border-sand-line bg-white px-3 py-2 text-sm font-medium hover:ring-1 hover:ring-ocean/30"
+          >
+            Últimos 7 días
+          </button>
+        </div>
       </div>
 
       <DateRangeFilter
@@ -92,7 +101,7 @@ export default function AdminEstadisticasPage() {
         hint={
           dateField === "service"
             ? "Rango según día del servicio"
-            : "Rango según día en que reservaron"
+            : "Por defecto: últimos 7 días según día en que reservaron"
         }
         resultCount={stats?.totalBookings}
       />
