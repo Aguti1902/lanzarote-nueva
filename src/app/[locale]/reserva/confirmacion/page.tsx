@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2, FileText, UserRound, XCircle } from "lucide-react";
 import { getBookings } from "@/lib/bookings";
-import { formatDate, formatPrice } from "@/lib/format";
+import {
+  bookingReturnDate,
+  bookingReturnTime,
+  bookingServiceTime,
+} from "@/lib/booking-time";
+import { formatDate, formatDateShort, formatPrice } from "@/lib/format";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
@@ -55,9 +60,35 @@ export default async function ConfirmacionPage({ params, searchParams }: Props) 
               <dd className="text-right font-medium">{booking.tourTitle}</dd>
             </div>
             <div className="flex justify-between gap-4">
-              <dt className="text-ink-muted">{dict.common.date}</dt>
+              <dt className="text-ink-muted">{dict.voucher.bookingDate}</dt>
+              <dd className="font-medium">
+                {formatDateShort(booking.createdAt)}
+              </dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt className="text-ink-muted">{dict.voucher.serviceDate}</dt>
               <dd className="font-medium">{formatDate(booking.date)}</dd>
             </div>
+            {bookingServiceTime(booking) && (
+              <div className="flex justify-between gap-4">
+                <dt className="text-ink-muted">{dict.voucher.serviceTime}</dt>
+                <dd className="font-medium">{bookingServiceTime(booking)}</dd>
+              </div>
+            )}
+            {bookingReturnDate(booking) && (
+              <div className="flex justify-between gap-4">
+                <dt className="text-ink-muted">{dict.voucher.returnDate}</dt>
+                <dd className="font-medium">
+                  {formatDate(bookingReturnDate(booking))}
+                </dd>
+              </div>
+            )}
+            {bookingReturnTime(booking) && (
+              <div className="flex justify-between gap-4">
+                <dt className="text-ink-muted">{dict.voucher.returnTime}</dt>
+                <dd className="font-medium">{bookingReturnTime(booking)}</dd>
+              </div>
+            )}
             <div className="flex justify-between gap-4">
               <dt className="text-ink-muted">{dict.manage.payment}</dt>
               <dd className="font-medium">

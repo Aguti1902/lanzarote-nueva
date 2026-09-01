@@ -3,7 +3,12 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import type { Booking } from "@/types";
-import { formatPrice } from "@/lib/format";
+import {
+  bookingReturnDate,
+  bookingReturnTime,
+  bookingServiceTime,
+} from "@/lib/booking-time";
+import { formatDateShort, formatPrice } from "@/lib/format";
 import { PageHero } from "@/components/PageHero";
 import { useLocale } from "@/components/LocaleProvider";
 
@@ -98,9 +103,35 @@ export default function GestionarReservaPage() {
                 <dd className="text-right font-bold">{booking.tourTitle}</dd>
               </div>
               <div className="flex justify-between gap-4">
-                <dt className="text-ink-muted">{dict.common.date}</dt>
-                <dd className="font-bold">{booking.date}</dd>
+                <dt className="text-ink-muted">{dict.voucher.bookingDate}</dt>
+                <dd className="font-bold">
+                  {formatDateShort(booking.createdAt)}
+                </dd>
               </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-ink-muted">{dict.voucher.serviceDate}</dt>
+                <dd className="font-bold">{formatDateShort(booking.date)}</dd>
+              </div>
+              {bookingServiceTime(booking) && (
+                <div className="flex justify-between gap-4">
+                  <dt className="text-ink-muted">{dict.voucher.serviceTime}</dt>
+                  <dd className="font-bold">{bookingServiceTime(booking)}</dd>
+                </div>
+              )}
+              {bookingReturnDate(booking) && (
+                <div className="flex justify-between gap-4">
+                  <dt className="text-ink-muted">{dict.voucher.returnDate}</dt>
+                  <dd className="font-bold">
+                    {formatDateShort(bookingReturnDate(booking))}
+                  </dd>
+                </div>
+              )}
+              {bookingReturnTime(booking) && (
+                <div className="flex justify-between gap-4">
+                  <dt className="text-ink-muted">{dict.voucher.returnTime}</dt>
+                  <dd className="font-bold">{bookingReturnTime(booking)}</dd>
+                </div>
+              )}
               <div className="flex justify-between gap-4">
                 <dt className="text-ink-muted">{dict.manage.people}</dt>
                 <dd className="font-bold">

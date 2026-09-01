@@ -8,6 +8,11 @@ import {
   formatDateShort,
   paymentLabel,
 } from "@/lib/format";
+import {
+  bookingReturnDate,
+  bookingReturnTime,
+  bookingServiceTime,
+} from "@/lib/booking-time";
 import type { CancelReasonId } from "@/lib/cancellation";
 import {
   buildVoucherHtml,
@@ -314,6 +319,24 @@ export function BookingDetailModal({
                     label="Fecha del servicio"
                     value={formatDateShort(booking.date)}
                   />
+                  {bookingServiceTime(booking) && (
+                    <Row
+                      label="Hora del servicio"
+                      value={bookingServiceTime(booking)}
+                    />
+                  )}
+                  {bookingReturnDate(booking) && (
+                    <Row
+                      label="Fecha de regreso"
+                      value={formatDateShort(bookingReturnDate(booking))}
+                    />
+                  )}
+                  {bookingReturnTime(booking) && (
+                    <Row
+                      label="Hora de regreso"
+                      value={bookingReturnTime(booking)}
+                    />
+                  )}
                   <div className="flex gap-3">
                     <dt className="w-44 shrink-0 text-ink-muted">Estado</dt>
                     <dd>
@@ -583,7 +606,20 @@ export function BookingDetailModal({
                     {booking.children ? ` + ${booking.children} niños` : ""})
                   </li>
                   <li>Precio: {money(total)}</li>
+                  <li>Fecha de reserva: {formatDateShort(booking.createdAt)}</li>
                   <li>Fecha de servicio: {formatDateShort(booking.date)}</li>
+                  {bookingServiceTime(booking) && (
+                    <li>Hora del servicio: {bookingServiceTime(booking)}</li>
+                  )}
+                  {bookingReturnDate(booking) && (
+                    <li>
+                      Fecha de regreso:{" "}
+                      {formatDateShort(bookingReturnDate(booking))}
+                    </li>
+                  )}
+                  {bookingReturnTime(booking) && (
+                    <li>Hora de regreso: {bookingReturnTime(booking)}</li>
+                  )}
                   {booking.customer.flightNumber && (
                     <li>Número de vuelo: {booking.customer.flightNumber}</li>
                   )}

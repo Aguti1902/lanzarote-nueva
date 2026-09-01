@@ -51,6 +51,7 @@ export default function CarritoPage() {
             tourId: item.tourId,
             tourTitle: item.title,
             date: item.date,
+            time: item.time,
             adults: item.adults,
             children: item.children,
             totalPrice: item.totalPrice,

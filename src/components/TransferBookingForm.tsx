@@ -21,6 +21,9 @@ export function TransferBookingForm({
     "airport_to_hotel" | "hotel_to_airport" | "return"
   >("airport_to_hotel");
   const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [returnDate, setReturnDate] = useState("");
+  const [returnTime, setReturnTime] = useState("");
   const [adults, setAdults] = useState(2);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
   const [name, setName] = useState("");
@@ -48,7 +51,11 @@ export function TransferBookingForm({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    if (!date || !name || !email || !phone || !hotel) {
+    if (!date || !time || !name || !email || !phone || !hotel) {
+      setError(dict.booking.fillRequired);
+      return;
+    }
+    if (direction === "return" && (!returnDate || !returnTime)) {
       setError(dict.booking.fillRequired);
       return;
     }
@@ -68,12 +75,19 @@ export function TransferBookingForm({
           type: "transfer",
           tourTitle: `Transfer ${dirLabel}`,
           date,
+          time,
           adults,
           children: 0,
           totalPrice: total,
           paymentMethod,
           customer: { name, email, phone, hotel, flightNumber },
-          transfer: { destination: dest.name, direction },
+          transfer: {
+            destination: dest.name,
+            direction,
+            time,
+            returnDate: direction === "return" ? returnDate : undefined,
+            returnTime: direction === "return" ? returnTime : undefined,
+          },
         }),
       });
       const data = await res.json();
@@ -151,6 +165,47 @@ export function TransferBookingForm({
             required
           />
         </label>
+        <label className="block">
+          <span className="mb-1 block text-sm font-medium">
+            {dict.transferForm.time}
+          </span>
+          <input
+            type="time"
+            className={inputClass}
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            required
+          />
+        </label>
+        {direction === "return" && (
+          <>
+            <label className="block">
+              <span className="mb-1 block text-sm font-medium">
+                {dict.transferForm.returnDate}
+              </span>
+              <input
+                type="date"
+                className={inputClass}
+                value={returnDate}
+                min={date || new Date().toISOString().slice(0, 10)}
+                onChange={(e) => setReturnDate(e.target.value)}
+                required
+              />
+            </label>
+            <label className="block">
+              <span className="mb-1 block text-sm font-medium">
+                {dict.transferForm.returnTime}
+              </span>
+              <input
+                type="time"
+                className={inputClass}
+                value={returnTime}
+                onChange={(e) => setReturnTime(e.target.value)}
+                required
+              />
+            </label>
+          </>
+        )}
         <label className="block">
           <span className="mb-1 block text-sm font-medium">
             {dict.transferForm.passengers}

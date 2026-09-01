@@ -417,6 +417,8 @@ export interface CruiseItinerariesData {
   sailings: CruiseSailing[];
 }
 
+export type BookingTimeSlot = "morning" | "afternoon" | "evening";
+
 export interface Booking {
   id: string;
   createdAt: string;
@@ -424,6 +426,10 @@ export interface Booking {
   tourId?: string;
   tourTitle: string;
   date: string;
+  /** Hora del servicio / recogida (HH:mm). */
+  time?: string;
+  /** Franja horaria legacy (excursiones). */
+  timeSlot?: BookingTimeSlot;
   adults: number;
   children: number;
   totalPrice: number;
@@ -454,6 +460,12 @@ export interface Booking {
   transfer?: {
     destination: string;
     direction: "airport_to_hotel" | "hotel_to_airport" | "return";
+    /** Hora del trayecto de ida / llegada (HH:mm). */
+    time?: string;
+    /** Fecha de regreso (YYYY-MM-DD) si es ida y vuelta. */
+    returnDate?: string;
+    /** Hora del trayecto de vuelta (HH:mm). */
+    returnTime?: string;
   };
   minibus?: {
     hours: number;

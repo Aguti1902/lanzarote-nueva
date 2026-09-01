@@ -39,6 +39,7 @@ export async function POST(request: Request) {
       tourId,
       tourTitle,
       date,
+      time,
       adults,
       children,
       totalPrice,
@@ -66,18 +67,39 @@ export async function POST(request: Request) {
       }
     }
 
+    const normalizedTime =
+      typeof time === "string" && time.trim() ? time.trim() : undefined;
+    const transferPayload =
+      transfer && typeof transfer === "object"
+        ? {
+            ...transfer,
+            time:
+              (typeof transfer.time === "string" && transfer.time.trim()) ||
+              normalizedTime,
+            returnDate:
+              typeof transfer.returnDate === "string" && transfer.returnDate.trim()
+                ? transfer.returnDate.trim().slice(0, 10)
+                : undefined,
+            returnTime:
+              typeof transfer.returnTime === "string" && transfer.returnTime.trim()
+                ? transfer.returnTime.trim()
+                : undefined,
+          }
+        : transfer;
+
     let booking = await addBooking({
       type,
       tourId,
       tourTitle,
       date,
+      time: normalizedTime || transferPayload?.time,
       adults: Number(adults) || 1,
       children: Number(children) || 0,
       totalPrice: Number(totalPrice) || 0,
       paymentMethod: (paymentMethod as PaymentMethod) || "card",
       paymentStatus: "paid",
       customer,
-      transfer,
+      transfer: transferPayload,
       minibus,
       status: "confirmed",
       groupId: groupId ? String(groupId) : undefined,

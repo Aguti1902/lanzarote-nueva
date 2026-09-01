@@ -74,6 +74,21 @@ function phpDateToIso(value) {
   return "";
 }
 
+function phpTimeHm(value) {
+  if (!value) return "";
+  const raw =
+    typeof value === "string"
+      ? value
+      : typeof value === "object" && value.date
+        ? String(value.date)
+        : "";
+  const m = raw.match(/(?:T|\s)(\d{1,2}):(\d{2})/);
+  if (!m) return "";
+  return `${m[1].padStart(2, "0")}:${m[2]}`;
+}
+
+const MOMENT_SLOT = { 1: "morning", 2: "afternoon", 3: "evening" };
+
 function mapStatus(code, serviceDate) {
   const c = String(code || "").toUpperCase();
   if (c === "CX") return "cancelled";
@@ -214,12 +229,25 @@ function migrateRegular(exportDir) {
       tourTitle = `Traslado ${destName}`;
       const zoneId = Number(details.destination || details.origin || 0);
       tourId = zoneId ? TRANSFER_SLUGS[zoneId] : undefined;
+      const arrivalTime = phpTimeHm(details.arrival_date);
+      const departTime = phpTimeHm(details.depart_date);
+      const returnDate = phpDateToIso(details.depart_date);
+      const primaryTime =
+        Number(details.type) === 2 ? departTime || arrivalTime : arrivalTime || departTime;
       transfer = {
         destination: destName,
         direction: transferDirection(details),
+        time: primaryTime || undefined,
+        returnDate:
+          Number(details.type) === 3 && returnDate && returnDate !== date
+            ? returnDate
+            : Number(details.type) === 3
+              ? returnDate || undefined
+              : undefined,
+        returnTime: Number(details.type) === 3 ? departTime || undefined : undefined,
       };
-      if (details.arrival_flight) {
-        // keep on customer later
+      if (primaryTime) {
+        // top-level time for vouchers / listados
       }
     } else {
       const legacyTourId = Number(details.tour_id || 0);
@@ -239,6 +267,13 @@ function migrateRegular(exportDir) {
     if (!date) {
       date = String(parent.create_date || "").slice(0, 10) || "1970-01-01";
     }
+
+    const serviceTime = isTransfer
+      ? transfer?.time
+      : undefined;
+    const timeSlot = !isTransfer
+      ? MOMENT_SLOT[Number(details.moment)] || undefined
+      : undefined;
 
     const paidOnline =
       hasPaymentRef(parent.stripe_id) || hasPaymentRef(parent.paypal_id);
@@ -280,6 +315,8 @@ function migrateRegular(exportDir) {
       tourId,
       tourTitle,
       date,
+      time: serviceTime || undefined,
+      timeSlot: timeSlot || undefined,
       adults,
       children,
       totalPrice: amounts.amountTotal,

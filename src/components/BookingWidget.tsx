@@ -18,6 +18,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
   const { addItem } = useCart();
   const { dict, href } = useLocale();
   const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
   const [hours, setHours] = useState(4);
@@ -118,6 +119,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
       title: tour.title,
       image: tour.image,
       date,
+      time: time || undefined,
       adults: isMinibus ? 1 : adults,
       children: isPrivate || isMinibus ? 0 : children,
       priceAdult: isPrivate || isMinibus ? total : tour.priceAdult,
@@ -144,6 +146,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
           tourId: tour.id,
           tourTitle: tour.title,
           date,
+          time: time || undefined,
           adults,
           children: isPrivate || isMinibus ? 0 : children,
           totalPrice: total,
@@ -192,6 +195,15 @@ export function BookingWidget({ tour }: { tour: Tour }) {
             value={date}
             min={new Date().toISOString().slice(0, 10)}
             onChange={(e) => setDate(e.target.value)}
+            className={inputClass}
+          />
+        </Field>
+
+        <Field label={dict.booking.time}>
+          <input
+            type="time"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
             className={inputClass}
           />
         </Field>
