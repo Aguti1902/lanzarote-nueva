@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { CruiseItinerary } from "@/components/CruiseItinerary";
 import {
   getCruiseSailing,
-  getCruiseShoreTourMap,
+  getCruiseShoreTours,
 } from "@/lib/cruise-itineraries";
 import { formatDateShort } from "@/lib/format";
 import { localizeShoreTours } from "@/lib/localize-content";
@@ -38,14 +38,9 @@ export default async function CruiseSailingPage({ params }: Props) {
   const sailing = await getCruiseSailing(company, ship, sailingId);
   if (!sailing) notFound();
 
-  const tourMap = await getCruiseShoreTourMap();
-  const tourIds = new Set(
-    sailing.stops.flatMap((stop) => stop.tourIds)
-  );
+  // Catálogo activo completo: la UI resuelve por tourIds o por puerto (fallback).
   const tours = await localizeShoreTours(
-    [...tourIds]
-      .map((id) => tourMap.get(id))
-      .filter(Boolean) as NonNullable<ReturnType<typeof tourMap.get>>[],
+    (await getCruiseShoreTours()).filter((t) => t.active !== false),
     locale
   );
 

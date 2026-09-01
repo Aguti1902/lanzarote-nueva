@@ -689,16 +689,27 @@ function migrateShoreTours(exportDir) {
     trBy.get(tid)[tr.lang_id] = tr;
   }
 
+  // Activar catálogo útil en Canarias / Madeira (status legacy a veces 0)
+  const FORCE_ACTIVE = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12]);
+
   const shoreTours = tours.map((t) => {
     const tid = Number(t.id);
     const langs = trBy.get(tid) || {};
     const es = langs.es || {};
     const media = parseMaybeJson(t.media) || [];
+<<<<<<< HEAD
     const gallery = media.map(
       (f) => `${MEDIA_CRUISE_TOUR}/${tid}/${f}`
     );
     const thumb = t.thumb_image
       ? `${MEDIA_CRUISE_THUMB}/${t.thumb_image}`
+=======
+    const gallery = media
+      .map((f) => `${MEDIA_CRUISE}/tours/${tid}/${f}`)
+      .filter(Boolean);
+    const thumb = t.thumb_image
+      ? `${MEDIA_CRUISE}/thumb/${t.thumb_image}`
+>>>>>>> origin/cursor/shore-escalas-cruceros-5b40
       : gallery[0] || "/images/heroes/cruise.jpg";
     return {
       id: `shore-${tid}`,
@@ -729,7 +740,7 @@ function migrateShoreTours(exportDir) {
       privatePrice: num(t.price_private) || undefined,
       privateMaxPax: num(t.max_private) || undefined,
       port: portById.get(Number(t.port_id))?.name || "Lanzarote",
-      active: Number(t.status) === 1,
+      active: Number(t.status) === 1 || FORCE_ACTIVE.has(tid),
       currency: "EUR",
       allowCard: true,
       allowBizum: true,
@@ -755,11 +766,70 @@ function migrateShoreTours(exportDir) {
     };
   });
 
+  const LEGACY_ALIASES = {
+    "excursion-sur-de-lanzarote-parque-nacional-de-timanfaya": "shore-1",
+    "lanzarote-experience-tour-nuestra-excursion-mas-completa-para-cruceristas":
+      "shore-2",
+  };
+
+  function regionKeys(port) {
+    const s = String(port || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-");
+    const keys = [];
+    if (/lanzarote/.test(s)) keys.push("lanzarote");
+    if (/tenerife/.test(s)) keys.push("tenerife");
+    if (/gran-canaria|las-palmas/.test(s)) keys.push("gran-canaria");
+    if (/la-palma/.test(s) && !/gran-canaria/.test(s)) keys.push("la-palma");
+    if (/la-gomera|gomera/.test(s)) keys.push("la-gomera");
+    if (/fuerteventura|puerto-del-rosario|rosario/.test(s))
+      keys.push("fuerteventura");
+    if (/madeira|funchal/.test(s)) keys.push("madeira");
+    return keys;
+  }
+
+  const byRegion = new Map();
+  for (const t of shoreTours) {
+    if (t.active === false) continue;
+    for (const k of regionKeys(t.port)) {
+      if (!byRegion.has(k)) byRegion.set(k, []);
+      byRegion.get(k).push(t.id);
+    }
+  }
+
+  const sailings = (existing.sailings || []).map((sailing) => ({
+    ...sailing,
+    stops: (sailing.stops || []).map((stop) => {
+      if (stop.isSeaDay) return stop;
+      const mapped = (stop.tourIds || []).map(
+        (id) => LEGACY_ALIASES[id] || id
+      );
+      const fromPort = [];
+      for (const r of regionKeys(stop.port)) {
+        for (const id of byRegion.get(r) || []) fromPort.push(id);
+      }
+      const tourIds = [
+        ...new Set([
+          ...mapped.filter((id) => String(id).startsWith("shore-")),
+          ...fromPort,
+        ]),
+      ];
+      return {
+        ...stop,
+        tourIds,
+        hasTours: tourIds.length > 0,
+      };
+    }),
+  }));
+
   return {
     ...existing,
     updatedAt: new Date().toISOString().slice(0, 10),
-    source: `${existing.source || ""} · Shore tours importados desde web antigua`.trim(),
+    source: `${existing.source || ""} · Shore tours importados y enlazados a escalas`.trim(),
     shoreTours,
+    sailings,
   };
 }
 

@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "wdnviethdarcmneghhqv.supabase.co",
       },
+      {
+        protocol: "https",
+        hostname: "www.lanzaroteexperiencetours.com",
+      },
     ],
   },
 };
