@@ -15,6 +15,8 @@ export type AdminExtrasData = {
   cruisePorts: CruisePort[];
   cruiseGroups: CruiseGroup[];
   redirects: SeoRedirect[];
+  /** ISO date when past cruise groups were purged for a clean restart */
+  cruiseGroupsResetAt?: string;
 };
 
 const empty: AdminExtrasData = {
@@ -319,8 +321,22 @@ export async function deleteCruisePort(id: string) {
 }
 
 /* ── Cruise groups ── */
+const CRUISE_GROUPS_RESET_AT = "2026-09-01";
+
 export async function getCruiseGroups() {
-  return (await readData()).cruiseGroups;
+  const data = await readData();
+  // One-shot: wipe historical past groups and keep only current/future.
+  if (data.cruiseGroupsResetAt !== CRUISE_GROUPS_RESET_AT) {
+    const today = new Date().toISOString().slice(0, 10);
+    const kept = data.cruiseGroups.filter(
+      (g) => (g.date || "").slice(0, 10) >= today
+    );
+    data.cruiseGroups = kept;
+    data.cruiseGroupsResetAt = CRUISE_GROUPS_RESET_AT;
+    await writeData(data);
+    return kept;
+  }
+  return data.cruiseGroups;
 }
 
 export async function upsertCruiseGroup(

@@ -19,22 +19,49 @@ import {
   bookingRowClassName,
 } from "@/components/admin/BookingStatusBadge";
 
-type ReservasTab = "all" | "current" | "done" | "incomplete" | "cancelled";
+type ReservasTab =
+  | "all"
+  | "current"
+  | "done"
+  | "incomplete"
+  | "not_done"
+  | "cancelled";
 
 const TABS: { id: ReservasTab; label: string }[] = [
   { id: "all", label: "Todos" },
   { id: "current", label: "Reservas actuales" },
   { id: "done", label: "Realizadas" },
   { id: "incomplete", label: "Reservas sin completar" },
+  { id: "not_done", label: "No realizadas" },
   { id: "cancelled", label: "Reservas Canceladas" },
 ];
 
 const PAGE_SIZE = 100;
 
+function todayIso(): string {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function serviceDay(booking: Booking): string {
+  return (booking.date || "").slice(0, 10);
+}
+
+function isPastPending(booking: Booking, today = todayIso()): boolean {
+  const day = serviceDay(booking);
+  return (
+    booking.status === "pending" && Boolean(day) && day < today
+  );
+}
+
 function parseTab(value: string | null): ReservasTab {
   if (
     value === "done" ||
     value === "incomplete" ||
+    value === "not_done" ||
     value === "cancelled" ||
     value === "current" ||
     value === "all"
@@ -44,7 +71,7 @@ function parseTab(value: string | null): ReservasTab {
   return "all";
 }
 
-function matchesTab(booking: Booking, tab: ReservasTab): boolean {
+function matchesTab(booking: Booking, tab: ReservasTab, today = todayIso()): boolean {
   switch (tab) {
     case "all":
       return true;
@@ -53,7 +80,9 @@ function matchesTab(booking: Booking, tab: ReservasTab): boolean {
     case "done":
       return booking.status === "completed";
     case "incomplete":
-      return booking.status === "pending";
+      return booking.status === "pending" && !isPastPending(booking, today);
+    case "not_done":
+      return isPastPending(booking, today);
     case "cancelled":
       return booking.status === "cancelled";
   }
@@ -75,7 +104,7 @@ export default function AdminReservasPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [modalView, setModalView] = useState<"details" | "cancel">("details");
   const [loading, setLoading] = useState(true);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(() => searchParams.get("q") || "");
   const [page, setPage] = useState(1);
   const [syncMsg, setSyncMsg] = useState("");
 
@@ -160,26 +189,30 @@ export default function AdminReservasPage() {
   }
 
   const tabCounts = useMemo(() => {
+    const today = todayIso();
     const counts: Record<ReservasTab, number> = {
       all: bookings.length,
       current: 0,
       done: 0,
       incomplete: 0,
+      not_done: 0,
       cancelled: 0,
     };
     for (const b of bookings) {
-      if (matchesTab(b, "current")) counts.current += 1;
-      if (matchesTab(b, "done")) counts.done += 1;
-      if (matchesTab(b, "incomplete")) counts.incomplete += 1;
-      if (matchesTab(b, "cancelled")) counts.cancelled += 1;
+      if (matchesTab(b, "current", today)) counts.current += 1;
+      if (matchesTab(b, "done", today)) counts.done += 1;
+      if (matchesTab(b, "incomplete", today)) counts.incomplete += 1;
+      if (matchesTab(b, "not_done", today)) counts.not_done += 1;
+      if (matchesTab(b, "cancelled", today)) counts.cancelled += 1;
     }
     return counts;
   }, [bookings]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
+    const today = todayIso();
     const list = bookings.filter((b) => {
-      if (!matchesTab(b, tab)) return false;
+      if (!matchesTab(b, tab, today)) return false;
       const dateValue = dateField === "service" ? b.date : b.createdAt;
       if (!inDateRange(dateValue, range)) return false;
       if (!q) return true;

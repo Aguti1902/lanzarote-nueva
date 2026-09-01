@@ -146,6 +146,28 @@ function mergeStringFields(
   return out;
 }
 
+/** Prefer translated shortTitle; otherwise use translated title so cards are not left in Spanish. */
+function resolveShortTitle(
+  strings: Record<string, unknown>,
+  embedded: Record<string, unknown> | undefined,
+  fileOverlay: Record<string, unknown> | undefined,
+  baseShortTitle: string
+): string {
+  const short =
+    (typeof strings.shortTitle === "string" && strings.shortTitle.trim()) ||
+    (typeof embedded?.shortTitle === "string" && embedded.shortTitle.trim()) ||
+    (typeof fileOverlay?.shortTitle === "string" &&
+      fileOverlay.shortTitle.trim()) ||
+    "";
+  if (short) return short;
+  const title =
+    (typeof strings.title === "string" && strings.title.trim()) || "";
+  if (title) {
+    return title.length > 48 ? `${title.slice(0, 45).trimEnd()}…` : title;
+  }
+  return baseShortTitle;
+}
+
 export async function localizeSettings(
   settings: SiteSettings,
   locale: Locale
@@ -192,10 +214,18 @@ export async function localizeTour(
     "languages",
   ]);
 
+  const shortTitle = resolveShortTitle(
+    strings,
+    embedded,
+    fileOverlay,
+    tour.shortTitle
+  );
+
   return {
     ...tour,
     ...strings,
     ...arrays,
+    shortTitle,
   } as Tour;
 }
 
@@ -269,10 +299,18 @@ export async function localizeShoreTour(
     "notIncluded",
   ]);
 
+  const shortTitle = resolveShortTitle(
+    strings,
+    embedded,
+    fileOverlay,
+    tour.shortTitle || tour.title
+  );
+
   return {
     ...tour,
     ...strings,
     ...arrays,
+    shortTitle,
   } as CruiseShoreTour;
 }
 

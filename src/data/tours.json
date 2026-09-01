@@ -137,7 +137,8 @@
           "Do not forget to bring your camera",
           "The Fire Mountains can be very windy, therefore a jumper is recommended",
           "It is important to know that the tour takes aprox 5 hours, occasionally we can reach up to 20 people and go in two languages."
-        ]
+        ],
+        "shortTitle": "Lanzarote Volcano Tour and Timanfaya National…"
       },
       "de": {
         "title": "Timanfaya und die Feuerberge Experience",
@@ -159,7 +160,8 @@
           "Vergessen Sie nicht Ihre Kamera",
           "Eine Jacke",
           "Es ist wichtig zu wissen, dass wir gelegentlich bis zu 20 Personen erreichen und in zwei Sprachen gehen können."
-        ]
+        ],
+        "shortTitle": "Timanfaya und die Feuerberge Experience"
       }
     },
     "legacyTourId": 1
@@ -342,7 +344,8 @@
           "Do I have to print my BOOKING VOUCHER?  It is essential that you present the printed booking voucher, otherwise you will not be able to access the centres.",
           "Where do I redeem the RESERVATION VOUCHER for the TICKET PACKAGE?  The RESERVATION VOUCHER must be handed in at the ticket office of the first centre you are going to visit and you will be given the TICKET indicating which centres are included. REMEMBER that this ENTRANCE must be stamped at the other centers. DON'T LOSE THEM!",
           "What do my tickets include? The tickets are designed to go on your own with your rental car. However, The Green Cave is visited in groups with a guide from the centre. On the visit to Timanfaya National Park you will have to show the ticket to get on the bus that takes you along the impressive panoramic Route of the Volcanoes."
-        ]
+        ],
+        "shortTitle": "Entrance ticket package for all tourist cente…"
       },
       "de": {
         "title": "Eintrittskartenpaket für alle touristischen Zentren Lanzarotes.",
@@ -360,7 +363,8 @@
           "Muss ich meinen Buchungsgutschein ausdrucken?  Es ist wichtig, dass Sie den ausgedruckten Buchungsgutschein vorlegen, da Sie sonst nicht in der Lage sind, die Zentren zu betreten.",
           "Wo kann ich den Buchungsgutschein für das Ticketpaket einlösen?  Der Buchungsgutschein muss an der Kasse des ersten Zentrums, das Sie besuchen werden, ausgehändigt werden, und Sie erhalten das Ticket, das angibt, welche Zentren eingeschlossen sind. Denken Sie daran, dass dieses Ticket in den anderen Zentren abgestempelt werden muss. Bitte, Verlieren Sie nicht die Tickets!",
           "Was sind meine Tickets?  Die Tickets sind so konzipiert, dass Sie alleine mit Ihrem Mietwagen fahren können. Die Grüne Höhle wird jedoch in Gruppen mit einem Führer aus dem Zentrum besucht. Beim Besuch des Nationalparks Timanfaya müssen Sie das Ticket vorzeigen, um in den Bus zu steigen, der Sie entlang der beeindruckenden Panorama-Route der Vulkane bringt."
-        ]
+        ],
+        "shortTitle": "Eintrittskartenpaket für alle touristischen Z…"
       }
     },
     "legacyTourId": 16
@@ -501,7 +505,8 @@
           "Comfortable shoes",
           "Do not forget to bring your camera",
           "Lanzarote is a windy island and it can be chilly, so a jacket is recommended even in summer. Occasionally we join the clients of the south and grand tours in the same bus. In this case, clients who book the Grand Tour will have two more stops on their itinerary: photo stop at Los Hervideros cliffs and stop at the Camel Park in case there is someone interested in doing the Camel Ride. It is important to know that occasionally we can reach up to 20 people and go in two languages."
-        ]
+        ],
+        "shortTitle": "Grand Tour Experience: The footprint of the l…"
       },
       "de": {
         "title": "Inselrundfahrt Experience: Der Fußabdruck der Landschaft",
@@ -522,7 +527,8 @@
           "Vergessen Sie nicht Ihre Kamera",
           "Eine Jacke.",
           "Gelegentlich fahren wir mit den Kunden der Südtour und der Grand Tour im selben Bus. In diesem Fall haben Kunden, die die Grand Tour gebucht haben, zwei weitere Haltestellen auf ihrem Reiseplan: einen Fotostopp an den Klippen von Los Hervideros und einen Halt an der Kamelstation, falls jemand Interesse an einem Kamelritt hat. Es ist wichtig zu wissen, dass wir gelegentlich bis zu 20 Personen erreichen und in zwei Sprachen gehen können."
-        ]
+        ],
+        "shortTitle": "Inselrundfahrt Experience: Der Fußabdruck der…"
       }
     },
     "legacyTourId": 2
@@ -665,7 +671,8 @@
           "Do not forget to bring your camera",
           "Lanzarote is a windy island, therefore we do recommend to bring a jacket",
           "This excursion goes in 3 languages (English, Spanish and German)"
-        ]
+        ],
+        "shortTitle": "César Manrique Experience: The talent of a ma…"
       },
       "de": {
         "title": "César Manrique Experience",
@@ -690,7 +697,8 @@
           "Vergessen Sie nicht Ihre Kamera",
           "Eine Jacke",
           "Diese Exkursion findet in 3 Sprachen statt (Englisch, Spanisch und Deutsch)"
-        ]
+        ],
+        "shortTitle": "César Manrique Experience"
       }
     },
     "legacyTourId": 3
@@ -980,7 +988,8 @@
           "Not suitable for",
           "Pregnant women and people with mobility impairments",
           "Important: At the end of the booking process, please download your  VOUCHER that you have to PRINT and GIVE it to the staff at the camel park, in order to enjoy the experience."
-        ]
+        ],
+        "shortTitle": "Camel Ride at Timanfaya National Park"
       },
       "de": {
         "title": "Kamelritt auf Lanzarote",
@@ -990,7 +999,8 @@
         "notIncluded": [],
         "recommendations": [
           "Wichtig: Am Ende des Buchungsvorgangs laden Sie bitte Ihren GUTSCHEIN herunter, den Sie ausdrucken und dem Personal des Kamelparks geben müssen, damit Sie das Erlebnis genießen können."
-        ]
+        ],
+        "shortTitle": "Kamelritt auf Lanzarote"
       }
     },
     "legacyTourId": 34
@@ -1114,7 +1124,8 @@
         "notIncluded": [],
         "recommendations": [
           "In the event that a winery is closed or does not have space for our group, we will substitute the visit for another winery in the area."
-        ]
+        ],
+        "shortTitle": "Lanzarote Wine tour: Vineyards, Wine and Cheese"
       },
       "de": {
         "title": "Wein Tour auf Lanzarote: Weinberge, Weine und Käse",
@@ -1126,7 +1137,8 @@
           "Kompensation des CO2-Fußabdrucks"
         ],
         "notIncluded": [],
-        "recommendations": []
+        "recommendations": [],
+        "shortTitle": "Wein Tour auf Lanzarote: Weinberge, Weine und…"
       }
     },
     "legacyTourId": 8
@@ -1244,7 +1256,8 @@
           "https://www.lanzaroteexperiencetours.com/en/excursions/voucher-combined-discount-tickets-jameos-agua-cueva-verdes-mirador-r%C3%ADo-cactus-garden-%20san-jose-castle-timanfaya-national-park/",
           "If you want us to arrange your transport and guiding service, then you can book your private tour on our website.",
           "https://www.lanzaroteexperiencetours.com/en/excursions/lanzarote-private-tour-guided-walks-private-tours-cruise-excursions-in-Lanzarote/"
-        ]
+        ],
+        "shortTitle": "Get your private local guide in Lanzarote. En…"
       },
       "de": {
         "title": "Mieten Sie Ihren privaten lokalen Reiseleiter auf Lanzarote. Genießen Sie Ihre Ausflüge mit unseren Lanzarote-Reiseleitern.",
@@ -1261,7 +1274,8 @@
           "https://www.lanzaroteexperiencetours.com/de/ausfluge/eintrittskartenpaket-fur-alle-touristischen-zentren-lanzarotes-jameos-cueva-verdes-agua-timanfaya-kaktus-garten-mirador-rio/",
           "Wenn Sie möchten, dass wir Ihren Transport- und Führungsservice organisieren, dann können Sie Ihre private Führung auf unserer Website buchen.",
           "https://www.lanzaroteexperiencetours.com/de/ausfluge/private-ausfluge-lanzarote-covid-free-private-tour-fur-familien-freunden-paare/"
-        ]
+        ],
+        "shortTitle": "Mieten Sie Ihren privaten lokalen Reiseleiter…"
       }
     },
     "legacyTourId": 36
@@ -1447,7 +1461,8 @@
         ],
         "recommendations": [
           "Panoramic excursion to the south and north of Lanzarote. Groups minimum 20 people."
-        ]
+        ],
+        "shortTitle": "Panoramic tour: Lanzarote south and north"
       },
       "de": {
         "title": "Panorama-Ausflug in den Süden und Norden von Lanzarote",
@@ -1461,7 +1476,8 @@
         ],
         "recommendations": [
           "Wichtig: Die Information wird auf Deutsch, Spanisch, Englisch mit ein Audio-Guide und in Gruppen von bis zu 20 Personen angeboten."
-        ]
+        ],
+        "shortTitle": "Panorama-Ausflug in den Süden und Norden von…"
       }
     },
     "legacyTourId": 6
@@ -1586,7 +1602,8 @@
         "notIncluded": [],
         "recommendations": [
           "Don’t forget: Sports shoes or boots."
-        ]
+        ],
+        "shortTitle": "Trekking | Lanzarote’s Los Volcanes Natural Park"
       },
       "de": {
         "title": "Trekking | Lanzarotes Naturpark Los Volcanes",
@@ -1602,7 +1619,8 @@
         "notIncluded": [],
         "recommendations": [
           "Vergessen Sie nicht: Sportschuhe oder Stiefel."
-        ]
+        ],
+        "shortTitle": "Trekking | Lanzarotes Naturpark Los Volcanes"
       }
     },
     "legacyTourId": 23
@@ -1794,7 +1812,8 @@
         ],
         "recommendations": [
           "Comfortable shoes, walking sticks, hat, water, sunscreen, energy bar."
-        ]
+        ],
+        "shortTitle": "Trekking Lanzarote North"
       },
       "de": {
         "title": "Trekking Nord Lanzarote",
@@ -1812,7 +1831,8 @@
         ],
         "recommendations": [
           "Bequemes Schuhwerk, Spazierstöcke, Hut, Wasser, Sonnencreme, Energieriege"
-        ]
+        ],
+        "shortTitle": "Trekking Nord Lanzarote"
       }
     },
     "legacyTourId": 13
@@ -1988,7 +2008,8 @@
         "notIncluded": [],
         "recommendations": [
           "What to bring: Passport or ID card, Comfortable shoes, Swimwear, Towel, Sunscreen, Water, Jacket"
-        ]
+        ],
+        "shortTitle": "Day Trip to the best beaches on Fuerteventura…"
       },
       "de": {
         "title": "Tagesausflug zu den schönsten Stränden Fuerteventuras: Corralejo, El Cotillo und die Sanddünen",
@@ -2004,7 +2025,8 @@
         "notIncluded": [],
         "recommendations": [
           "Bitte mitbringen: Reisepass oder Lichtbildausweis, Bequeme Schuhe, Badekleidung, Handtuch, Sonnenschutz, Trinkwasser, Jacke"
-        ]
+        ],
+        "shortTitle": "Tagesausflug zu den schönsten Stränden Fuerte…"
       }
     },
     "legacyTourId": 33
@@ -2185,7 +2207,8 @@
           "At the restaurant there are children menus and high chairs available.",
           "We recommend arriving early in order to visit the centre first and have plenty of time to enjoy your dinner before the start of the show from 22.30 at the dance floor on the other side of the lake.",
           "In the winter we recommend warm clothes since the main jameo feels damp and you could be cold."
-        ]
+        ],
+        "shortTitle": "Transfer to enjoy a Concert in Jameos del Agu…"
       },
       "de": {
         "title": "Transfer und Koncert im Jameos del Agua | Romantischer Abend",
@@ -2202,7 +2225,8 @@
           "Komfortable Schuhe",
           "Vergessen Sie nicht Ihre Kamera",
           "Buchen Sie online um sich Sonderrabatt zu sichern."
-        ]
+        ],
+        "shortTitle": "Transfer und Koncert im Jameos del Agua | Rom…"
       }
     },
     "legacyTourId": 7
@@ -2382,7 +2406,8 @@
           "The company reserves changes on the itineraty due to weather condtions.",
           "Please, wear warm clothes in winter.",
           "For security reasons, alcoholics beverages are not allowed."
-        ]
+        ],
+        "shortTitle": "Jeep Safari Lanzarote North"
       },
       "de": {
         "title": "4x4 Jeep Safari NordTour auf Lanzarote",
@@ -2397,7 +2422,8 @@
         "recommendations": [
           "Dies ist eine geführte Jeep Tour - Sie können nur als Beifahrer mitfahren.",
           "Bitte mitbringen: Badekleidung, Handtuch, Sonnenbrille, Sonnencreme, Snacks, Kamera, Getränke, Jacke im Winter."
-        ]
+        ],
+        "shortTitle": "4x4 Jeep Safari NordTour auf Lanzarote"
       }
     },
     "legacyTourId": 12
@@ -2578,7 +2604,8 @@
           "Beach shoes",
           "Beach towel",
           "Photo camera"
-        ]
+        ],
+        "shortTitle": "Fuerteventura Island"
       },
       "de": {
         "title": "Fuerteventura",
@@ -2601,7 +2628,8 @@
           "Strandschuhe",
           "Strandtuch",
           "Fotokamera"
-        ]
+        ],
+        "shortTitle": "Fuerteventura"
       }
     },
     "legacyTourId": 14
@@ -2790,7 +2818,8 @@
           "Beach shoes",
           "Beach towel",
           "Photo camera"
-        ]
+        ],
+        "shortTitle": "Bus+Ferry to visit La Graciosa Island."
       },
       "de": {
         "title": "Bus+Fähre-Ticket zur Insel La Graciosa. Selbstgeführte Tagesreise.",
@@ -2803,7 +2832,8 @@
         "notIncluded": [],
         "recommendations": [
           "Für diese Reise ist es wichtig, einen gültigen Reisepass mitzubringen."
-        ]
+        ],
+        "shortTitle": "Bus+Fähre-Ticket zur Insel La Graciosa. Selbs…"
       }
     },
     "legacyTourId": 26
@@ -3001,7 +3031,8 @@
           "Open and comfortable shoes, for example: flip-flops",
           "Sun cream, high protection",
           "Foto or video camera"
-        ]
+        ],
+        "shortTitle": "La Graciosa Catamaran Tour"
       },
       "de": {
         "title": "Katamaran Tour :La Graciosa Katamaran Tour",
@@ -3030,7 +3061,8 @@
           "Sonnencreme, hoher Lichtschutzfaktor",
           "Fotoapparat oder Kamera",
           "Sonnenbrillen"
-        ]
+        ],
+        "shortTitle": "Katamaran Tour :La Graciosa Katamaran Tour"
       }
     },
     "legacyTourId": 5
@@ -3212,7 +3244,8 @@
           "What to bring?",
           "We recommend you bring Comfortable clothes",
           ", Hat or cap, Solar protection, Beach shoes and Beach towel"
-        ]
+        ],
+        "shortTitle": "Catamaran tour to Papagayo Beach"
       },
       "de": {
         "title": "Katamaran Aüsflug zu den Papagayo Stränden",
@@ -3226,7 +3259,8 @@
         "recommendations": [
           "Alle Teilnehmer müssen am Ausflugstag ihren Ausweis oder Reisepass mitführen und dem Fährunternehmen bei den Überfahrten vorlegen.",
           "Wir empfehlen Ihnen, Badebekleidung, Sonnencreme, Handtücher und einen Pullover mitzubringen."
-        ]
+        ],
+        "shortTitle": "Katamaran Aüsflug zu den Papagayo Stränden"
       }
     },
     "legacyTourId": 24
@@ -3409,7 +3443,8 @@
         "recommendations": [
           "Bathing suit, towel and sunscreen",
           "Warm clothes (during the trip by boat the thermal sensation drops)"
-        ]
+        ],
+        "shortTitle": "Lobos Island Boat Trip"
       },
       "de": {
         "title": "Isla de Lobos Ausflüge",
@@ -3425,7 +3460,8 @@
           "Vergessen Sie Ihr Badezeug, Hut und Sonnenschutz nicht",
           "Nehmen Sie Ihre Kamera mit, es gibt tolle Fotomotive unterwegs",
           "Packen Sie warme Kleidung ein, auf See kann es manchmal kühl und windig sein."
-        ]
+        ],
+        "shortTitle": "Isla de Lobos Ausflüge"
       }
     },
     "legacyTourId": 11
@@ -3549,7 +3585,8 @@
         "notIncluded": [],
         "recommendations": [
           "As it can sometimes get a little chilly (especially in the winter months) we suggest a long sleved top and warm clothes. We provide blankets to cuddle up to the one you love on our chill out deck beds and comfortable chill out areas."
-        ]
+        ],
+        "shortTitle": "Lanzarote Sunset and Dolphins. Lanzarote Sea…"
       },
       "de": {
         "title": "Sonnenuntergangs und Delfinbootsfahrt - Ein romantischer Abend-Cruise auf Lanzarote.",
@@ -3564,7 +3601,8 @@
           "Backwaren"
         ],
         "notIncluded": [],
-        "recommendations": []
+        "recommendations": [],
+        "shortTitle": "Sonnenuntergangs und Delfinbootsfahrt - Ein r…"
       }
     },
     "legacyTourId": 4
@@ -3694,7 +3732,8 @@
           "Costs",
           "€ 800 for groups up to 8 people",
           "€ 100 extra per person"
-        ]
+        ],
+        "shortTitle": "Private Luxury Catamaran Excursion"
       },
       "de": {
         "title": "Katamaran Segeltörns für Gruppen, Familine oder Firmen",
@@ -3713,7 +3752,8 @@
           "Kosten",
           "800 € für Gruppen bis zu 8 Personen",
           "100 € pro Person extra"
-        ]
+        ],
+        "shortTitle": "Katamaran Segeltörns für Gruppen, Familine od…"
       }
     },
     "legacyTourId": 20
@@ -3839,7 +3879,8 @@
           "We recommend you wear comfortable footwear. Please note that you will walk on uneven",
           "terrain. In addition, it is advisable to bring a jacket to be prepared in case of changes in the weather.",
           "In order to offer you the best possible experience on the day, the itinerary could change."
-        ]
+        ],
+        "shortTitle": "Photo Safari Lanzarote Experience"
       },
       "de": {
         "title": "Foto Safari Lanzarote Experience",
@@ -3856,7 +3897,8 @@
         ],
         "recommendations": [
           "Es wird empfohlen, bequeme Schuhe zu tragen. Bitte beachten Sie, dass Sie auf unebenem Boden laufen. Außerdem wird empfohlen, eine Jacke mitzubringen, falls sich das Wetter ändert."
-        ]
+        ],
+        "shortTitle": "Foto Safari Lanzarote Experience"
       }
     },
     "legacyTourId": 17
@@ -3999,7 +4041,8 @@
           "Duration: 8h30 Aprox",
           "Ideal for: Friends, Couples, Families",
           "Attention! You need to wait at least 24 hours after completing your dives to travel by plane."
-        ]
+        ],
+        "shortTitle": "Lern to Scuba Diving in Museo Atlántico, the…"
       },
       "de": {
         "title": "Tauchen lernen im Atlantikmuseum,",
@@ -4026,7 +4069,8 @@
           "Dauer: 8h30 Ca.",
           "Ideal für: Freunde, Paare, Familien",
           "Beachtung! Sie müssen nach Abschluss Ihrer Tauchgänge mindestens 24 Stunden warten, um mit dem Flugzeug zu reisen."
-        ]
+        ],
+        "shortTitle": "Tauchen lernen im Atlantikmuseum,"
       }
     },
     "legacyTourId": 21
@@ -4156,7 +4200,8 @@
         ],
         "recommendations": [
           "Bring also your swimming suit and sunscreen so that you don´t get burned."
-        ]
+        ],
+        "shortTitle": "La Graciosa Boat Rental, no license required!"
       },
       "de": {
         "title": "Vermietung von Motoridisierten Schlauchbooten auf La Graciosa, für die Sie keinen Bootsführerschein brauchen",
@@ -4176,7 +4221,8 @@
           "Schnorchelaus rüstung 10,00€",
           "Speakers Blut 10,00€"
         ],
-        "recommendations": []
+        "recommendations": [],
+        "shortTitle": "Vermietung von Motoridisierten Schlauchbooten…"
       }
     },
     "legacyTourId": 27
@@ -4258,7 +4304,8 @@
         "recommendations": [
           "The visit of the volcanix tube does not take more than 30 minutes",
           "We do recomend to wear appropiate footwear for walking on uneven terrain.The use of flashlights is indispensable. Please, take the necessary care not to damage the stafilites when leavinf the cavity you will be in a sea of lava, please be careful no to step on lichens."
-        ]
+        ],
+        "shortTitle": "Speleology with children. Naturalistas´Cave"
       },
       "de": {
         "title": "",
@@ -4371,7 +4418,8 @@
         "notIncluded": [],
         "recommendations": [
           "Babysitters are available days, evenings or overnight. The rate is 18.00€ per hour with a minimum of a 3 hour service."
-        ]
+        ],
+        "shortTitle": "Lanzarote Babysitter and Nanny Service"
       },
       "de": {
         "title": "Babysitterdienst auf Lanzarote",
@@ -4381,7 +4429,8 @@
         "notIncluded": [],
         "recommendations": [
           "Babysitter stehen tagsüber, abends oder über Nacht mit einem Minimum von 3 Stunden zur Verfügung."
-        ]
+        ],
+        "shortTitle": "Babysitterdienst auf Lanzarote"
       }
     },
     "legacyTourId": 25
@@ -4511,7 +4560,8 @@
           "We do not do pickups with chairs.",
           "Check availability.",
           "This activity needs to be prepared in advanced."
-        ]
+        ],
+        "shortTitle": "Sea Trek, the best underwater experience!"
       },
       "de": {
         "title": "Sea Trek Erfahrung auf Lanzarote",
@@ -4539,7 +4589,8 @@
         "notIncluded": [
           "Fotos und Videos € 25 (USB)"
         ],
-        "recommendations": []
+        "recommendations": [],
+        "shortTitle": "Sea Trek Erfahrung auf Lanzarote"
       }
     },
     "legacyTourId": 19
@@ -4706,7 +4757,8 @@
         ],
         "recommendations": [
           "Comfortable shoes and warm clothes"
-        ]
+        ],
+        "shortTitle": "Stargazing Tour Experience"
       },
       "de": {
         "title": "Sterne Experience",
@@ -4725,7 +4777,8 @@
           "Warme Kleidung",
           "Kompfortable Schuche",
           "Vergessen Sie nicht Ihre Kamera"
-        ]
+        ],
+        "shortTitle": "Sterne Experience"
       }
     },
     "legacyTourId": 9
@@ -4896,7 +4949,8 @@
         "recommendations": [
           "Bring a bathing suit, hat, towel and sunscreen",
           "Comfortable shoes"
-        ]
+        ],
+        "shortTitle": "Pirate Experience: Following in the pirates f…"
       },
       "de": {
         "title": "Piraten Experience",
@@ -4917,7 +4971,8 @@
           "Strandtuch",
           "Badeanzug / Badehose",
           "Vergessen Sie nicht Ihre Kamera"
-        ]
+        ],
+        "shortTitle": "Piraten Experience"
       }
     },
     "legacyTourId": 10
@@ -5028,7 +5083,8 @@
           "Transporte and Insurance"
         ],
         "notIncluded": [],
-        "recommendations": []
+        "recommendations": [],
+        "shortTitle": "Private Photo Shoot session in Lanzarote"
       },
       "de": {
         "title": "Fotoshooting auf Lanzarote",
@@ -5042,7 +5098,8 @@
           "Transport und Versicherung"
         ],
         "notIncluded": [],
-        "recommendations": []
+        "recommendations": [],
+        "shortTitle": "Fotoshooting auf Lanzarote"
       }
     },
     "legacyTourId": 18
@@ -5220,7 +5277,8 @@
         "notIncluded": [],
         "recommendations": [
           "Comfortable shoes"
-        ]
+        ],
+        "shortTitle": "Teguise Market"
       },
       "de": {
         "title": "Teguise Markt",
@@ -5230,7 +5288,8 @@
           "Bus"
         ],
         "notIncluded": [],
-        "recommendations": []
+        "recommendations": [],
+        "shortTitle": "Teguise Markt"
       }
     },
     "legacyTourId": 28
@@ -5364,7 +5423,8 @@
           "Interaction with sea lions is not included in the ticket price. There is an additional cost:  80 euros",
           "Children between 7 and 12 years must be accompanied by an adult of legal age who must also pay and participate in the interaction. Children under the age of 7 are not allowed to participate. Daily sessions at 10:30h and 15:30h"
         ],
-        "recommendations": []
+        "recommendations": [],
+        "shortTitle": "Tickets to Rancho Texas Lanzarote Park"
       },
       "de": {
         "title": "Eintrittskarten für den Rancho Texas Lanzarote Park",
@@ -5385,7 +5445,8 @@
           "Die Interaktion mit Seelöwen ist nicht im Ticketpreis inbegriffen. Es fallen zusätzliche Kosten an: 80 Euro,",
           "Kinder zwischen 7 und 12 Jahren müssen von einem Erwachsenen im volljährigen Alter begleitet werden, der auch bezahlen und an der Interaktion teilnehmen muss. Kinder unter 7 Jahren dürfen nicht teilnehmen. Tägliche Sitzungen um 10:30h und 15:30h"
         ],
-        "recommendations": []
+        "recommendations": [],
+        "shortTitle": "Eintrittskarten für den Rancho Texas Lanzarot…"
       }
     },
     "legacyTourId": 29
@@ -5502,7 +5563,8 @@
         ],
         "recommendations": [
           "Start time or opening time: 18:50 Final time or closing time: 23:00 We recommend booking your place on the bus."
-        ]
+        ],
+        "shortTitle": "Rancho Texas Park Country Night"
       },
       "de": {
         "title": "Rancho Texas Park Country Night",
@@ -5519,7 +5581,8 @@
           "Start- oder Öffnungszeit: 18:50 Uhr",
           "Schließzeit: 23:00 Uhr",
           "Wir empfehlen Ihnen, Ihren Platz im Bus zu reservieren."
-        ]
+        ],
+        "shortTitle": "Rancho Texas Park Country Night"
       }
     },
     "legacyTourId": 30
@@ -5751,7 +5814,8 @@
         "description": "Combined tickets to visit the two houses of César Manrique in Lanzarote. One of them is the Foundation in Tahiche, and the second is the Palm grove House in the village of Haría, Lanzarote.\n\nCesar Manrique Foundation in Tahiche, opens every day from 10:00 to 18:00 \n\nCesar Manrique House Museum in Haría, opens every day from 10:30 to 18:00 \n\nCombined tickets: 15. 00€ per person.\nThe César Manrique Foundation is located in the spectacular home designed by César Manrique himself upon his return from New York. Inhabited by the artist for 20 years, from 1968 to 1988, it is the house in which he lived the longest. It was located in the middle of a lava flow that originated the great eruptions that occurred on the island between 1730 and 1736. In this construction, which occupies 3,000 square metres on a 30,000-square-metre estate, the dialogue between the building and nature stands out. The upper floor is inspired by the traditional architecture of Lanzarote to which it incorporates functional elements of modern conception. The lower level takes advantage of five natural volcanic bubbles connected by tunnels excavated in the lava. The gardens surrounding the house combine the fascinating contrasts of vegetation, works of art and volcanic ash with fruit trees and other plants.\n\nThe Hause Museum in Haría, in the north of Lanzarote, was designed by the artist to work and enjoy the final years of his life and here you can discover the most intimate and personal side of the artist. A place of unique beauty, in the middle of an extraordinary palm grove, located in the beautiful village of Haría. At the beginning of 1986, Manrique started the construction of his last house by reusing and adapting a farmhouse, in ruins, located on a farm he had acquired in the seventies. He lived here until 1992, the year of his death. The visitor will be able to enjoy a unique experience in a peaceful natural environment. A truly unique world that allows you to get closer to the more human side of the great artist born in Lanzarote. The unique conditions of the building make it partially accessible for people with reduced mobility.",
         "included": [],
         "notIncluded": [],
-        "recommendations": []
+        "recommendations": [],
+        "shortTitle": "Combined tickets to visit César Manrique Foun…"
       },
       "de": {
         "title": "Kombinierte Tickets für das Haus-Museum (Haría) + Stiftung César Manrique (Tahíche): 15€",
@@ -5759,7 +5823,8 @@
         "description": "Kombinierte Tickets für den Besuch der beiden Häuser von César Manrique auf Lanzarote. Eine davon ist die Stiftung im Dorf Tahiche, und die zweite ist das Palmenhainhaus im Dorf Haría auf Lanzarote. Cesar-Manrique-Stiftung in Tahiche, täglich geöffnet von 10:00 bis 18:00 Uhr Cesar-Manrique-Hausmuseum in Haría, täglich geöffnet von 10:30 bis 18:00 Uhr Kombinierte Eintrittskarten: 15. 00€ pro Person.\nDie Stiftung César Manrique befindet sich in dem spektakulären Haus, das César Manrique nach seiner Rückkehr aus New York selbst entworfen hat. 20 Jahre lang, von 1968 bis 1988, bewohnt, ist es das Haus, in dem er am längsten lebte. Es befand sich inmitten eines Lavastroms, der die großen Eruptionen auslöste, die zwischen 1730 und 1736 auf der Insel stattfanden. In diesem Bauwerk, das sich auf 3. 000 Quadratmetern auf einem 30. 000 Quadratmeter großen Anwesen befindet, sticht der Dialog zwischen Bau und Natur hervor. Das Obergeschoss ist von der traditionellen Architektur Lanzarotes inspiriert, in die es funktionale Elemente der modernen Konzeption einbezieht. Die untere Ebene nutzt fünf natürliche vulkanische Blasen, die durch Tunnel in der Lava ausgegraben verbunden sind. Die Gärten rund um das Haus verbinden die faszinierenden Kontraste von Vegetation, Kunstwerken und Vulkanasche mit Obstbäumen und anderen Pflanzen. \nDas Haus-Museum in Haría, im Norden von Lanzarote, wurde vom Künstler entworfen, um zu arbeiten und die letzten Jahre seines Lebens zu genießen und hier können Sie die intimste und persönliche Seite des Künstlers entdecken. Ein Ort von einzigartiger Schönheit, in der Mitte eines außergewöhnlichen Palmenhains, in dem schönen Dorf Haría. Anfang 1986 begann Manrique mit dem Bau seines letzten Hauses, indem er ein Bauernhaus in Ruinen, das auf einem Bauernhof, den er in den siebziger Jahren erworben hatte, wiederverwendet und adaptiert hatte. Er lebte hier bis 1992, dem Jahr seines Todes. Der Besucher wird in der Lage sein, ein einzigartiges Erlebnis in einer friedlichen natürlichen Umgebung zu genießen. Eine wirklich einzigartige Welt, die es Ihnen ermöglicht, der menschlicheren Seite des großen Künstlers, der auf Lanzarote geboren wurde, näher zu kommen. Die einzigartigen Bedingungen des Gebäudes machen es für Menschen mit eingeschränkter Mobilität teilweise zugänglich.",
         "included": [],
         "notIncluded": [],
-        "recommendations": []
+        "recommendations": [],
+        "shortTitle": "Kombinierte Tickets für das Haus-Museum (Harí…"
       }
     },
     "legacyTourId": 32

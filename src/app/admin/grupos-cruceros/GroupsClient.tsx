@@ -18,7 +18,7 @@ import {
   bookingRowClassName,
 } from "@/components/admin/BookingStatusBadge";
 
-type GroupsTab = "all" | "open" | "full" | "done" | "private";
+type GroupsTab = "all" | "open" | "full" | "done" | "private" | "incomplete";
 
 type GroupPaymentLink = PaymentLink & { url?: string };
 
@@ -41,11 +41,29 @@ const TABS: { id: GroupsTab; label: string; listTitle: string }[] = [
   { id: "all", label: "Todos", listTitle: "Todos los grupos" },
   { id: "open", label: "Abierto", listTitle: "Grupos abiertos" },
   { id: "full", label: "Completo", listTitle: "Grupos completos" },
+  { id: "incomplete", label: "Sin completar", listTitle: "Grupos sin completar" },
   { id: "done", label: "Cerrado / realizado", listTitle: "Grupos cerrados" },
   { id: "private", label: "Privada", listTitle: "Grupos privados" },
 ];
 
-function statusLabel(status: CruiseGroup["status"]) {
+function todayIso(): string {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function groupDay(group: CruiseGroup): string {
+  return (group.date || "").slice(0, 10);
+}
+
+function isPastIncomplete(group: CruiseGroup, today = todayIso()): boolean {
+  const day = groupDay(group);
+  return Boolean(day) && day < today && group.status !== "done";
+}
+
+function statusLabel(status: CruiseGroup["status"] | "incomplete") {
   switch (status) {
     case "open":
       return "Abierto";
@@ -55,14 +73,31 @@ function statusLabel(status: CruiseGroup["status"]) {
       return "Cerrado";
     case "private":
       return "Privada";
+    case "incomplete":
+      return "Sin completar";
     default:
       return status;
   }
 }
 
-function matchesTab(group: CruiseGroup, tab: GroupsTab) {
-  if (tab === "all") return true;
-  return group.status === tab;
+function matchesTab(group: CruiseGroup, tab: GroupsTab, today = todayIso()) {
+  const pastIncomplete = isPastIncomplete(group, today);
+  switch (tab) {
+    case "all":
+      return true;
+    case "incomplete":
+      return pastIncomplete;
+    case "open":
+      return group.status === "open" && !pastIncomplete;
+    case "full":
+      return group.status === "full" && !pastIncomplete;
+    case "private":
+      return group.status === "private" && !pastIncomplete;
+    case "done":
+      return group.status === "done";
+    default:
+      return false;
+  }
 }
 
 function confirmationsMailto(bookings: Booking[], subject: string) {
@@ -103,13 +138,12 @@ export function GroupsPanel() {
   };
   const [form, setForm] = useState(emptyForm);
 
-  const filtered = useMemo(
-    () =>
-      items.filter(
-        (g) => matchesTab(g, tab) && inDateRange(g.date, range)
-      ),
-    [items, tab, range]
-  );
+  const filtered = useMemo(() => {
+    const today = todayIso();
+    return items.filter(
+      (g) => matchesTab(g, tab, today) && inDateRange(g.date, range)
+    );
+  }, [items, tab, range]);
 
   /** Ids de grupos que tienen hermano (misma serie barco+fecha+excursión). */
   const multiSeriesIds = useMemo(() => {
@@ -384,7 +418,10 @@ export function GroupsPanel() {
                 </h2>
                 <ul className="space-y-2 text-sm">
                   <li>
-                    <b>Estado:</b> {statusLabel(g.status)}
+                    <b>Estado:</b>{" "}
+                    {isPastIncomplete(g)
+                      ? statusLabel("incomplete")
+                      : statusLabel(g.status)}
                     {seriesLabel(g) ? (
                       <span className="ml-2 rounded bg-sky-soft px-2 py-0.5 text-xs font-bold text-ocean">
                         {seriesLabel(g)}
@@ -908,7 +945,11 @@ export function GroupsPanel() {
               const complete = g.complete || g.pax >= g.minPax;
               return (
                 <tr key={g.id} className="border-b border-sand-line">
-                  <td className="px-4 py-3">{statusLabel(g.status)}</td>
+                  <td className="px-4 py-3">
+                    {isPastIncomplete(g)
+                      ? statusLabel("incomplete")
+                      : statusLabel(g.status)}
+                  </td>
                   <td className="px-4 py-3">
                     <button
                       type="button"

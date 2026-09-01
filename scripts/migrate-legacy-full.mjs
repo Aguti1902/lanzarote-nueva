@@ -529,8 +529,7 @@ function migrateAdminExtras(exportDir) {
     concept: p.concept || "Pago",
     amount: num(p.amount),
     status:
-      String(p.status).toUpperCase() === "CF" ||
-      String(p.status).toUpperCase() === "PA"
+      ["CF", "PA", "PP", "OK", "PAID"].includes(String(p.status).toUpperCase())
         ? "paid"
         : String(p.status).toUpperCase() === "CX"
           ? "cancelled"

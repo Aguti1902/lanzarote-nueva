@@ -1,19 +1,26 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { Copy, Plus, Trash2 } from "lucide-react";
-import type { PaymentLink, PaymentServiceType, Tour } from "@/types";
+import type { Booking, PaymentLink, PaymentServiceType, Tour } from "@/types";
 import { formatPrice } from "@/lib/format";
 import { Field, adminInput, adminTextarea } from "@/components/admin/Field";
 import {
   DateRangeFilter,
   emptyDateRange,
   inDateRange,
+  lastNDaysRange,
   type DateRange,
 } from "@/components/admin/DateRangeFilter";
 
 type DetailTab = "details" | "delete";
 type ListTab = "all" | "pending" | "paid" | "cancelled";
+type SourceFilter = "all" | "links" | "bookings";
+
+type OnlinePaymentRow = PaymentLink & {
+  source: "link" | "booking";
+};
 
 type ServiceOption = {
   id: string;
@@ -65,10 +72,65 @@ function matchesListTab(item: PaymentLink, tab: ListTab) {
   return item.status === tab;
 }
 
+function bookingToOnlineRow(b: Booking): OnlinePaymentRow | null {
+  const method = b.paymentMethod;
+  const onlineMethods = new Set([
+    "card",
+    "bizum",
+    "deposit_20",
+    "deposit_10",
+  ]);
+  if (!onlineMethods.has(method)) return null;
+
+  const amount =
+    method === "card" || method === "bizum"
+      ? Number(b.amountPaidCard || b.amountTotal || b.totalPrice || 0)
+      : Number(b.amountPaidCard || 0);
+  if (amount <= 0 && b.status !== "cancelled" && b.paymentStatus !== "paid") {
+    // still show unpaid card intents if any
+    if (method !== "card" && method !== "bizum") return null;
+  }
+
+  let status: PaymentLink["status"] = "pending";
+  if (b.status === "cancelled") status = "cancelled";
+  else if (
+    b.paymentStatus === "paid" ||
+    b.paymentStatus === "partial" ||
+    (b.amountPaidCard || 0) > 0
+  ) {
+    status = "paid";
+  }
+
+  return {
+    id: `booking:${b.id}`,
+    source: "booking",
+    createdAt: b.createdAt || `${b.date}T00:00:00.000Z`,
+    locator: b.id,
+    concept: b.tourTitle || "Reserva",
+    amount: amount || Number(b.amountTotal || b.totalPrice || 0),
+    status,
+    customerName: b.customer?.name || "",
+    customerEmail: b.customer?.email || "",
+    customerLocale: "es",
+    notes: "",
+    paidAt: status === "paid" ? b.createdAt : undefined,
+    paymentMethod:
+      method === "bizum" ? "Bizum" : method.startsWith("deposit") ? "Depósito tarjeta" : "Tarjeta",
+    paymentHash: undefined,
+    bookingId: b.id,
+    mode: "standard",
+    serviceType: b.type === "transfer" ? "transfer" : "tour",
+    serviceId: b.tourId,
+    serviceTitle: b.tourTitle,
+    chargeFull: method === "card" || method === "bizum",
+  };
+}
+
 export default function AdminPagosOnlinePage() {
-  const [items, setItems] = useState<PaymentLink[]>([]);
+  const [items, setItems] = useState<OnlinePaymentRow[]>([]);
   const [listTab, setListTab] = useState<ListTab>("all");
-  const [range, setRange] = useState<DateRange>(emptyDateRange);
+  const [sourceFilter, setSourceFilter] = useState<SourceFilter>("all");
+  const [range, setRange] = useState<DateRange>(() => lastNDaysRange(7));
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -95,11 +157,14 @@ export default function AdminPagosOnlinePage() {
 
   const filtered = useMemo(
     () =>
-      items.filter(
-        (item) =>
-          matchesListTab(item, listTab) && inDateRange(item.createdAt, range)
-      ),
-    [items, range, listTab]
+      items.filter((item) => {
+        if (!matchesListTab(item, listTab)) return false;
+        if (sourceFilter === "links" && item.source !== "link") return false;
+        if (sourceFilter === "bookings" && item.source !== "booking")
+          return false;
+        return inDateRange(item.createdAt, range);
+      }),
+    [items, range, listTab, sourceFilter]
   );
 
   const selected = useMemo(
@@ -114,9 +179,22 @@ export default function AdminPagosOnlinePage() {
 
   async function load() {
     setLoading(true);
-    const res = await fetch("/api/admin/extras?resource=payments");
-    const data = await res.json();
-    setItems(data.items || []);
+    const [payRes, bookRes] = await Promise.all([
+      fetch("/api/admin/extras?resource=payments"),
+      fetch("/api/bookings"),
+    ]);
+    const payData = await payRes.json();
+    const bookData = await bookRes.json();
+    const links: OnlinePaymentRow[] = (payData.items || []).map(
+      (p: PaymentLink) => ({ ...p, source: "link" as const })
+    );
+    const fromBookings = ((bookData.bookings || []) as Booking[])
+      .map(bookingToOnlineRow)
+      .filter((row): row is OnlinePaymentRow => Boolean(row));
+    const merged = [...links, ...fromBookings].sort((a, b) =>
+      (b.createdAt || "").localeCompare(a.createdAt || "")
+    );
+    setItems(merged);
     setLoading(false);
   }
 
@@ -286,8 +364,10 @@ export default function AdminPagosOnlinePage() {
     );
   }
 
-  async function setStatus(item: PaymentLink, status: PaymentLink["status"]) {
-    const patch: Partial<PaymentLink> = { ...item, status };
+  async function setStatus(item: OnlinePaymentRow, status: PaymentLink["status"]) {
+    if (item.source === "booking") return;
+    const { source: _source, ...rest } = item;
+    const patch: Partial<PaymentLink> = { ...rest, status };
     if (status === "paid" && !item.paidAt) {
       patch.paidAt = new Date().toISOString();
       patch.paymentMethod = item.paymentMethod || "Stripe";
@@ -302,13 +382,15 @@ export default function AdminPagosOnlinePage() {
 
   async function updatePayment(e: React.FormEvent) {
     e.preventDefault();
-    if (!selected || selected.status === "paid") return;
+    if (!selected || selected.status === "paid" || selected.source === "booking")
+      return;
     setMessage("");
+    const { source: _source, ...rest } = selected;
     const res = await fetch("/api/admin/extras?resource=payments", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        ...selected,
+        ...rest,
         amount: Number(editForm.amount) || 0,
         customerLocale: editForm.customerLocale,
         customerEmail: editForm.customerEmail.trim(),
@@ -361,12 +443,16 @@ export default function AdminPagosOnlinePage() {
   }
 
   if (selected) {
-    const locked = selected.status === "paid";
-    const link = paymentUrl(
-      selected,
-      origin || "https://lanzarote-nueva.vercel.app"
-    );
+    const isBooking = selected.source === "booking";
+    const locked = selected.status === "paid" || isBooking;
+    const link = isBooking
+      ? ""
+      : paymentUrl(
+          selected,
+          origin || "https://lanzarote-nueva.vercel.app"
+        );
     const stripeLink = selected.stripeCheckoutUrl;
+    const bookingId = selected.bookingId || selected.locator;
 
     return (
       <div className="space-y-6">
@@ -379,33 +465,35 @@ export default function AdminPagosOnlinePage() {
         </button>
 
         <h1 className="text-3xl font-bold tracking-wide text-ink uppercase">
-          Detalles del pago
+          {isBooking ? "Pago de reserva (tarjeta)" : "Detalles del pago"}
         </h1>
 
-        <nav className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => setDetailTab("details")}
-            className={`rounded border px-4 py-2 text-sm font-bold ${
-              detailTab === "details"
-                ? "border-ocean text-ocean"
-                : "border-sand-line text-ink"
-            }`}
-          >
-            Detalles
-          </button>
-          <button
-            type="button"
-            onClick={() => setDetailTab("delete")}
-            className={`rounded border px-4 py-2 text-sm font-bold ${
-              detailTab === "delete"
-                ? "border-rose-400 text-rose-700"
-                : "border-sand-line text-ink"
-            }`}
-          >
-            Eliminar
-          </button>
-        </nav>
+        {!isBooking && (
+          <nav className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setDetailTab("details")}
+              className={`rounded border px-4 py-2 text-sm font-bold ${
+                detailTab === "details"
+                  ? "border-ocean text-ocean"
+                  : "border-sand-line text-ink"
+              }`}
+            >
+              Detalles
+            </button>
+            <button
+              type="button"
+              onClick={() => setDetailTab("delete")}
+              className={`rounded border px-4 py-2 text-sm font-bold ${
+                detailTab === "delete"
+                  ? "border-rose-400 text-rose-700"
+                  : "border-sand-line text-ink"
+              }`}
+            >
+              Eliminar
+            </button>
+          </nav>
+        )}
 
         {message && (
           <p className="rounded-lg bg-sky-soft px-4 py-2 text-sm text-ocean-deep ring-1 ring-sand-line">
@@ -413,7 +501,51 @@ export default function AdminPagosOnlinePage() {
           </p>
         )}
 
-        {detailTab === "delete" ? (
+        {isBooking ? (
+          <section className="rounded-xl bg-white p-6 ring-1 ring-sand-line">
+            <dl className="grid gap-3 text-sm sm:grid-cols-2">
+              <div>
+                <dt className="text-ink-muted">Reserva</dt>
+                <dd className="font-bold">{bookingId}</dd>
+              </div>
+              <div>
+                <dt className="text-ink-muted">Estado</dt>
+                <dd className={statusClass(selected.status)}>
+                  {statusLabel(selected.status)}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-ink-muted">Concepto</dt>
+                <dd>{selected.concept}</dd>
+              </div>
+              <div>
+                <dt className="text-ink-muted">Importe online</dt>
+                <dd className="font-bold">{formatPrice(selected.amount)}</dd>
+              </div>
+              <div>
+                <dt className="text-ink-muted">Método</dt>
+                <dd>{selected.paymentMethod || "Tarjeta"}</dd>
+              </div>
+              <div>
+                <dt className="text-ink-muted">Cliente</dt>
+                <dd>
+                  {selected.customerName || "—"}
+                  {selected.customerEmail ? ` · ${selected.customerEmail}` : ""}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-ink-muted">Fecha</dt>
+                <dd>{formatDateTime(selected.createdAt)}</dd>
+              </div>
+            </dl>
+            <Link
+              href={`/admin/reservas?q=${encodeURIComponent(bookingId)}`}
+              className="mt-5 inline-flex rounded bg-ocean px-4 py-2 text-sm font-bold text-white"
+            >
+              Abrir en reservas
+            </Link>
+          </section>
+        ) : detailTab === "delete" ? (
           <section className="rounded-xl bg-white p-6 ring-1 ring-sand-line">
             <h2 className="text-lg font-bold">Eliminar pago</h2>
             <p className="mt-2 text-sm text-ink-muted">
@@ -648,8 +780,8 @@ export default function AdminPagosOnlinePage() {
             Módulo de pagos online
           </h1>
           <p className="mt-1 text-sm text-ink-muted">
-            Cree enlaces de pago 100% tarjeta (Stripe) para un servicio
-            concreto
+            Enlaces Stripe y pagos con tarjeta/Bizum de reservas (últimos 7 días
+            por defecto)
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
@@ -668,13 +800,56 @@ export default function AdminPagosOnlinePage() {
         </div>
       </div>
 
+      <div className="flex flex-wrap gap-2">
+        {(
+          [
+            { id: "all", label: "Todos los orígenes" },
+            { id: "bookings", label: "Pagos de reservas" },
+            { id: "links", label: "Enlaces de pago" },
+          ] as const
+        ).map((opt) => (
+          <button
+            key={opt.id}
+            type="button"
+            onClick={() => setSourceFilter(opt.id)}
+            className={`rounded-full px-3 py-1.5 text-xs font-bold ring-1 ${
+              sourceFilter === opt.id
+                ? "bg-ocean text-white ring-ocean"
+                : "bg-white text-ink ring-sand-line"
+            }`}
+          >
+            {opt.label}
+          </button>
+        ))}
+        <button
+          type="button"
+          onClick={() => setRange(lastNDaysRange(7))}
+          className="rounded-full px-3 py-1.5 text-xs font-bold ring-1 ring-sand-line"
+        >
+          Últimos 7 días
+        </button>
+        <button
+          type="button"
+          onClick={() => setRange(emptyDateRange())}
+          className="rounded-full px-3 py-1.5 text-xs font-bold ring-1 ring-sand-line"
+        >
+          Todo el historial
+        </button>
+      </div>
+
       <nav
         className="flex flex-wrap gap-1 border-b border-sand-line"
         aria-label="Filtros de pagos"
       >
         {LIST_TABS.map((item) => {
           const active = listTab === item.id;
-          const count = items.filter((p) => matchesListTab(p, item.id)).length;
+          const count = items.filter((p) => {
+            if (!matchesListTab(p, item.id)) return false;
+            if (sourceFilter === "links" && p.source !== "link") return false;
+            if (sourceFilter === "bookings" && p.source !== "booking")
+              return false;
+            return inDateRange(p.createdAt, range);
+          }).length;
           return (
             <button
               key={item.id}
@@ -835,15 +1010,16 @@ export default function AdminPagosOnlinePage() {
         value={range}
         onChange={setRange}
         label="Calendario de pagos"
-        hint="Filtre por fecha de creación del enlace"
+        hint="Filtre por fecha de creación del pago o enlace"
         resultCount={filtered.length}
       />
 
       <div className="overflow-x-auto rounded-xl bg-white ring-1 ring-sand-line">
-        <table className="w-full min-w-[900px] text-left text-sm">
+        <table className="w-full min-w-[980px] text-left text-sm">
           <thead className="bg-ocean text-white">
             <tr>
               <th className="px-4 py-3 font-medium">Localizador</th>
+              <th className="px-4 py-3 font-medium">Origen</th>
               <th className="px-4 py-3 font-medium">Fecha de creación</th>
               <th className="px-4 py-3 font-medium">Estado</th>
               <th className="px-4 py-3 font-medium">Importe</th>
@@ -855,14 +1031,14 @@ export default function AdminPagosOnlinePage() {
           <tbody>
             {loading && (
               <tr>
-                <td colSpan={7} className="px-4 py-6 text-ink-muted">
+                <td colSpan={8} className="px-4 py-6 text-ink-muted">
                   Cargando…
                 </td>
               </tr>
             )}
             {!loading && filtered.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-4 py-6 text-ink-muted">
+                <td colSpan={8} className="px-4 py-6 text-ink-muted">
                   No hay pagos en esta pestaña / rango
                 </td>
               </tr>
@@ -870,24 +1046,33 @@ export default function AdminPagosOnlinePage() {
             {filtered.map((item) => (
               <tr key={item.id} className="border-b border-sand-line">
                 <td className="px-4 py-3 font-semibold">{item.locator}</td>
+                <td className="px-4 py-3 text-xs font-medium text-ink-muted">
+                  {item.source === "booking" ? "Reserva" : "Enlace"}
+                </td>
                 <td className="px-4 py-3 text-ink-muted">
                   {new Date(item.createdAt).toLocaleDateString("es-ES")}
                 </td>
                 <td className="px-4 py-3">
-                  <select
-                    className="rounded border border-sand-line px-2 py-1 text-xs"
-                    value={item.status}
-                    onChange={(e) =>
-                      setStatus(
-                        item,
-                        e.target.value as PaymentLink["status"]
-                      )
-                    }
-                  >
-                    <option value="pending">P. Pago</option>
-                    <option value="paid">Pagado</option>
-                    <option value="cancelled">Cancelado</option>
-                  </select>
+                  {item.source === "booking" ? (
+                    <span className={statusClass(item.status)}>
+                      {statusLabel(item.status)}
+                    </span>
+                  ) : (
+                    <select
+                      className="rounded border border-sand-line px-2 py-1 text-xs"
+                      value={item.status}
+                      onChange={(e) =>
+                        setStatus(
+                          item,
+                          e.target.value as PaymentLink["status"]
+                        )
+                      }
+                    >
+                      <option value="pending">P. Pago</option>
+                      <option value="paid">Pagado</option>
+                      <option value="cancelled">Cancelado</option>
+                    </select>
+                  )}
                 </td>
                 <td className="px-4 py-3 font-bold text-ocean">
                   {formatPrice(item.amount)}
@@ -905,14 +1090,16 @@ export default function AdminPagosOnlinePage() {
                     >
                       Detalles
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => remove(item.id)}
-                      className="rounded p-2 text-ink-muted hover:bg-sky-soft hover:text-rose-600"
-                      aria-label="Eliminar"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
+                    {item.source === "link" && (
+                      <button
+                        type="button"
+                        onClick={() => remove(item.id)}
+                        className="rounded p-2 text-ink-muted hover:bg-sky-soft hover:text-rose-600"
+                        aria-label="Eliminar"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    )}
                   </div>
                 </td>
               </tr>

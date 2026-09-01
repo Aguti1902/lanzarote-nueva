@@ -12,6 +12,24 @@ export function emptyDateRange(): DateRange {
   return { from: "", to: "" };
 }
 
+/** Inclusive last N calendar days ending today (YYYY-MM-DD), local time. */
+export function lastNDaysRange(days = 7): DateRange {
+  const to = new Date();
+  const from = new Date(to);
+  from.setDate(from.getDate() - Math.max(0, days - 1));
+  const iso = (d: Date) => {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  };
+  return { from: iso(from), to: iso(to) };
+}
+
+export function todayIsoDate(): string {
+  return lastNDaysRange(1).to;
+}
+
 /** Compare YYYY-MM-DD (or ISO datetime) against inclusive from/to. */
 export function inDateRange(
   value: string | undefined | null,
