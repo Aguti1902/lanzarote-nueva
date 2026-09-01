@@ -48,6 +48,22 @@ Eso sube todo `src/data/*.json` al bucket `cms` (incl. las ~7k reservas).
 
 En runtime, si el deploy tiene muchas más reservas legacy que Storage, la app **elige el del deploy y lo sube sola** a Storage.
 
+## Fotos / media
+
+Las fotos **sí están migradas** a Supabase Storage (bucket público `uploads`, prefijo `legacy/`):
+
+| Origen VPS | Destino Storage | Uso |
+|------------|-----------------|-----|
+| `uploads/excursions/gallery/{id}/` + `thumb/` | `uploads/legacy/excursions/…` | Portadas y galerías de excursiones |
+| `uploads/cruise/thumb/` + `cruise/tours/{id}/` | `uploads/legacy/cruise/…` | Excursiones shore |
+| `uploads/tours/`, `featured/` | `uploads/legacy/tours|featured/…` | Extra legacy |
+| `__blog/wp-content/uploads/` | `uploads/legacy/blog/…` | Portadas del blog |
+
+Script: `node --env-file=.env.local scripts/migrate-legacy-media.mjs`  
+(reescribe `tours.json`, `cruiseItineraries.json`, `blog.json` a URLs `…/storage/v1/object/public/uploads/legacy/…`).
+
+Tras cambiar JSON: Admin → **Sync CMS** o `npm run seed:supabase`.
+
 ## Migración completa (todo el CMS)
 
 Además de reservas, el script `scripts/migrate-legacy-full.mjs` importa:
