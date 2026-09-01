@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import type { Booking, BookingStatus } from "@/types";
 import { formatDate, formatPrice, paymentLabel } from "@/lib/format";
 import { compareBookingsByServiceDesc } from "@/lib/booking-display";
@@ -72,10 +72,11 @@ function tabTitle(tab: ReservasTab): string {
 }
 
 export default function AdminReservasPage() {
-  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const tab = parseTab(searchParams.get("tab"));
+  const [tab, setTabState] = useState<ReservasTab>(() =>
+    parseTab(searchParams.get("tab"))
+  );
 
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [dateField, setDateField] = useState<"service" | "created">("service");
@@ -100,12 +101,16 @@ export default function AdminReservasPage() {
   }, [load]);
 
   function setTab(next: ReservasTab) {
+    setTabState(next);
+    setPage(1);
+    // Evitar router.replace: con Suspense + useSearchParams remonta la página
+    // y vuelve a descargar ~7k reservas (parece que las pestañas no responden).
     const params = new URLSearchParams(searchParams.toString());
     if (next === "all") params.delete("tab");
     else params.set("tab", next);
     const qs = params.toString();
-    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
-    setPage(1);
+    const href = qs ? `${pathname}?${qs}` : pathname;
+    window.history.replaceState(window.history.state, "", href);
   }
 
   async function syncFromDeploy() {
