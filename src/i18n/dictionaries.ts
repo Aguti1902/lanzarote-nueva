@@ -364,6 +364,14 @@ export type Dictionary = {
     whatsapp: string;
     facebook: string;
   };
+  helpFab: {
+    label: string;
+    chatIa: string;
+  };
+  tripadvisorBadge: {
+    aria: string;
+    reviews: string;
+  };
 };
 
 const es: Dictionary = {
@@ -816,6 +824,14 @@ const es: Dictionary = {
     whatsapp: "WhatsApp",
     facebook: "Facebook",
   },
+  helpFab: {
+    label: "Ayuda",
+    chatIa: "Chat IA",
+  },
+  tripadvisorBadge: {
+    aria: "Ver reseñas en Tripadvisor",
+    reviews: "reseñas",
+  },
 };
 
 const en: Dictionary = {
@@ -1258,6 +1274,14 @@ const en: Dictionary = {
     questions: "Questions?",
     whatsapp: "WhatsApp",
     facebook: "Facebook",
+  },
+  helpFab: {
+    label: "Help",
+    chatIa: "AI Chat",
+  },
+  tripadvisorBadge: {
+    aria: "See Tripadvisor reviews",
+    reviews: "reviews",
   },
 };
 
@@ -1710,6 +1734,14 @@ const de: Dictionary = {
     questions: "Fragen?",
     whatsapp: "WhatsApp",
     facebook: "Facebook",
+  },
+  helpFab: {
+    label: "Hilfe",
+    chatIa: "KI-Chat",
+  },
+  tripadvisorBadge: {
+    aria: "Tripadvisor-Bewertungen ansehen",
+    reviews: "Bewertungen",
   },
 };
 

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ExternalLink, Star } from "lucide-react";
 import type { TravelerReview, TripadvisorMeta } from "@/lib/reviews";
+import { ReviewsCarousel } from "@/components/ReviewsCarousel";
 
 type Copy = {
   kicker: string;
@@ -17,22 +18,6 @@ type Props = {
   copy: Copy;
   compact?: boolean;
 };
-
-function Stars({ rating }: { rating: number }) {
-  const full = Math.round(Math.min(5, Math.max(0, rating)));
-  return (
-    <span className="inline-flex items-center gap-0.5" aria-label={`${rating}/5`}>
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          className={`h-3.5 w-3.5 ${
-            i < full ? "fill-rating text-rating" : "text-sand-line"
-          }`}
-        />
-      ))}
-    </span>
-  );
-}
 
 export function ReviewsSection({
   reviews,
@@ -92,36 +77,13 @@ export function ReviewsSection({
           </a>
         </div>
 
-        <ul
-          className={`mt-10 grid gap-8 ${
-            compact ? "md:grid-cols-2" : "md:grid-cols-3"
-          }`}
-        >
-          {reviews.map((review, index) => (
-            <li
-              key={review.id}
-              className="animate-fade-up relative"
-              style={{ animationDelay: `${Math.min(index, 5) * 80}ms` }}
-            >
-              <Stars rating={review.rating} />
-              <blockquote className="mt-3 text-[15px] leading-relaxed text-ink">
-                “{review.text}”
-              </blockquote>
-              <footer className="mt-4 flex items-center justify-between gap-3 text-sm">
-                <div>
-                  <p className="font-semibold text-ink">
-                    {review.author || copy.traveler}
-                  </p>
-                  <p className="text-xs tracking-wide text-ink-muted uppercase">
-                    Tripadvisor
-                  </p>
-                </div>
-              </footer>
-            </li>
-          ))}
-        </ul>
+        <ReviewsCarousel
+          reviews={reviews}
+          travelerLabel={copy.traveler}
+          compact={compact}
+        />
 
-        <div className="mt-10">
+        <div className="mt-4">
           <a
             href={tripadvisor.url}
             target="_blank"

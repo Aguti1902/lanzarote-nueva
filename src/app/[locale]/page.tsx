@@ -48,7 +48,7 @@ export default async function HomePage({ params }: Props) {
   const [featured, settings, reviews, tripadvisor] = await Promise.all([
     localizeTours(await getFeaturedTours(), locale),
     localizeSettings(await getSettings(), locale),
-    getFeaturedReviews(locale, 6),
+    getFeaturedReviews(locale, 10),
     getTripadvisorMeta(),
   ]);
 
@@ -143,19 +143,6 @@ export default async function HomePage({ params }: Props) {
           </ul>
         </div>
       </section>
-
-      <ReviewsSection
-        reviews={reviews}
-        tripadvisor={tripadvisor}
-        copy={{
-          kicker: dict.home.reviewsKicker,
-          title: dict.home.reviewsTitle,
-          subtitle: dict.home.reviewsSubtitle,
-          basedOn: dict.home.reviewsBasedOn,
-          cta: dict.home.reviewsCta,
-          traveler: dict.home.reviewsTraveler,
-        }}
-      />
 
       <section className="mx-auto max-w-6xl px-4 py-8 md:px-6 md:py-12">
         <div className="flex flex-wrap items-end justify-between gap-4">
@@ -257,6 +244,19 @@ export default async function HomePage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      <ReviewsSection
+        reviews={reviews}
+        tripadvisor={tripadvisor}
+        copy={{
+          kicker: dict.home.reviewsKicker,
+          title: dict.home.reviewsTitle,
+          subtitle: dict.home.reviewsSubtitle,
+          basedOn: dict.home.reviewsBasedOn,
+          cta: dict.home.reviewsCta,
+          traveler: dict.home.reviewsTraveler,
+        }}
+      />
 
       <section className="border-t border-sand-line bg-white py-20 md:py-24">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 md:grid-cols-[0.9fr_1.1fr] md:px-6">
