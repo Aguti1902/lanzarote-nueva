@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
+import { notifyContactMessage } from "@/lib/notify";
 
 type ContactMessage = {
   id: string;
@@ -44,6 +45,11 @@ export async function POST(request: Request) {
     };
     messages.unshift(entry);
     await writeCmsJson("messages.json", messages);
+
+    // No bloqueamos la respuesta si el correo falla
+    void notifyContactMessage(entry).catch((err) => {
+      console.error("[contact] notify failed", err);
+    });
 
     return NextResponse.json({ ok: true, message: entry }, { status: 201 });
   } catch {

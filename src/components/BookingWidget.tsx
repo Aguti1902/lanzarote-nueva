@@ -158,9 +158,13 @@ export function BookingWidget({ tour }: { tour: Tour }) {
           totalPrice: total,
           paymentMethod: isOnRequest ? "pay_on_day" : paymentMethod,
           status: isOnRequest ? "pending" : "confirmed",
+          bookingMethod: isOnRequest
+            ? tour.bookingMethod || "request"
+            : "online",
           locale,
           customer: { name, email, phone, hotel, cruiseShip, notes },
           minibus: isMinibus ? { hours } : undefined,
+          source: cruiseShip ? "cruise" : undefined,
         }),
       });
       const data = await res.json();

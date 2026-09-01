@@ -57,6 +57,7 @@ export default function CarritoPage() {
             totalPrice: item.totalPrice,
             paymentMethod,
             locale,
+            source: item.source || (item.cruiseShip ? "cruise" : undefined),
             customer: {
               name,
               email,

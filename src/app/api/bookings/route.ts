@@ -16,6 +16,7 @@ import {
   syncCruiseGroupCapacity,
 } from "@/lib/cruise-groups";
 import { getCruiseShoreTourById } from "@/lib/cruise-itineraries";
+import { notifyNewBooking } from "@/lib/notify";
 import type { BookingStatus, PaymentMethod } from "@/types";
 
 function isDateBlocked(
@@ -51,6 +52,8 @@ export async function POST(request: Request) {
       locale,
       status: requestedStatus,
       pickupZone,
+      bookingMethod,
+      source,
     } = body;
 
     if (!type || !tourTitle || !date || !customer?.name || !customer?.email) {
@@ -90,13 +93,20 @@ export async function POST(request: Request) {
           }
         : transfer;
 
+    const methodNorm =
+      typeof bookingMethod === "string" && bookingMethod.trim()
+        ? bookingMethod.trim().toLowerCase()
+        : undefined;
+
     const status =
       requestedStatus === "pending" ||
       requestedStatus === "confirmed" ||
       requestedStatus === "completed" ||
       requestedStatus === "cancelled"
         ? requestedStatus
-        : "confirmed";
+        : methodNorm === "request" || methodNorm === "phone"
+          ? "pending"
+          : "confirmed";
 
     const localeNorm =
       typeof locale === "string" && locale.trim()
@@ -132,6 +142,13 @@ export async function POST(request: Request) {
     }
 
     const invoice = await createInvoiceForBooking(booking);
+
+    void notifyNewBooking(booking, {
+      bookingMethod: methodNorm,
+      source: typeof source === "string" ? source : undefined,
+    }).catch((err) => {
+      console.error("[bookings] notify failed", err);
+    });
 
     return NextResponse.json({ booking, invoice }, { status: 201 });
   } catch {

@@ -157,6 +157,7 @@ export function CruiseTourBooking({
           children: 0,
           totalPrice: total,
           paymentMethod,
+          source: "cruise",
           customer: {
             name,
             email,
