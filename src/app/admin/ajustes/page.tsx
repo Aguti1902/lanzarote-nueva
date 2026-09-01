@@ -133,6 +133,8 @@ export default function AdminAjustesPage() {
             folder="home"
             value={settings.homeHeroImage}
             onChange={(url) => set("homeHeroImage", url)}
+            aspectRatio={16 / 9}
+            hint="Recorta y revisa la vista móvil para que el sujeto quede centrado en escritorio y en el teléfono."
           />
         </section>
 
@@ -159,12 +161,14 @@ export default function AdminAjustesPage() {
               folder="about"
               value={settings.aboutImage}
               onChange={(url) => set("aboutImage", url)}
+              aspectRatio={4 / 3}
             />
             <ImageUploadField
               label="Imagen secundaria"
               folder="about"
               value={settings.aboutImageSecondary}
               onChange={(url) => set("aboutImageSecondary", url)}
+              aspectRatio={4 / 3}
             />
           </div>
         </section>
@@ -189,6 +193,8 @@ export default function AdminAjustesPage() {
             folder="excursions"
             value={settings.excursionsHeroImage}
             onChange={(url) => set("excursionsHeroImage", url)}
+            aspectRatio={16 / 9}
+            hint="Usa Ajustar / recortar y la vista móvil para comprobar el encuadre."
           />
         </section>
 
@@ -212,6 +218,7 @@ export default function AdminAjustesPage() {
             folder="blog"
             value={settings.blogHeroImage}
             onChange={(url) => set("blogHeroImage", url)}
+            aspectRatio={16 / 9}
           />
         </section>
 
@@ -235,6 +242,7 @@ export default function AdminAjustesPage() {
             folder="cruise"
             value={settings.cruiseHeroImage}
             onChange={(url) => set("cruiseHeroImage", url)}
+            aspectRatio={16 / 9}
           />
         </section>
 
@@ -266,6 +274,7 @@ export default function AdminAjustesPage() {
             folder="transfers"
             value={settings.transferHeroImage}
             onChange={(url) => set("transferHeroImage", url)}
+            aspectRatio={16 / 9}
           />
         </section>
 
