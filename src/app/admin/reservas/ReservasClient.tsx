@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Booking, BookingStatus } from "@/types";
 import { formatDate, formatPrice, paymentLabel } from "@/lib/format";
+import { compareBookingsByServiceAsc } from "@/lib/booking-display";
 import {
   DateRangeFilter,
   emptyDateRange,
@@ -177,7 +178,7 @@ export default function AdminReservasPage() {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return bookings.filter((b) => {
+    const list = bookings.filter((b) => {
       if (!matchesTab(b, tab)) return false;
       const dateValue = dateField === "service" ? b.date : b.createdAt;
       if (!inDateRange(dateValue, range)) return false;
@@ -190,12 +191,15 @@ export default function AdminReservasPage() {
         b.customer?.phone,
         b.customer?.hotel,
         b.customer?.cruiseShip,
+        b.locale,
+        b.pickupZone,
       ]
         .filter(Boolean)
         .join(" ")
         .toLowerCase();
       return hay.includes(q);
     });
+    return [...list].sort(compareBookingsByServiceAsc);
   }, [bookings, tab, dateField, range, query]);
 
   const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));

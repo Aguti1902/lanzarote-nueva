@@ -447,6 +447,10 @@ export interface Booking {
   cancellationFee?: number;
   /** Optional link to a cruise group (admin / grupos cruceros). */
   groupId?: string;
+  /** Idioma de la web al reservar (es/en/de). */
+  locale?: string;
+  /** Zona de recogida (legacy zone). */
+  pickupZone?: string;
   customer: {
     name: string;
     email: string;

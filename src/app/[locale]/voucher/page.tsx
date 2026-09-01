@@ -68,6 +68,8 @@ export default async function VoucherPage({ params, searchParams }: Props) {
       time: dict.voucher.serviceTime,
       returnDate: dict.voucher.returnDate,
       returnTime: dict.voucher.returnTime,
+      language: dict.voucher.language,
+      pickupZone: dict.voucher.pickupZone,
       people: dict.manage.people,
       adults: dict.common.adults,
       children: dict.common.children,

@@ -27,6 +27,8 @@ export function bookingToRow(b: Booking) {
     cancellation_reason: b.cancellationReason ?? null,
     cancelled_at: b.cancelledAt ?? null,
     cancellation_fee: b.cancellationFee ?? null,
+    locale: b.locale ?? null,
+    pickup_zone: b.pickupZone ?? null,
     customer: b.customer,
     transfer: b.transfer ?? null,
     minibus: b.minibus ?? null,
@@ -59,6 +61,8 @@ export function rowToBooking(row: Record<string, unknown>): Booking {
     cancelledAt: (row.cancelled_at as string) || undefined,
     cancellationFee:
       row.cancellation_fee == null ? undefined : Number(row.cancellation_fee),
+    locale: (row.locale as string) || undefined,
+    pickupZone: (row.pickup_zone as string) || undefined,
     customer: row.customer as Booking["customer"],
     transfer: (row.transfer as Booking["transfer"]) || undefined,
     minibus: (row.minibus as Booking["minibus"]) || undefined,

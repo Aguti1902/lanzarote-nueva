@@ -48,6 +48,9 @@ export async function POST(request: Request) {
       transfer,
       minibus,
       groupId,
+      locale,
+      status: requestedStatus,
+      pickupZone,
     } = body;
 
     if (!type || !tourTitle || !date || !customer?.name || !customer?.email) {
@@ -87,6 +90,19 @@ export async function POST(request: Request) {
           }
         : transfer;
 
+    const status =
+      requestedStatus === "pending" ||
+      requestedStatus === "confirmed" ||
+      requestedStatus === "completed" ||
+      requestedStatus === "cancelled"
+        ? requestedStatus
+        : "confirmed";
+
+    const localeNorm =
+      typeof locale === "string" && locale.trim()
+        ? locale.trim().toLowerCase().slice(0, 5)
+        : undefined;
+
     let booking = await addBooking({
       type,
       tourId,
@@ -97,11 +113,16 @@ export async function POST(request: Request) {
       children: Number(children) || 0,
       totalPrice: Number(totalPrice) || 0,
       paymentMethod: (paymentMethod as PaymentMethod) || "card",
-      paymentStatus: "paid",
+      paymentStatus: status === "pending" ? "unpaid" : "paid",
       customer,
       transfer: transferPayload,
       minibus,
-      status: "confirmed",
+      status,
+      locale: localeNorm,
+      pickupZone:
+        typeof pickupZone === "string" && pickupZone.trim()
+          ? pickupZone.trim()
+          : undefined,
       groupId: groupId ? String(groupId) : undefined,
     });
 

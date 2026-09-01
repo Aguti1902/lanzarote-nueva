@@ -6,6 +6,7 @@ import {
   bookingReturnTime,
   bookingServiceTime,
 } from "@/lib/booking-time";
+import { bookingLocaleLabel } from "@/lib/booking-display";
 
 export type VoucherCompany = {
   brandName: string;
@@ -39,6 +40,8 @@ export type VoucherLabels = {
   flight: string;
   cruise: string;
   notes: string;
+  language: string;
+  pickupZone: string;
   present: string;
   status: string;
   print: string;
@@ -68,6 +71,8 @@ const DEFAULT_LABELS: VoucherLabels = {
   flight: "Nº de vuelo",
   cruise: "Crucero / barco",
   notes: "Notas",
+  language: "Idioma",
+  pickupZone: "Zona de recogida",
   present:
     "Presente este voucher el día del servicio. Conservamos su localizador en nuestros sistemas.",
   status: "Estado",
@@ -179,6 +184,12 @@ export function buildVoucherHtml(
 
   if (booking.customer.hotel) {
     rows.push([labels.hotel, esc(booking.customer.hotel)]);
+  }
+  if (booking.pickupZone) {
+    rows.push([labels.pickupZone, esc(booking.pickupZone)]);
+  }
+  if (bookingLocaleLabel(booking.locale)) {
+    rows.push([labels.language, esc(bookingLocaleLabel(booking.locale))]);
   }
   if (booking.customer.flightNumber) {
     rows.push([labels.flight, esc(booking.customer.flightNumber)]);

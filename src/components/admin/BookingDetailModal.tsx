@@ -13,6 +13,7 @@ import {
   bookingReturnTime,
   bookingServiceTime,
 } from "@/lib/booking-time";
+import { bookingLocaleLabel } from "@/lib/booking-display";
 import type { CancelReasonId } from "@/lib/cancellation";
 import {
   buildVoucherHtml,
@@ -545,6 +546,12 @@ export function BookingDetailModal({
                       label="Teléfono"
                       value={booking.customer.phone || "—"}
                     />
+                    <Row
+                      label="Idioma"
+                      value={
+                        bookingLocaleLabel(booking.locale) || "—"
+                      }
+                    />
                     {booking.customer.taxId && (
                       <Row label="NIF / CIF" value={booking.customer.taxId} />
                     )}
@@ -609,7 +616,15 @@ export function BookingDetailModal({
                   <li>Fecha de reserva: {formatDateShort(booking.createdAt)}</li>
                   <li>Fecha de servicio: {formatDateShort(booking.date)}</li>
                   {bookingServiceTime(booking) && (
-                    <li>Hora del servicio: {bookingServiceTime(booking)}</li>
+                    <li>Horario: {bookingServiceTime(booking)}</li>
+                  )}
+                  {booking.pickupZone && (
+                    <li>Zona de recogida: {booking.pickupZone}</li>
+                  )}
+                  {bookingLocaleLabel(booking.locale) && (
+                    <li>
+                      Idioma del tour: {bookingLocaleLabel(booking.locale)}
+                    </li>
                   )}
                   {bookingReturnDate(booking) && (
                     <li>

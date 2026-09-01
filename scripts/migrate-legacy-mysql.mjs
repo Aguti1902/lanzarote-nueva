@@ -274,6 +274,30 @@ function migrateRegular(exportDir) {
     const timeSlot = !isTransfer
       ? MOMENT_SLOT[Number(details.moment)] || undefined
       : undefined;
+    const locale = String(details.lang_id || "")
+      .trim()
+      .toLowerCase() || undefined;
+    const zoneId = Number(details.zone_id || 0);
+    const ZONE_NAMES = {
+      1: "Playa Blanca",
+      2: "Playa Blanca",
+      3: "Puerto del Carmen",
+      4: "Costa Teguise",
+      5: "Puerto Calero",
+      6: "Arrecife",
+      7: "La Santa",
+      8: "Charco del Palo",
+      9: "Haría",
+      10: "Órzola",
+      11: "Famara",
+      12: "Yaiza",
+      13: "Tias",
+      14: "Playa Honda",
+      15: "Puerto de Los Mármoles",
+      16: "Punta Mujeres",
+      17: "Pabellon de Tias",
+    };
+    const pickupZone = zoneId && ZONE_NAMES[zoneId] ? ZONE_NAMES[zoneId] : undefined;
 
     const paidOnline =
       hasPaymentRef(parent.stripe_id) || hasPaymentRef(parent.paypal_id);
@@ -317,6 +341,8 @@ function migrateRegular(exportDir) {
       date,
       time: serviceTime || undefined,
       timeSlot: timeSlot || undefined,
+      locale: locale || undefined,
+      pickupZone: pickupZone || undefined,
       adults,
       children,
       totalPrice: amounts.amountTotal,

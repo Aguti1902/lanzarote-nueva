@@ -15,7 +15,7 @@ export function TransferBookingForm({
   destinations: TransferDestination[];
 }) {
   const router = useRouter();
-  const { dict, href } = useLocale();
+  const { dict, href, locale } = useLocale();
   const [destination, setDestination] = useState(destinations[0]?.id || "");
   const [direction, setDirection] = useState<
     "airport_to_hotel" | "hotel_to_airport" | "return"
@@ -88,6 +88,7 @@ export function TransferBookingForm({
             returnDate: direction === "return" ? returnDate : undefined,
             returnTime: direction === "return" ? returnTime : undefined,
           },
+          locale,
         }),
       });
       const data = await res.json();
