@@ -547,7 +547,7 @@ export function BookingDetailModal({
                       value={booking.customer.phone || "—"}
                     />
                     <Row
-                      label="Idioma"
+                      label="Idioma de la excursión"
                       value={
                         bookingLocaleLabel(booking.locale) || "—"
                       }

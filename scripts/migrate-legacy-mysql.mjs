@@ -274,9 +274,15 @@ function migrateRegular(exportDir) {
     const timeSlot = !isTransfer
       ? MOMENT_SLOT[Number(details.moment)] || undefined
       : undefined;
-    const locale = String(details.lang_id || "")
-      .trim()
-      .toLowerCase() || undefined;
+    const locale =
+      String(details.lang_id || "")
+        .trim()
+        .toLowerCase() ||
+      String(customer?.lang || "")
+        .trim()
+        .toLowerCase()
+        .slice(0, 2) ||
+      undefined;
     const zoneId = Number(details.zone_id || 0);
     const ZONE_NAMES = {
       1: "Playa Blanca",
@@ -454,6 +460,12 @@ function migrateCruise(exportDir) {
       .filter(Boolean)
       .join(" · ");
 
+    const locale =
+      String(customer?.lang || "")
+        .trim()
+        .toLowerCase()
+        .slice(0, 2) || undefined;
+
     out.push({
       id,
       createdAt: new Date(parent.create_date || item.create_date || Date.now()).toISOString(),
@@ -461,6 +473,7 @@ function migrateCruise(exportDir) {
       tourId: tourIdNum ? `shore-${tourIdNum}` : undefined,
       tourTitle,
       date,
+      locale: locale || undefined,
       adults: totalPax,
       children: 0,
       totalPrice: amounts.amountTotal,

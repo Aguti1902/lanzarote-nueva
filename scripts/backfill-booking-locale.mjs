@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 /**
- * Rellena locale (lang_id) y zona de recogida desde el export MariaDB.
+ * Rellena locale (idioma de la excursión / reserva) desde MariaDB:
+ * 1) lang_id en booking_items.details (excursiones)
+ * 2) customers.lang (fallback: traslados, cruceros, etc.)
+ * También zona de recogida y hotel si faltan.
  *
  *   node scripts/backfill-booking-locale.mjs /tmp/legacy-export --write
  */
@@ -38,7 +41,9 @@ const ZONE_NAMES = {
 };
 
 function readJson(dir, name) {
-  return JSON.parse(fs.readFileSync(path.join(dir, name), "utf8"));
+  const full = path.join(dir, name);
+  if (!fs.existsSync(full)) return [];
+  return JSON.parse(fs.readFileSync(full, "utf8"));
 }
 
 function parseDetails(raw) {
@@ -51,29 +56,57 @@ function parseDetails(raw) {
   }
 }
 
+function normalizeLocale(raw) {
+  const lang = String(raw || "")
+    .trim()
+    .toLowerCase();
+  if (!lang || lang === "null" || lang === "undefined") return "";
+  return lang.slice(0, 2);
+}
+
 const bookingsLegacy = readJson(exportDir, "bookings.json");
+const cruiseBookingsLegacy = readJson(exportDir, "cruise_bookings.json");
 const items = readJson(exportDir, "booking_items.json");
+const cruiseItems = readJson(exportDir, "cruise_booking_items.json");
+const customers = readJson(exportDir, "customers.json");
+
+const customersById = new Map(customers.map((c) => [Number(c.id), c]));
 const byPk = new Map(bookingsLegacy.map((b) => [Number(b.id), b]));
+const cruiseByPk = new Map(cruiseBookingsLegacy.map((b) => [Number(b.id), b]));
 const patchByLocator = new Map();
+
+function mergePatch(locator, patch) {
+  if (!locator || !Object.keys(patch).length) return;
+  const existing = patchByLocator.get(locator) || {};
+  // Prefer existing lang_id (excursion) over later customer fallback
+  const next = {
+    ...patch,
+    ...existing,
+    locale: existing.locale || patch.locale,
+    pickupZone: existing.pickupZone || patch.pickupZone,
+    hotel: existing.hotel || patch.hotel,
+  };
+  patchByLocator.set(locator, next);
+}
 
 for (const item of items) {
   const parent = byPk.get(Number(item.booking_id));
   if (!parent) continue;
   const details = parseDetails(item.details);
   const locator = String(parent.booking_id || "");
+  const customer = customersById.get(Number(parent.customer_id));
   const patch = {};
 
-  const lang = String(details.lang_id || "")
-    .trim()
-    .toLowerCase();
-  if (lang) patch.locale = lang;
+  const langFromItem = normalizeLocale(details.lang_id);
+  const langFromCustomer = normalizeLocale(customer?.lang);
+  if (langFromItem) patch.locale = langFromItem;
+  else if (langFromCustomer) patch.locale = langFromCustomer;
 
   const zoneId = Number(details.zone_id || 0);
   if (zoneId && ZONE_NAMES[zoneId]) {
     patch.pickupZone = ZONE_NAMES[zoneId];
   }
 
-  // Hotel from parent if present
   if (parent.hotel && String(parent.hotel).trim()) {
     patch.hotel = String(parent.hotel).trim();
   }
@@ -81,10 +114,31 @@ for (const item of items) {
   if (!Object.keys(patch).length) continue;
 
   const multiKey = `${locator}-i${item.id}`;
-  patchByLocator.set(multiKey, patch);
-  if (!patchByLocator.has(locator)) {
-    patchByLocator.set(locator, patch);
-  }
+  mergePatch(multiKey, patch);
+  mergePatch(locator, patch);
+}
+
+// Cruceros: no traen lang_id en items → idioma del cliente
+for (const item of cruiseItems) {
+  const parent = cruiseByPk.get(Number(item.booking_id));
+  if (!parent) continue;
+  const locator = String(parent.booking_id || "");
+  const customer = customersById.get(Number(parent.customer_id));
+  const lang = normalizeLocale(customer?.lang);
+  if (!lang) continue;
+  const patch = { locale: lang };
+  mergePatch(`${locator}-i${item.id}`, patch);
+  mergePatch(locator, patch);
+}
+
+// Cualquier reserva regular sin item patch pero con customer.lang
+for (const parent of bookingsLegacy) {
+  const locator = String(parent.booking_id || "");
+  if (!locator || patchByLocator.get(locator)?.locale) continue;
+  const customer = customersById.get(Number(parent.customer_id));
+  const lang = normalizeLocale(customer?.lang);
+  if (!lang) continue;
+  mergePatch(locator, { locale: lang });
 }
 
 const bookingsPath = path.join(root, "src/data/bookings.json");
@@ -94,15 +148,20 @@ let updated = 0;
 let withLocale = 0;
 let withZone = 0;
 let withHotel = 0;
+let filledLocale = 0;
 
 for (const b of current) {
   const patch = patchByLocator.get(b.id);
-  if (!patch) continue;
+  if (!patch) {
+    if (b.locale) withLocale += 1;
+    continue;
+  }
   let changed = false;
 
   if (patch.locale && !b.locale) {
     b.locale = patch.locale;
     changed = true;
+    filledLocale += 1;
   }
   if (patch.pickupZone && !b.pickupZone) {
     b.pickupZone = patch.pickupZone;
@@ -115,15 +174,24 @@ for (const b of current) {
 
   if (changed) {
     updated += 1;
-    if (b.locale) withLocale += 1;
-    if (b.pickupZone) withZone += 1;
-    if ((b.customer?.hotel || "").trim()) withHotel += 1;
   }
+  if (b.locale) withLocale += 1;
+  if (b.pickupZone) withZone += 1;
+  if ((b.customer?.hotel || "").trim()) withHotel += 1;
 }
 
 console.log(
   JSON.stringify(
-    { exportDir, updated, withLocale, withZone, withHotel, write },
+    {
+      exportDir,
+      patchKeys: patchByLocator.size,
+      updated,
+      filledLocale,
+      withLocale,
+      withZone,
+      withHotel,
+      write,
+    },
     null,
     2
   )

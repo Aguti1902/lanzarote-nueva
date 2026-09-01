@@ -7,6 +7,9 @@ const LOCALE_LABELS: Record<string, string> = {
   it: "Italiano",
   fr: "Français",
   pt: "Português",
+  nl: "Nederlands",
+  pl: "Polski",
+  no: "Norsk",
 };
 
 export function bookingLocaleLabel(locale?: string | null): string {
