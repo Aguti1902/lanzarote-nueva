@@ -9,7 +9,12 @@ import {
   Users,
 } from "lucide-react";
 import { TourCard } from "@/components/TourCard";
+import { ReviewsSection } from "@/components/ReviewsSection";
 import { getFeaturedTours, getSettings } from "@/lib/content";
+import {
+  getFeaturedReviews,
+  getTripadvisorMeta,
+} from "@/lib/reviews";
 import {
   localizeSettings,
   localizeTours,
@@ -40,9 +45,11 @@ export default async function HomePage({ params }: Props) {
   const { locale: raw } = await params;
   const locale = resolveLocale(raw);
   const dict = await getDictionary(locale);
-  const [featured, settings] = await Promise.all([
+  const [featured, settings, reviews, tripadvisor] = await Promise.all([
     localizeTours(await getFeaturedTours(), locale),
     localizeSettings(await getSettings(), locale),
+    getFeaturedReviews(locale, 6),
+    getTripadvisorMeta(),
   ]);
 
   const awardLoop = [...awards, ...awards];
@@ -136,6 +143,19 @@ export default async function HomePage({ params }: Props) {
           </ul>
         </div>
       </section>
+
+      <ReviewsSection
+        reviews={reviews}
+        tripadvisor={tripadvisor}
+        copy={{
+          kicker: dict.home.reviewsKicker,
+          title: dict.home.reviewsTitle,
+          subtitle: dict.home.reviewsSubtitle,
+          basedOn: dict.home.reviewsBasedOn,
+          cta: dict.home.reviewsCta,
+          traveler: dict.home.reviewsTraveler,
+        }}
+      />
 
       <section className="mx-auto max-w-6xl px-4 py-8 md:px-6 md:py-12">
         <div className="flex flex-wrap items-end justify-between gap-4">

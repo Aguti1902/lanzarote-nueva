@@ -12,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { BookingWidget } from "@/components/BookingWidget";
+import { ReviewsSection } from "@/components/ReviewsSection";
 import { getTourBySlug, getPublicTours } from "@/lib/content";
 import { formatPrice, groupSizeLabel } from "@/lib/format";
 import {
@@ -20,6 +21,10 @@ import {
   youtubeEmbedUrl,
 } from "@/lib/media-embeds";
 import { localizeTour, localizeTours } from "@/lib/localize-content";
+import {
+  getReviewsForTour,
+  getTripadvisorMeta,
+} from "@/lib/reviews";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
@@ -45,9 +50,11 @@ export default async function TourDetailPage({ params }: Props) {
   const base = await getTourBySlug(slug);
   if (!base) notFound();
 
-  const [tour, tours] = await Promise.all([
+  const [tour, tours, tourReviews, tripadvisor] = await Promise.all([
     localizeTour(base, locale),
     localizeTours(await getPublicTours(), locale),
+    getReviewsForTour(base.id, locale, 6),
+    getTripadvisorMeta(),
   ]);
 
   const sibling =
@@ -99,7 +106,7 @@ export default async function TourDetailPage({ params }: Props) {
         </div>
       </div>
 
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-10 md:grid-cols-[1fr_360px] md:px-6 lg:gap-14">
+      <div className="mx-auto grid max-w-6xl items-start gap-10 px-4 py-10 md:grid-cols-[1fr_360px] md:px-6 lg:gap-14">
         <article>
           <div className="flex flex-wrap items-center gap-4 text-sm text-ink-muted">
             <span className="inline-flex items-center gap-1 font-semibold text-ink">
@@ -125,9 +132,15 @@ export default async function TourDetailPage({ params }: Props) {
             </span>
           </div>
 
-          <p className="mt-6 text-lg leading-relaxed text-ink-muted">
-            {tour.description}
-          </p>
+          <div className="mt-6 space-y-4 text-lg leading-relaxed text-ink-muted">
+            {tour.description
+              .split(/\n+/)
+              .map((p) => p.trim())
+              .filter(Boolean)
+              .map((paragraph) => (
+                <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+              ))}
+          </div>
 
           {tour.gallery.length > 1 && (
             <div className="mt-8 grid grid-cols-3 gap-2">
@@ -171,17 +184,19 @@ export default async function TourDetailPage({ params }: Props) {
             </div>
           )}
 
-          <section className="mt-10">
-            <h2 className="font-display text-2xl">{dict.tourDetail.highlights}</h2>
-            <ul className="mt-4 space-y-2">
-              {tour.highlights.map((h) => (
-                <li key={h} className="flex gap-2 text-ink-muted">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" />
-                  {h}
-                </li>
-              ))}
-            </ul>
-          </section>
+          {tour.highlights.length > 0 && (
+            <section className="mt-10">
+              <h2 className="font-display text-2xl">{dict.tourDetail.highlights}</h2>
+              <ul className="mt-4 space-y-2">
+                {tour.highlights.map((h) => (
+                  <li key={h} className="flex gap-2 text-ink-muted">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                    {h}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           <section className="mt-10">
             <h2 className="font-display text-2xl">{dict.tourDetail.places}</h2>
@@ -224,6 +239,20 @@ export default async function TourDetailPage({ params }: Props) {
               </ul>
             </div>
           </section>
+
+          <ReviewsSection
+            compact
+            reviews={tourReviews}
+            tripadvisor={tripadvisor}
+            copy={{
+              kicker: dict.tourDetail.reviewsKicker,
+              title: dict.tourDetail.reviewsTitle,
+              subtitle: dict.tourDetail.reviewsSubtitle,
+              basedOn: dict.tourDetail.reviewsBasedOn,
+              cta: dict.tourDetail.reviewsCta,
+              traveler: dict.tourDetail.reviewsTraveler,
+            }}
+          />
 
           <section className="mt-10">
             <h2 className="font-display text-2xl">
@@ -297,7 +326,9 @@ export default async function TourDetailPage({ params }: Props) {
           </section>
         </article>
 
-        <BookingWidget tour={tour} />
+        <div className="md:sticky md:top-24 md:self-start">
+          <BookingWidget tour={tour} />
+        </div>
       </div>
     </div>
   );

@@ -163,7 +163,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
   }
 
   return (
-    <aside className="sticky top-24 rounded-lg bg-white p-5 shadow-lg ring-1 ring-sand-line">
+    <aside className="h-fit rounded-lg bg-white p-5 shadow-lg ring-1 ring-sand-line">
       <div className="mb-4 flex items-end justify-between border-b border-sand-line pb-4">
         <div>
           <p className="text-sm text-ink-muted">
