@@ -124,6 +124,9 @@ export default async function TrasladosPage({ params }: Props) {
               </tbody>
             </table>
           </div>
+          <p className="border-t border-sand-line px-4 py-3 text-xs text-ink-muted">
+            {dict.transfers.priceIncludes.replace("{n}", "4")}.
+          </p>
         </div>
 
         <div className="mt-12">
