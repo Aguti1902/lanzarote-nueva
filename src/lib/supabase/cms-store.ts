@@ -116,12 +116,33 @@ function getCachedReader(file: string): () => Promise<unknown> {
 }
 
 /**
- * Read CMS JSON: Supabase Storage (`cms` bucket) first, then local `src/data`.
- * Public catalog files are cached ~5 min and invalidated on write.
+ * Catálogo pesado / poco cambiante: JSON del deploy (evita bajar MBs de Storage
+ * en cada regeneración ISR). settings/tours siguen por Storage+caché para el admin.
  */
+const DEPLOY_LOCAL_CATALOG = new Set([
+  "reviews.json",
+  "tripadvisor.json",
+  "transfers.json",
+  "blog.json",
+  "houses.json",
+  "cruises.json",
+  "cruiseCompanies.json",
+  "cruisePortIndex.json",
+  "cruiseItineraries.json",
+  "i18n/en.json",
+  "i18n/de.json",
+]);
+
 export async function readCmsJson<T>(file: string): Promise<T> {
   if (UNCACHEABLE_CMS_FILES.has(file)) {
     return readCmsJsonUncached<T>(file);
+  }
+  if (DEPLOY_LOCAL_CATALOG.has(file)) {
+    try {
+      return await readLocalJson<T>(file);
+    } catch {
+      /* fall through to remote cache */
+    }
   }
   return getCachedReader(file)() as Promise<T>;
 }

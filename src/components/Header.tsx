@@ -55,7 +55,6 @@ export function Header() {
             alt="Lanzarote Experience Tours"
             fill
             className="object-contain object-left"
-            priority
             sizes="175px"
           />
         </Link>

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import {
   ArrowRight,
   Building2,
@@ -11,8 +12,6 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { TourCard } from "@/components/TourCard";
-import { ReviewsSection } from "@/components/ReviewsSection";
-import { HomeIslandVideo } from "@/components/HomeIslandVideo";
 import { getFeaturedTours, getSettings } from "@/lib/content";
 import {
   getFeaturedReviews,
@@ -25,6 +24,13 @@ import {
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
+
+const ReviewsSection = dynamic(() =>
+  import("@/components/ReviewsSection").then((m) => m.ReviewsSection)
+);
+const HomeIslandVideo = dynamic(() =>
+  import("@/components/HomeIslandVideo").then((m) => m.HomeIslandVideo)
+);
 
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
 export const revalidate = 300;
@@ -99,6 +105,8 @@ export default async function HomePage({ params }: Props) {
           alt="Lanzarote"
           fill
           priority
+          fetchPriority="high"
+          quality={70}
           className="hero-image object-cover"
           sizes="100vw"
           style={{
