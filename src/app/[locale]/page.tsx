@@ -122,9 +122,9 @@ export default async function HomePage({ params }: Props) {
           </div>
         </div>
 
-        <div className="absolute right-0 bottom-0 left-0 border-t border-white/25 bg-ocean shadow-[0_-8px_30px_rgba(235,72,35,0.25)]">
+        <div className="absolute right-0 bottom-0 left-0 border-t border-white/10 bg-bg-deep">
           <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3.5 md:gap-4 md:px-6 md:py-4">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/20 text-white ring-1 ring-white/40 md:h-9 md:w-9">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/30 md:h-9 md:w-9">
               <Info className="h-4 w-4 md:h-5 md:w-5" aria-hidden />
               <span className="sr-only">Información</span>
             </span>
