@@ -38,11 +38,11 @@ export function HomeIslandVideo({ title }: { title: string }) {
               src={POSTER}
               alt={title}
               fill
-              className="object-cover transition duration-500 group-hover:scale-[1.03]"
+              className="photo-vivid object-cover transition duration-500 group-hover:scale-[1.03]"
               sizes="(max-width: 768px) 100vw, 560px"
               priority={false}
             />
-            <span className="absolute inset-0 bg-gradient-to-t from-bg-deep/55 via-bg-deep/10 to-transparent" />
+            <span className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
             <span className="absolute inset-0 flex items-center justify-center">
               <span className="flex h-16 w-16 items-center justify-center rounded-full bg-ocean text-white shadow-lg ring-4 ring-white/30 transition group-hover:scale-105 group-hover:bg-ocean-deep">
                 <Play className="ml-0.5 h-7 w-7 fill-current" />

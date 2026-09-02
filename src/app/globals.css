@@ -1,21 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #f6f4f2;
-  --bg-deep: #171c26;
+  --bg: #fffaf6;
+  --bg-deep: #1c2433;
   --surface: #ffffff;
   --ink: #1a1d24;
-  --ink-muted: #5a6170;
+  --ink-muted: #4f5665;
   --ocean: #eb4823;
   --ocean-deep: #c93412;
   --coral: #eb4823;
   --coral-hover: #e03a14;
-  --sand-line: #e5e0db;
+  --sand-line: #ebe4dc;
   --rating: #eb4823;
   --success: #268436;
-  --sky-soft: #efecea;
-  --sky-mist: #d4cfc9;
-  --header: #2b3345;
+  --sky-soft: #fff3eb;
+  --sky-mist: #f0e6dc;
+  --header: #243044;
+  --sun: #ffb347;
 }
 
 @theme inline {
@@ -48,8 +49,9 @@ html {
 
 body {
   background:
-    radial-gradient(1000px 480px at 8% -8%, rgba(235, 72, 35, 0.08), transparent 55%),
-    radial-gradient(800px 400px at 92% 0%, rgba(43, 51, 69, 0.06), transparent 50%),
+    radial-gradient(1100px 520px at 6% -10%, rgba(235, 72, 35, 0.16), transparent 58%),
+    radial-gradient(900px 460px at 96% 4%, rgba(255, 179, 71, 0.18), transparent 52%),
+    radial-gradient(700px 380px at 50% 100%, rgba(235, 72, 35, 0.06), transparent 55%),
     var(--bg);
   color: var(--ink);
   font-family: var(--font-outfit), system-ui, sans-serif;
@@ -82,10 +84,10 @@ h3,
 
 @keyframes drift {
   from {
-    transform: scale(1.05) translate3d(0, 0, 0);
+    transform: scale(1.04) translate3d(0, 0, 0);
   }
   to {
-    transform: scale(1.12) translate3d(0, -1.5%, 0);
+    transform: scale(1.1) translate3d(0, -1.2%, 0);
   }
 }
 
@@ -112,6 +114,11 @@ h3,
 
 .hero-image {
   animation: drift 20s ease-in-out alternate infinite;
+  filter: brightness(1.08) contrast(1.05) saturate(1.12);
+}
+
+.photo-vivid {
+  filter: brightness(1.06) contrast(1.04) saturate(1.1);
 }
 
 .marquee-track {
@@ -145,7 +152,7 @@ h3,
 }
 
 .sky-panel {
-  background: linear-gradient(165deg, #ffffff 0%, #f3efec 100%);
+  background: linear-gradient(165deg, #ffffff 0%, #fff4ec 100%);
 }
 
 .btn-primary {
@@ -157,14 +164,14 @@ h3,
   padding: 0.9rem 1.5rem;
   font-weight: 700;
   color: white;
-  box-shadow: 0 10px 30px rgba(235, 72, 35, 0.28);
+  box-shadow: 0 12px 32px rgba(235, 72, 35, 0.34);
   transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-primary:hover {
   background: var(--ocean-deep);
   transform: translateY(-2px);
-  box-shadow: 0 14px 34px rgba(201, 52, 18, 0.32);
+  box-shadow: 0 16px 38px rgba(201, 52, 18, 0.38);
 }
 
 .btn-ghost {
@@ -172,8 +179,8 @@ h3,
   align-items: center;
   gap: 0.5rem;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.22);
   padding: 0.9rem 1.4rem;
   font-weight: 700;
   color: white;
@@ -182,8 +189,8 @@ h3,
 }
 
 .btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.34);
+  border-color: rgba(255, 255, 255, 0.95);
 }
 
 .section-title {
@@ -235,8 +242,23 @@ h3,
   inset: 0;
   background: linear-gradient(
     105deg,
-    rgba(23, 28, 38, 0.88) 0%,
-    rgba(23, 28, 38, 0.55) 55%,
-    rgba(235, 72, 35, 0.25) 100%
+    rgba(20, 26, 38, 0.52) 0%,
+    rgba(20, 26, 38, 0.22) 48%,
+    rgba(235, 72, 35, 0.18) 100%
   );
+}
+
+.band-dark-end::after {
+  background: linear-gradient(
+    255deg,
+    rgba(20, 26, 38, 0.52) 0%,
+    rgba(20, 26, 38, 0.22) 48%,
+    rgba(235, 72, 35, 0.18) 100%
+  );
+}
+
+.text-hero-shadow {
+  text-shadow:
+    0 2px 18px rgba(0, 0, 0, 0.45),
+    0 1px 3px rgba(0, 0, 0, 0.35);
 }

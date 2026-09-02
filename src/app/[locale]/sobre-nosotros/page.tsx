@@ -97,19 +97,19 @@ export default async function SobreNosotrosPage({ params }: Props) {
             ))}
           </ul>
 
-          <div className="mt-12 overflow-hidden rounded-lg bg-bg-deep text-white md:grid md:grid-cols-2">
+          <div className="mt-12 overflow-hidden rounded-2xl bg-gradient-to-br from-[#2f3a4f] to-ocean text-white shadow-[0_20px_50px_rgba(235,72,35,0.2)] md:grid md:grid-cols-2">
             <div className="relative min-h-[240px]">
               <Image
                 src={settings.aboutImage}
                 alt="Lanzarote"
                 fill
-                className="object-cover opacity-80"
+                className="photo-vivid object-cover"
                 sizes="(max-width:768px) 100vw, 50vw"
               />
             </div>
             <div className="flex flex-col justify-center p-8 md:p-10">
               <h2 className="text-3xl font-bold">{dict.about.promise}</h2>
-              <p className="mt-4 text-sm leading-relaxed text-white/80 md:text-base">
+              <p className="mt-4 text-sm leading-relaxed text-white/90 md:text-base">
                 {settings.aboutPromise}
               </p>
               <div className="mt-6 flex flex-wrap gap-3">

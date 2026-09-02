@@ -47,11 +47,11 @@ export default async function BlogPostPage({ params }: Props) {
           src={post.image}
           alt={post.title}
           fill
-          className="object-cover"
+          className="photo-vivid object-cover"
           priority
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg-deep via-bg-deep/40 to-bg-deep/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/15 to-black/5" />
         <div className="absolute inset-x-0 bottom-0 mx-auto max-w-3xl px-4 pb-10 md:px-6">
           <div className="flex flex-wrap gap-2">
             {post.tags.map((tag) => (

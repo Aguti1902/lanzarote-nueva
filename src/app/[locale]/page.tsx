@@ -58,7 +58,7 @@ export default async function HomePage({ params }: Props) {
 
   return (
     <>
-      <section className="relative min-h-[88vh] overflow-hidden bg-bg-deep text-white md:min-h-[92vh]">
+      <section className="relative min-h-[88vh] overflow-hidden bg-[#2a3344] text-white md:min-h-[92vh]">
         <Image
           src={settings.homeHeroImage}
           alt="Lanzarote"
@@ -67,14 +67,14 @@ export default async function HomePage({ params }: Props) {
           className="hero-image object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-bg-deep/80 via-bg-deep/45 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg-deep/70 via-transparent to-bg-deep/25" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-black/10 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10" />
 
         <div className="relative mx-auto flex min-h-[88vh] max-w-6xl flex-col justify-end px-4 pb-24 pt-28 md:min-h-[92vh] md:justify-center md:px-6 md:pb-20">
-          <p className="animate-fade-up font-display text-[clamp(2.8rem,8vw,5.5rem)] leading-[0.95] tracking-[-0.04em] text-white drop-shadow-lg">
+          <p className="animate-fade-up text-hero-shadow font-display text-[clamp(2.8rem,8vw,5.5rem)] leading-[0.95] tracking-[-0.04em] text-white">
             {settings.brandName}
           </p>
-          <p className="animate-fade-up-delay mt-5 max-w-md text-lg text-white/90 md:text-xl">
+          <p className="animate-fade-up-delay text-hero-shadow mt-5 max-w-md text-lg text-white md:text-xl">
             {settings.tagline}
           </p>
           <div className="animate-fade-up-delay-2 mt-8 flex flex-wrap gap-3">
@@ -88,7 +88,7 @@ export default async function HomePage({ params }: Props) {
           </div>
         </div>
 
-        <div className="absolute right-0 bottom-0 left-0 overflow-hidden border-t border-white/10 bg-ocean py-2.5 text-sm text-white">
+        <div className="absolute right-0 bottom-0 left-0 overflow-hidden border-t border-white/20 bg-ocean py-2.5 text-sm text-white shadow-[0_-8px_30px_rgba(235,72,35,0.25)]">
           <div className="marquee-track gap-12 px-4">
             {[0, 1].map((i) => (
               <p key={i} className="shrink-0 whitespace-nowrap">
@@ -108,7 +108,7 @@ export default async function HomePage({ params }: Props) {
           {awardLoop.map((award, i) => (
             <div
               key={`${award.src}-${i}`}
-              className="relative h-12 w-24 shrink-0 opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0 md:h-14 md:w-28"
+              className="relative h-12 w-24 shrink-0 opacity-90 transition hover:opacity-100 md:h-14 md:w-28"
             >
               <Image
                 src={award.src}
@@ -122,7 +122,7 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      <section className="py-14 md:py-16">
+      <section className="bg-gradient-to-b from-sky-soft/80 to-transparent py-14 md:py-16">
         <div className="mx-auto max-w-6xl px-4 md:px-6">
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {dict.home.advantages.map((label, index) => {
@@ -130,9 +130,9 @@ export default async function HomePage({ params }: Props) {
               return (
                 <li
                   key={label}
-                  className="group relative overflow-hidden rounded-2xl bg-white p-5 shadow-[0_8px_30px_rgba(23,28,38,0.05)] ring-1 ring-sand-line"
+                  className="group relative overflow-hidden rounded-2xl bg-white p-5 shadow-[0_10px_34px_rgba(235,72,35,0.08)] ring-1 ring-sand-line transition hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(235,72,35,0.14)]"
                 >
-                  <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-ocean text-white shadow-[0_8px_20px_rgba(235,72,35,0.3)] transition group-hover:scale-105">
+                  <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-ocean text-white shadow-[0_8px_20px_rgba(235,72,35,0.35)] transition group-hover:scale-105">
                     <Icon className="h-5 w-5" />
                   </span>
                   <p className="text-sm font-semibold leading-snug text-ink">
@@ -170,17 +170,17 @@ export default async function HomePage({ params }: Props) {
           src="/images/home/traslados.jpg"
           alt=""
           fill
-          className="object-cover"
+          className="photo-vivid object-cover"
           sizes="100vw"
         />
         <div className="relative z-10 mx-auto flex min-h-[380px] max-w-6xl flex-col justify-center px-4 py-16 md:px-6">
-          <p className="text-sm font-bold tracking-[0.18em] text-ocean uppercase">
+          <p className="text-sm font-bold tracking-[0.18em] text-[#ffb59f] uppercase">
             {dict.home.transfersKicker}
           </p>
-          <h2 className="mt-3 max-w-xl font-display text-4xl font-extrabold tracking-tight md:text-5xl">
+          <h2 className="text-hero-shadow mt-3 max-w-xl font-display text-4xl font-extrabold tracking-tight md:text-5xl">
             {dict.home.transfersTitle}
           </h2>
-          <p className="mt-4 max-w-lg text-base leading-relaxed text-white/85">
+          <p className="text-hero-shadow mt-4 max-w-lg text-base leading-relaxed text-white">
             {settings.transferIntro}
           </p>
           <Link href={lp("/traslados")} className="btn-primary mt-8 w-fit">
@@ -190,22 +190,22 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      <section className="band-dark min-h-[380px]">
+      <section className="band-dark band-dark-end min-h-[380px]">
         <Image
           src="/images/home/cruceros.jpg"
           alt=""
           fill
-          className="object-cover"
+          className="photo-vivid object-cover"
           sizes="100vw"
         />
         <div className="relative z-10 mx-auto flex min-h-[380px] max-w-6xl flex-col justify-center px-4 py-16 md:items-end md:px-6 md:text-right">
-          <p className="text-sm font-bold tracking-[0.18em] text-ocean uppercase">
+          <p className="text-sm font-bold tracking-[0.18em] text-[#ffb59f] uppercase">
             {dict.home.cruisesKicker}
           </p>
-          <h2 className="mt-3 max-w-xl font-display text-4xl font-extrabold tracking-tight md:text-5xl">
+          <h2 className="text-hero-shadow mt-3 max-w-xl font-display text-4xl font-extrabold tracking-tight md:text-5xl">
             {dict.home.cruisesTitle}
           </h2>
-          <p className="mt-4 max-w-lg text-base leading-relaxed text-white/85">
+          <p className="text-hero-shadow mt-4 max-w-lg text-base leading-relaxed text-white">
             {settings.cruiseIntro}
           </p>
           <Link href={lp("/excursiones-cruceros")} className="btn-primary mt-8 w-fit">
@@ -215,16 +215,16 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      <section className="py-20 md:py-24">
+      <section className="bg-gradient-to-b from-white via-[#fff8f2] to-sky-soft/60 py-20 md:py-24">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 md:grid-cols-2 md:px-6">
           <div className="relative">
-            <div className="absolute -inset-3 rounded-[2rem] bg-ocean/10 blur-2xl" />
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] shadow-[0_24px_60px_rgba(23,28,38,0.18)]">
+            <div className="absolute -inset-3 rounded-[2rem] bg-ocean/15 blur-2xl" />
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] shadow-[0_24px_60px_rgba(235,72,35,0.16)] ring-1 ring-white/60">
               <Image
                 src={settings.aboutImage}
                 alt="LET"
                 fill
-                className="object-cover"
+                className="photo-vivid object-cover"
                 sizes="(max-width:768px) 100vw, 50vw"
               />
             </div>
@@ -259,7 +259,7 @@ export default async function HomePage({ params }: Props) {
         }}
       />
 
-      <section className="border-t border-sand-line bg-white py-20 md:py-24">
+      <section className="border-t border-sand-line bg-gradient-to-b from-sky-soft/70 to-white py-20 md:py-24">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 md:grid-cols-[1.15fr_0.85fr] md:px-6">
           <HomeIslandVideo title={dict.home.islandTitle} />
           <div>

@@ -22,10 +22,10 @@ export function TourCard({ tour }: { tour: Tour }) {
           src={tour.image}
           alt={tour.title}
           fill
-          className="object-cover transition duration-700 group-hover:scale-110"
+          className="photo-vivid object-cover transition duration-700 group-hover:scale-110"
           sizes="(max-width: 768px) 100vw, 33vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg-deep/70 via-bg-deep/10 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent" />
         {tour.groupSize && (
           <span className="absolute top-3 left-3 rounded-full bg-white/95 px-3 py-1 text-[11px] font-bold tracking-wide text-ocean-deep uppercase shadow-sm">
             {groupSizeLabel(tour.groupSize, locale)}

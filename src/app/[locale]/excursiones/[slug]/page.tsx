@@ -94,21 +94,21 @@ export default async function TourDetailPage({ params }: Props) {
           alt={tour.title}
           fill
           priority
-          className="object-cover"
+          className="photo-vivid object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg-deep via-bg-deep/55 to-bg-deep/25" />
-        <div className="absolute inset-0 bg-gradient-to-r from-bg-deep/50 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/15 to-black/5" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/25 via-transparent to-transparent" />
         <div className="absolute inset-x-0 bottom-0 mx-auto max-w-6xl px-4 pb-8 md:px-6">
           {tour.groupSize && (
-            <span className="mb-3 inline-block rounded-md bg-black/35 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+            <span className="mb-3 inline-block rounded-md bg-black/30 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
               {groupSizeLabel(tour.groupSize, locale)}
               {tour.maxGroup
                 ? ` · ${dict.tourDetail.maxAbbrev} ${tour.maxGroup}`
                 : ""}
             </span>
           )}
-          <h1 className="max-w-3xl font-display text-3xl text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.55)] md:text-5xl">
+          <h1 className="text-hero-shadow max-w-3xl font-display text-3xl text-white md:text-5xl">
             {tour.title}
           </h1>
         </div>
