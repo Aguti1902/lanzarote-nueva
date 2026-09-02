@@ -1,0 +1,2653 @@
+{
+  "updatedAt": "2026-09-01T00:54:11.542Z",
+  "entries": [
+    {
+      "date": "2026-09-20",
+      "shipName": "Ventura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "ventura",
+      "sailingId": "12092026-3736"
+    },
+    {
+      "date": "2026-10-11",
+      "shipName": "MSC Virtuosa",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-virtuosa",
+      "sailingId": "03102026-3325"
+    },
+    {
+      "date": "2026-10-11",
+      "shipName": "MSC Virtuosa",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-virtuosa",
+      "sailingId": "03102026-3327"
+    },
+    {
+      "date": "2026-10-10",
+      "shipName": "Iona",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "iona",
+      "sailingId": "03102026-3739"
+    },
+    {
+      "date": "2026-10-07",
+      "shipName": "Ventura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "ventura",
+      "sailingId": "03102026-3740"
+    },
+    {
+      "date": "2026-10-15",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "08102026-3743"
+    },
+    {
+      "date": "2026-10-15",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "08102026-3744"
+    },
+    {
+      "date": "2026-10-15",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "08102026-3745"
+    },
+    {
+      "date": "2026-10-15",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "08102026-3746"
+    },
+    {
+      "date": "2026-10-20",
+      "shipName": "Spirit Of Adventure",
+      "companyName": "Saga Cruises",
+      "companySlug": "saga-cruises",
+      "shipSlug": "spirit-of-adventure",
+      "sailingId": "10102026-3747"
+    },
+    {
+      "date": "2026-10-15",
+      "shipName": "Crystal Serenity",
+      "companyName": "Crystal Cruises",
+      "companySlug": "crystal-cruises",
+      "shipSlug": "crystal-serenity",
+      "sailingId": "11102026-3748"
+    },
+    {
+      "date": "2026-10-28",
+      "shipName": "Amadea",
+      "companyName": "Phoenix Reisen",
+      "companySlug": "phoenix-reisen",
+      "shipSlug": "amadea",
+      "sailingId": "13102026-3749"
+    },
+    {
+      "date": "2026-10-29",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "16102026-3751"
+    },
+    {
+      "date": "2026-10-24",
+      "shipName": "Britannia",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "britannia",
+      "sailingId": "16102026-3752"
+    },
+    {
+      "date": "2026-10-29",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "17102026-3754"
+    },
+    {
+      "date": "2026-10-25",
+      "shipName": "Europa 2",
+      "companyName": "Hapag-Lloyd",
+      "companySlug": "hapag-lloyd",
+      "shipSlug": "europa-2",
+      "sailingId": "18102026-3755"
+    },
+    {
+      "date": "2026-10-23",
+      "shipName": "Norwegian Star",
+      "companyName": "Norwegian cruise line (NCL)",
+      "companySlug": "norwegian-cruise-line-ncl",
+      "shipSlug": "norwegian-star",
+      "sailingId": "20102026-3761"
+    },
+    {
+      "date": "2026-10-29",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "23102026-3762"
+    },
+    {
+      "date": "2026-10-29",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "23102026-3763"
+    },
+    {
+      "date": "2026-10-29",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "24102026-3764"
+    },
+    {
+      "date": "2026-10-29",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "24102026-3765"
+    },
+    {
+      "date": "2026-10-31",
+      "shipName": "Sky Princess",
+      "companyName": "Princess Cruises",
+      "companySlug": "princess-cruises",
+      "shipSlug": "sky-princess",
+      "sailingId": "24102026-3364"
+    },
+    {
+      "date": "2026-11-11",
+      "shipName": "Star Flyer",
+      "companyName": "Star-Clippers",
+      "companySlug": "star-clippers",
+      "shipSlug": "star-flyer",
+      "sailingId": "25102026-3768"
+    },
+    {
+      "date": "2026-11-05",
+      "shipName": "Mein Schiff 3",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-3",
+      "sailingId": "25102026-3767"
+    },
+    {
+      "date": "2026-11-05",
+      "shipName": "Arcadia",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "arcadia",
+      "sailingId": "26102026-3769"
+    },
+    {
+      "date": "2026-11-04",
+      "shipName": "Norwegian Star",
+      "companyName": "Norwegian cruise line (NCL)",
+      "companySlug": "norwegian-cruise-line-ncl",
+      "shipSlug": "norwegian-star",
+      "sailingId": "29102026-3771"
+    },
+    {
+      "date": "2026-11-03",
+      "shipName": "Mein Schiff 7",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-7",
+      "sailingId": "29102026-3770"
+    },
+    {
+      "date": "2026-11-12",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "30102026-3774"
+    },
+    {
+      "date": "2026-11-09",
+      "shipName": "Amera",
+      "companyName": "Phoenix Reisen",
+      "companySlug": "phoenix-reisen",
+      "shipSlug": "amera",
+      "sailingId": "31102026-3777"
+    },
+    {
+      "date": "2026-11-09",
+      "shipName": "Amera",
+      "companyName": "Phoenix Reisen",
+      "companySlug": "phoenix-reisen",
+      "shipSlug": "amera",
+      "sailingId": "31102026-3778"
+    },
+    {
+      "date": "2026-11-12",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "31102026-3780"
+    },
+    {
+      "date": "2026-11-08",
+      "shipName": "Ventura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "ventura",
+      "sailingId": "31102026-3781"
+    },
+    {
+      "date": "2026-11-07",
+      "shipName": "AIDAblu",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidablu",
+      "sailingId": "01112026-3782"
+    },
+    {
+      "date": "2026-11-07",
+      "shipName": "AIDAblu",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidablu",
+      "sailingId": "01112026-3783"
+    },
+    {
+      "date": "2026-11-07",
+      "shipName": "AIDAblu",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidablu",
+      "sailingId": "01112026-3784"
+    },
+    {
+      "date": "2026-11-13",
+      "shipName": "AIDAprima",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidaprima",
+      "sailingId": "01112026-3786"
+    },
+    {
+      "date": "2026-11-14",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "01112026-3788"
+    },
+    {
+      "date": "2026-11-11",
+      "shipName": "Star Flyer",
+      "companyName": "Star-Clippers",
+      "companySlug": "star-clippers",
+      "shipSlug": "star-flyer",
+      "sailingId": "04112026-3790"
+    },
+    {
+      "date": "2026-11-13",
+      "shipName": "AIDAperla",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidaperla",
+      "sailingId": "05112026-3791"
+    },
+    {
+      "date": "2026-11-15",
+      "shipName": "Mein Schiff 7",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-7",
+      "sailingId": "05112026-3793"
+    },
+    {
+      "date": "2026-11-07",
+      "shipName": "AIDAblu",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidablu",
+      "sailingId": "06112026-3794"
+    },
+    {
+      "date": "2026-11-12",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "06112026-3795"
+    },
+    {
+      "date": "2026-11-12",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "06112026-3796"
+    },
+    {
+      "date": "2026-11-13",
+      "shipName": "AIDAprima",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidaprima",
+      "sailingId": "07112026-3797"
+    },
+    {
+      "date": "2026-11-20",
+      "shipName": "AIDAprima",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidaprima",
+      "sailingId": "07112026-3797"
+    },
+    {
+      "date": "2026-11-13",
+      "shipName": "AIDAprima",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidaprima",
+      "sailingId": "07112026-3798"
+    },
+    {
+      "date": "2026-11-12",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "07112026-3799"
+    },
+    {
+      "date": "2026-11-12",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "07112026-3800"
+    },
+    {
+      "date": "2026-11-14",
+      "shipName": "Iona",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "iona",
+      "sailingId": "07112026-3801"
+    },
+    {
+      "date": "2026-11-16",
+      "shipName": "AIDAblu",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidablu",
+      "sailingId": "08112026-3803"
+    },
+    {
+      "date": "2026-11-16",
+      "shipName": "AIDAblu",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidablu",
+      "sailingId": "08112026-3804"
+    },
+    {
+      "date": "2026-11-13",
+      "shipName": "AIDAprima",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidaprima",
+      "sailingId": "10112026-3808"
+    },
+    {
+      "date": "2026-11-20",
+      "shipName": "AIDAprima",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidaprima",
+      "sailingId": "10112026-3808"
+    },
+    {
+      "date": "2026-11-17",
+      "shipName": "Queen Victoria",
+      "companyName": "Cunard Line Cruises",
+      "companySlug": "cunard-line-cruises",
+      "shipSlug": "queen-victoria",
+      "sailingId": "11112026-3812"
+    },
+    {
+      "date": "2026-11-18",
+      "shipName": "Seven Seas Navigator",
+      "companyName": "Regent Seven Seas Cruises",
+      "companySlug": "regent-seven-seas-cruises",
+      "shipSlug": "seven-seas-navigator",
+      "sailingId": "11112026-3813"
+    },
+    {
+      "date": "2026-11-25",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "12112026-3815"
+    },
+    {
+      "date": "2026-11-15",
+      "shipName": "Mein Schiff 7",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-7",
+      "sailingId": "12112026-3818"
+    },
+    {
+      "date": "2026-11-15",
+      "shipName": "Mein Schiff 7",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-7",
+      "sailingId": "12112026-3819"
+    },
+    {
+      "date": "2026-11-16",
+      "shipName": "AIDAblu",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidablu",
+      "sailingId": "13112026-3820"
+    },
+    {
+      "date": "2026-11-22",
+      "shipName": "Ambition",
+      "companyName": "ambassador-cruise-line",
+      "companySlug": "ambassador-cruise-line",
+      "shipSlug": "ambition",
+      "sailingId": "13112026-3821"
+    },
+    {
+      "date": "2026-11-18",
+      "shipName": "Marella Discovery 2",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-discovery-2",
+      "sailingId": "13112026-3825"
+    },
+    {
+      "date": "2026-11-18",
+      "shipName": "Marella Discovery 2",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-discovery-2",
+      "sailingId": "13112026-3826"
+    },
+    {
+      "date": "2026-11-26",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "13112026-3823"
+    },
+    {
+      "date": "2026-11-18",
+      "shipName": "Star Clipper",
+      "companyName": "Star-Clippers",
+      "companySlug": "star-clippers",
+      "shipSlug": "star-clipper",
+      "sailingId": "13112026-3828"
+    },
+    {
+      "date": "2026-11-14",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "13112026-3827"
+    },
+    {
+      "date": "2026-11-20",
+      "shipName": "AIDAprima",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidaprima",
+      "sailingId": "14112026-3829"
+    },
+    {
+      "date": "2026-11-20",
+      "shipName": "AIDAprima",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidaprima",
+      "sailingId": "14112026-3830"
+    },
+    {
+      "date": "2026-11-27",
+      "shipName": "AIDAprima",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidaprima",
+      "sailingId": "14112026-3830"
+    },
+    {
+      "date": "2026-11-17",
+      "shipName": "Celebrity Infinity",
+      "companyName": "Celebrity Cruises",
+      "companySlug": "celebrity-cruises",
+      "shipSlug": "celebrity-infinity",
+      "sailingId": "14112026-3833"
+    },
+    {
+      "date": "2026-11-25",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "14112026-3836"
+    },
+    {
+      "date": "2026-11-26",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "14112026-3832"
+    },
+    {
+      "date": "2026-11-16",
+      "shipName": "AIDAblu",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidablu",
+      "sailingId": "15112026-3837"
+    },
+    {
+      "date": "2026-11-16",
+      "shipName": "AIDAblu",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidablu",
+      "sailingId": "15112026-3838"
+    },
+    {
+      "date": "2026-11-16",
+      "shipName": "AIDAblu",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidablu",
+      "sailingId": "15112026-3839"
+    },
+    {
+      "date": "2026-11-19",
+      "shipName": "Europa",
+      "companyName": "Hapag-Lloyd",
+      "companySlug": "hapag-lloyd",
+      "shipSlug": "europa",
+      "sailingId": "15112026-3840"
+    },
+    {
+      "date": "2026-11-21",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "15112026-3841"
+    },
+    {
+      "date": "2026-11-24",
+      "shipName": "Ventura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "ventura",
+      "sailingId": "17112026-3842"
+    },
+    {
+      "date": "2026-11-18",
+      "shipName": "Wind Spirit",
+      "companyName": "windstar-cruises",
+      "companySlug": "windstar-cruises",
+      "shipSlug": "wind-spirit",
+      "sailingId": "17112026-3843"
+    },
+    {
+      "date": "2026-11-25",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "19112026-3846"
+    },
+    {
+      "date": "2026-12-02",
+      "shipName": "Balmoral",
+      "companyName": "Fred Olsen Cruise Lines",
+      "companySlug": "fred-olsen-cruise-lines",
+      "shipSlug": "balmoral",
+      "sailingId": "19112026-3844"
+    },
+    {
+      "date": "2026-11-28",
+      "shipName": "Spirit Of Adventure",
+      "companyName": "Saga Cruises",
+      "companySlug": "saga-cruises",
+      "shipSlug": "spirit-of-adventure",
+      "sailingId": "19112026-3849"
+    },
+    {
+      "date": "2026-11-29",
+      "shipName": "Mein Schiff 7",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-7",
+      "sailingId": "19112026-3848"
+    },
+    {
+      "date": "2026-11-22",
+      "shipName": "Marella Discovery 2",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-discovery-2",
+      "sailingId": "20112026-3854"
+    },
+    {
+      "date": "2026-11-26",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "20112026-3852"
+    },
+    {
+      "date": "2026-11-26",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "20112026-3853"
+    },
+    {
+      "date": "2026-11-21",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "20112026-3855"
+    },
+    {
+      "date": "2026-11-27",
+      "shipName": "AIDAprima",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidaprima",
+      "sailingId": "21112026-3856"
+    },
+    {
+      "date": "2026-11-27",
+      "shipName": "AIDAprima",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidaprima",
+      "sailingId": "21112026-3857"
+    },
+    {
+      "date": "2026-12-04",
+      "shipName": "AIDAprima",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidaprima",
+      "sailingId": "21112026-3857"
+    },
+    {
+      "date": "2026-11-30",
+      "shipName": "Bolette",
+      "companyName": "Fred Olsen Cruise Lines",
+      "companySlug": "fred-olsen-cruise-lines",
+      "shipSlug": "bolette",
+      "sailingId": "21112026-3860"
+    },
+    {
+      "date": "2026-11-22",
+      "shipName": "Marella Discovery 2",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-discovery-2",
+      "sailingId": "21112026-3862"
+    },
+    {
+      "date": "2026-11-26",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "21112026-3858"
+    },
+    {
+      "date": "2026-11-26",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "21112026-3859"
+    },
+    {
+      "date": "2026-11-28",
+      "shipName": "Iona",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "iona",
+      "sailingId": "21112026-3861"
+    },
+    {
+      "date": "2026-11-25",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "22112026-3866"
+    },
+    {
+      "date": "2026-12-01",
+      "shipName": "Spirit Of Discovery",
+      "companyName": "Saga Cruises",
+      "companySlug": "saga-cruises",
+      "shipSlug": "spirit-of-discovery",
+      "sailingId": "22112026-3868"
+    },
+    {
+      "date": "2026-11-28",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "22112026-3867"
+    },
+    {
+      "date": "2026-11-25",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "23112026-3870"
+    },
+    {
+      "date": "2026-11-29",
+      "shipName": "Borealis",
+      "companyName": "Fred Olsen Cruise Lines",
+      "companySlug": "fred-olsen-cruise-lines",
+      "shipSlug": "borealis",
+      "sailingId": "23112026-3869"
+    },
+    {
+      "date": "2026-11-29",
+      "shipName": "Seven Seas Navigator",
+      "companyName": "Regent Seven Seas Cruises",
+      "companySlug": "regent-seven-seas-cruises",
+      "shipSlug": "seven-seas-navigator",
+      "sailingId": "23112026-3871"
+    },
+    {
+      "date": "2026-12-11",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "26112026-3873"
+    },
+    {
+      "date": "2026-12-04",
+      "shipName": "Celebrity Infinity",
+      "companyName": "Celebrity Cruises",
+      "companySlug": "celebrity-cruises",
+      "shipSlug": "celebrity-infinity",
+      "sailingId": "26112026-3874"
+    },
+    {
+      "date": "2026-12-02",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "26112026-3875"
+    },
+    {
+      "date": "2026-11-29",
+      "shipName": "Mein Schiff 7",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-7",
+      "sailingId": "26112026-3878"
+    },
+    {
+      "date": "2026-11-29",
+      "shipName": "Mein Schiff 7",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-7",
+      "sailingId": "26112026-3879"
+    },
+    {
+      "date": "2026-11-29",
+      "shipName": "Marella Discovery 2",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-discovery-2",
+      "sailingId": "27112026-3882"
+    },
+    {
+      "date": "2026-12-10",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "27112026-3881"
+    },
+    {
+      "date": "2026-11-28",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "27112026-3883"
+    },
+    {
+      "date": "2026-12-04",
+      "shipName": "AIDAprima",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidaprima",
+      "sailingId": "28112026-3885"
+    },
+    {
+      "date": "2026-11-29",
+      "shipName": "Marella Discovery 2",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-discovery-2",
+      "sailingId": "28112026-3887"
+    },
+    {
+      "date": "2026-12-10",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "28112026-3886"
+    },
+    {
+      "date": "2026-12-02",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "29112026-3891"
+    },
+    {
+      "date": "2026-12-07",
+      "shipName": "Queen Anne",
+      "companyName": "Cunard Line Cruises",
+      "companySlug": "cunard-line-cruises",
+      "shipSlug": "queen-anne",
+      "sailingId": "29112026-3334"
+    },
+    {
+      "date": "2026-12-05",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "29112026-3892"
+    },
+    {
+      "date": "2026-12-02",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "30112026-3894"
+    },
+    {
+      "date": "2026-12-02",
+      "shipName": "Balmoral",
+      "companyName": "Fred Olsen Cruise Lines",
+      "companySlug": "fred-olsen-cruise-lines",
+      "shipSlug": "balmoral",
+      "sailingId": "30112026-3893"
+    },
+    {
+      "date": "2026-12-06",
+      "shipName": "Marella Explorer",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-explorer",
+      "sailingId": "30112026-3895"
+    },
+    {
+      "date": "2026-12-06",
+      "shipName": "Marella Explorer",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-explorer",
+      "sailingId": "01122026-3896"
+    },
+    {
+      "date": "2026-12-11",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "03122026-3898"
+    },
+    {
+      "date": "2026-12-11",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "03122026-3899"
+    },
+    {
+      "date": "2026-12-18",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "03122026-3899"
+    },
+    {
+      "date": "2026-12-08",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "03122026-3900"
+    },
+    {
+      "date": "2026-12-11",
+      "shipName": "Queen Victoria",
+      "companyName": "Cunard Line Cruises",
+      "companySlug": "cunard-line-cruises",
+      "shipSlug": "queen-victoria",
+      "sailingId": "04122026-3907"
+    },
+    {
+      "date": "2026-12-07",
+      "shipName": "Marella Discovery 2",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-discovery-2",
+      "sailingId": "04122026-3905"
+    },
+    {
+      "date": "2026-12-10",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "04122026-3903"
+    },
+    {
+      "date": "2026-12-10",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "04122026-3904"
+    },
+    {
+      "date": "2026-12-05",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "04122026-3906"
+    },
+    {
+      "date": "2026-12-07",
+      "shipName": "Marella Discovery 2",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-discovery-2",
+      "sailingId": "05122026-3911"
+    },
+    {
+      "date": "2026-12-10",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "05122026-3908"
+    },
+    {
+      "date": "2026-12-10",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "05122026-3909"
+    },
+    {
+      "date": "2026-12-12",
+      "shipName": "Iona",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "iona",
+      "sailingId": "05122026-3910"
+    },
+    {
+      "date": "2026-12-15",
+      "shipName": "AIDAblu",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidablu",
+      "sailingId": "06122026-3913"
+    },
+    {
+      "date": "2026-12-15",
+      "shipName": "AIDAblu",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidablu",
+      "sailingId": "06122026-3914"
+    },
+    {
+      "date": "2026-12-08",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "06122026-3915"
+    },
+    {
+      "date": "2026-12-15",
+      "shipName": "Spirit Of Discovery",
+      "companyName": "Saga Cruises",
+      "companySlug": "saga-cruises",
+      "shipSlug": "spirit-of-discovery",
+      "sailingId": "06122026-3917"
+    },
+    {
+      "date": "2026-12-12",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "06122026-3916"
+    },
+    {
+      "date": "2026-12-08",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "07122026-3919"
+    },
+    {
+      "date": "2026-12-13",
+      "shipName": "Marella Explorer",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-explorer",
+      "sailingId": "07122026-3920"
+    },
+    {
+      "date": "2026-12-17",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "07122026-3923"
+    },
+    {
+      "date": "2026-12-17",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "07122026-3924"
+    },
+    {
+      "date": "2026-12-17",
+      "shipName": "Spirit Of Adventure",
+      "companyName": "Saga Cruises",
+      "companySlug": "saga-cruises",
+      "shipSlug": "spirit-of-adventure",
+      "sailingId": "07122026-3925"
+    },
+    {
+      "date": "2026-12-16",
+      "shipName": "Wind Spirit",
+      "companyName": "windstar-cruises",
+      "companySlug": "windstar-cruises",
+      "shipSlug": "wind-spirit",
+      "sailingId": "07122026-3926"
+    },
+    {
+      "date": "2026-12-16",
+      "shipName": "Celebrity Infinity",
+      "companyName": "Celebrity Cruises",
+      "companySlug": "celebrity-cruises",
+      "shipSlug": "celebrity-infinity",
+      "sailingId": "08122026-3927"
+    },
+    {
+      "date": "2026-12-13",
+      "shipName": "Marella Explorer",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-explorer",
+      "sailingId": "08122026-3928"
+    },
+    {
+      "date": "2026-12-11",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "09122026-3929"
+    },
+    {
+      "date": "2026-12-15",
+      "shipName": "AIDAblu",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidablu",
+      "sailingId": "11122026-3937"
+    },
+    {
+      "date": "2026-12-13",
+      "shipName": "Marella Discovery 2",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-discovery-2",
+      "sailingId": "11122026-3940"
+    },
+    {
+      "date": "2026-12-12",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "11122026-3941"
+    },
+    {
+      "date": "2026-12-18",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "12122026-3942"
+    },
+    {
+      "date": "2026-12-18",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "12122026-3943"
+    },
+    {
+      "date": "2026-12-25",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "12122026-3943"
+    },
+    {
+      "date": "2026-12-13",
+      "shipName": "Marella Discovery 2",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-discovery-2",
+      "sailingId": "12122026-3946"
+    },
+    {
+      "date": "2026-12-15",
+      "shipName": "AIDAblu",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidablu",
+      "sailingId": "13122026-3947"
+    },
+    {
+      "date": "2026-12-15",
+      "shipName": "AIDAblu",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidablu",
+      "sailingId": "13122026-3948"
+    },
+    {
+      "date": "2026-12-15",
+      "shipName": "AIDAblu",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidablu",
+      "sailingId": "13122026-3949"
+    },
+    {
+      "date": "2026-12-17",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "13122026-3953"
+    },
+    {
+      "date": "2026-12-19",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "13122026-3952"
+    },
+    {
+      "date": "2026-12-20",
+      "shipName": "Marella Explorer",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-explorer",
+      "sailingId": "14122026-3955"
+    },
+    {
+      "date": "2026-12-20",
+      "shipName": "Marella Explorer",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-explorer",
+      "sailingId": "15122026-3956"
+    },
+    {
+      "date": "2026-12-17",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "15122026-3957"
+    },
+    {
+      "date": "2026-12-18",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "16122026-3958"
+    },
+    {
+      "date": "2026-12-24",
+      "shipName": "Queen Victoria",
+      "companyName": "Cunard Line Cruises",
+      "companySlug": "cunard-line-cruises",
+      "shipSlug": "queen-victoria",
+      "sailingId": "16122026-3960"
+    },
+    {
+      "date": "2026-12-22",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "17122026-3961"
+    },
+    {
+      "date": "2026-12-17",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "17122026-3962"
+    },
+    {
+      "date": "2026-12-24",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "17122026-3962"
+    },
+    {
+      "date": "2026-12-18",
+      "shipName": "Wind Spirit",
+      "companyName": "windstar-cruises",
+      "companySlug": "windstar-cruises",
+      "shipSlug": "wind-spirit",
+      "sailingId": "17122026-3963"
+    },
+    {
+      "date": "2026-12-26",
+      "shipName": "Queen Anne",
+      "companyName": "Cunard Line Cruises",
+      "companySlug": "cunard-line-cruises",
+      "shipSlug": "queen-anne",
+      "sailingId": "18122026-3336"
+    },
+    {
+      "date": "2026-12-20",
+      "shipName": "Marella Discovery 2",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-discovery-2",
+      "sailingId": "18122026-3965"
+    },
+    {
+      "date": "2026-12-24",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "18122026-3967"
+    },
+    {
+      "date": "2026-12-19",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "18122026-3966"
+    },
+    {
+      "date": "2026-12-25",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "19122026-3968"
+    },
+    {
+      "date": "2026-12-25",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "19122026-3969"
+    },
+    {
+      "date": "2027-01-01",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "19122026-3969"
+    },
+    {
+      "date": "2026-12-20",
+      "shipName": "Marella Discovery 2",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-discovery-2",
+      "sailingId": "19122026-3971"
+    },
+    {
+      "date": "2026-12-28",
+      "shipName": "Iona",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "iona",
+      "sailingId": "19122026-3970"
+    },
+    {
+      "date": "2026-12-30",
+      "shipName": "AIDALuna",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidaluna",
+      "sailingId": "20122026-3975"
+    },
+    {
+      "date": "2026-12-23",
+      "shipName": "Celebrity Infinity",
+      "companyName": "Celebrity Cruises",
+      "companySlug": "celebrity-cruises",
+      "shipSlug": "celebrity-infinity",
+      "sailingId": "20122026-3976"
+    },
+    {
+      "date": "2026-12-22",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "20122026-3977"
+    },
+    {
+      "date": "2026-12-26",
+      "shipName": "Queen Anne",
+      "companyName": "Cunard Line Cruises",
+      "companySlug": "cunard-line-cruises",
+      "shipSlug": "queen-anne",
+      "sailingId": "20122026-3335"
+    },
+    {
+      "date": "2026-12-28",
+      "shipName": "Queen Anne",
+      "companyName": "Cunard Line Cruises",
+      "companySlug": "cunard-line-cruises",
+      "shipSlug": "queen-anne",
+      "sailingId": "20122026-3335"
+    },
+    {
+      "date": "2026-12-26",
+      "shipName": "Queen Anne",
+      "companyName": "Cunard Line Cruises",
+      "companySlug": "cunard-line-cruises",
+      "shipSlug": "queen-anne",
+      "sailingId": "20122026-3980"
+    },
+    {
+      "date": "2026-12-24",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "20122026-3979"
+    },
+    {
+      "date": "2026-12-29",
+      "shipName": "Spirit Of Discovery",
+      "companyName": "Saga Cruises",
+      "companySlug": "saga-cruises",
+      "shipSlug": "spirit-of-discovery",
+      "sailingId": "20122026-3981"
+    },
+    {
+      "date": "2026-12-26",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "20122026-3978"
+    },
+    {
+      "date": "2026-12-22",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "21122026-3984"
+    },
+    {
+      "date": "2026-12-23",
+      "shipName": "Marella Explorer",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-explorer",
+      "sailingId": "21122026-3985"
+    },
+    {
+      "date": "2026-12-27",
+      "shipName": "Arcadia",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "arcadia",
+      "sailingId": "21122026-3982"
+    },
+    {
+      "date": "2026-12-29",
+      "shipName": "Ventura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "ventura",
+      "sailingId": "21122026-3986"
+    },
+    {
+      "date": "2026-12-23",
+      "shipName": "Marella Explorer",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-explorer",
+      "sailingId": "22122026-3988"
+    },
+    {
+      "date": "2026-12-24",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "22122026-3989"
+    },
+    {
+      "date": "2026-12-25",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "23122026-3990"
+    },
+    {
+      "date": "2027-01-04",
+      "shipName": "Mein Schiff 3",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-3",
+      "sailingId": "23122026-3991"
+    },
+    {
+      "date": "2026-12-29",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "24122026-3992"
+    },
+    {
+      "date": "2026-12-24",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "24122026-3993"
+    },
+    {
+      "date": "2026-12-31",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "24122026-3993"
+    },
+    {
+      "date": "2026-12-30",
+      "shipName": "Marella Discovery 2",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-discovery-2",
+      "sailingId": "25122026-3995"
+    },
+    {
+      "date": "2026-12-31",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "25122026-3997"
+    },
+    {
+      "date": "2026-12-26",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "25122026-3996"
+    },
+    {
+      "date": "2027-01-01",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "26122026-3998"
+    },
+    {
+      "date": "2027-01-01",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "26122026-3999"
+    },
+    {
+      "date": "2027-01-08",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "26122026-3999"
+    },
+    {
+      "date": "2026-12-30",
+      "shipName": "Marella Discovery 2",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-discovery-2",
+      "sailingId": "26122026-4000"
+    },
+    {
+      "date": "2026-12-29",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "27122026-4004"
+    },
+    {
+      "date": "2026-12-31",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "27122026-4006"
+    },
+    {
+      "date": "2027-01-02",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "27122026-4005"
+    },
+    {
+      "date": "2026-12-28",
+      "shipName": "Wind Spirit",
+      "companyName": "windstar-cruises",
+      "companySlug": "windstar-cruises",
+      "shipSlug": "wind-spirit",
+      "sailingId": "27122026-4007"
+    },
+    {
+      "date": "2026-12-29",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "28122026-4010"
+    },
+    {
+      "date": "2027-01-06",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "28122026-4008"
+    },
+    {
+      "date": "2027-01-06",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "28122026-4009"
+    },
+    {
+      "date": "2027-01-05",
+      "shipName": "Mein Schiff 7",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-7",
+      "sailingId": "28122026-4012"
+    },
+    {
+      "date": "2026-12-31",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "29122026-4016"
+    },
+    {
+      "date": "2027-01-06",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "29122026-4013"
+    },
+    {
+      "date": "2027-01-06",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "29122026-4014"
+    },
+    {
+      "date": "2027-01-01",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "30122026-4017"
+    },
+    {
+      "date": "2027-01-06",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "31122026-4018"
+    },
+    {
+      "date": "2026-12-31",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "31122026-4019"
+    },
+    {
+      "date": "2027-01-07",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "31122026-4019"
+    },
+    {
+      "date": "2027-01-03",
+      "shipName": "Marella Discovery 2",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-discovery-2",
+      "sailingId": "01012027-4021"
+    },
+    {
+      "date": "2027-01-07",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "01012027-4023"
+    },
+    {
+      "date": "2027-01-02",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "01012027-4022"
+    },
+    {
+      "date": "2027-01-08",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "02012027-4024"
+    },
+    {
+      "date": "2027-01-08",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "02012027-4025"
+    },
+    {
+      "date": "2027-01-15",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "02012027-4025"
+    },
+    {
+      "date": "2027-01-10",
+      "shipName": "Celebrity Infinity",
+      "companyName": "Celebrity Cruises",
+      "companySlug": "celebrity-cruises",
+      "shipSlug": "celebrity-infinity",
+      "sailingId": "02012027-4026"
+    },
+    {
+      "date": "2027-01-03",
+      "shipName": "Marella Discovery 2",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-discovery-2",
+      "sailingId": "02012027-4027"
+    },
+    {
+      "date": "2027-01-12",
+      "shipName": "AIDAblu",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidablu",
+      "sailingId": "03012027-4029"
+    },
+    {
+      "date": "2027-02-02",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "01022027-4030"
+    },
+    {
+      "date": "2027-02-06",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "01022027-4030"
+    },
+    {
+      "date": "2027-02-06",
+      "shipName": "Marella Explorer",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-explorer",
+      "sailingId": "01022027-4031"
+    },
+    {
+      "date": "2027-02-06",
+      "shipName": "Marella Explorer",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-explorer",
+      "sailingId": "02022027-4034"
+    },
+    {
+      "date": "2027-02-04",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "02022027-4035"
+    },
+    {
+      "date": "2027-02-05",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "03022027-4036"
+    },
+    {
+      "date": "2027-02-04",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "04022027-4039"
+    },
+    {
+      "date": "2027-02-11",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "04022027-4039"
+    },
+    {
+      "date": "2027-02-07",
+      "shipName": "Mein Schiff 7",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-7",
+      "sailingId": "04022027-4037"
+    },
+    {
+      "date": "2027-02-07",
+      "shipName": "Mein Schiff 7",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-7",
+      "sailingId": "04022027-4038"
+    },
+    {
+      "date": "2027-03-06",
+      "shipName": "Marella Explorer",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-explorer",
+      "sailingId": "01032027-4041"
+    },
+    {
+      "date": "2027-03-06",
+      "shipName": "Marella Explorer",
+      "companyName": "Marella Cruises",
+      "companySlug": "marella-cruises",
+      "shipSlug": "marella-explorer",
+      "sailingId": "02032027-4042"
+    },
+    {
+      "date": "2027-03-04",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "02032027-4043"
+    },
+    {
+      "date": "2027-03-05",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "03032027-4044"
+    },
+    {
+      "date": "2027-03-06",
+      "shipName": "Celebrity Infinity",
+      "companyName": "Celebrity Cruises",
+      "companySlug": "celebrity-cruises",
+      "shipSlug": "celebrity-infinity",
+      "sailingId": "03032027-4045"
+    },
+    {
+      "date": "2027-03-04",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "04032027-4048"
+    },
+    {
+      "date": "2027-03-11",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "04032027-4048"
+    },
+    {
+      "date": "2027-03-16",
+      "shipName": "Mein Schiff 7",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-7",
+      "sailingId": "04032027-4046"
+    },
+    {
+      "date": "2027-03-09",
+      "shipName": "AIDAmar",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidamar",
+      "sailingId": "05032027-4049"
+    },
+    {
+      "date": "2027-04-01",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "01042027-4051"
+    },
+    {
+      "date": "2027-04-05",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "01042027-4051"
+    },
+    {
+      "date": "2027-04-04",
+      "shipName": "Mein Schiff 7",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-7",
+      "sailingId": "01042027-4050"
+    },
+    {
+      "date": "2027-04-06",
+      "shipName": "AIDAmar",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidamar",
+      "sailingId": "02042027-4052"
+    },
+    {
+      "date": "2027-04-03",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "02042027-4053"
+    },
+    {
+      "date": "2027-04-09",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "03042027-4054"
+    },
+    {
+      "date": "2027-04-09",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "03042027-4055"
+    },
+    {
+      "date": "2027-04-16",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "03042027-4055"
+    },
+    {
+      "date": "2027-04-11",
+      "shipName": "Ventura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "ventura",
+      "sailingId": "03042027-4056"
+    },
+    {
+      "date": "2027-04-13",
+      "shipName": "Seven Seas Voyager",
+      "companyName": "Regent Seven Seas Cruises",
+      "companySlug": "regent-seven-seas-cruises",
+      "shipSlug": "seven-seas-voyager",
+      "sailingId": "03042027-3358"
+    },
+    {
+      "date": "2027-04-06",
+      "shipName": "AIDAmar",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidamar",
+      "sailingId": "04042027-4057"
+    },
+    {
+      "date": "2027-04-10",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "04042027-4058"
+    },
+    {
+      "date": "2027-05-06",
+      "shipName": "Silver Dawn",
+      "companyName": "Silversea",
+      "companySlug": "silversea",
+      "shipSlug": "silver-dawn",
+      "sailingId": "30042027-3359"
+    },
+    {
+      "date": "2027-05-16",
+      "shipName": "Ventura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "ventura",
+      "sailingId": "08052027-4059"
+    },
+    {
+      "date": "2027-06-15",
+      "shipName": "Renaissance",
+      "companyName": "cfc-croisieres",
+      "companySlug": "cfc-croisieres",
+      "shipSlug": "renaissance",
+      "sailingId": "10062027-4060"
+    },
+    {
+      "date": "2027-07-04",
+      "shipName": "Ventura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "ventura",
+      "sailingId": "26062027-4061"
+    },
+    {
+      "date": "2027-07-25",
+      "shipName": "Ventura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "ventura",
+      "sailingId": "17072027-4062"
+    },
+    {
+      "date": "2027-08-14",
+      "shipName": "MSC Meraviglia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-meraviglia",
+      "sailingId": "07082027-4063"
+    },
+    {
+      "date": "2027-08-15",
+      "shipName": "Ventura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "ventura",
+      "sailingId": "07082027-4064"
+    },
+    {
+      "date": "2027-09-12",
+      "shipName": "Ventura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "ventura",
+      "sailingId": "04092027-4065"
+    },
+    {
+      "date": "2027-09-26",
+      "shipName": "Ventura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "ventura",
+      "sailingId": "18092027-4066"
+    },
+    {
+      "date": "2027-10-09",
+      "shipName": "MSC Meraviglia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-meraviglia",
+      "sailingId": "02102027-4070"
+    },
+    {
+      "date": "2027-10-06",
+      "shipName": "Iona",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "iona",
+      "sailingId": "02102027-4069"
+    },
+    {
+      "date": "2027-10-13",
+      "shipName": "Queen Victoria",
+      "companyName": "Cunard Line Cruises",
+      "companySlug": "cunard-line-cruises",
+      "shipSlug": "queen-victoria",
+      "sailingId": "08102027-4073"
+    },
+    {
+      "date": "2027-10-13",
+      "shipName": "Seven Seas Splendor",
+      "companyName": "Regent Seven Seas Cruises",
+      "companySlug": "regent-seven-seas-cruises",
+      "shipSlug": "seven-seas-splendor",
+      "sailingId": "08102027-4074"
+    },
+    {
+      "date": "2027-10-17",
+      "shipName": "Ventura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "ventura",
+      "sailingId": "09102027-4075"
+    },
+    {
+      "date": "2027-10-28",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "14102027-4076"
+    },
+    {
+      "date": "2027-10-28",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "14102027-4077"
+    },
+    {
+      "date": "2027-11-07",
+      "shipName": "Spirit Of Discovery",
+      "companyName": "Saga Cruises",
+      "companySlug": "saga-cruises",
+      "shipSlug": "spirit-of-discovery",
+      "sailingId": "01112027-4078"
+    },
+    {
+      "date": "2027-11-07",
+      "shipName": "Seven Seas Voyager",
+      "companyName": "Regent Seven Seas Cruises",
+      "companySlug": "regent-seven-seas-cruises",
+      "shipSlug": "seven-seas-voyager",
+      "sailingId": "03112027-4079"
+    },
+    {
+      "date": "2027-11-11",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "05112027-4081"
+    },
+    {
+      "date": "2027-11-13",
+      "shipName": "AIDAprima",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidaprima",
+      "sailingId": "05112027-4082"
+    },
+    {
+      "date": "2027-11-07",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "05112027-4083"
+    },
+    {
+      "date": "2027-11-07",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "05112027-4084"
+    },
+    {
+      "date": "2027-11-18",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "05112027-4084"
+    },
+    {
+      "date": "2027-11-06",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "05112027-4085"
+    },
+    {
+      "date": "2027-11-11",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "06112027-4086"
+    },
+    {
+      "date": "2027-11-11",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "06112027-4087"
+    },
+    {
+      "date": "2027-12-03",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "01122027-4088"
+    },
+    {
+      "date": "2027-12-02",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "02122027-4090"
+    },
+    {
+      "date": "2027-12-09",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "02122027-4090"
+    },
+    {
+      "date": "2027-12-12",
+      "shipName": "Mein Schiff 7",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-7",
+      "sailingId": "02122027-4089"
+    },
+    {
+      "date": "2027-12-09",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "03122027-4092"
+    },
+    {
+      "date": "2027-12-09",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "03122027-4094"
+    },
+    {
+      "date": "2027-12-04",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "03122027-4093"
+    },
+    {
+      "date": "2027-12-10",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "04122027-4095"
+    },
+    {
+      "date": "2027-12-10",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "04122027-4096"
+    },
+    {
+      "date": "2027-12-17",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "04122027-4096"
+    },
+    {
+      "date": "2028-01-07",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "01012028-4098"
+    },
+    {
+      "date": "2028-01-07",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "01012028-4099"
+    },
+    {
+      "date": "2028-01-14",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "01012028-4099"
+    },
+    {
+      "date": "2028-01-11",
+      "shipName": "AIDAstella",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidastella",
+      "sailingId": "02012028-4102"
+    },
+    {
+      "date": "2028-01-11",
+      "shipName": "AIDAstella",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidastella",
+      "sailingId": "02012028-4103"
+    },
+    {
+      "date": "2028-01-06",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "02012028-4104"
+    },
+    {
+      "date": "2028-01-06",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "02012028-4105"
+    },
+    {
+      "date": "2028-01-06",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "03012028-4107"
+    },
+    {
+      "date": "2028-02-08",
+      "shipName": "Queen Victoria",
+      "companyName": "Cunard Line Cruises",
+      "companySlug": "cunard-line-cruises",
+      "shipSlug": "queen-victoria",
+      "sailingId": "01022028-4109"
+    },
+    {
+      "date": "2028-02-03",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "01022028-4108"
+    },
+    {
+      "date": "2028-02-04",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "02022028-4110"
+    },
+    {
+      "date": "2028-02-03",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "03022028-4113"
+    },
+    {
+      "date": "2028-02-10",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "03022028-4113"
+    },
+    {
+      "date": "2028-02-13",
+      "shipName": "Mein Schiff 7",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-7",
+      "sailingId": "03022028-4112"
+    },
+    {
+      "date": "2028-02-08",
+      "shipName": "AIDAsol",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidasol",
+      "sailingId": "04022028-4114"
+    },
+    {
+      "date": "2028-02-08",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "04022028-4117"
+    },
+    {
+      "date": "2028-02-16",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "04022028-4116"
+    },
+    {
+      "date": "2028-03-03",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "01032028-4118"
+    },
+    {
+      "date": "2028-03-08",
+      "shipName": "Ventura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "ventura",
+      "sailingId": "01032028-4119"
+    },
+    {
+      "date": "2028-03-02",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "02032028-4122"
+    },
+    {
+      "date": "2028-03-09",
+      "shipName": "MSC Fantasia",
+      "companyName": "MSC Cruises",
+      "companySlug": "msc-cruises",
+      "shipSlug": "msc-fantasia",
+      "sailingId": "02032028-4122"
+    },
+    {
+      "date": "2028-03-05",
+      "shipName": "Mein Schiff 7",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-7",
+      "sailingId": "02032028-4120"
+    },
+    {
+      "date": "2028-03-05",
+      "shipName": "Mein Schiff 7",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-7",
+      "sailingId": "02032028-4121"
+    },
+    {
+      "date": "2028-03-07",
+      "shipName": "AIDAsol",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidasol",
+      "sailingId": "03032028-4123"
+    },
+    {
+      "date": "2028-03-07",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "03032028-4126"
+    },
+    {
+      "date": "2028-03-15",
+      "shipName": "Azura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "azura",
+      "sailingId": "03032028-4125"
+    },
+    {
+      "date": "2028-03-04",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "03032028-4127"
+    },
+    {
+      "date": "2028-04-07",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "01042028-4128"
+    },
+    {
+      "date": "2028-04-07",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "01042028-4129"
+    },
+    {
+      "date": "2028-04-14",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "01042028-4129"
+    },
+    {
+      "date": "2028-04-09",
+      "shipName": "Ventura",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "ventura",
+      "sailingId": "01042028-4130"
+    },
+    {
+      "date": "2028-04-06",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "02042028-4132"
+    },
+    {
+      "date": "2028-04-09",
+      "shipName": "Britannia",
+      "companyName": "P&O Cruises",
+      "companySlug": "po-cruises",
+      "shipSlug": "britannia",
+      "sailingId": "02042028-4131"
+    },
+    {
+      "date": "2028-04-08",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "02042028-4133"
+    },
+    {
+      "date": "2028-04-06",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "03042028-4134"
+    },
+    {
+      "date": "2028-04-07",
+      "shipName": "AIDAcosma",
+      "companyName": "Aida cruises",
+      "companySlug": "aida-cruises",
+      "shipSlug": "aidacosma",
+      "sailingId": "05042028-4135"
+    },
+    {
+      "date": "2028-04-13",
+      "shipName": "Costa Smeralda",
+      "companyName": "Costa Cruceros",
+      "companySlug": "costa-cruises",
+      "shipSlug": "costa-smeralda",
+      "sailingId": "07042028-4136"
+    },
+    {
+      "date": "2028-04-08",
+      "shipName": "Mein Schiff Relax",
+      "companyName": "TUI Cruises",
+      "companySlug": "tui-cruises",
+      "shipSlug": "mein-schiff-relax",
+      "sailingId": "07042028-4137"
+    }
+  ]
+}

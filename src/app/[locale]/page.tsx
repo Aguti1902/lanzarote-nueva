@@ -27,7 +27,7 @@ import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
 
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
-export const revalidate = 60;
+export const revalidate = 300;
 
 const awards = [
   { src: "/images/awards/turismo-seguro.jpg", alt: "Turismo Seguro frente al COVID-19" },

@@ -10,7 +10,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
-export const revalidate = 60;
+export const revalidate = 300;
 
 type Props = {
   params: Promise<{ locale: string; company: string }>;

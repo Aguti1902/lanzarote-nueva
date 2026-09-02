@@ -57,8 +57,12 @@ function sortForLocale(reviews: TravelerReview[], locale: Locale) {
 }
 
 export async function getTripadvisorMeta(): Promise<TripadvisorMeta> {
-  const data = await loadReviews();
-  return data.tripadvisor;
+  try {
+    return await readCmsJson<TripadvisorMeta>("tripadvisor.json");
+  } catch {
+    const data = await loadReviews();
+    return data.tripadvisor;
+  }
 }
 
 export async function getFeaturedReviews(

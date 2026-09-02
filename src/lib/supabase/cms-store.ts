@@ -9,8 +9,8 @@ import {
 
 const dataDir = path.join(process.cwd(), "src/data");
 const CMS_BUCKET = "cms";
-/** TTL de la caché de JSON públicos del CMS (tours, settings, cruceros…). */
-const CMS_CACHE_SECONDS = 60;
+/** TTL caché JSON de catálogo (páginas públicas). */
+const CMS_CACHE_SECONDS = 300;
 
 /** Archivos que cambian en cada reserva/pago: sin caché entre requests. */
 const UNCACHEABLE_CMS_FILES = new Set([
@@ -20,15 +20,20 @@ const UNCACHEABLE_CMS_FILES = new Set([
 ]);
 
 let bucketReady: Promise<void> | null = null;
+let bucketEnsured = false;
 
 const cachedReaders = new Map<string, () => Promise<unknown>>();
 
 async function ensureCmsBucket(): Promise<void> {
+  if (bucketEnsured) return;
   if (!bucketReady) {
     bucketReady = (async () => {
       const sb = getSupabaseAdmin();
       const { data: buckets } = await sb.storage.listBuckets();
-      if (buckets?.some((b) => b.name === CMS_BUCKET)) return;
+      if (buckets?.some((b) => b.name === CMS_BUCKET)) {
+        bucketEnsured = true;
+        return;
+      }
       const { error } = await sb.storage.createBucket(CMS_BUCKET, {
         public: false,
         fileSizeLimit: 50 * 1024 * 1024,
@@ -37,6 +42,7 @@ async function ensureCmsBucket(): Promise<void> {
         bucketReady = null;
         throw error;
       }
+      bucketEnsured = true;
     })();
   }
   await bucketReady;
@@ -68,9 +74,8 @@ async function readCmsJsonUncached<T>(file: string): Promise<T> {
   }
 
   try {
-    await ensureCmsBucket();
     const sb = getSupabaseAdmin();
-    // Signed URL + no-store: la frescura la controla unstable_cache / tags.
+    // Evitar listBuckets en el hot path: firmar URL directamente.
     const { data: signed, error: signError } = await sb.storage
       .from(CMS_BUCKET)
       .createSignedUrl(file, 120);
@@ -112,7 +117,7 @@ function getCachedReader(file: string): () => Promise<unknown> {
 
 /**
  * Read CMS JSON: Supabase Storage (`cms` bucket) first, then local `src/data`.
- * Public catalog files are cached ~60s and invalidated on write.
+ * Public catalog files are cached ~5 min and invalidated on write.
  */
 export async function readCmsJson<T>(file: string): Promise<T> {
   if (UNCACHEABLE_CMS_FILES.has(file)) {
@@ -123,7 +128,6 @@ export async function readCmsJson<T>(file: string): Promise<T> {
 
 function invalidateCmsCache(file: string) {
   try {
-    revalidateTag("cms", "max");
     revalidateTag(cmsCacheTag(file), "max");
   } catch {
     // Fuera de un request de Next (scripts) no hay tag store.
@@ -151,7 +155,6 @@ export async function writeCmsJson(file: string, data: unknown): Promise<void> {
       cacheControl: "0",
     } as const;
 
-    // Prefer update for existing objects (more reliable than upload upsert alone).
     const updated = await sb.storage.from(CMS_BUCKET).update(file, payload, options);
     if (updated.error) {
       const uploaded = await sb.storage

@@ -76,6 +76,7 @@ export function Header() {
               <Link
                 key={link.path}
                 href={link.href}
+                prefetch={link.path === "/excursiones-cruceros" ? false : undefined}
                 className={`rounded-full px-3.5 py-2 text-[13px] font-semibold tracking-wide uppercase transition ${
                   active
                     ? "bg-white text-ocean"
