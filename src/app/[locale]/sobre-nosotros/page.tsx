@@ -35,6 +35,7 @@ export default async function SobreNosotrosPage({ params }: Props) {
         image={settings.aboutImage}
         title={settings.aboutTitle}
         subtitle={dict.about.welcome}
+        objectPosition={settings.aboutHeroPosition || "45% 35%"}
       />
 
       <section className="mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-2 md:items-center md:px-6 md:py-20">

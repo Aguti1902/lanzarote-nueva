@@ -6,17 +6,20 @@ export function PageHero({
   subtitle,
   eyebrow,
   compact = false,
+  objectPosition = "50% 40%",
 }: {
   image: string;
   title: string;
   subtitle?: string;
   eyebrow?: string;
   compact?: boolean;
+  /** Encuadre CSS, p. ej. "50% 30%" (ajustable desde Admin → Ajustes). */
+  objectPosition?: string;
 }) {
   return (
     <section
-      className={`relative overflow-hidden bg-bg-deep text-white ${
-        compact ? "min-h-[40vh]" : "min-h-[56vh]"
+      className={`relative overflow-hidden bg-[#2a3344] text-white ${
+        compact ? "min-h-[40vh]" : "min-h-[52vh] md:min-h-[56vh]"
       }`}
     >
       <Image
@@ -24,14 +27,15 @@ export function PageHero({
         alt=""
         fill
         priority
-        className="hero-image object-cover"
+        className="hero-still object-cover"
         sizes="100vw"
+        style={{ objectPosition }}
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/15 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/10" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/28 via-black/8 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-black/5" />
       <div
         className={`relative mx-auto flex max-w-6xl flex-col justify-end px-4 md:px-6 ${
-          compact ? "min-h-[40vh] pb-12 pt-24" : "min-h-[56vh] pb-16 pt-28"
+          compact ? "min-h-[40vh] pb-12 pt-24" : "min-h-[52vh] pb-14 pt-28 md:min-h-[56vh] md:pb-16"
         }`}
       >
         {eyebrow && (

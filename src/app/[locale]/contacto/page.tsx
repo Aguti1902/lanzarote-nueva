@@ -4,12 +4,14 @@ import { FormEvent, useState } from "react";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { useLocale } from "@/components/LocaleProvider";
+import { useSettingsHero } from "@/hooks/useSettingsHero";
 
 const inputClass =
   "w-full rounded border border-sand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20";
 
 export default function ContactoPage() {
   const { dict } = useLocale();
+  const hero = useSettingsHero("contact");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -46,10 +48,11 @@ export default function ContactoPage() {
   return (
     <>
       <PageHero
-        image="/images/heroes/about.jpg"
+        image={hero.image}
         title={dict.contact.title}
         subtitle={dict.contact.subtitle}
         compact
+        objectPosition={hero.objectPosition}
       />
 
       <section className="mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-2 md:px-6">

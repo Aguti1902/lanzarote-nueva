@@ -38,6 +38,7 @@ export default async function ExcursionesPage({ params }: Props) {
           settings.excursionsIntro ||
           `${tours.length} · ${dict.excursions.subtitle}`
         }
+        objectPosition={settings.excursionsHeroPosition || "28% 42%"}
       />
 
       <PageBodyText text={settings.excursionsText} />

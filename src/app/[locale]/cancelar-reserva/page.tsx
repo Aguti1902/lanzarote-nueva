@@ -8,6 +8,7 @@ import { assessCancellation } from "@/lib/cancellation";
 import { formatDateShort, formatPrice } from "@/lib/format";
 import { PageHero } from "@/components/PageHero";
 import { useLocale } from "@/components/LocaleProvider";
+import { useSettingsHero } from "@/hooks/useSettingsHero";
 
 const inputClass =
   "w-full rounded border border-sand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20";
@@ -16,6 +17,7 @@ type Step = "lookup" | "cancel" | "done";
 
 export default function CancelarReservaPage() {
   const { dict, href } = useLocale();
+  const hero = useSettingsHero("excursions");
   const c = dict.cancel;
   const [step, setStep] = useState<Step>("lookup");
   const [bookingId, setBookingId] = useState("");
@@ -106,10 +108,11 @@ export default function CancelarReservaPage() {
   return (
     <>
       <PageHero
-        image="/images/heroes/excursions.jpg"
+        image={hero.image}
         title={c.title}
         subtitle={c.subtitle}
         compact
+        objectPosition={hero.objectPosition}
       />
 
       <section className="mx-auto max-w-2xl px-4 py-14 md:px-6">

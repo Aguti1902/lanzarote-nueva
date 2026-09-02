@@ -43,6 +43,7 @@ export default async function TrasladosPage({ params }: Props) {
         image={settings.transferHeroImage}
         title={settings.transferTitle || dict.transfers.title}
         subtitle={settings.transferIntro}
+        objectPosition={settings.transferHeroPosition || "50% 45%"}
       />
 
       <PageBodyText text={settings.transferText} />

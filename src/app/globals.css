@@ -84,10 +84,10 @@ h3,
 
 @keyframes drift {
   from {
-    transform: scale(1.04) translate3d(0, 0, 0);
+    transform: scale(1.02) translate3d(0, 0, 0);
   }
   to {
-    transform: scale(1.1) translate3d(0, -1.2%, 0);
+    transform: scale(1.06) translate3d(0, -0.8%, 0);
   }
 }
 
@@ -113,12 +113,17 @@ h3,
 }
 
 .hero-image {
-  animation: drift 20s ease-in-out alternate infinite;
-  filter: brightness(1.08) contrast(1.05) saturate(1.12);
+  animation: drift 22s ease-in-out alternate infinite;
+  filter: brightness(1.1) contrast(1.04) saturate(1.12);
+}
+
+/* Héroes de páginas interiores: sin zoom animado para respetar el encuadre del admin */
+.hero-still {
+  filter: brightness(1.1) contrast(1.04) saturate(1.12);
 }
 
 .photo-vivid {
-  filter: brightness(1.06) contrast(1.04) saturate(1.1);
+  filter: brightness(1.08) contrast(1.04) saturate(1.1);
 }
 
 .marquee-track {

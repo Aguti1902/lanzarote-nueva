@@ -28,9 +28,14 @@ export default async function CasasPage({ params }: Props) {
   return (
     <>
       <PageHero
-        image={houses[0]?.image || settings.aboutImage}
+        image={
+          settings.housesHeroImage ||
+          houses[0]?.image ||
+          settings.aboutImage
+        }
         title={dict.houses.title}
         subtitle={dict.houses.subtitle}
+        objectPosition={settings.housesHeroPosition || "50% 40%"}
       />
 
       <section className="mx-auto max-w-6xl px-4 py-14 md:px-6">

@@ -45,6 +45,7 @@ export default async function BlogPage({ params }: Props) {
         eyebrow={dict.blog.eyebrow}
         title={settings.blogTitle}
         subtitle={settings.blogIntro}
+        objectPosition={settings.blogHeroPosition || "50% 40%"}
       />
 
       <PageBodyText text={settings.blogText} />

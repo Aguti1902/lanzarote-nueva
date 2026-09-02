@@ -63,6 +63,7 @@ export default async function CruceristasPage({ params }: Props) {
         image={settings.cruiseHeroImage}
         title={settings.cruiseHeadline || dict.cruises.title}
         subtitle={settings.cruiseIntro}
+        objectPosition={settings.cruiseHeroPosition || "50% 45%"}
       />
 
       <PageBodyText text={settings.cruiseText} />

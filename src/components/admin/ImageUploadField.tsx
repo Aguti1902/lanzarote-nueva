@@ -2,9 +2,13 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { Crop, ImagePlus, Loader2, Smartphone, Trash2 } from "lucide-react";
+import { Crop, ImagePlus, Loader2, Move, Smartphone, Trash2 } from "lucide-react";
 import { Field } from "@/components/admin/Field";
 import { ImageCropModal } from "@/components/admin/ImageCropModal";
+import {
+  formatObjectPosition,
+  parseObjectPosition,
+} from "@/lib/object-position";
 
 export function ImageUploadField({
   label,
@@ -14,6 +18,8 @@ export function ImageUploadField({
   aspectRatio = 16 / 9,
   enableCrop = true,
   hint,
+  objectPosition,
+  onObjectPositionChange,
 }: {
   label: string;
   value: string;
@@ -23,12 +29,18 @@ export function ImageUploadField({
   aspectRatio?: number;
   enableCrop?: boolean;
   hint?: string;
+  /** Encuadre CSS object-position (p. ej. "50% 40%"). */
+  objectPosition?: string;
+  onObjectPositionChange?: (position: string) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const [cropSrc, setCropSrc] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<"desktop" | "mobile">("desktop");
+
+  const pos = parseObjectPosition(objectPosition);
+  const showPosition = Boolean(onObjectPositionChange);
 
   async function uploadFile(file: File) {
     setUploading(true);
@@ -141,6 +153,7 @@ export function ImageUploadField({
                 alt=""
                 fill
                 className="object-cover"
+                style={{ objectPosition: formatObjectPosition(pos.x, pos.y) }}
                 sizes={previewMode === "mobile" ? "160px" : "400px"}
                 unoptimized={value.startsWith("data:") || value.startsWith("blob:")}
               />
@@ -149,6 +162,49 @@ export function ImageUploadField({
         ) : (
           <div className="flex aspect-[16/9] max-w-md items-center justify-center rounded-lg bg-sky-soft text-sm text-ink-muted ring-1 ring-sand-line">
             Sin imagen
+          </div>
+        )}
+
+        {value && showPosition && (
+          <div className="max-w-md space-y-2 rounded-lg bg-sky-soft/70 p-3 ring-1 ring-sand-line">
+            <p className="inline-flex items-center gap-1.5 text-xs font-bold text-ink">
+              <Move className="h-3.5 w-3.5 text-ocean" />
+              Encuadre en la web (sin recortar)
+            </p>
+            <label className="block text-[11px] font-semibold text-ink-muted">
+              Horizontal {pos.x}%
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={pos.x}
+                onChange={(e) =>
+                  onObjectPositionChange?.(
+                    formatObjectPosition(Number(e.target.value), pos.y)
+                  )
+                }
+                className="mt-1 w-full accent-[var(--ocean)]"
+              />
+            </label>
+            <label className="block text-[11px] font-semibold text-ink-muted">
+              Vertical {pos.y}%
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={pos.y}
+                onChange={(e) =>
+                  onObjectPositionChange?.(
+                    formatObjectPosition(pos.x, Number(e.target.value))
+                  )
+                }
+                className="mt-1 w-full accent-[var(--ocean)]"
+              />
+            </label>
+            <p className="text-[11px] text-ink-muted">
+              Mueve el foco para que el sujeto principal se vea bien en escritorio
+              y móvil. Guarda los ajustes al terminar.
+            </p>
           </div>
         )}
 
@@ -181,7 +237,10 @@ export function ImageUploadField({
             <button
               type="button"
               disabled={uploading}
-              onClick={() => onChange("")}
+              onClick={() => {
+                onChange("");
+                onObjectPositionChange?.("50% 50%");
+              }}
               className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm text-ink-muted ring-1 ring-sand-line hover:text-ocean"
             >
               <Trash2 className="h-4 w-4" />

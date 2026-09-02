@@ -14,29 +14,39 @@ const empty: SiteSettings = {
   homeHeadline: "",
   homeSubheadline: "",
   homeHeroImage: "",
+  homeHeroPosition: "50% 50%",
   aboutTitle: "",
   aboutLead: "",
   aboutText: "",
   aboutImage: "",
   aboutImageSecondary: "",
+  aboutHeroPosition: "50% 40%",
   aboutValues: "",
   aboutPromise: "",
   excursionsTitle: "",
   excursionsIntro: "",
   excursionsText: "",
   excursionsHeroImage: "",
+  excursionsHeroPosition: "50% 40%",
   blogTitle: "",
   blogIntro: "",
   blogText: "",
   blogHeroImage: "",
+  blogHeroPosition: "50% 40%",
   cruiseHeadline: "",
   cruiseIntro: "",
   cruiseText: "",
   cruiseHeroImage: "",
+  cruiseHeroPosition: "50% 45%",
   transferTitle: "",
   transferIntro: "",
   transferText: "",
   transferHeroImage: "",
+  transferHeroPosition: "50% 45%",
+  housesHeroImage: "",
+  housesHeroPosition: "50% 40%",
+  contactHeroImage: "",
+  contactHeroPosition: "50% 40%",
   companyLegalName: "",
   companyTaxId: "",
   companyAddress: "",
@@ -45,6 +55,9 @@ const empty: SiteSettings = {
   bannerEn: "",
   bannerDe: "",
 };
+
+const HERO_HINT =
+  "Puedes recortar la foto y, además, mover el encuadre (horizontal/vertical) para que se vea bien en la web. Guarda al terminar.";
 
 export default function AdminAjustesPage() {
   const [settings, setSettings] = useState<SiteSettings>(empty);
@@ -90,7 +103,7 @@ export default function AdminAjustesPage() {
         <h1 className="font-display text-3xl text-ink">Ajustes de la web</h1>
         <p className="mt-1 text-sm text-ink-muted">
           Título, entradilla y texto completo por página. Las imágenes se suben
-          desde el ordenador (no por URL).
+          desde el ordenador; en cada hero puedes recortar y ajustar el encuadre.
         </p>
       </div>
 
@@ -133,8 +146,10 @@ export default function AdminAjustesPage() {
             folder="home"
             value={settings.homeHeroImage}
             onChange={(url) => set("homeHeroImage", url)}
+            objectPosition={settings.homeHeroPosition}
+            onObjectPositionChange={(pos) => set("homeHeroPosition", pos)}
             aspectRatio={16 / 9}
-            hint="Recorta y revisa la vista móvil para que el sujeto quede centrado en escritorio y en el teléfono."
+            hint={HERO_HINT}
           />
         </section>
 
@@ -155,22 +170,23 @@ export default function AdminAjustesPage() {
           <Field label="Promesa">
             <textarea className={adminTextarea} value={settings.aboutPromise} onChange={(e) => set("aboutPromise", e.target.value)} />
           </Field>
-          <div className="grid gap-4 md:grid-cols-2">
-            <ImageUploadField
-              label="Imagen principal"
-              folder="about"
-              value={settings.aboutImage}
-              onChange={(url) => set("aboutImage", url)}
-              aspectRatio={4 / 3}
-            />
-            <ImageUploadField
-              label="Imagen secundaria"
-              folder="about"
-              value={settings.aboutImageSecondary}
-              onChange={(url) => set("aboutImageSecondary", url)}
-              aspectRatio={4 / 3}
-            />
-          </div>
+          <ImageUploadField
+            label="Imagen hero / principal"
+            folder="about"
+            value={settings.aboutImage}
+            onChange={(url) => set("aboutImage", url)}
+            objectPosition={settings.aboutHeroPosition}
+            onObjectPositionChange={(pos) => set("aboutHeroPosition", pos)}
+            aspectRatio={16 / 9}
+            hint={HERO_HINT}
+          />
+          <ImageUploadField
+            label="Imagen secundaria"
+            folder="about"
+            value={settings.aboutImageSecondary}
+            onChange={(url) => set("aboutImageSecondary", url)}
+            aspectRatio={4 / 3}
+          />
         </section>
 
         <section className="space-y-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
@@ -193,8 +209,10 @@ export default function AdminAjustesPage() {
             folder="excursions"
             value={settings.excursionsHeroImage}
             onChange={(url) => set("excursionsHeroImage", url)}
+            objectPosition={settings.excursionsHeroPosition}
+            onObjectPositionChange={(pos) => set("excursionsHeroPosition", pos)}
             aspectRatio={16 / 9}
-            hint="Usa Ajustar / recortar y la vista móvil para comprobar el encuadre."
+            hint={HERO_HINT}
           />
         </section>
 
@@ -218,7 +236,10 @@ export default function AdminAjustesPage() {
             folder="blog"
             value={settings.blogHeroImage}
             onChange={(url) => set("blogHeroImage", url)}
+            objectPosition={settings.blogHeroPosition}
+            onObjectPositionChange={(pos) => set("blogHeroPosition", pos)}
             aspectRatio={16 / 9}
+            hint={HERO_HINT}
           />
         </section>
 
@@ -242,7 +263,10 @@ export default function AdminAjustesPage() {
             folder="cruise"
             value={settings.cruiseHeroImage}
             onChange={(url) => set("cruiseHeroImage", url)}
+            objectPosition={settings.cruiseHeroPosition}
+            onObjectPositionChange={(pos) => set("cruiseHeroPosition", pos)}
             aspectRatio={16 / 9}
+            hint={HERO_HINT}
           />
         </section>
 
@@ -274,7 +298,38 @@ export default function AdminAjustesPage() {
             folder="transfers"
             value={settings.transferHeroImage}
             onChange={(url) => set("transferHeroImage", url)}
+            objectPosition={settings.transferHeroPosition}
+            onObjectPositionChange={(pos) => set("transferHeroPosition", pos)}
             aspectRatio={16 / 9}
+            hint={HERO_HINT}
+          />
+        </section>
+
+        <section className="space-y-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
+          <h2 className="font-display text-xl">Casas vacacionales</h2>
+          <ImageUploadField
+            label="Imagen hero"
+            folder="houses"
+            value={settings.housesHeroImage || ""}
+            onChange={(url) => set("housesHeroImage", url)}
+            objectPosition={settings.housesHeroPosition}
+            onObjectPositionChange={(pos) => set("housesHeroPosition", pos)}
+            aspectRatio={16 / 9}
+            hint={HERO_HINT}
+          />
+        </section>
+
+        <section className="space-y-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
+          <h2 className="font-display text-xl">Contacto</h2>
+          <ImageUploadField
+            label="Imagen hero"
+            folder="contact"
+            value={settings.contactHeroImage || ""}
+            onChange={(url) => set("contactHeroImage", url)}
+            objectPosition={settings.contactHeroPosition}
+            onObjectPositionChange={(pos) => set("contactHeroPosition", pos)}
+            aspectRatio={16 / 9}
+            hint={HERO_HINT}
           />
         </section>
 

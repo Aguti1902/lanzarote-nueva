@@ -11,12 +11,14 @@ import {
 import { formatDateShort, formatPrice } from "@/lib/format";
 import { PageHero } from "@/components/PageHero";
 import { useLocale } from "@/components/LocaleProvider";
+import { useSettingsHero } from "@/hooks/useSettingsHero";
 
 const inputClass =
   "w-full rounded border border-sand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20";
 
 export default function GestionarReservaPage() {
   const { dict, href } = useLocale();
+  const hero = useSettingsHero("excursions");
   const [bookingId, setBookingId] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -47,10 +49,11 @@ export default function GestionarReservaPage() {
   return (
     <>
       <PageHero
-        image="/images/heroes/excursions.jpg"
+        image={hero.image}
         title={dict.manage.title}
         subtitle={dict.manage.subtitle}
         compact
+        objectPosition={hero.objectPosition}
       />
 
       <section className="mx-auto max-w-xl px-4 py-14 md:px-6">

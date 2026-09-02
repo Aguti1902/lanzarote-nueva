@@ -45,6 +45,7 @@ export default async function ExcursionesCrucerosPage({ params }: Props) {
         title={settings.cruiseHeadline || dict.cruises.browseTitle}
         subtitle={settings.cruiseIntro || dict.cruises.browseSubtitle}
         compact
+        objectPosition={settings.cruiseHeroPosition || "50% 45%"}
       />
 
       <PageBodyText text={settings.cruiseText} />

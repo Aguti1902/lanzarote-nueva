@@ -100,9 +100,12 @@ export default async function HomePage({ params }: Props) {
           priority
           className="hero-image object-cover"
           sizes="100vw"
+          style={{
+            objectPosition: settings.homeHeroPosition || "50% 42%",
+          }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-black/10 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/28 via-black/8 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/32 via-transparent to-black/5" />
 
         <div className="relative mx-auto flex min-h-[88vh] max-w-6xl flex-col justify-end px-4 pb-28 pt-28 md:min-h-[92vh] md:justify-center md:px-6 md:pb-24">
           <p className="animate-fade-up text-hero-shadow font-display text-[clamp(2.8rem,8vw,5.5rem)] leading-[0.95] tracking-[-0.04em] text-white">
