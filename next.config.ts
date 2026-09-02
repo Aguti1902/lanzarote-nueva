@@ -1,4 +1,20 @@
 import type { NextConfig } from "next";
+import { LEGACY_PATH_REDIRECTS } from "./src/lib/legacy-redirects";
+
+const legacyRedirects = Object.entries(LEGACY_PATH_REDIRECTS).flatMap(
+  ([source, destination]) => [
+    {
+      source,
+      destination,
+      permanent: true as const,
+    },
+    {
+      source: `${source}/`,
+      destination,
+      permanent: true as const,
+    },
+  ]
+);
 
 const nextConfig: NextConfig = {
   images: {
@@ -20,6 +36,32 @@ const nextConfig: NextConfig = {
         hostname: "www.lanzaroteexperiencetours.com",
       },
     ],
+  },
+  async redirects() {
+    return [
+      ...legacyRedirects,
+      // Prefijos EN/DE de secciones (catch-all)
+      {
+        source: "/en/excursions/:path*",
+        destination: "/en/excursiones/:path*",
+        permanent: true,
+      },
+      {
+        source: "/de/ausfluge/:path*",
+        destination: "/de/excursiones/:path*",
+        permanent: true,
+      },
+      {
+        source: "/en/cruise-excursions/:path*",
+        destination: "/en/excursiones-cruceros/:path*",
+        permanent: true,
+      },
+      {
+        source: "/de/kreuzfahrtausfluge/:path*",
+        destination: "/de/excursiones-cruceros/:path*",
+        permanent: true,
+      },
+    ];
   },
 };
 

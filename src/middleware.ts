@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { defaultLocale, isLocale, locales } from "@/i18n/config";
+import { resolveLegacyRedirect } from "@/lib/legacy-redirects";
 
 const PUBLIC_FILE = /\.(.*)$/;
 
@@ -31,6 +32,14 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // URLs de la web antigua → rutas nuevas (301)
+  const legacyTarget = resolveLegacyRedirect(pathname);
+  if (legacyTarget && legacyTarget !== pathname) {
+    const url = request.nextUrl.clone();
+    url.pathname = legacyTarget;
+    return NextResponse.redirect(url, 301);
+  }
+
   const segment = pathname.split("/")[1];
   if (segment && isLocale(segment)) {
     const response = NextResponse.next();
@@ -51,5 +60,4 @@ export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico|images|.*\\..*).*)"],
 };
 
-// silence unused for tree
 void locales;
