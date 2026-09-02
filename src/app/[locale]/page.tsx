@@ -5,8 +5,10 @@ import {
   Building2,
   Bus,
   Globe2,
-  ShieldCheck,
+  Info,
+  ShieldBan,
   Users,
+  type LucideIcon,
 } from "lucide-react";
 import { TourCard } from "@/components/TourCard";
 import { ReviewsSection } from "@/components/ReviewsSection";
@@ -38,7 +40,34 @@ const awards = [
   { src: "/images/awards/tripadvisor-excellence.svg", alt: "Tripadvisor Excellence" },
 ];
 
-const advantageIcons = [ShieldCheck, Bus, Users, Globe2, Building2];
+const advantageIcons: LucideIcon[] = [
+  ShieldBan,
+  Bus,
+  Users,
+  Globe2,
+  Building2,
+];
+
+function AdvantageLabel({
+  text,
+  bold,
+}: {
+  text: string;
+  bold?: string;
+}) {
+  if (!bold || !text.includes(bold)) {
+    return <>{text}</>;
+  }
+  const [before, ...rest] = text.split(bold);
+  const after = rest.join(bold);
+  return (
+    <>
+      {before}
+      <strong className="font-bold text-ink">{bold}</strong>
+      {after}
+    </>
+  );
+}
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -53,8 +82,13 @@ export default async function HomePage({ params }: Props) {
     getTripadvisorMeta(),
   ]);
 
-  const awardLoop = [...awards, ...awards];
   const lp = (path: string) => localePath(locale, path);
+  const bannerText =
+    (locale === "en"
+      ? settings.bannerEn
+      : locale === "de"
+        ? settings.bannerDe
+        : settings.bannerEs) || dict.home.marquee;
 
   return (
     <>
@@ -70,7 +104,7 @@ export default async function HomePage({ params }: Props) {
         <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-black/10 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10" />
 
-        <div className="relative mx-auto flex min-h-[88vh] max-w-6xl flex-col justify-end px-4 pb-24 pt-28 md:min-h-[92vh] md:justify-center md:px-6 md:pb-20">
+        <div className="relative mx-auto flex min-h-[88vh] max-w-6xl flex-col justify-end px-4 pb-28 pt-28 md:min-h-[92vh] md:justify-center md:px-6 md:pb-24">
           <p className="animate-fade-up text-hero-shadow font-display text-[clamp(2.8rem,8vw,5.5rem)] leading-[0.95] tracking-[-0.04em] text-white">
             {settings.brandName}
           </p>
@@ -88,55 +122,62 @@ export default async function HomePage({ params }: Props) {
           </div>
         </div>
 
-        <div className="absolute right-0 bottom-0 left-0 overflow-hidden border-t border-white/20 bg-ocean py-2.5 text-sm text-white shadow-[0_-8px_30px_rgba(235,72,35,0.25)]">
-          <div className="marquee-track gap-12 px-4">
-            {[0, 1].map((i) => (
-              <p key={i} className="shrink-0 whitespace-nowrap">
-                {(locale === "en"
-                  ? settings.bannerEn
-                  : locale === "de"
-                    ? settings.bannerDe
-                    : settings.bannerEs) || dict.home.marquee}
-              </p>
-            ))}
+        <div className="absolute right-0 bottom-0 left-0 border-t border-white/25 bg-ocean shadow-[0_-8px_30px_rgba(235,72,35,0.25)]">
+          <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3.5 md:gap-4 md:px-6 md:py-4">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/20 text-white ring-1 ring-white/40 md:h-9 md:w-9">
+              <Info className="h-4 w-4 md:h-5 md:w-5" aria-hidden />
+              <span className="sr-only">Información</span>
+            </span>
+            <div className="min-w-0 flex-1 overflow-hidden">
+              <div className="marquee-track gap-16">
+                {[0, 1].map((i) => (
+                  <p
+                    key={i}
+                    className="shrink-0 whitespace-nowrap text-base font-medium text-white md:text-lg"
+                  >
+                    {bannerText}
+                  </p>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="overflow-hidden border-b border-sand-line bg-white py-7">
-        <div className="marquee-track items-center gap-10 px-4 md:gap-14">
-          {awardLoop.map((award, i) => (
+      <section className="border-b border-sand-line bg-white py-8 md:py-10">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-8 gap-y-6 px-4 md:justify-between md:gap-x-4 md:px-6">
+          {awards.map((award) => (
             <div
-              key={`${award.src}-${i}`}
-              className="relative h-12 w-24 shrink-0 opacity-90 transition hover:opacity-100 md:h-14 md:w-28"
+              key={award.src}
+              className="relative h-14 w-[4.75rem] shrink-0 sm:h-16 sm:w-24 md:w-[6.5rem]"
             >
               <Image
                 src={award.src}
                 alt={award.alt}
                 fill
                 className="object-contain"
-                sizes="112px"
+                sizes="104px"
               />
             </div>
           ))}
         </div>
       </section>
 
-      <section className="bg-gradient-to-b from-sky-soft/80 to-transparent py-14 md:py-16">
+      <section className="bg-[#f7f7f7] py-12 md:py-14">
         <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {dict.home.advantages.map((label, index) => {
+          <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
+            {dict.home.advantages.map((item, index) => {
               const Icon = advantageIcons[index] || Users;
               return (
                 <li
-                  key={label}
-                  className="group relative overflow-hidden rounded-2xl bg-white p-5 shadow-[0_10px_34px_rgba(235,72,35,0.08)] ring-1 ring-sand-line transition hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(235,72,35,0.14)]"
+                  key={item.text}
+                  className="flex flex-col items-center text-center"
                 >
-                  <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-ocean text-white shadow-[0_8px_20px_rgba(235,72,35,0.35)] transition group-hover:scale-105">
-                    <Icon className="h-5 w-5" />
+                  <span className="mb-4 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full border-[1.5px] border-ocean text-ocean">
+                    <Icon className="h-8 w-8" strokeWidth={1.6} />
                   </span>
-                  <p className="text-sm font-semibold leading-snug text-ink">
-                    {label}
+                  <p className="max-w-[12rem] text-sm leading-snug text-ink">
+                    <AdvantageLabel text={item.text} bold={item.bold} />
                   </p>
                 </li>
               );

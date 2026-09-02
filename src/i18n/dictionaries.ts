@@ -35,7 +35,7 @@ export type Dictionary = {
     ctaOffers: string;
     ctaCruise: string;
     marquee: string;
-    advantages: string[];
+    advantages: { text: string; bold?: string }[];
     toursTitle: string;
     toursKicker: string;
     transfersKicker: string;
@@ -423,11 +423,20 @@ const es: Dictionary = {
     marquee:
       "Excursiones personalizadas · Empresa familiar de Lanzarote · Gracias por apoyar el comercio local · Grupos reducidos, solo en español",
     advantages: [
-      "Mini-bus desinfectado con Ozono",
-      "Climatizado y WIFI gratis",
-      "Grupos máx. 14 personas",
-      "Solo en español",
-      "Recogida en su alojamiento",
+      { text: "Mini-bus desinfectado con Ozono." },
+      { text: "Mini-bus climatizado y con WIFI Gratis", bold: "WIFI Gratis" },
+      {
+        text: "Grupos reducidos, máximo 14 personas",
+        bold: "máximo 14 personas",
+      },
+      {
+        text: "No mezclamos idiomas, sólo en Español",
+        bold: "sólo en Español",
+      },
+      {
+        text: "Le recogemos en la puerta de su alojamiento",
+        bold: "alojamiento",
+      },
     ],
     toursTitle: "Lanzarote tours",
     toursKicker: "Experiencias",
@@ -896,11 +905,20 @@ const en: Dictionary = {
     marquee:
       "Tailored excursions · Family business from Lanzarote · Thank you for supporting local trade · Small groups, Spanish only",
     advantages: [
-      "Ozone-disinfected mini-bus",
-      "Air-conditioned with free WIFI",
-      "Groups max. 14 people",
-      "Spanish language only",
-      "Hotel pick-up included",
+      { text: "Ozone-disinfected mini-bus." },
+      {
+        text: "Air-conditioned mini-bus with free WIFI",
+        bold: "free WIFI",
+      },
+      { text: "Small groups, max. 14 people", bold: "max. 14 people" },
+      {
+        text: "We don't mix languages, Spanish only",
+        bold: "Spanish only",
+      },
+      {
+        text: "We pick you up at your accommodation",
+        bold: "accommodation",
+      },
     ],
     toursTitle: "Lanzarote tours",
     toursKicker: "Experiences",
@@ -1360,11 +1378,23 @@ const de: Dictionary = {
     marquee:
       "Individuelle Ausflüge · Familienunternehmen aus Lanzarote · Danke für die Unterstützung lokaler Betriebe · Kleine Gruppen, nur auf Spanisch",
     advantages: [
-      "Minibus mit Ozon desinfiziert",
-      "Klimatisiert mit gratis WIFI",
-      "Gruppen max. 14 Personen",
-      "Nur auf Spanisch",
-      "Abholung an Ihrer Unterkunft",
+      { text: "Minibus mit Ozon desinfiziert." },
+      {
+        text: "Klimatisierter Minibus mit gratis WIFI",
+        bold: "gratis WIFI",
+      },
+      {
+        text: "Kleine Gruppen, maximal 14 Personen",
+        bold: "maximal 14 Personen",
+      },
+      {
+        text: "Keine Sprachmischung, nur auf Spanisch",
+        bold: "nur auf Spanisch",
+      },
+      {
+        text: "Abholung an Ihrer Unterkunft",
+        bold: "Unterkunft",
+      },
     ],
     toursTitle: "Lanzarote tours",
     toursKicker: "Erlebnisse",

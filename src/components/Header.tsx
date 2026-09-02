@@ -41,8 +41,8 @@ export function Header() {
     <header
       className={`sticky top-0 z-50 text-white transition-all duration-300 ${
         scrolled
-          ? "bg-header/95 shadow-[0_10px_40px_rgba(23,28,38,0.28)] backdrop-blur-xl"
-          : "bg-header"
+          ? "bg-ocean/95 shadow-[0_10px_40px_rgba(201,52,18,0.28)] backdrop-blur-xl"
+          : "bg-ocean"
       }`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-6">
@@ -78,8 +78,8 @@ export function Header() {
                 href={link.href}
                 className={`rounded-full px-3.5 py-2 text-[13px] font-semibold tracking-wide uppercase transition ${
                   active
-                    ? "bg-ocean text-white"
-                    : "text-white/80 hover:bg-white/10 hover:text-white"
+                    ? "bg-white text-ocean"
+                    : "text-white/90 hover:bg-white/15 hover:text-white"
                 }`}
               >
                 {link.label}
@@ -94,7 +94,7 @@ export function Header() {
           </div>
           <Link
             href={href("/gestionar-reserva")}
-            className="rounded-full p-2.5 text-white/90 transition hover:bg-white/10"
+            className="rounded-full p-2.5 text-white/95 transition hover:bg-white/15"
             title={dict.nav.manageBooking}
             aria-label={dict.nav.manageBooking}
           >
@@ -102,13 +102,13 @@ export function Header() {
           </Link>
           <Link
             href={href("/carrito")}
-            className="relative rounded-full p-2.5 text-white/90 transition hover:bg-white/10"
+            className="relative rounded-full p-2.5 text-white/95 transition hover:bg-white/15"
             title={dict.nav.cart}
             aria-label={dict.nav.cart}
           >
             <ShoppingCart className="h-5 w-5" />
             {count > 0 && (
-              <span className="absolute top-0.5 right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-ocean px-1 text-[10px] font-bold">
+              <span className="absolute top-0.5 right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-white px-1 text-[10px] font-bold text-ocean">
                 {count}
               </span>
             )}
@@ -125,7 +125,7 @@ export function Header() {
       </div>
 
       {open && (
-        <div className="border-t border-white/10 bg-bg-deep px-4 py-4 lg:hidden">
+        <div className="border-t border-white/20 bg-ocean-deep px-4 py-4 lg:hidden">
           <div className="mb-3">
             <LanguageSwitcher />
           </div>
