@@ -88,7 +88,7 @@ export default async function TourDetailPage({ params }: Props) {
 
   return (
     <div>
-      <div className="relative h-[38vh] min-h-[260px] w-full overflow-hidden bg-bg-deep md:h-[46vh]">
+      <div className="relative min-h-[40vh] w-full overflow-hidden bg-bg-deep">
         <Image
           src={tour.image}
           alt={tour.title}
