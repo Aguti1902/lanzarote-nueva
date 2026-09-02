@@ -4,6 +4,12 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale } from "@/components/LocaleProvider";
 import { formatPrice } from "@/lib/format";
+import {
+  calcTransferTotal,
+  TRANSFER_INCLUDED_PAX,
+  transferExtraPassengers,
+  type TransferDirection,
+} from "@/lib/transfer-price";
 import type { PaymentMethod, TransferDestination } from "@/types";
 
 const inputClass =
@@ -17,9 +23,9 @@ export function TransferBookingForm({
   const router = useRouter();
   const { dict, href, locale } = useLocale();
   const [destination, setDestination] = useState(destinations[0]?.id || "");
-  const [direction, setDirection] = useState<
-    "airport_to_hotel" | "hotel_to_airport" | "return"
-  >("airport_to_hotel");
+  const [direction, setDirection] = useState<TransferDirection>(
+    "airport_to_hotel"
+  );
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [returnDate, setReturnDate] = useState("");
@@ -34,11 +40,18 @@ export function TransferBookingForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const dest = destinations.find((d) => d.id === destination) || destinations[0];
+  const dest =
+    destinations.find((d) => d.id === destination) || destinations[0];
   const total = useMemo(() => {
     if (!dest) return 0;
-    return direction === "return" ? dest.priceReturn : dest.priceOneWay;
-  }, [dest, direction]);
+    return calcTransferTotal({
+      destination: dest,
+      direction,
+      passengers: adults,
+    });
+  }, [dest, direction, adults]);
+
+  const extraPax = transferExtraPassengers(adults);
 
   if (!dest) {
     return (
@@ -83,6 +96,7 @@ export function TransferBookingForm({
           customer: { name, email, phone, hotel, flightNumber },
           transfer: {
             destination: dest.name,
+            destinationId: dest.id,
             direction,
             time,
             returnDate: direction === "return" ? returnDate : undefined,
@@ -135,12 +149,7 @@ export function TransferBookingForm({
             className={inputClass}
             value={direction}
             onChange={(e) =>
-              setDirection(
-                e.target.value as
-                  | "airport_to_hotel"
-                  | "hotel_to_airport"
-                  | "return"
-              )
+              setDirection(e.target.value as TransferDirection)
             }
           >
             <option value="airport_to_hotel">
@@ -298,9 +307,23 @@ export function TransferBookingForm({
           <p className="text-sm text-ink-muted">{dict.common.total}</p>
           <p className="text-3xl font-bold">{formatPrice(total)}</p>
           <p className="mt-1 text-xs text-ink-muted">
-            {dict.transfers.extraPerson}:{" "}
-            {formatPrice(dest.priceExtraPerson ?? 10)}
+            {dict.transfers.priceIncludes.replace(
+              "{n}",
+              String(TRANSFER_INCLUDED_PAX)
+            )}
           </p>
+          {extraPax > 0 && (
+            <p className="mt-1 text-xs text-ink-muted">
+              {dict.transfers.extraPerson}: +
+              {formatPrice(
+                extraPax *
+                  (dest.priceExtraPerson ?? 10) *
+                  (direction === "return" ? 2 : 1)
+              )}{" "}
+              ({extraPax} × {formatPrice(dest.priceExtraPerson ?? 10)}
+              {direction === "return" ? " × 2" : ""})
+            </p>
+          )}
           <p className="mt-1 text-xs font-medium text-ocean">
             {dict.booking.card} / {dict.booking.bizum}
           </p>

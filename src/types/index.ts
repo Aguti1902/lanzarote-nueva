@@ -474,6 +474,8 @@ export interface Booking {
   };
   transfer?: {
     destination: string;
+    /** Id del destino en transfers.json (para recalcular precio en servidor). */
+    destinationId?: string;
     direction: "airport_to_hotel" | "hotel_to_airport" | "return";
     /** Hora del trayecto de ida / llegada (HH:mm). */
     time?: string;
