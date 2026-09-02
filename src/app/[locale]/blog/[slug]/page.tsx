@@ -13,7 +13,8 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
 
-export const dynamic = "force-dynamic";
+/** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
+export const revalidate = 60;
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -35,7 +36,9 @@ export default async function BlogPostPage({ params }: Props) {
   if (!base) notFound();
 
   const post = await localizeBlogPost(base, locale);
-  const all = await localizeBlogPosts(await getBlogPosts(), locale);
+  const all = await getBlogPosts().then((posts) =>
+    localizeBlogPosts(posts, locale)
+  );
   const related = all.filter((p) => p.slug !== post.slug).slice(0, 2);
   const paragraphs = post.content.split("\n\n");
   const lp = (path: string) => localePath(locale, path);

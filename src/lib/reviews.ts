@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { Locale } from "@/i18n/config";
 import { readCmsJson } from "@/lib/supabase/cms-store";
 
@@ -30,9 +31,10 @@ export interface ReviewsData {
   reviews: TravelerReview[];
 }
 
-async function loadReviews(): Promise<ReviewsData> {
+/** Deduplica lecturas de reviews en el mismo request (layout + página). */
+const loadReviews = cache(async (): Promise<ReviewsData> => {
   return readCmsJson<ReviewsData>("reviews.json");
-}
+});
 
 function localeScore(review: TravelerReview, locale: Locale): number {
   if (!review.locale) return 0;

@@ -12,7 +12,8 @@ import { localizeSettings } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 
-export const dynamic = "force-dynamic";
+/** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
+export const revalidate = 60;
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -26,7 +27,7 @@ export default async function ExcursionesCrucerosPage({ params }: Props) {
   const locale = resolveLocale((await params).locale);
   const dict = await getDictionary(locale);
   const [settings, companies, cruiseData, cruiseCalls] = await Promise.all([
-    localizeSettings(await getSettings(), locale),
+    getSettings().then((s) => localizeSettings(s, locale)),
     getCruiseCompanies(),
     getCruisesData(),
     getCruiseCalls({ publishedOnly: true }),

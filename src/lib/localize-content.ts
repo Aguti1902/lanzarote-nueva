@@ -6,7 +6,6 @@ import type {
   Tour,
   TransfersData,
 } from "@/types";
-import { isSupabaseConfigured } from "@/lib/supabase/client";
 import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
 
 type TranslatedLocale = Exclude<Locale, "es">;
@@ -71,16 +70,11 @@ export function clearContentTranslationCache() {
 function loadTranslations(
   locale: TranslatedLocale
 ): Promise<ContentTranslations> {
-  if (!isSupabaseConfigured()) {
-    const cached = translationCache.get(locale);
-    if (cached) return cached;
-  }
+  const cached = translationCache.get(locale);
+  if (cached) return cached;
 
   const pending = readCmsJson<ContentTranslations>(`i18n/${locale}.json`);
-
-  if (!isSupabaseConfigured()) {
-    translationCache.set(locale, pending);
-  }
+  translationCache.set(locale, pending);
   return pending;
 }
 

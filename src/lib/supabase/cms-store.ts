@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
+import { unstable_cache, revalidateTag } from "next/cache";
 import {
   getSupabaseAdmin,
   isSupabaseConfigured,
@@ -8,8 +9,19 @@ import {
 
 const dataDir = path.join(process.cwd(), "src/data");
 const CMS_BUCKET = "cms";
+/** TTL de la caché de JSON públicos del CMS (tours, settings, cruceros…). */
+const CMS_CACHE_SECONDS = 60;
+
+/** Archivos que cambian en cada reserva/pago: sin caché entre requests. */
+const UNCACHEABLE_CMS_FILES = new Set([
+  "bookings.json",
+  "invoices.json",
+  "messages.json",
+]);
 
 let bucketReady: Promise<void> | null = null;
+
+const cachedReaders = new Map<string, () => Promise<unknown>>();
 
 async function ensureCmsBucket(): Promise<void> {
   if (!bucketReady) {
@@ -46,11 +58,11 @@ async function writeLocalJson(file: string, data: unknown): Promise<void> {
   await fs.writeFile(full, JSON.stringify(data, null, 2) + "\n", "utf-8");
 }
 
-/**
- * Read CMS JSON: Supabase Storage (`cms` bucket) first, then local `src/data`.
- * Keeps build/runtime working without Supabase or when Storage is empty.
- */
-export async function readCmsJson<T>(file: string): Promise<T> {
+export function cmsCacheTag(file: string): string {
+  return `cms:${file}`;
+}
+
+async function readCmsJsonUncached<T>(file: string): Promise<T> {
   if (!isSupabaseConfigured()) {
     return readLocalJson<T>(file);
   }
@@ -58,10 +70,10 @@ export async function readCmsJson<T>(file: string): Promise<T> {
   try {
     await ensureCmsBucket();
     const sb = getSupabaseAdmin();
-    // Signed URL + no-store avoids CDN/edge stale reads from Storage download().
+    // Signed URL + no-store: la frescura la controla unstable_cache / tags.
     const { data: signed, error: signError } = await sb.storage
       .from(CMS_BUCKET)
-      .createSignedUrl(file, 60);
+      .createSignedUrl(file, 120);
     if (signError || !signed?.signedUrl) {
       warnSupabaseFallback(`cms-read:${file}`, signError);
       return readLocalJson<T>(file);
@@ -82,6 +94,42 @@ export async function readCmsJson<T>(file: string): Promise<T> {
   }
 }
 
+function getCachedReader(file: string): () => Promise<unknown> {
+  let reader = cachedReaders.get(file);
+  if (!reader) {
+    reader = unstable_cache(
+      () => readCmsJsonUncached(file),
+      ["cms-json", file],
+      {
+        revalidate: CMS_CACHE_SECONDS,
+        tags: ["cms", cmsCacheTag(file)],
+      }
+    );
+    cachedReaders.set(file, reader);
+  }
+  return reader;
+}
+
+/**
+ * Read CMS JSON: Supabase Storage (`cms` bucket) first, then local `src/data`.
+ * Public catalog files are cached ~60s and invalidated on write.
+ */
+export async function readCmsJson<T>(file: string): Promise<T> {
+  if (UNCACHEABLE_CMS_FILES.has(file)) {
+    return readCmsJsonUncached<T>(file);
+  }
+  return getCachedReader(file)() as Promise<T>;
+}
+
+function invalidateCmsCache(file: string) {
+  try {
+    revalidateTag("cms", "max");
+    revalidateTag(cmsCacheTag(file), "max");
+  } catch {
+    // Fuera de un request de Next (scripts) no hay tag store.
+  }
+}
+
 /**
  * Write CMS JSON to Supabase Storage and mirror to local disk when possible.
  * On Vercel, local write may be ephemeral; Storage is the durable source.
@@ -89,6 +137,7 @@ export async function readCmsJson<T>(file: string): Promise<T> {
 export async function writeCmsJson(file: string, data: unknown): Promise<void> {
   if (!isSupabaseConfigured()) {
     await writeLocalJson(file, data);
+    invalidateCmsCache(file);
     return;
   }
 
@@ -127,6 +176,8 @@ export async function writeCmsJson(file: string, data: unknown): Promise<void> {
   } catch {
     // Ignore ephemeral filesystem errors in serverless.
   }
+
+  invalidateCmsCache(file);
 }
 
-export { CMS_BUCKET };
+export { CMS_BUCKET, CMS_CACHE_SECONDS };

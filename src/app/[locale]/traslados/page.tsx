@@ -12,7 +12,8 @@ import {
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 
-export const dynamic = "force-dynamic";
+/** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
+export const revalidate = 60;
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -27,8 +28,8 @@ export default async function TrasladosPage({ params }: Props) {
   const locale = resolveLocale((await params).locale);
   const dict = await getDictionary(locale);
   const [transfers, settings] = await Promise.all([
-    localizeTransfers(await getTransfersData(), locale),
-    localizeSettings(await getSettings(), locale),
+    getTransfersData().then((data) => localizeTransfers(data, locale)),
+    getSettings().then((s) => localizeSettings(s, locale)),
   ]);
 
   const chips = [

@@ -1,17 +1,11 @@
+import { cache } from "react";
 import type {
   CruiseCompany,
   CruiseItinerariesData,
   CruiseSailing,
   CruiseShoreTour,
 } from "@/types";
-import { isSupabaseConfigured } from "@/lib/supabase/client";
 import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
-
-let cache: CruiseItinerariesData | null = null;
-
-export function clearCruiseItinerariesCache() {
-  cache = null;
-}
 
 const emptyData: CruiseItinerariesData = {
   updatedAt: "",
@@ -21,18 +15,21 @@ const emptyData: CruiseItinerariesData = {
   sailings: [],
 };
 
-export async function getCruiseItinerariesData(): Promise<CruiseItinerariesData> {
-  // Con Supabase no cacheamos entre requests: Storage es la fuente de verdad.
-  if (cache && !isSupabaseConfigured()) return cache;
-  try {
-    const data = await readCmsJson<CruiseItinerariesData>(
-      "cruiseItineraries.json"
-    );
-    if (!isSupabaseConfigured()) cache = data;
-    return data;
-  } catch {
-    return emptyData;
+/** Una lectura por request; la frescura entre requests la marca `readCmsJson`. */
+export const getCruiseItinerariesData = cache(
+  async (): Promise<CruiseItinerariesData> => {
+    try {
+      return await readCmsJson<CruiseItinerariesData>(
+        "cruiseItineraries.json"
+      );
+    } catch {
+      return emptyData;
+    }
   }
+);
+
+export function clearCruiseItinerariesCache() {
+  // Compat: la invalidación real va por revalidateTag en writeCmsJson.
 }
 
 export async function saveCruiseItinerariesData(

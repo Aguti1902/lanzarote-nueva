@@ -26,7 +26,8 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
 
-export const dynamic = "force-dynamic";
+/** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
+export const revalidate = 60;
 
 const awards = [
   { src: "/images/awards/turismo-seguro.jpg", alt: "Turismo Seguro frente al COVID-19" },
@@ -76,8 +77,8 @@ export default async function HomePage({ params }: Props) {
   const locale = resolveLocale(raw);
   const dict = await getDictionary(locale);
   const [featured, settings, reviews, tripadvisor] = await Promise.all([
-    localizeTours(await getFeaturedTours(), locale),
-    localizeSettings(await getSettings(), locale),
+    getFeaturedTours().then((tours) => localizeTours(tours, locale)),
+    getSettings().then((s) => localizeSettings(s, locale)),
     getFeaturedReviews(locale, 10),
     getTripadvisorMeta(),
   ]);

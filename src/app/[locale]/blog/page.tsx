@@ -14,7 +14,8 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
 
-export const dynamic = "force-dynamic";
+/** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
+export const revalidate = 60;
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -32,8 +33,8 @@ export default async function BlogPage({ params }: Props) {
   const locale = resolveLocale((await params).locale);
   const dict = await getDictionary(locale);
   const [blogPosts, settings] = await Promise.all([
-    localizeBlogPosts(await getBlogPosts(), locale),
-    localizeSettings(await getSettings(), locale),
+    getBlogPosts().then((posts) => localizeBlogPosts(posts, locale)),
+    getSettings().then((s) => localizeSettings(s, locale)),
   ]);
   const [featured, ...rest] = blogPosts;
   const lp = (path: string) => localePath(locale, path);

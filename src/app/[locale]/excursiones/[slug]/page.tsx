@@ -34,7 +34,8 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
 
-export const dynamic = "force-dynamic";
+/** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
+export const revalidate = 60;
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -57,7 +58,7 @@ export default async function TourDetailPage({ params }: Props) {
 
   const [tour, tours, tourReviews, tripadvisor] = await Promise.all([
     localizeTour(base, locale),
-    localizeTours(await getPublicTours(), locale),
+    getPublicTours().then((list) => localizeTours(list, locale)),
     getReviewsForTour(base.id, locale, 6),
     getTripadvisorMeta(),
   ]);
