@@ -10,6 +10,7 @@ import {
   inDateRange,
   type DateRange,
 } from "@/components/admin/DateRangeFilter";
+import { adminStickyAside } from "@/lib/admin-layout";
 
 export function FacturasClient() {
   const searchParams = useSearchParams();
@@ -214,7 +215,7 @@ export function FacturasClient() {
           )}
         </div>
 
-        <aside className="h-fit rounded-lg bg-white p-5 ring-1 ring-sand-line">
+        <aside className={`h-fit rounded-lg bg-white p-5 ring-1 ring-sand-line ${adminStickyAside}`}>
           {selected ? (
             <div>
               <div className="flex items-start justify-between gap-3">

@@ -123,7 +123,7 @@ function NavLinks({
   }
 
   return (
-    <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-3">
+    <nav className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto p-3">
       {nav.map((item) => {
         const active = isActive(item.href);
         return (
@@ -192,8 +192,8 @@ function AdminShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen bg-[#f3f4f6]">
-      <aside className="hidden w-64 shrink-0 flex-col bg-header text-white md:flex">
-        <div className="border-b border-white/10 px-5 py-5">
+      <aside className="sticky top-0 z-30 hidden h-screen w-64 shrink-0 flex-col overflow-hidden bg-header text-white md:flex">
+        <div className="shrink-0 border-b border-white/10 px-5 py-5">
           <div className="relative mb-2 h-10 w-[140px]">
             <Image
               src="/images/brand/logo.png"
@@ -209,7 +209,7 @@ function AdminShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="border-b border-sand-line bg-white px-4 py-3 md:px-6">
+        <header className="sticky top-0 z-20 border-b border-sand-line bg-white/95 px-4 py-3 backdrop-blur md:px-6">
           <div className="md:hidden">
             <NavLinks pathname={pathname} onLogout={logout} mobile />
           </div>
