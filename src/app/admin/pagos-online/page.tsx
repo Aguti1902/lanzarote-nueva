@@ -13,6 +13,7 @@ import {
   lastNDaysRange,
   type DateRange,
 } from "@/components/admin/DateRangeFilter";
+import { adminStickyAside } from "@/lib/admin-layout";
 
 type DetailTab = "details" | "delete";
 type ListTab = "all" | "pending" | "paid" | "cancelled";
@@ -636,7 +637,7 @@ export default function AdminPagosOnlinePage() {
               </form>
             </section>
 
-            <div className="space-y-4">
+            <div className={`space-y-4 ${adminStickyAside}`}>
               {!locked && (
                 <section className="rounded-xl bg-sky-soft/70 p-5 ring-1 ring-sand-line">
                   <h3 className="text-sm font-bold uppercase tracking-wide">
