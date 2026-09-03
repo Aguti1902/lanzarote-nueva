@@ -8,6 +8,16 @@ import type {
 } from "@/types";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
+import {
+  pickSettingsTranslations,
+  SETTINGS_TRANSLATABLE_KEYS,
+} from "@/lib/settings-i18n";
+
+export {
+  pickSettingsTranslations,
+  SETTINGS_TRANSLATABLE_KEYS,
+  type SettingsTranslatableKey,
+} from "@/lib/settings-i18n";
 
 type TranslatedLocale = Exclude<Locale, "es">;
 
@@ -59,6 +69,17 @@ interface ContentTranslations {
   };
 }
 
+export type { ContentTranslations, TranslatedLocale };
+
+const emptyContentTranslations = (): ContentTranslations => ({
+  settings: {},
+  tours: {},
+  blog: {},
+  transfers: { highlights: [] },
+  shoreTours: {},
+  cruise: { seaDayLabel: "At sea" },
+});
+
 const translationCache = new Map<
   TranslatedLocale,
   Promise<ContentTranslations>
@@ -76,12 +97,29 @@ function loadTranslations(
     if (cached) return cached;
   }
 
-  const pending = readCmsJson<ContentTranslations>(`i18n/${locale}.json`);
+  const pending = readCmsJson<ContentTranslations>(`i18n/${locale}.json`).then(
+    (data) => ({
+      ...emptyContentTranslations(),
+      ...data,
+      settings: data?.settings || {},
+      tours: data?.tours || {},
+      blog: data?.blog || {},
+      transfers: data?.transfers || { highlights: [] },
+      shoreTours: data?.shoreTours || {},
+      cruise: data?.cruise || emptyContentTranslations().cruise,
+    })
+  );
 
   if (!isSupabaseConfigured()) {
     translationCache.set(locale, pending);
   }
   return pending;
+}
+
+export async function getContentTranslations(
+  locale: TranslatedLocale
+): Promise<ContentTranslations> {
+  return loadTranslations(locale);
 }
 
 export async function saveContentTranslations(
@@ -90,6 +128,28 @@ export async function saveContentTranslations(
 ): Promise<void> {
   await writeCmsJson(`i18n/${locale}.json`, data);
   clearContentTranslationCache();
+}
+
+/** Merge/replace settings text overlay for EN or DE without touching tours/blog/etc. */
+export async function patchSettingsTranslations(
+  locale: TranslatedLocale,
+  settingsPatch: Partial<SiteSettings>
+): Promise<ContentTranslations> {
+  const data = await loadTranslations(locale);
+  const picked = pickSettingsTranslations(settingsPatch);
+  data.settings = {
+    ...data.settings,
+    ...picked,
+  };
+  // Drop empty strings so missing keys fall back to Spanish on the public site
+  for (const key of SETTINGS_TRANSLATABLE_KEYS) {
+    const value = data.settings[key];
+    if (typeof value === "string" && !value.trim()) {
+      delete data.settings[key];
+    }
+  }
+  await saveContentTranslations(locale, data);
+  return data;
 }
 
 /** True if the translation object has at least one non-empty field. */
@@ -175,7 +235,14 @@ export async function localizeSettings(
   if (locale === "es") return settings;
 
   const translations = await loadTranslations(locale);
-  return { ...settings, ...translations.settings };
+  const overlay = pickSettingsTranslations(translations.settings);
+  const merged: Partial<SiteSettings> = {};
+  for (const [key, value] of Object.entries(overlay)) {
+    if (typeof value === "string" && value.trim()) {
+      merged[key as keyof SiteSettings] = value as never;
+    }
+  }
+  return { ...settings, ...merged };
 }
 
 export async function localizeTour(
