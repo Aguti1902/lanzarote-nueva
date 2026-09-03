@@ -116,7 +116,7 @@ export function Header() {
           <button
             type="button"
             className="rounded-full p-2.5 text-white lg:hidden"
-            aria-label={open ? "Close" : "Menu"}
+            aria-label={open ? dict.common.close : dict.common.menu}
             onClick={() => setOpen((v) => !v)}
           >
             {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}

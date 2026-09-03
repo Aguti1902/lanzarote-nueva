@@ -26,6 +26,7 @@ type GatewayPayment = {
 export default function GatewayClient() {
   const searchParams = useSearchParams();
   const { dict } = useLocale();
+  const g = dict.gateway;
   const hash = searchParams.get("h") || "";
   const emailParam = searchParams.get("email") || "";
   const paidFlag = searchParams.get("paid") === "1";
@@ -42,7 +43,7 @@ export default function GatewayClient() {
   useEffect(() => {
     if (!hash) {
       setLoading(false);
-      setError("Enlace de pago no válido");
+      setError(g.invalidLink);
       return;
     }
     let cancelled = false;
@@ -51,7 +52,7 @@ export default function GatewayClient() {
       .then((data) => {
         if (cancelled) return;
         if (!data.payment) {
-          setError(data.error || "Pago no encontrado");
+          setError(data.error || g.notFound);
           setLoading(false);
           return;
         }
@@ -64,25 +65,25 @@ export default function GatewayClient() {
       })
       .catch(() => {
         if (!cancelled) {
-          setError("No se pudo cargar el pago");
+          setError(g.loadError);
           setLoading(false);
         }
       });
     return () => {
       cancelled = true;
     };
-  }, [hash, emailParam, paidFlag]);
+  }, [hash, emailParam, paidFlag, g.invalidLink, g.notFound, g.loadError]);
 
   const title = useMemo(() => {
-    if (!payment) return "Pago online";
-    if (payment.mode === "group_all") return "Pago del grupo completo";
+    if (!payment) return g.titleOnline;
+    if (payment.mode === "group_all") return g.titleGroup;
     if (payment.mode === "per_person")
       return payment.personLabel
-        ? `Pago · ${payment.personLabel}`
-        : "Pago por persona";
-    if (payment.serviceTitle) return "Pago del servicio";
-    return "Pago online · 100% tarjeta";
-  }, [payment]);
+        ? `${g.titleOnline} · ${payment.personLabel}`
+        : g.titlePerPerson;
+    if (payment.serviceTitle) return g.titleService;
+    return g.titleFullCard;
+  }, [payment, g]);
 
   async function handlePay(e: FormEvent) {
     e.preventDefault();
@@ -103,7 +104,7 @@ export default function GatewayClient() {
         }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Error al pagar");
+      if (!res.ok) throw new Error(data.error || g.payError);
       if (data.checkoutUrl) {
         window.location.href = data.checkoutUrl;
         return;
@@ -111,7 +112,7 @@ export default function GatewayClient() {
       setPayment(data.payment);
       setDone(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error al pagar");
+      setError(err instanceof Error ? err.message : g.payError);
     } finally {
       setPaying(false);
     }
@@ -120,7 +121,7 @@ export default function GatewayClient() {
   if (loading) {
     return (
       <section className="mx-auto max-w-lg px-4 py-16 md:px-6">
-        <p className="text-ink-muted">Cargando pago…</p>
+        <p className="text-ink-muted">{g.loading}</p>
       </section>
     );
   }
@@ -128,7 +129,7 @@ export default function GatewayClient() {
   if (error && !payment) {
     return (
       <section className="mx-auto max-w-lg px-4 py-16 text-center md:px-6">
-        <h1 className="font-display text-3xl text-ink">Pago no disponible</h1>
+        <h1 className="font-display text-3xl text-ink">{g.unavailable}</h1>
         <p className="mt-3 text-ink-muted">{error}</p>
       </section>
     );
@@ -144,15 +145,15 @@ export default function GatewayClient() {
       </p>
 
       <div className="mt-8 rounded-xl bg-white p-6 ring-1 ring-sand-line">
-        <p className="text-sm text-ink-muted">Concepto</p>
+        <p className="text-sm text-ink-muted">{g.concept}</p>
         <p className="mt-1 font-semibold text-ink">{payment.concept}</p>
         {payment.serviceTitle && (
           <p className="mt-2 text-sm text-ink-muted">
-            Servicio:{" "}
+            {g.service}:{" "}
             <span className="font-medium text-ink">{payment.serviceTitle}</span>
           </p>
         )}
-        <p className="mt-6 text-sm text-ink-muted">Importe (100% tarjeta)</p>
+        <p className="mt-6 text-sm text-ink-muted">{g.amountFullCard}</p>
         <p className="font-display text-4xl font-extrabold text-ocean">
           {formatPrice(payment.amount)}
         </p>
@@ -161,16 +162,16 @@ export default function GatewayClient() {
           <div className="mt-8 flex items-start gap-3 rounded-lg bg-emerald-50 px-4 py-3 text-emerald-800 ring-1 ring-emerald-200">
             <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0" />
             <div>
-              <p className="font-bold">Pago recibido</p>
+              <p className="font-bold">{g.paidTitle}</p>
               <p className="mt-1 text-sm">
-                Gracias. Hemos registrado el pago
+                {g.paidBody}
                 {payment.paymentMethod ? ` (${payment.paymentMethod})` : ""}.
               </p>
             </div>
           </div>
         ) : payment.status === "cancelled" ? (
           <p className="mt-8 rounded-lg bg-rose-50 px-4 py-3 text-sm text-rose-800">
-            Este enlace de pago está cancelado.
+            {g.cancelled}
           </p>
         ) : (
           <form onSubmit={handlePay} className="mt-8 space-y-4">
@@ -201,12 +202,10 @@ export default function GatewayClient() {
             <div className="rounded-lg border border-ocean/30 bg-sky-soft/50 px-3 py-3 text-sm text-ocean-deep">
               <p className="inline-flex items-center gap-2 font-bold">
                 <CreditCard className="h-4 w-4" />
-                Pago completo con tarjeta
+                {g.fullCardPay}
               </p>
               <p className="mt-1 text-xs">
-                {stripeConfigured
-                  ? "Será redirigido a Stripe Checkout de forma segura."
-                  : "Modo local (Stripe no configurado)."}
+                {stripeConfigured ? g.stripeRedirect : g.localMode}
               </p>
             </div>
 
@@ -219,7 +218,7 @@ export default function GatewayClient() {
             >
               {paying
                 ? dict.common.processing
-                : `Pagar ${formatPrice(payment.amount)}`}
+                : g.payAmount.replace("{amount}", formatPrice(payment.amount))}
             </button>
           </form>
         )}

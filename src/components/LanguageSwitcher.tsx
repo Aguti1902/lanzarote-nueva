@@ -5,7 +5,7 @@ import { locales, localeLabels, type Locale } from "@/i18n/config";
 import { useLocale } from "@/components/LocaleProvider";
 
 export function LanguageSwitcher() {
-  const { locale } = useLocale();
+  const { locale, dict } = useLocale();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -26,12 +26,12 @@ export function LanguageSwitcher() {
 
   return (
     <label className="relative inline-flex items-center">
-      <span className="sr-only">Language</span>
+      <span className="sr-only">{dict.common.language}</span>
       <select
         value={locale}
         onChange={(e) => switchTo(e.target.value as Locale)}
         className="cursor-pointer appearance-none rounded-full border border-white/20 bg-white/10 py-1.5 pr-7 pl-3 text-xs font-bold text-white outline-none hover:bg-white/15"
-        aria-label="Language"
+        aria-label={dict.common.language}
       >
         {locales.map((code) => (
           <option key={code} value={code} className="text-ink">

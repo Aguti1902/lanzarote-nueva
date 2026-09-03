@@ -30,7 +30,7 @@ export function Footer() {
             <p className="max-w-sm text-sm leading-relaxed text-white/65">
               {dict.footer.blurb}
             </p>
-            <p className="mt-4 font-display text-lg text-ocean">LET us guide you</p>
+            <p className="mt-4 font-display text-lg text-ocean">{dict.footer.tagline}</p>
           </div>
 
           <div>
@@ -118,7 +118,7 @@ export function Footer() {
                 </a>
               </li>
             </ul>
-            <p className="mt-5 text-xs text-white/45">Agencia Nº: I-AV-0002407.1</p>
+            <p className="mt-5 text-xs text-white/45">{dict.footer.agencyLicense}</p>
           </div>
         </div>
 

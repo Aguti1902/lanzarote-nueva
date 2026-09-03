@@ -69,14 +69,14 @@ export function AIChat() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         className="fixed right-4 bottom-[5.5rem] z-50 flex items-center gap-2 rounded-full bg-header px-4 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-bg-deep md:right-6"
-        aria-label={open ? "Close" : "AI Chat"}
+        aria-label={open ? dict.common.close : dict.helpFab.chatIa}
       >
         {open ? (
           <X className="h-5 w-5" />
         ) : (
           <>
             <Sparkles className="h-5 w-5" />
-            <span className="hidden sm:inline">Chat IA</span>
+            <span className="hidden sm:inline">{dict.helpFab.chatIa}</span>
           </>
         )}
       </button>
@@ -95,7 +95,7 @@ export function AIChat() {
               type="button"
               onClick={() => setOpen(false)}
               className="rounded p-1.5 hover:bg-white/10"
-              aria-label="Close"
+              aria-label={dict.common.close}
             >
               <X className="h-4 w-4" />
             </button>

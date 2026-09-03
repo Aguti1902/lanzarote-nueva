@@ -105,7 +105,7 @@ export function CruiseTourBooking({
     setError("");
     setCartMsg("");
     if (dateBlocked) {
-      setError("Esta fecha no está disponible para la excursión");
+      setError(dict.booking.dateUnavailable);
       return;
     }
     if (!callDate || passengers < 1) {
@@ -136,7 +136,7 @@ export function CruiseTourBooking({
     e.preventDefault();
     setError("");
     if (dateBlocked) {
-      setError("Esta fecha no está disponible para la excursión");
+      setError(dict.booking.dateUnavailable);
       return;
     }
     if (!name || !email || !phone) {

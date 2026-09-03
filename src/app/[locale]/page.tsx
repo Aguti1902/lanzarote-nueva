@@ -129,7 +129,7 @@ export default async function HomePage({ params }: Props) {
           <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3.5 md:gap-4 md:px-6 md:py-4">
             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/30 md:h-9 md:w-9">
               <Info className="h-4 w-4 md:h-5 md:w-5" aria-hidden />
-              <span className="sr-only">Información</span>
+              <span className="sr-only">{dict.common.info}</span>
             </span>
             <div className="min-w-0 flex-1 overflow-hidden">
               <div className="marquee-track gap-16">

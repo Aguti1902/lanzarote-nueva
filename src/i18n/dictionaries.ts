@@ -30,6 +30,11 @@ export type Dictionary = {
     required: string;
     processing: string;
     close: string;
+    menu: string;
+    previous: string;
+    next: string;
+    language: string;
+    info: string;
   };
   home: {
     ctaOffers: string;
@@ -66,6 +71,8 @@ export type Dictionary = {
     privacy: string;
     terms: string;
     rights: string;
+    tagline: string;
+    agencyLicense: string;
   };
   excursions: {
     title: string;
@@ -324,6 +331,8 @@ export type Dictionary = {
     passengersInGroup: string;
     hoursMin: string;
     bookError: string;
+    other: string;
+    dateUnavailable: string;
   };
   transferForm: {
     title: string;
@@ -358,6 +367,29 @@ export type Dictionary = {
     pay_on_day: string;
     deposit_10: string;
     deposit_20: string;
+  };
+  gateway: {
+    loading: string;
+    unavailable: string;
+    invalidLink: string;
+    notFound: string;
+    loadError: string;
+    titleOnline: string;
+    titleGroup: string;
+    titlePerPerson: string;
+    titleService: string;
+    titleFullCard: string;
+    concept: string;
+    service: string;
+    amountFullCard: string;
+    paidTitle: string;
+    paidBody: string;
+    cancelled: string;
+    fullCardPay: string;
+    stripeRedirect: string;
+    localMode: string;
+    payError: string;
+    payAmount: string;
   };
   chat: {
     title: string;
@@ -416,6 +448,11 @@ const es: Dictionary = {
     required: "Obligatorio",
     processing: "Procesando…",
     close: "Cerrar",
+    menu: "Menú",
+    previous: "Anterior",
+    next: "Siguiente",
+    language: "Idioma",
+    info: "Información",
   },
   home: {
     ctaOffers: "Ver nuestras ofertas",
@@ -472,6 +509,8 @@ const es: Dictionary = {
     privacy: "Privacidad",
     terms: "Condiciones",
     rights: "Todos los derechos reservados",
+    tagline: "LET us guide you",
+    agencyLicense: "Agencia Nº: I-AV-0002407.1",
   },
   excursions: {
     title: "Actividades y excursiones guiadas en Lanzarote",
@@ -799,6 +838,8 @@ const es: Dictionary = {
     passengersInGroup: "Personas en el grupo",
     hoursMin: "Horas (mín. 4)",
     bookError: "Error al reservar",
+    other: "Otro…",
+    dateUnavailable: "Esta fecha no está disponible para la excursión",
   },
   transferForm: {
     title: "Reservar traslado",
@@ -833,6 +874,29 @@ const es: Dictionary = {
     pay_on_day: "Pago el día del tour",
     deposit_10: "10% tarjeta + resto efectivo",
     deposit_20: "20% tarjeta + resto efectivo",
+  },
+  gateway: {
+    loading: "Cargando pago…",
+    unavailable: "Pago no disponible",
+    invalidLink: "Enlace de pago no válido",
+    notFound: "Pago no encontrado",
+    loadError: "No se pudo cargar el pago",
+    titleOnline: "Pago online",
+    titleGroup: "Pago del grupo completo",
+    titlePerPerson: "Pago por persona",
+    titleService: "Pago del servicio",
+    titleFullCard: "Pago online · 100% tarjeta",
+    concept: "Concepto",
+    service: "Servicio",
+    amountFullCard: "Importe (100% tarjeta)",
+    paidTitle: "Pago recibido",
+    paidBody: "Gracias. Hemos registrado el pago",
+    cancelled: "Este enlace de pago está cancelado.",
+    fullCardPay: "Pago completo con tarjeta",
+    stripeRedirect: "Será redirigido a Stripe Checkout de forma segura.",
+    localMode: "Modo local (Stripe no configurado).",
+    payError: "Error al pagar",
+    payAmount: "Pagar {amount}",
   },
   chat: {
     title: "Asistente LET",
@@ -898,6 +962,11 @@ const en: Dictionary = {
     required: "Required",
     processing: "Processing…",
     close: "Close",
+    menu: "Menu",
+    previous: "Previous",
+    next: "Next",
+    language: "Language",
+    info: "Information",
   },
   home: {
     ctaOffers: "See our offers",
@@ -954,6 +1023,8 @@ const en: Dictionary = {
     privacy: "Privacy",
     terms: "Terms",
     rights: "All rights reserved",
+    tagline: "LET us guide you",
+    agencyLicense: "Agency No: I-AV-0002407.1",
   },
   excursions: {
     title: "Guided activities and excursions in Lanzarote",
@@ -1272,6 +1343,8 @@ const en: Dictionary = {
     passengersInGroup: "People in the group",
     hoursMin: "Hours (min. 4)",
     bookError: "Booking failed",
+    other: "Other…",
+    dateUnavailable: "This date is not available for the excursion",
   },
   transferForm: {
     title: "Book a transfer",
@@ -1306,6 +1379,29 @@ const en: Dictionary = {
     pay_on_day: "Pay on the day",
     deposit_10: "10% card + cash balance",
     deposit_20: "20% card + cash balance",
+  },
+  gateway: {
+    loading: "Loading payment…",
+    unavailable: "Payment unavailable",
+    invalidLink: "Invalid payment link",
+    notFound: "Payment not found",
+    loadError: "Could not load the payment",
+    titleOnline: "Online payment",
+    titleGroup: "Full group payment",
+    titlePerPerson: "Per-person payment",
+    titleService: "Service payment",
+    titleFullCard: "Online payment · 100% card",
+    concept: "Concept",
+    service: "Service",
+    amountFullCard: "Amount (100% card)",
+    paidTitle: "Payment received",
+    paidBody: "Thank you. We have recorded the payment",
+    cancelled: "This payment link has been cancelled.",
+    fullCardPay: "Full payment by card",
+    stripeRedirect: "You will be redirected securely to Stripe Checkout.",
+    localMode: "Local mode (Stripe not configured).",
+    payError: "Payment failed",
+    payAmount: "Pay {amount}",
   },
   chat: {
     title: "LET Assistant",
@@ -1371,6 +1467,11 @@ const de: Dictionary = {
     required: "Pflichtfeld",
     processing: "Wird verarbeitet…",
     close: "Schließen",
+    menu: "Menü",
+    previous: "Zurück",
+    next: "Weiter",
+    language: "Sprache",
+    info: "Information",
   },
   home: {
     ctaOffers: "Unsere Angebote ansehen",
@@ -1430,6 +1531,8 @@ const de: Dictionary = {
     privacy: "Datenschutz",
     terms: "Bedingungen",
     rights: "Alle Rechte vorbehalten",
+    tagline: "LET us guide you",
+    agencyLicense: "Agentur-Nr.: I-AV-0002407.1",
   },
   excursions: {
     title: "Geführte Aktivitäten und Ausflüge auf Lanzarote",
@@ -1757,6 +1860,8 @@ const de: Dictionary = {
     passengersInGroup: "Personen in der Gruppe",
     hoursMin: "Stunden (min. 4)",
     bookError: "Buchung fehlgeschlagen",
+    other: "Andere…",
+    dateUnavailable: "Dieses Datum ist für den Ausflug nicht verfügbar",
   },
   transferForm: {
     title: "Transfer buchen",
@@ -1791,6 +1896,29 @@ const de: Dictionary = {
     pay_on_day: "Zahlung am Tourtag",
     deposit_10: "10% Karte + Rest bar",
     deposit_20: "20% Karte + Rest bar",
+  },
+  gateway: {
+    loading: "Zahlung wird geladen…",
+    unavailable: "Zahlung nicht verfügbar",
+    invalidLink: "Ungültiger Zahlungslink",
+    notFound: "Zahlung nicht gefunden",
+    loadError: "Zahlung konnte nicht geladen werden",
+    titleOnline: "Online-Zahlung",
+    titleGroup: "Zahlung der gesamten Gruppe",
+    titlePerPerson: "Zahlung pro Person",
+    titleService: "Servicezahlung",
+    titleFullCard: "Online-Zahlung · 100% Karte",
+    concept: "Konzept",
+    service: "Service",
+    amountFullCard: "Betrag (100% Karte)",
+    paidTitle: "Zahlung erhalten",
+    paidBody: "Danke. Wir haben die Zahlung erfasst",
+    cancelled: "Dieser Zahlungslink wurde storniert.",
+    fullCardPay: "Vollständige Kartenzahlung",
+    stripeRedirect: "Sie werden sicher zu Stripe Checkout weitergeleitet.",
+    localMode: "Lokaler Modus (Stripe nicht konfiguriert).",
+    payError: "Zahlungsfehler",
+    payAmount: "{amount} zahlen",
   },
   chat: {
     title: "LET Assistent",
@@ -1830,7 +1958,6 @@ const dictionaries: Record<Locale, Dictionary> = { es, en, de };
 
 export async function getDictionary(locale: Locale): Promise<Dictionary> {
   const base = dictionaries[locale] ?? dictionaries.es;
-  if (locale === "es") return base;
   const { applyTranslationOverrides, getOverridesForLocale } = await import(
     "@/lib/ui-translations"
   );
