@@ -109,8 +109,8 @@ export function AppLoadingProvider({
 
     if (navPending && pathChanged) {
       clearHideTimer();
-      // Deja ver el overlay un instante; loading.tsx cubre si el RSC sigue pendiente
-      hideTimer.current = setTimeout(() => setNavPending(false), 180);
+      // La página anterior sigue debajo del overlay hasta que el RSC está listo
+      hideTimer.current = setTimeout(() => setNavPending(false), 200);
     }
   }, [pathname, language, navPending, clearHideTimer]);
 

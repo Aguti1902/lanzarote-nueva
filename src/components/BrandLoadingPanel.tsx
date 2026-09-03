@@ -3,12 +3,13 @@ import Image from "next/image";
 type Props = {
   title?: string;
   subtitle?: string;
-  /** Pantalla completa fija (overlay) o bloque en el flujo (loading.tsx). */
+  /** Pantalla completa fija encima del contenido anterior. */
   variant?: "overlay" | "page";
 };
 
 /**
  * Pantalla de carga con logo (server + client safe).
+ * En `overlay` tapa header/footer; debajo sigue la página anterior.
  */
 export function BrandLoadingPanel({
   title = "Cargando…",
@@ -46,7 +47,7 @@ export function BrandLoadingPanel({
   if (variant === "overlay") {
     return (
       <div
-        className="fixed inset-0 z-[210] flex items-center justify-center bg-[#1c2433]/75 backdrop-blur-sm"
+        className="fixed inset-0 z-[210] flex items-center justify-center bg-[#1c2433]/90 backdrop-blur-md"
         role="status"
         aria-live="polite"
         aria-busy="true"
