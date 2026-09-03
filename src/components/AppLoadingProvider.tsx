@@ -8,11 +8,10 @@ import {
   useMemo,
   useRef,
   useState,
-  useTransition,
 } from "react";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { localeLabels, type Locale } from "@/i18n/config";
+import { BrandLoadingPanel } from "@/components/BrandLoadingPanel";
 
 type LanguageLoading = {
   to: Locale;
@@ -21,7 +20,7 @@ type LanguageLoading = {
 
 type AppLoadingContextValue = {
   startLanguageSwitch: (to: Locale, from?: Locale) => void;
-  startNavigation: () => void;
+  startNavigation: (href?: string) => void;
   stopLoading: () => void;
 };
 
@@ -34,9 +33,9 @@ const languageCopy: Record<Locale, { switching: string; to: string }> = {
 };
 
 const navCopyByPathLocale: Record<string, string> = {
-  es: "Cargando…",
-  en: "Loading…",
-  de: "Wird geladen…",
+  es: "Cargando página…",
+  en: "Loading page…",
+  de: "Seite wird geladen…",
 };
 
 function localeFromPath(pathname: string): Locale {
@@ -53,7 +52,6 @@ export function useAppLoading() {
   return ctx;
 }
 
-/** Safe hook when provider might be absent (tests). */
 export function useAppLoadingOptional() {
   return useContext(AppLoadingContext);
 }
@@ -66,47 +64,56 @@ export function AppLoadingProvider({
   const pathname = usePathname();
   const [language, setLanguage] = useState<LanguageLoading | null>(null);
   const [navPending, setNavPending] = useState(false);
-  const [showNavOverlay, setShowNavOverlay] = useState(false);
-  const navTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [, startTransition] = useTransition();
+  const prevPathRef = useRef(pathname);
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const clearNavTimer = useCallback(() => {
-    if (navTimer.current) {
-      clearTimeout(navTimer.current);
-      navTimer.current = null;
+  const clearHideTimer = useCallback(() => {
+    if (hideTimer.current) {
+      clearTimeout(hideTimer.current);
+      hideTimer.current = null;
     }
   }, []);
 
   const stopLoading = useCallback(() => {
-    clearNavTimer();
+    clearHideTimer();
     setLanguage(null);
     setNavPending(false);
-    setShowNavOverlay(false);
-  }, [clearNavTimer]);
+  }, [clearHideTimer]);
 
-  const startLanguageSwitch = useCallback((to: Locale, from?: Locale) => {
-    setShowNavOverlay(false);
-    setNavPending(false);
-    setLanguage({ to, from });
-  }, []);
+  const startLanguageSwitch = useCallback(
+    (to: Locale, from?: Locale) => {
+      clearHideTimer();
+      setNavPending(false);
+      setLanguage({ to, from });
+    },
+    [clearHideTimer]
+  );
 
   const startNavigation = useCallback(() => {
     if (language) return;
+    clearHideTimer();
     setNavPending(true);
-    clearNavTimer();
-    // Solo overlay completo si la navegación tarda de verdad
-    navTimer.current = setTimeout(() => {
-      setShowNavOverlay(true);
-    }, 320);
-  }, [language, clearNavTimer]);
+  }, [language, clearHideTimer]);
 
-  // Al completar el cambio de ruta, ocultar loaders
   useEffect(() => {
-    stopLoading();
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- solo al cambiar pathname
-  }, [pathname]);
+    const pathChanged = prevPathRef.current !== pathname;
+    prevPathRef.current = pathname;
 
-  // Clicks en enlaces internos → feedback de carga
+    if (language) {
+      if (localeFromPath(pathname) === language.to) {
+        clearHideTimer();
+        hideTimer.current = setTimeout(() => setLanguage(null), 160);
+      }
+      return;
+    }
+
+    if (navPending && pathChanged) {
+      clearHideTimer();
+      // Deja ver el overlay un instante; loading.tsx cubre si el RSC sigue pendiente
+      hideTimer.current = setTimeout(() => setNavPending(false), 180);
+    }
+  }, [pathname, language, navPending, clearHideTimer]);
+
   useEffect(() => {
     function onClick(e: MouseEvent) {
       if (e.defaultPrevented || e.button !== 0) return;
@@ -115,22 +122,28 @@ export function AppLoadingProvider({
       const anchor = target?.closest?.("a");
       if (!anchor) return;
       if (anchor.target === "_blank" || anchor.hasAttribute("download")) return;
-      const href = anchor.getAttribute("href");
-      if (!href || href.startsWith("#") || href.startsWith("mailto:")) return;
-      if (href.startsWith("http") && !href.startsWith(window.location.origin)) {
+      const hrefAttr = anchor.getAttribute("href");
+      if (
+        !hrefAttr ||
+        hrefAttr.startsWith("#") ||
+        hrefAttr.startsWith("mailto:") ||
+        hrefAttr.startsWith("tel:")
+      ) {
         return;
       }
       try {
-        const url = new URL(href, window.location.href);
+        const url = new URL(hrefAttr, window.location.href);
         if (url.origin !== window.location.origin) return;
-        const next = url.pathname + url.search;
-        const current = window.location.pathname + window.location.search;
-        if (next === current) return;
-        // Cambio de locale: LanguageSwitcher ya dispara su overlay
-        const nextLoc = localeFromPath(url.pathname);
-        const curLoc = localeFromPath(window.location.pathname);
-        if (nextLoc !== curLoc) return;
-        startTransition(() => startNavigation());
+        if (
+          url.pathname === window.location.pathname &&
+          url.search === window.location.search
+        ) {
+          return;
+        }
+        if (localeFromPath(url.pathname) !== localeFromPath(window.location.pathname)) {
+          return;
+        }
+        startNavigation();
       } catch {
         /* ignore */
       }
@@ -139,7 +152,7 @@ export function AppLoadingProvider({
     return () => document.removeEventListener("click", onClick, true);
   }, [startNavigation]);
 
-  useEffect(() => () => clearNavTimer(), [clearNavTimer]);
+  useEffect(() => () => clearHideTimer(), [clearHideTimer]);
 
   const value = useMemo(
     () => ({ startLanguageSwitch, startNavigation, stopLoading }),
@@ -155,7 +168,6 @@ export function AppLoadingProvider({
     <AppLoadingContext.Provider value={value}>
       {children}
 
-      {/* Barra superior inmediata en navegación lenta */}
       {navPending && !language && (
         <div
           className="pointer-events-none fixed inset-x-0 top-0 z-[200] h-1 overflow-hidden bg-ocean/15"
@@ -165,50 +177,20 @@ export function AppLoadingProvider({
         </div>
       )}
 
-      {/* Overlay idioma (siempre) o navegación (solo si tarda) */}
-      {(language || showNavOverlay) && (
-        <div
-          className="fixed inset-0 z-[210] flex items-center justify-center bg-[#1c2433]/72 backdrop-blur-sm"
-          role="status"
-          aria-live="polite"
-          aria-busy="true"
-        >
-          <div className="mx-4 flex max-w-sm flex-col items-center rounded-2xl bg-white px-8 py-10 text-center shadow-[0_24px_60px_rgba(23,28,38,0.28)]">
-            <div className="logo-loading-pulse relative h-16 w-24">
-              <Image
-                src="/images/brand/logo-mark.png"
-                alt=""
-                fill
-                className="object-contain"
-                sizes="96px"
-                priority
-              />
-            </div>
-            {language && langText ? (
-              <>
-                <p className="mt-5 text-sm font-semibold tracking-wide text-ink-muted uppercase">
-                  {langText.switching}
-                </p>
-                <p className="mt-1 font-display text-2xl font-extrabold text-ocean">
-                  {langText.to}
-                </p>
-                <p className="mt-2 text-xs text-ink-muted">
-                  {localeLabels[language.to]}
-                </p>
-              </>
-            ) : (
-              <p className="mt-5 text-sm font-semibold text-ink-muted">
-                {navCopyByPathLocale[pathLocale] || navCopyByPathLocale.es}
-              </p>
-            )}
-            <div className="mt-6 flex gap-1.5" aria-hidden>
-              <span className="logo-loading-dot h-2 w-2 rounded-full bg-ocean" />
-              <span className="logo-loading-dot logo-loading-dot-2 h-2 w-2 rounded-full bg-ocean" />
-              <span className="logo-loading-dot logo-loading-dot-3 h-2 w-2 rounded-full bg-ocean" />
-            </div>
-          </div>
-        </div>
-      )}
+      {language && langText ? (
+        <BrandLoadingPanel
+          variant="overlay"
+          title={langText.switching}
+          subtitle={`${langText.to} · ${localeLabels[language.to]}`}
+        />
+      ) : null}
+
+      {navPending && !language ? (
+        <BrandLoadingPanel
+          variant="overlay"
+          title={navCopyByPathLocale[pathLocale] || navCopyByPathLocale.es}
+        />
+      ) : null}
     </AppLoadingContext.Provider>
   );
 }
