@@ -514,4 +514,8 @@ export interface Invoice {
   relatedInvoiceId?: string;
   notes?: string;
   status: "issued" | "void";
+  /** Hash de la factura en la web antigua (si se importó). */
+  legacyHash?: string;
+  /** Forma de pago legacy (CC/PP/CF) u otra. */
+  paymentMethod?: string;
 }

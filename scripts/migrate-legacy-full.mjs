@@ -147,10 +147,23 @@ function parseMaybeJson(raw) {
 
 function splitIgic(gross, taxRate = 7) {
   const total = Math.round(Math.abs(num(gross)) * 100) / 100;
-  if (!taxRate || !total) return { subtotal: total, taxAmount: 0, total, taxRate };
+  const sign = num(gross) < 0 ? -1 : 1;
+  if (!taxRate || !total) {
+    return {
+      subtotal: sign * total,
+      taxAmount: 0,
+      total: sign * total,
+      taxRate,
+    };
+  }
   const subtotal = Math.round((total / (1 + taxRate / 100)) * 100) / 100;
   const taxAmount = Math.round((total - subtotal) * 100) / 100;
-  return { subtotal, taxAmount, total, taxRate };
+  return {
+    subtotal: sign * subtotal,
+    taxAmount: sign * taxAmount,
+    total: sign * total,
+    taxRate,
+  };
 }
 
 function buildSchedule(tourId, daysRows) {
@@ -422,12 +435,17 @@ function migrateInvoices(exportDir) {
     const { subtotal, taxAmount, total } = splitIgic(inv.total_amount, taxRate);
     const customer = byCustomer.get(Number(inv.customer_id));
     const number = num(inv.invoice_number);
-    const year = String(inv.invoice_date || inv.create_date || "").slice(0, 4) || "2020";
     const statusNum = Number(inv.status);
+    const notes = inv.notes || undefined;
+    const isCredit =
+      statusNum === 2 ||
+      total < 0 ||
+      lines.some((l) => l.total < 0) ||
+      /abono|cancelaci[oó]n/i.test(String(notes || ""));
     out.push({
       id: `FAC-${number}`,
       number,
-      type: statusNum === 2 ? "credit_note" : "invoice",
+      type: isCredit ? "credit_note" : "invoice",
       bookingId: inv.booking_id || "",
       createdAt: new Date(
         inv.create_date || inv.invoice_date || Date.now()
@@ -442,7 +460,7 @@ function migrateInvoices(exportDir) {
       taxRate,
       taxAmount,
       total,
-      notes: inv.notes || undefined,
+      notes,
       status: statusNum === 0 ? "void" : "issued",
       legacyHash: inv.hash,
       paymentMethod: inv.payment_method || undefined,
