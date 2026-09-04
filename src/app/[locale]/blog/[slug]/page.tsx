@@ -42,7 +42,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <article>
-      <div className="relative h-[48vh] min-h-[300px] bg-bg-deep">
+      <div className="relative min-h-[40vh] bg-bg-deep">
         <Image
           src={post.image}
           alt={post.title}
