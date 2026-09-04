@@ -2,13 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  CreditCard,
-  Banknote,
-  Percent,
-  ShoppingCart,
-  Smartphone,
-} from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import type { CruiseCall, PaymentMethod, Tour } from "@/types";
 import { formatPrice } from "@/lib/format";
 import { isFlatPriceTour } from "@/lib/tour-pricing";
@@ -100,25 +94,21 @@ export function BookingWidget({ tour }: { tour: Tour }) {
       {
         id: "deposit_20" as const,
         label: dict.booking.deposit,
-        icon: <Percent className="h-3.5 w-3.5" />,
         show: tour.allowCard,
       },
       {
         id: "card" as const,
         label: dict.booking.card,
-        icon: <CreditCard className="h-3.5 w-3.5" />,
         show: tour.allowCard,
       },
       {
         id: "bizum" as const,
         label: dict.booking.bizum,
-        icon: <Smartphone className="h-3.5 w-3.5" />,
         show: tour.allowBizum,
       },
       {
         id: "pay_on_day" as const,
         label: dict.booking.payOnDay,
-        icon: <Banknote className="h-3.5 w-3.5" />,
         show: tour.allowPayOnDay,
       },
     ] as const
@@ -201,33 +191,39 @@ export function BookingWidget({ tour }: { tour: Tour }) {
   }
 
   return (
-    <aside className="h-fit rounded-lg bg-white p-3.5 shadow-lg ring-1 ring-sand-line md:max-h-[calc(100dvh-5.5rem)] md:overflow-y-auto">
-      <div className="mb-2.5 flex items-end justify-between gap-2 border-b border-sand-line pb-2.5">
-        <div>
-          <p className="text-[11px] text-ink-muted">
-            {isPrivate
-              ? dict.booking.flatPrice
-              : isMinibus
-                ? dict.booking.perVehicle
-                : dict.common.from}
-          </p>
-          <p className="text-2xl font-bold leading-tight text-ink">
-            {formatPrice(isPrivate || isMinibus ? total : priceAdult)}
-          </p>
-          {!isPrivate && !isMinibus && priceChild > 0 ? (
-            <p className="mt-0.5 text-[11px] text-ink-muted">
-              {formatPrice(priceChild)} {dict.booking.perChild}
+    <aside className="flex h-fit flex-col rounded-lg bg-white shadow-lg ring-1 ring-sand-line md:max-h-[calc(100dvh-5.5rem)]">
+      <div className="shrink-0 border-b border-sand-line px-3.5 pb-2.5 pt-3.5">
+        <div className="flex items-end justify-between gap-2">
+          <div>
+            <p className="text-[11px] text-ink-muted">
+              {isPrivate
+                ? dict.booking.flatPrice
+                : isMinibus
+                  ? dict.booking.perVehicle
+                  : dict.common.from}
+            </p>
+            <p className="text-2xl font-bold leading-tight text-ink">
+              {formatPrice(isPrivate || isMinibus ? total : priceAdult)}
+            </p>
+            {!isPrivate && !isMinibus && priceChild > 0 ? (
+              <p className="mt-0.5 text-[11px] text-ink-muted">
+                {formatPrice(priceChild)} {dict.booking.perChild}
+              </p>
+            ) : null}
+          </div>
+          {!isPrivate ? (
+            <p className="text-[11px] text-ink-muted">
+              {isMinibus ? dict.booking.perVehicle : dict.booking.perAdult}
             </p>
           ) : null}
         </div>
-        {!isPrivate ? (
-          <p className="text-[11px] text-ink-muted">
-            {isMinibus ? dict.booking.perVehicle : dict.booking.perAdult}
-          </p>
-        ) : null}
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-2">
+      <form
+        onSubmit={handleSubmit}
+        className="flex min-h-0 flex-1 flex-col"
+      >
+        <div className="min-h-0 flex-1 space-y-2 overflow-y-auto px-3.5 py-2.5">
         <Field label={dict.booking.date} as="div">
           <TourDatePicker
             tour={tour}
@@ -421,94 +417,85 @@ export function BookingWidget({ tour }: { tour: Tour }) {
             {dict.booking.requestHint}
           </p>
         ) : (
-          <div>
-            <p className="mb-1 text-[11px] font-bold text-ink">
-              {dict.booking.paymentMethod}
-            </p>
-            <div className="space-y-1">
+          <Field label={dict.booking.paymentMethod}>
+            <select
+              className={inputClass}
+              value={paymentMethod}
+              onChange={(e) =>
+                setPaymentMethod(e.target.value as PaymentMethod)
+              }
+            >
               {methods.map((m) => (
-                <label
-                  key={m.id}
-                  className={`flex cursor-pointer items-center gap-2 rounded border px-2 py-1.5 text-xs transition ${
-                    paymentMethod === m.id
-                      ? "border-ocean bg-ocean/5 text-ocean-deep"
-                      : "border-sand-line hover:border-ocean/40"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="payment"
-                    className="accent-[var(--ocean)]"
-                    checked={paymentMethod === m.id}
-                    onChange={() => setPaymentMethod(m.id)}
-                  />
-                  {m.icon}
-                  <span className="leading-snug">{m.label}</span>
-                </label>
+                <option key={m.id} value={m.id}>
+                  {m.label}
+                </option>
               ))}
-            </div>
-          </div>
+            </select>
+          </Field>
         )}
-
-        <div className="space-y-0.5 border-t border-sand-line pt-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-ink-muted">{dict.common.total}</span>
-            <span className="text-xl font-bold text-ink">
-              {formatPrice(total)}
-            </span>
-          </div>
-          {!isOnRequest &&
-            (paymentMethod === "deposit_20" ||
-              paymentMethod === "deposit_10") && (
-              <>
-                <div className="flex justify-between text-xs">
-                  <span className="text-ink-muted">{dict.booking.payNow}</span>
-                  <span className="font-bold text-ocean">
-                    {formatPrice(paymentSplit.amountPaidCard)}
-                  </span>
-                </div>
-                <div className="flex justify-between text-xs">
-                  <span className="text-ink-muted">{dict.booking.cashLater}</span>
-                  <span className="font-bold">
-                    {formatPrice(paymentSplit.amountDueCash)}
-                  </span>
-                </div>
-              </>
-            )}
-        </div>
 
         {error ? <p className="text-xs text-red-600">{error}</p> : null}
         {date && !canBookDate ? (
           <p className="text-xs text-red-600">{dict.booking.dateUnavailable}</p>
         ) : null}
         {cartMsg ? <p className="text-xs text-success">{cartMsg}</p> : null}
+        </div>
 
-        {!isOnRequest ? (
+        <div className="shrink-0 space-y-2 border-t border-sand-line bg-white px-3.5 py-2.5">
+          <div className="space-y-0.5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-ink-muted">{dict.common.total}</span>
+              <span className="text-xl font-bold text-ink">
+                {formatPrice(total)}
+              </span>
+            </div>
+            {!isOnRequest &&
+              (paymentMethod === "deposit_20" ||
+                paymentMethod === "deposit_10") && (
+                <>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-ink-muted">{dict.booking.payNow}</span>
+                    <span className="font-bold text-ocean">
+                      {formatPrice(paymentSplit.amountPaidCard)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-ink-muted">{dict.booking.cashLater}</span>
+                    <span className="font-bold">
+                      {formatPrice(paymentSplit.amountDueCash)}
+                    </span>
+                  </div>
+                </>
+              )}
+          </div>
+
+          {!isOnRequest ? (
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              disabled={Boolean(date) && !canBookDate}
+              className="flex w-full items-center justify-center gap-2 rounded border border-ocean py-2 text-sm font-bold text-ocean transition hover:bg-ocean/5 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <ShoppingCart className="h-4 w-4" />
+              {dict.booking.addToCart}
+            </button>
+          ) : null}
+
           <button
-            type="button"
-            onClick={handleAddToCart}
-            disabled={Boolean(date) && !canBookDate}
-            className="flex w-full items-center justify-center gap-2 rounded border border-ocean py-2 text-sm font-bold text-ocean transition hover:bg-ocean/5 disabled:cursor-not-allowed disabled:opacity-50"
+            type="submit"
+            disabled={loading || (Boolean(date) && !canBookDate)}
+            className="w-full rounded bg-ocean py-2.5 text-sm font-bold text-white transition hover:bg-ocean-deep disabled:cursor-not-allowed disabled:opacity-60"
           >
-            <ShoppingCart className="h-4 w-4" />
-            {dict.booking.addToCart}
+            {loading
+              ? dict.common.processing
+              : isOnRequest
+                ? dict.booking.requestTour
+                : dict.booking.bookNow}
           </button>
-        ) : null}
-
-        <button
-          type="submit"
-          disabled={loading || (Boolean(date) && !canBookDate)}
-          className="w-full rounded bg-ocean py-2.5 text-sm font-bold text-white transition hover:bg-ocean-deep disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {loading
-            ? dict.common.processing
-            : isOnRequest
-              ? dict.booking.requestTour
-              : dict.booking.bookNow}
-        </button>
-        <p className="text-center text-[10px] text-ink-muted">
-          {dict.booking.cancelPolicy}
-        </p>
+          <p className="text-center text-[10px] text-ink-muted">
+            {dict.booking.cancelPolicy}
+          </p>
+        </div>
       </form>
     </aside>
   );
