@@ -15,10 +15,15 @@ import {
   assignBookingToCruiseGroup,
   syncCruiseGroupCapacity,
 } from "@/lib/cruise-groups";
+import { getTransfersData } from "@/lib/content";
 import { getCruiseShoreTourById } from "@/lib/cruise-itineraries";
 import { getTourById } from "@/lib/content";
 import { isTourDateBookable } from "@/lib/tour-availability";
 import { notifyNewBooking } from "@/lib/notify";
+import {
+  calcTransferTotal,
+  type TransferDirection,
+} from "@/lib/transfer-price";
 import type { BookingStatus, PaymentMethod } from "@/types";
 
 function isDateBlocked(
@@ -129,15 +134,49 @@ export async function POST(request: Request) {
         ? locale.trim().toLowerCase().slice(0, 5)
         : undefined;
 
+    const adultsNum = Number(adults) || 1;
+    const childrenNum = Number(children) || 0;
+    let resolvedTotal = Number(totalPrice) || 0;
+
+    if (type === "transfer" && transferPayload) {
+      const transfers = await getTransfersData();
+      const destId =
+        typeof transferPayload.destinationId === "string"
+          ? transferPayload.destinationId
+          : undefined;
+      const destName =
+        typeof transferPayload.destination === "string"
+          ? transferPayload.destination
+          : undefined;
+      const dest =
+        transfers.destinations.find((d) => d.id === destId) ||
+        transfers.destinations.find(
+          (d) => d.name.toLowerCase() === String(destName || "").toLowerCase()
+        );
+      const dir = transferPayload.direction as TransferDirection | undefined;
+      if (
+        dest &&
+        (dir === "airport_to_hotel" ||
+          dir === "hotel_to_airport" ||
+          dir === "return")
+      ) {
+        resolvedTotal = calcTransferTotal({
+          destination: dest,
+          direction: dir,
+          passengers: adultsNum + childrenNum,
+        });
+      }
+    }
+
     let booking = await addBooking({
       type,
       tourId,
       tourTitle,
       date,
       time: normalizedTime || transferPayload?.time,
-      adults: Number(adults) || 1,
-      children: Number(children) || 0,
-      totalPrice: Number(totalPrice) || 0,
+      adults: adultsNum,
+      children: childrenNum,
+      totalPrice: resolvedTotal,
       paymentMethod: (paymentMethod as PaymentMethod) || "card",
       paymentStatus: status === "pending" ? "unpaid" : "paid",
       customer,

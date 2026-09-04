@@ -60,6 +60,15 @@ export default async function ConfirmacionPage({ params, searchParams }: Props) 
               <dd className="text-right font-medium">{booking.tourTitle}</dd>
             </div>
             <div className="flex justify-between gap-4">
+              <dt className="text-ink-muted">{dict.transferForm.passengers}</dt>
+              <dd className="font-medium">
+                {booking.adults + (booking.children || 0)}
+                {booking.children
+                  ? ` (${booking.adults} ${dict.common.adults} + ${booking.children} ${dict.common.children})`
+                  : ""}
+              </dd>
+            </div>
+            <div className="flex justify-between gap-4">
               <dt className="text-ink-muted">{dict.voucher.bookingDate}</dt>
               <dd className="font-medium">
                 {formatDateShort(booking.createdAt)}

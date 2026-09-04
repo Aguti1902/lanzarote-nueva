@@ -15,7 +15,8 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
 
-export const dynamic = "force-dynamic";
+/** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
+export const revalidate = 300;
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -28,11 +29,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CruceristasPage({ params }: Props) {
   const locale = resolveLocale((await params).locale);
   const dict = await getDictionary(locale);
+  const today = new Date().toISOString().slice(0, 10);
   const [allCruise, settings, cruiseData, cruiseCalls] = await Promise.all([
-    localizeTours(await getCruiseTours(), locale),
-    localizeSettings(await getSettings(), locale),
+    getCruiseTours().then((list) => localizeTours(list, locale)),
+    getSettings().then((s) => localizeSettings(s, locale)),
     getCruisesData(),
-    getCruiseCalls({ publishedOnly: true }),
+    getCruiseCalls({ publishedOnly: true, fromDate: today }),
   ]);
   const tours = allCruise.filter((t) => t.category === "excursion");
   const privateTours = allCruise.filter((t) => t.category === "private");

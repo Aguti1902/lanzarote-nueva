@@ -113,6 +113,11 @@ h3,
 }
 
 .hero-image {
+  /* Sin animación ni filter: mejora LCP y reduce carga GPU en móvil */
+  filter: none;
+}
+
+.hero-image.hero-alive {
   animation: drift 22s ease-in-out alternate infinite;
   filter: brightness(1.1) contrast(1.04) saturate(1.12);
 }

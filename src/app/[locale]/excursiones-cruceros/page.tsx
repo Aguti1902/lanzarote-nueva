@@ -12,7 +12,8 @@ import { localizeSettings } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 
-export const dynamic = "force-dynamic";
+/** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
+export const revalidate = 300;
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -25,16 +26,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ExcursionesCrucerosPage({ params }: Props) {
   const locale = resolveLocale((await params).locale);
   const dict = await getDictionary(locale);
+  const today = new Date().toISOString().slice(0, 10);
   const [settings, companies, cruiseData, cruiseCalls] = await Promise.all([
-    localizeSettings(await getSettings(), locale),
+    getSettings().then((s) => localizeSettings(s, locale)),
     getCruiseCompanies(),
     getCruisesData(),
-    getCruiseCalls({ publishedOnly: true }),
+    getCruiseCalls({ publishedOnly: true, fromDate: today }),
   ]);
 
   const sailingLinks = await buildPortCallSailingLinks(cruiseCalls);
   const calendarCalls: CalendarCall[] = cruiseCalls.map((call) => ({
-    ...call,
+    id: call.id,
+    date: call.date,
+    port: call.port,
+    company: call.company,
+    shipCode: call.shipCode,
+    shipName: call.shipName,
+    arrivalTime: call.arrivalTime,
+    departureTime: call.departureTime,
+    season: call.season,
+    published: call.published,
+    notes: call.notes,
     sailingHref: sailingLinks[call.id],
   }));
 

@@ -12,7 +12,8 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
 
-export const dynamic = "force-dynamic";
+/** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Excursions | Lanzarote Experience Tours",
@@ -25,8 +26,8 @@ export default async function ExcursionesPage({ params }: Props) {
   const locale = resolveLocale(raw);
   const dict = await getDictionary(locale);
   const [tours, settings] = await Promise.all([
-    localizeTours(await getPublicTours(), locale),
-    localizeSettings(await getSettings(), locale),
+    getPublicTours().then((list) => localizeTours(list, locale)),
+    getSettings().then((s) => localizeSettings(s, locale)),
   ]);
 
   return (

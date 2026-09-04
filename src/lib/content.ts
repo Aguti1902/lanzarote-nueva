@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type {
   BlogPost,
   CruiseCall,
@@ -33,9 +34,9 @@ function isTourActive(tour: Tour): boolean {
 }
 
 /** Todas las excursiones (incluye inactivas). Uso admin / API. */
-export async function getTours(): Promise<Tour[]> {
+export const getTours = cache(async (): Promise<Tour[]> => {
   return readJson<Tour[]>("tours.json");
-}
+});
 
 /** Solo excursiones activas para la web pública. */
 export async function getPublicTours(): Promise<Tour[]> {
@@ -180,9 +181,9 @@ export async function deleteTour(id: string): Promise<boolean> {
 
 /* ── Transfers ── */
 
-export async function getTransfersData(): Promise<TransfersData> {
+export const getTransfersData = cache(async (): Promise<TransfersData> => {
   return readJson<TransfersData>("transfers.json");
-}
+});
 
 export async function getTransferDestinations(): Promise<TransferDestination[]> {
   return (await getTransfersData()).destinations;
@@ -248,9 +249,9 @@ export async function updateTransferHighlights(
 
 /* ── Blog ── */
 
-export async function getBlogPosts(): Promise<BlogPost[]> {
+export const getBlogPosts = cache(async (): Promise<BlogPost[]> => {
   return readJson<BlogPost[]>("blog.json");
-}
+});
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | undefined> {
   return (await getBlogPosts()).find((p) => p.slug === slug);
@@ -320,7 +321,7 @@ function sortCruiseCalls(calls: CruiseCall[]): CruiseCall[] {
   });
 }
 
-export async function getCruisesData(): Promise<CruisesData> {
+export const getCruisesData = cache(async (): Promise<CruisesData> => {
   try {
     const stored = await readJson<Partial<CruisesData>>("cruises.json");
     return {
@@ -331,7 +332,7 @@ export async function getCruisesData(): Promise<CruisesData> {
   } catch {
     return defaultCruisesData;
   }
-}
+});
 
 export async function getCruiseCalls(options?: {
   publishedOnly?: boolean;
@@ -460,10 +461,10 @@ const defaultSettings: SiteSettings = {
   bannerDe: "",
 };
 
-export async function getSettings(): Promise<SiteSettings> {
+export const getSettings = cache(async (): Promise<SiteSettings> => {
   const stored = await readJson<Partial<SiteSettings>>("settings.json");
   return { ...defaultSettings, ...stored };
-}
+});
 
 export async function saveSettings(settings: SiteSettings): Promise<void> {
   await writeJson("settings.json", settings);

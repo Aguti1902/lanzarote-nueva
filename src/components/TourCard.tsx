@@ -22,8 +22,9 @@ export function TourCard({ tour }: { tour: Tour }) {
           src={tour.image}
           alt={tour.title}
           fill
-          className="photo-vivid object-cover transition duration-700 group-hover:scale-110"
+          className="object-cover transition duration-500 group-hover:scale-[1.03]"
           sizes="(max-width: 768px) 100vw, 33vw"
+          quality={70}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent" />
         {tour.groupSize && (

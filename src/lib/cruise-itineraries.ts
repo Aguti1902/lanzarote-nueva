@@ -1,17 +1,11 @@
+import { cache } from "react";
 import type {
   CruiseCompany,
   CruiseItinerariesData,
   CruiseSailing,
   CruiseShoreTour,
 } from "@/types";
-import { isSupabaseConfigured } from "@/lib/supabase/client";
 import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
-
-let cache: CruiseItinerariesData | null = null;
-
-export function clearCruiseItinerariesCache() {
-  cache = null;
-}
 
 const emptyData: CruiseItinerariesData = {
   updatedAt: "",
@@ -21,18 +15,21 @@ const emptyData: CruiseItinerariesData = {
   sailings: [],
 };
 
-export async function getCruiseItinerariesData(): Promise<CruiseItinerariesData> {
-  // Con Supabase no cacheamos entre requests: Storage es la fuente de verdad.
-  if (cache && !isSupabaseConfigured()) return cache;
-  try {
-    const data = await readCmsJson<CruiseItinerariesData>(
-      "cruiseItineraries.json"
-    );
-    if (!isSupabaseConfigured()) cache = data;
-    return data;
-  } catch {
-    return emptyData;
+/** Una lectura por request; la frescura entre requests la marca `readCmsJson`. */
+export const getCruiseItinerariesData = cache(
+  async (): Promise<CruiseItinerariesData> => {
+    try {
+      return await readCmsJson<CruiseItinerariesData>(
+        "cruiseItineraries.json"
+      );
+    } catch {
+      return emptyData;
+    }
   }
+);
+
+export function clearCruiseItinerariesCache() {
+  // Compat: la invalidación real va por revalidateTag en writeCmsJson.
 }
 
 export async function saveCruiseItinerariesData(
@@ -40,10 +37,56 @@ export async function saveCruiseItinerariesData(
 ): Promise<void> {
   data.updatedAt = new Date().toISOString().slice(0, 10);
   await writeCmsJson("cruiseItineraries.json", data);
+  await writeCruiseSlimIndexes(data);
   clearCruiseItinerariesCache();
 }
 
+async function writeCruiseSlimIndexes(data: CruiseItinerariesData) {
+  const companiesPayload = {
+    updatedAt: data.updatedAt,
+    companies: data.companies,
+  };
+  const entries: Array<{
+    date: string;
+    shipName: string;
+    companyName: string;
+    companySlug: string;
+    shipSlug: string;
+    sailingId: string;
+  }> = [];
+  for (const sailing of data.sailings) {
+    for (const stop of sailing.stops) {
+      if (stop.isSeaDay || !stop.date || !stop.portKey?.includes("lanzarote")) {
+        continue;
+      }
+      entries.push({
+        date: stop.date,
+        shipName: sailing.shipName,
+        companyName: sailing.companyName,
+        companySlug: sailing.companySlug,
+        shipSlug: sailing.shipSlug,
+        sailingId: sailing.id,
+      });
+    }
+  }
+  await writeCmsJson("cruiseCompanies.json", companiesPayload);
+  await writeCmsJson("cruisePortIndex.json", {
+    updatedAt: data.updatedAt,
+    entries,
+  });
+}
+
 export async function getCruiseCompanies(): Promise<CruiseCompany[]> {
+  try {
+    const slim = await readCmsJson<{ companies: CruiseCompany[] }>(
+      "cruiseCompanies.json"
+    );
+    if (Array.isArray(slim.companies) && slim.companies.length) {
+      return slim.companies;
+    }
+  } catch {
+    /* fallback */
+  }
   const data = await getCruiseItinerariesData();
   return data.companies;
 }
@@ -145,26 +188,61 @@ export async function buildPortCallSailingLinks(
     date: string;
   }>
 ): Promise<Record<string, string>> {
-  const data = await getCruiseItinerariesData();
-  const index = new Map<string, CruiseSailing[]>();
+  type IndexEntry = {
+    date: string;
+    shipName: string;
+    companyName: string;
+    companySlug: string;
+    shipSlug: string;
+    sailingId: string;
+  };
 
-  for (const sailing of data.sailings) {
-    for (const stop of sailing.stops) {
-      if (stop.isSeaDay || !stop.date || !stop.portKey.includes("lanzarote")) {
-        continue;
+  let entries: IndexEntry[] = [];
+  try {
+    const slim = await readCmsJson<{ entries: IndexEntry[] }>(
+      "cruisePortIndex.json"
+    );
+    if (Array.isArray(slim.entries)) entries = slim.entries;
+  } catch {
+    entries = [];
+  }
+
+  if (!entries.length) {
+    const data = await getCruiseItinerariesData();
+    for (const sailing of data.sailings) {
+      for (const stop of sailing.stops) {
+        if (
+          stop.isSeaDay ||
+          !stop.date ||
+          !stop.portKey?.includes("lanzarote")
+        ) {
+          continue;
+        }
+        entries.push({
+          date: stop.date,
+          shipName: sailing.shipName,
+          companyName: sailing.companyName,
+          companySlug: sailing.companySlug,
+          shipSlug: sailing.shipSlug,
+          sailingId: sailing.id,
+        });
       }
-      const key = `${stop.date}|${normalizeShip(sailing.shipName)}`;
-      const list = index.get(key) || [];
-      list.push(sailing);
-      index.set(key, list);
-      const slugKey = `${stop.date}|${normalizeShip(
-        sailing.shipSlug.replace(/-/g, " ")
-      )}`;
-      if (slugKey !== key) {
-        const slugList = index.get(slugKey) || [];
-        slugList.push(sailing);
-        index.set(slugKey, slugList);
-      }
+    }
+  }
+
+  const index = new Map<string, IndexEntry[]>();
+  for (const entry of entries) {
+    const key = `${entry.date}|${normalizeShip(entry.shipName)}`;
+    const list = index.get(key) || [];
+    list.push(entry);
+    index.set(key, list);
+    const slugKey = `${entry.date}|${normalizeShip(
+      entry.shipSlug.replace(/-/g, " ")
+    )}`;
+    if (slugKey !== key) {
+      const slugList = index.get(slugKey) || [];
+      slugList.push(entry);
+      index.set(slugKey, slugList);
     }
   }
 
@@ -174,18 +252,17 @@ export async function buildPortCallSailingLinks(
     const candidates = index.get(key) || [];
     const company = normalizeShip(call.company);
     const match =
-      candidates.find((sailing) => {
+      candidates.find((entry) => {
         if (!company) return true;
         return (
-          normalizeShip(sailing.companyName).includes(company) ||
-          company.includes(normalizeShip(sailing.companyName)) ||
-          normalizeShip(sailing.companySlug.replace(/-/g, " ")).includes(
-            company
-          )
+          normalizeShip(entry.companyName).includes(company) ||
+          company.includes(normalizeShip(entry.companyName)) ||
+          normalizeShip(entry.companySlug.replace(/-/g, " ")).includes(company)
         );
       }) || candidates[0];
     if (match) {
-      links[call.id] = `/crucero/${match.companySlug}/${match.shipSlug}/${match.id}`;
+      links[call.id] =
+        `/crucero/${match.companySlug}/${match.shipSlug}/${match.sailingId}`;
     }
   }
   return links;

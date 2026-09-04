@@ -1,0 +1,352 @@
+{
+  "updatedAt": "2026-09-01T00:54:11.542Z",
+  "companies": [
+    {
+      "slug": "aida-cruises",
+      "name": "Aida cruises",
+      "sailingCount": 100,
+      "ships": [
+        {
+          "slug": "aidaluna",
+          "name": "AIDALuna"
+        },
+        {
+          "slug": "aidablu",
+          "name": "AIDAblu"
+        },
+        {
+          "slug": "aidacosma",
+          "name": "AIDAcosma"
+        },
+        {
+          "slug": "aidamar",
+          "name": "AIDAmar"
+        },
+        {
+          "slug": "aidaperla",
+          "name": "AIDAperla"
+        },
+        {
+          "slug": "aidaprima",
+          "name": "AIDAprima"
+        },
+        {
+          "slug": "aidasol",
+          "name": "AIDAsol"
+        },
+        {
+          "slug": "aidastella",
+          "name": "AIDAstella"
+        }
+      ]
+    },
+    {
+      "slug": "ambassador-cruise-line",
+      "name": "ambassador-cruise-line",
+      "sailingCount": 1,
+      "ships": [
+        {
+          "slug": "ambition",
+          "name": "Ambition"
+        }
+      ]
+    },
+    {
+      "slug": "celebrity-cruises",
+      "name": "Celebrity Cruises",
+      "sailingCount": 10,
+      "ships": [
+        {
+          "slug": "celebrity-apex",
+          "name": "Celebrity Apex"
+        },
+        {
+          "slug": "celebrity-infinity",
+          "name": "Celebrity Infinity"
+        }
+      ]
+    },
+    {
+      "slug": "cfc-croisieres",
+      "name": "cfc-croisieres",
+      "sailingCount": 1,
+      "ships": [
+        {
+          "slug": "renaissance",
+          "name": "Renaissance"
+        }
+      ]
+    },
+    {
+      "slug": "costa-cruises",
+      "name": "Costa Cruceros",
+      "sailingCount": 42,
+      "ships": [
+        {
+          "slug": "costa-diadema",
+          "name": "Costa Diadema"
+        },
+        {
+          "slug": "costa-favolosa",
+          "name": "Costa Favolosa"
+        },
+        {
+          "slug": "costa-smeralda",
+          "name": "Costa Smeralda"
+        }
+      ]
+    },
+    {
+      "slug": "crystal-cruises",
+      "name": "Crystal Cruises",
+      "sailingCount": 1,
+      "ships": [
+        {
+          "slug": "crystal-serenity",
+          "name": "Crystal Serenity"
+        }
+      ]
+    },
+    {
+      "slug": "cunard-line-cruises",
+      "name": "Cunard Line Cruises",
+      "sailingCount": 9,
+      "ships": [
+        {
+          "slug": "queen-anne",
+          "name": "Queen Anne"
+        },
+        {
+          "slug": "queen-victoria",
+          "name": "Queen Victoria"
+        }
+      ]
+    },
+    {
+      "slug": "fred-olsen-cruise-lines",
+      "name": "Fred Olsen Cruise Lines",
+      "sailingCount": 10,
+      "ships": [
+        {
+          "slug": "balmoral",
+          "name": "Balmoral"
+        },
+        {
+          "slug": "bolette",
+          "name": "Bolette"
+        },
+        {
+          "slug": "borealis",
+          "name": "Borealis"
+        }
+      ]
+    },
+    {
+      "slug": "hapag-lloyd",
+      "name": "Hapag-Lloyd",
+      "sailingCount": 2,
+      "ships": [
+        {
+          "slug": "europa",
+          "name": "Europa"
+        },
+        {
+          "slug": "europa-2",
+          "name": "Europa 2"
+        }
+      ]
+    },
+    {
+      "slug": "marella-cruises",
+      "name": "Marella Cruises",
+      "sailingCount": 32,
+      "ships": [
+        {
+          "slug": "marella-discovery-2",
+          "name": "Marella Discovery 2"
+        },
+        {
+          "slug": "marella-explorer",
+          "name": "Marella Explorer"
+        }
+      ]
+    },
+    {
+      "slug": "msc-cruises",
+      "name": "MSC Cruises",
+      "sailingCount": 31,
+      "ships": [
+        {
+          "slug": "msc-fantasia",
+          "name": "MSC Fantasia"
+        },
+        {
+          "slug": "msc-meraviglia",
+          "name": "MSC Meraviglia"
+        },
+        {
+          "slug": "msc-virtuosa",
+          "name": "MSC Virtuosa"
+        }
+      ]
+    },
+    {
+      "slug": "norwegian-cruise-line-ncl",
+      "name": "Norwegian cruise line (NCL)",
+      "sailingCount": 4,
+      "ships": [
+        {
+          "slug": "norwegian-star",
+          "name": "Norwegian Star"
+        }
+      ]
+    },
+    {
+      "slug": "po-cruises",
+      "name": "P&O Cruises",
+      "sailingCount": 75,
+      "ships": [
+        {
+          "slug": "arcadia",
+          "name": "Arcadia"
+        },
+        {
+          "slug": "azura",
+          "name": "Azura"
+        },
+        {
+          "slug": "britannia",
+          "name": "Britannia"
+        },
+        {
+          "slug": "iona",
+          "name": "Iona"
+        },
+        {
+          "slug": "ventura",
+          "name": "Ventura"
+        }
+      ]
+    },
+    {
+      "slug": "phoenix-reisen",
+      "name": "Phoenix Reisen",
+      "sailingCount": 4,
+      "ships": [
+        {
+          "slug": "amadea",
+          "name": "Amadea"
+        },
+        {
+          "slug": "amera",
+          "name": "Amera"
+        }
+      ]
+    },
+    {
+      "slug": "princess-cruises",
+      "name": "Princess Cruises",
+      "sailingCount": 1,
+      "ships": [
+        {
+          "slug": "sky-princess",
+          "name": "Sky Princess"
+        }
+      ]
+    },
+    {
+      "slug": "regent-seven-seas-cruises",
+      "name": "Regent Seven Seas Cruises",
+      "sailingCount": 5,
+      "ships": [
+        {
+          "slug": "seven-seas-navigator",
+          "name": "Seven Seas Navigator"
+        },
+        {
+          "slug": "seven-seas-splendor",
+          "name": "Seven Seas Splendor"
+        },
+        {
+          "slug": "seven-seas-voyager",
+          "name": "Seven Seas Voyager"
+        }
+      ]
+    },
+    {
+      "slug": "saga-cruises",
+      "name": "Saga Cruises",
+      "sailingCount": 7,
+      "ships": [
+        {
+          "slug": "spirit-of-adventure",
+          "name": "Spirit Of Adventure"
+        },
+        {
+          "slug": "spirit-of-discovery",
+          "name": "Spirit Of Discovery"
+        }
+      ]
+    },
+    {
+      "slug": "silversea",
+      "name": "Silversea",
+      "sailingCount": 1,
+      "ships": [
+        {
+          "slug": "silver-dawn",
+          "name": "Silver Dawn"
+        }
+      ]
+    },
+    {
+      "slug": "star-clippers",
+      "name": "Star-Clippers",
+      "sailingCount": 4,
+      "ships": [
+        {
+          "slug": "star-clipper",
+          "name": "Star Clipper"
+        },
+        {
+          "slug": "star-flyer",
+          "name": "Star Flyer"
+        }
+      ]
+    },
+    {
+      "slug": "tui-cruises",
+      "name": "TUI Cruises",
+      "sailingCount": 49,
+      "ships": [
+        {
+          "slug": "mein-schiff-3",
+          "name": "Mein Schiff 3"
+        },
+        {
+          "slug": "mein-schiff-6",
+          "name": "Mein Schiff 6"
+        },
+        {
+          "slug": "mein-schiff-7",
+          "name": "Mein Schiff 7"
+        },
+        {
+          "slug": "mein-schiff-relax",
+          "name": "Mein Schiff Relax"
+        }
+      ]
+    },
+    {
+      "slug": "windstar-cruises",
+      "name": "windstar-cruises",
+      "sailingCount": 7,
+      "ships": [
+        {
+          "slug": "wind-spirit",
+          "name": "Wind Spirit"
+        }
+      ]
+    }
+  ]
+}

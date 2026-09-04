@@ -1,12 +1,14 @@
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { FloatingHelp } from "@/components/FloatingHelp";
+import { FloatingHelpLazy } from "@/components/FloatingHelpLazy";
 import { TripadvisorBadge } from "@/components/TripadvisorBadge";
 import { LocaleProvider } from "@/components/LocaleProvider";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getTripadvisorMeta } from "@/lib/reviews";
+
+export const revalidate = 300;
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -40,7 +42,7 @@ export default async function LocaleLayout({
           label={dict.tripadvisorBadge.aria}
           reviewsLabel={dict.tripadvisorBadge.reviews}
         />
-        <FloatingHelp />
+        <FloatingHelpLazy />
       </div>
     </LocaleProvider>
   );

@@ -10,7 +10,8 @@ import { localizeShoreTours } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 
-export const dynamic = "force-dynamic";
+/** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
+export const revalidate = 300;
 
 type Props = {
   params: Promise<{

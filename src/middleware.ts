@@ -42,9 +42,9 @@ export function middleware(request: NextRequest) {
 
   const segment = pathname.split("/")[1];
   if (segment && isLocale(segment)) {
-    const response = NextResponse.next();
-    response.cookies.set("NEXT_LOCALE", segment, { path: "/" });
-    return response;
+    // No Set-Cookie aquí: LanguageSwitcher guarda el locale.
+    // Evita romper la caché CDN/edge del HTML/RSC.
+    return NextResponse.next();
   }
 
   const locale = detectLocale(request);
