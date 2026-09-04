@@ -7,6 +7,7 @@ import type {
   TransfersData,
 } from "@/types";
 import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
+import { isSupabaseConfigured } from "@/lib/supabase/client";
 import {
   pickSettingsTranslations,
   SETTINGS_TRANSLATABLE_KEYS,
