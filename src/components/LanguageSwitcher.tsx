@@ -3,16 +3,17 @@
 import { usePathname, useRouter } from "next/navigation";
 import { locales, localeLabels, type Locale } from "@/i18n/config";
 import { useLocale } from "@/components/LocaleProvider";
+import { useAppLoadingOptional } from "@/components/AppLoadingProvider";
 
 export function LanguageSwitcher() {
   const { locale } = useLocale();
   const pathname = usePathname();
   const router = useRouter();
+  const loading = useAppLoadingOptional();
 
   function switchTo(next: Locale) {
     if (next === locale) return;
     const parts = pathname.split("/");
-    // /es/excursiones -> replace first segment
     if (parts[1] && locales.includes(parts[1] as Locale)) {
       parts[1] = next;
     } else {
@@ -20,6 +21,8 @@ export function LanguageSwitcher() {
     }
     const target = parts.join("/") || `/${next}`;
     document.cookie = `NEXT_LOCALE=${next}; path=/; max-age=31536000`;
+    loading?.startLanguageSwitch(next, locale);
+    router.prefetch(target);
     router.push(target);
     router.refresh();
   }
