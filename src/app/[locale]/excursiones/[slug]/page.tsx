@@ -350,7 +350,7 @@ export default async function TourDetailPage({ params }: Props) {
           )}
         </article>
 
-        <aside className="md:sticky md:top-24 md:self-start">
+        <aside className="md:sticky md:top-20 md:self-start">
           <BookingWidget tour={tour} />
         </aside>
       </div>

@@ -16,6 +16,8 @@ import {
   syncCruiseGroupCapacity,
 } from "@/lib/cruise-groups";
 import { getCruiseShoreTourById } from "@/lib/cruise-itineraries";
+import { getTourById } from "@/lib/content";
+import { isTourDateBookable } from "@/lib/tour-availability";
 import { notifyNewBooking } from "@/lib/notify";
 import type { BookingStatus, PaymentMethod } from "@/types";
 
@@ -64,12 +66,26 @@ export async function POST(request: Request) {
     }
 
     if (tourId) {
-      const shoreTour = await getCruiseShoreTourById(String(tourId));
+      const tourIdStr = String(tourId);
+      const shoreTour = await getCruiseShoreTourById(tourIdStr);
       if (shoreTour && isDateBlocked(shoreTour.blockedDates, String(date))) {
         return NextResponse.json(
           { error: "Esta fecha no está disponible para la excursión" },
           { status: 400 }
         );
+      }
+
+      if (!shoreTour && (type === "tour" || type === "minibus")) {
+        const tour = await getTourById(tourIdStr);
+        if (tour && !isTourDateBookable(tour, String(date))) {
+          return NextResponse.json(
+            {
+              error:
+                "Ese día no hay excursión. Elija una fecha disponible en el calendario.",
+            },
+            { status: 400 }
+          );
+        }
       }
     }
 
