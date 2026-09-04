@@ -330,7 +330,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
                     {s.shipName} ({s.arrivalTime}–{s.departureTime})
                   </option>
                 ))}
-                <option value="__other__">Otro…</option>
+                <option value="__other__">{dict.booking.other}</option>
               </select>
               {!shipsForDate.some((s) => s.shipName === cruiseShip) && (
                 <input

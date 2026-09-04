@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import type { TravelerReview } from "@/lib/reviews";
+import { useLocale } from "@/components/LocaleProvider";
 
 type Props = {
   reviews: TravelerReview[];
@@ -31,6 +32,7 @@ export function ReviewsCarousel({
   travelerLabel,
   compact = false,
 }: Props) {
+  const { dict } = useLocale();
   const scrollerRef = useRef<HTMLUListElement>(null);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(false);
@@ -103,7 +105,7 @@ export function ReviewsCarousel({
           onClick={() => scrollByDir(-1)}
           disabled={!canPrev}
           className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-ink ring-1 ring-sand-line transition hover:bg-sky-soft disabled:cursor-not-allowed disabled:opacity-35"
-          aria-label="Anterior"
+          aria-label={dict.common.previous}
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
@@ -112,7 +114,7 @@ export function ReviewsCarousel({
           onClick={() => scrollByDir(1)}
           disabled={!canNext}
           className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-ink ring-1 ring-sand-line transition hover:bg-sky-soft disabled:cursor-not-allowed disabled:opacity-35"
-          aria-label="Siguiente"
+          aria-label={dict.common.next}
         >
           <ChevronRight className="h-5 w-5" />
         </button>

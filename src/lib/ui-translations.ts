@@ -1,13 +1,19 @@
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
+import { locales } from "@/i18n/config";
 import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
 
 export type UiTranslationOverrides = {
+  es: Record<string, string>;
   en: Record<string, string>;
   de: Record<string, string>;
 };
 
-const empty: UiTranslationOverrides = { en: {}, de: {} };
+const empty: UiTranslationOverrides = { es: {}, en: {}, de: {} };
+
+function emptyMaps(): UiTranslationOverrides {
+  return { es: {}, en: {}, de: {} };
+}
 
 export async function getUiTranslationOverrides(): Promise<UiTranslationOverrides> {
   try {
@@ -15,26 +21,34 @@ export async function getUiTranslationOverrides(): Promise<UiTranslationOverride
       "uiTranslations.json"
     );
     return {
+      es: data.es || {},
       en: data.en || {},
       de: data.de || {},
     };
   } catch {
-    return { ...empty, en: {}, de: {} };
+    return emptyMaps();
   }
 }
 
 export async function saveUiTranslationOverrides(
   data: UiTranslationOverrides
 ): Promise<void> {
-  await writeCmsJson("uiTranslations.json", data);
+  await writeCmsJson("uiTranslations.json", {
+    es: data.es || {},
+    en: data.en || {},
+    de: data.de || {},
+  });
 }
 
 export async function updateUiTranslations(
-  locale: "en" | "de",
+  locale: Locale,
   entries: Record<string, string>
 ): Promise<UiTranslationOverrides> {
+  if (!locales.includes(locale)) {
+    throw new Error(`Locale no soportado: ${locale}`);
+  }
   const data = await getUiTranslationOverrides();
-  const next = { ...data[locale] };
+  const next = { ...(data[locale] || {}) };
   for (const [key, value] of Object.entries(entries)) {
     const trimmed = value.trim();
     if (!trimmed) {
@@ -63,7 +77,10 @@ export function flattenDictionary(
 
   if (Array.isArray(obj)) {
     obj.forEach((item, i) => {
-      Object.assign(out, flattenDictionary(item, prefix ? `${prefix}.${i}` : String(i)));
+      Object.assign(
+        out,
+        flattenDictionary(item, prefix ? `${prefix}.${i}` : String(i))
+      );
     });
     return out;
   }
@@ -77,7 +94,11 @@ export function flattenDictionary(
   return out;
 }
 
-function setPath(target: Record<string, unknown>, pathKey: string, value: string) {
+function setPath(
+  target: Record<string, unknown>,
+  pathKey: string,
+  value: string
+) {
   const parts = pathKey.split(".");
   let cur: Record<string, unknown> = target;
   for (let i = 0; i < parts.length - 1; i++) {
@@ -113,7 +134,8 @@ export function applyTranslationOverrides(
 export async function getOverridesForLocale(
   locale: Locale
 ): Promise<Record<string, string>> {
-  if (locale === "es") return {};
   const data = await getUiTranslationOverrides();
   return data[locale] || {};
 }
+
+export { empty as emptyUiTranslationOverrides };
