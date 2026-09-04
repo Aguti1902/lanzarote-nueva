@@ -11,6 +11,7 @@ import {
   type DateRange,
 } from "@/components/admin/DateRangeFilter";
 import { adminStickyAside } from "@/lib/admin-layout";
+<<<<<<< HEAD
 import {
   buildInvoiceHtml,
   companyFromSettings,
@@ -26,6 +27,8 @@ function money2(n: number) {
     maximumFractionDigits: 2,
   });
 }
+=======
+>>>>>>> origin/cursor/admin-sticky-layout-5b40
 
 export function FacturasClient() {
   const searchParams = useSearchParams();
