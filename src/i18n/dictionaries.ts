@@ -319,11 +319,15 @@ export type Dictionary = {
     payNow: string;
     cashLater: string;
     perAdult: string;
+    perChild: string;
     perVehicle: string;
     flatPrice: string;
     passengersInGroup: string;
     hoursMin: string;
     bookError: string;
+    dateUnavailable: string;
+    pickupTimeNote: string;
+    moreDetails: string;
   };
   transferForm: {
     title: string;
@@ -794,11 +798,17 @@ const es: Dictionary = {
     payNow: "Ahora (20% tarjeta)",
     cashLater: "Efectivo el día",
     perAdult: "por adulto",
+    perChild: "por niño",
     perVehicle: "por vehículo",
     flatPrice: "Precio cerrado",
     passengersInGroup: "Personas en el grupo",
     hoursMin: "Horas (mín. 4)",
     bookError: "Error al reservar",
+    dateUnavailable:
+      "Ese día no hay excursión. Elija una fecha disponible en el calendario.",
+    pickupTimeNote:
+      "La hora de recogida se confirma por WhatsApp / email según su zona.",
+    moreDetails: "Hotel, barco y notas (opcional)",
   },
   transferForm: {
     title: "Reservar traslado",
@@ -1267,11 +1277,17 @@ const en: Dictionary = {
     payNow: "Now (20% card)",
     cashLater: "Cash on the day",
     perAdult: "per adult",
+    perChild: "per child",
     perVehicle: "per vehicle",
     flatPrice: "Fixed price",
     passengersInGroup: "People in the group",
     hoursMin: "Hours (min. 4)",
     bookError: "Booking failed",
+    dateUnavailable:
+      "No excursion on that day. Please choose an available date.",
+    pickupTimeNote:
+      "Pick-up time is confirmed by WhatsApp / email according to your area.",
+    moreDetails: "Hotel, ship and notes (optional)",
   },
   transferForm: {
     title: "Book a transfer",
@@ -1752,11 +1768,17 @@ const de: Dictionary = {
     payNow: "Jetzt (20% Karte)",
     cashLater: "Bar am Tag",
     perAdult: "pro Erwachsenem",
+    perChild: "pro Kind",
     perVehicle: "pro Fahrzeug",
     flatPrice: "Pauschalpreis",
     passengersInGroup: "Personen in der Gruppe",
     hoursMin: "Stunden (min. 4)",
     bookError: "Buchung fehlgeschlagen",
+    dateUnavailable:
+      "An diesem Tag gibt es keinen Ausflug. Bitte wählen Sie ein verfügbares Datum.",
+    pickupTimeNote:
+      "Die Abholzeit wird per WhatsApp / E-Mail je nach Zone bestätigt.",
+    moreDetails: "Hotel, Schiff und Notizen (optional)",
   },
   transferForm: {
     title: "Transfer buchen",
