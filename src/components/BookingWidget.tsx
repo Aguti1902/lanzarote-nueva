@@ -228,7 +228,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-2">
-        <Field label={dict.booking.date}>
+        <Field label={dict.booking.date} as="div">
           <TourDatePicker
             tour={tour}
             value={date}
@@ -517,14 +517,17 @@ export function BookingWidget({ tour }: { tour: Tour }) {
 function Field({
   label,
   children,
+  as = "label",
 }: {
   label: string;
   children: React.ReactNode;
+  as?: "label" | "div";
 }) {
+  const Tag = as;
   return (
-    <label className="block">
+    <Tag className="block">
       <span className="mb-0.5 block text-[11px] font-bold text-ink">{label}</span>
       {children}
-    </label>
+    </Tag>
   );
 }
