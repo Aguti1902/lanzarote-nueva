@@ -43,8 +43,8 @@
   "blogHeroPosition": "50% 40%",
   "cruiseHeroPosition": "50% 45%",
   "transferHeroPosition": "50% 45%",
-  "housesHeroImage": "/images/home/amigas-volcan.jpg",
-  "housesHeroPosition": "50% 40%",
+  "housesHeroImage": "/images/heroes/casas-vacacionales.jpg",
+  "housesHeroPosition": "50% 45%",
   "contactHeroImage": "/images/home/amigas-volcan.jpg",
   "contactHeroPosition": "45% 35%"
 }
