@@ -191,7 +191,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
   }
 
   return (
-    <aside className="flex h-fit flex-col rounded-lg bg-white shadow-lg ring-1 ring-sand-line md:max-h-[calc(100dvh-5.5rem)]">
+    <aside className="flex max-h-none flex-col rounded-lg bg-white shadow-lg ring-1 ring-sand-line md:max-h-[calc(100dvh-5.5rem)] md:overflow-hidden">
       <div className="shrink-0 border-b border-sand-line px-3.5 pb-2.5 pt-3.5">
         <div className="flex items-end justify-between gap-2">
           <div>
@@ -221,7 +221,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
 
       <form
         onSubmit={handleSubmit}
-        className="flex min-h-0 flex-1 flex-col"
+        className="flex min-h-0 flex-1 flex-col overflow-hidden"
       >
         <div className="min-h-0 flex-1 space-y-2 overflow-y-auto px-3.5 py-2.5">
         <Field label={dict.booking.date} as="div">
