@@ -116,7 +116,17 @@ export default async function ConfirmacionPage({ params, searchParams }: Props) 
             {booking.invoiceId && (
               <div className="flex justify-between gap-4">
                 <dt className="text-ink-muted">{dict.confirmation.invoice}</dt>
-                <dd className="font-medium">{booking.invoiceId}</dd>
+                <dd className="font-medium">
+                  <Link
+                    href={localePath(
+                      locale,
+                      `/factura?id=${encodeURIComponent(booking.invoiceId)}`
+                    )}
+                    className="text-ocean hover:underline"
+                  >
+                    {booking.invoiceId} · Ver / PDF
+                  </Link>
+                </dd>
               </div>
             )}
             <div className="flex justify-between gap-4 border-t border-sand-line pt-2">

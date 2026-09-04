@@ -101,7 +101,11 @@ Ver sección histórica y `scripts/migrate-legacy-mysql.mjs`.
 
 ## Numeración de facturas
 
-Las facturas importadas usan `FAC-{número}` (p. ej. `FAC-75991`). Las nuevas continúan el mismo ciclo (`FAC-75992`, …). Los abonos usan `ABO-{número}` en la misma secuencia.
+Las facturas importadas usan `FAC-{número}` (p. ej. `FAC-75991`). Las nuevas continúan el mismo ciclo (`FAC-75992`, …). Los abonos usan el mismo número histórico cuando vienen del legacy (marcados `type: "credit_note"`) y `ABO-{número}` cuando se emiten en la web nueva.
+
+En Admin → Facturas se puede **previsualizar**, **imprimir** y **descargar PDF**. También existe la ruta pública `/es/factura?id=FAC-…`.
+
+Tras reimportar facturas/reservas: subir `invoices.json` y `bookings.json` con Admin → Sync CMS o `npm run seed:supabase`.
 
 ## Pendiente con Angela (Strato / pagos)
 
