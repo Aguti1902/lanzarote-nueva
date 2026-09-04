@@ -11,10 +11,38 @@ npm run dev
 
 Abre [http://localhost:3000](http://localhost:3000).
 
+## Supabase (datos en producción)
+
+Por defecto la app puede usar JSON locales. Con Supabase configurado, **todas las reservas, CMS, facturas, cruceros y uploads** pasan a la base de datos.
+
+1. Crea un proyecto en [supabase.com](https://supabase.com).
+2. En el SQL Editor, ejecuta el script:
+   `supabase/migrations/20260825170000_initial.sql`
+3. En Storage, crea un bucket público llamado `uploads` (y `cms` si lo usáis para el CMS).
+4. Copia `.env.example` → `.env.local` y rellena:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
+SUPABASE_SERVICE_ROLE_KEY=eyJ...
+ADMIN_PASSWORD=tu-password-admin
+```
+
+5. Importa los datos demo actuales:
+
+```bash
+npm run seed:supabase
+# o: node --env-file=.env.local scripts/seed-supabase.mjs
+```
+
+6. En Vercel, añade las mismas variables de entorno y redespliega.
+
+Si faltan las variables de Supabase, la app sigue funcionando con `src/data/*.json` (modo local).
+
 ## Panel admin
 
 - URL: `/admin`
-- Contraseña demo: `admin123`
+- Contraseña: la de `ADMIN_PASSWORD` (por defecto `admin123`)
 
 Desde el panel puedes:
 
