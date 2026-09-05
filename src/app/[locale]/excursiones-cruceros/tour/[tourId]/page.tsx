@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CruiseTourBooking } from "@/components/CruiseTourBooking";
+import { ShoreMeetingPointButton } from "@/components/ShoreMeetingPointButton";
 import {
   getCruiseSailing,
   getCruiseSailingById,
@@ -78,6 +79,7 @@ export default async function CruiseShoreTourPage({
   const mapSrc = mapEmbedUrl(tour.mapUrl);
   const mapLink =
     !mapSrc && isHttpUrl(tour.mapUrl) ? tour.mapUrl!.trim() : null;
+  const meetingImages = (tour.meetingPointImages || []).filter(Boolean);
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-14">
@@ -172,6 +174,15 @@ export default async function CruiseShoreTourPage({
             })()}
           </ul>
 
+          <div className="mt-6 flex flex-wrap gap-2">
+            <ShoreMeetingPointButton
+              images={meetingImages}
+              title={dict.cruises.meetingPointTitle}
+              body={dict.cruises.meetingPointBody}
+              buttonLabel={dict.cruises.meetingPoint}
+            />
+          </div>
+
           {tour.description && (
             <div className="prose-cruise mt-8 whitespace-pre-line text-sm leading-relaxed text-ink-muted">
               {tour.description}
@@ -222,18 +233,13 @@ export default async function CruiseShoreTourPage({
 
           {(mapSrc || mapLink) && (
             <section className="mt-8">
-              <h2 className="font-bold text-ink">
-                {dict.cruises.meetingPointTitle}
-              </h2>
-              <p className="mt-2 text-sm text-ink-muted">
-                {dict.cruises.meetingPointBody}
-              </p>
+              <h2 className="font-bold text-ink">{dict.tourDetail.map}</h2>
               {mapSrc ? (
                 <div className="mt-3 overflow-hidden rounded-xl ring-1 ring-sand-line">
                   <div className="relative aspect-[4/3] w-full bg-bg md:aspect-[16/9]">
                     <iframe
                       src={mapSrc}
-                      title={dict.cruises.meetingPoint}
+                      title={dict.tourDetail.map}
                       className="absolute inset-0 h-full w-full border-0"
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
@@ -249,7 +255,7 @@ export default async function CruiseShoreTourPage({
                     rel="noopener noreferrer"
                     className="font-bold text-ocean hover:underline"
                   >
-                    {dict.booking.openMap}
+                    {dict.tourDetail.openMap}
                   </a>
                 </p>
               )}

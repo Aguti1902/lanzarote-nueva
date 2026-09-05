@@ -415,6 +415,8 @@ export interface CruiseShoreTour {
   cancellationPolicy?: string;
   youtubeUrl?: string;
   mapUrl?: string;
+  /** Fotos ilustrativas del punto de encuentro (modal público). */
+  meetingPointImages?: string[];
   /** Same shape as regular tours: zone → slot → 7 weekday flags. */
   schedule?: Record<
     string,

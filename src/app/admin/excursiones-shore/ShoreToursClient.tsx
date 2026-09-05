@@ -121,7 +121,9 @@ export function ShoreToursPanel() {
   const [draft, setDraft] = useState<CruiseShoreTour | null>(null);
   const [message, setMessage] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [uploadingMeeting, setUploadingMeeting] = useState(false);
   const [newPhotoUrl, setNewPhotoUrl] = useState("");
+  const [newMeetingUrl, setNewMeetingUrl] = useState("");
   const [blockDate, setBlockDate] = useState("");
   const [blockLang, setBlockLang] = useState("Todos los idiomas");
   const [blockSeats, setBlockSeats] = useState(14);
@@ -157,6 +159,7 @@ export function ShoreToursPanel() {
         : current.image
           ? [current.image]
           : [],
+      meetingPointImages: [...(current.meetingPointImages || [])],
       schedule: normalizeSchedule(current.schedule),
       blockedDates: current.blockedDates || [],
       seo: {
@@ -210,6 +213,7 @@ export function ShoreToursPanel() {
       cancellationPolicy: "Cancelación gratuita hasta 48 horas antes.",
       youtubeUrl: "",
       mapUrl: "",
+      meetingPointImages: [],
       schedule: emptySchedule(),
       blockedDates: [],
       seo: { title: "", description: "", keywords: "" },
@@ -225,15 +229,16 @@ export function ShoreToursPanel() {
     setSelectedId(id);
   }
 
-  async function save() {
-    if (!draft) return;
-    if (!draft.title.trim()) {
+  async function save(override?: CruiseShoreTour) {
+    const source = override || draft;
+    if (!source) return;
+    if (!source.title.trim()) {
       setMessage("El título es obligatorio");
       return;
     }
-    const isNew = !items.some((t) => t.id === draft.id);
+    const isNew = !items.some((t) => t.id === source.id);
     const cleanLocale = (locale: "en" | "de") => {
-      const raw = draft.translations?.[locale] || {};
+      const raw = source.translations?.[locale] || {};
       const next: CruiseShoreTourTranslation = {};
       if (raw.title?.trim()) next.title = raw.title.trim();
       if (raw.shortTitle?.trim()) next.shortTitle = raw.shortTitle.trim();
@@ -247,18 +252,24 @@ export function ShoreToursPanel() {
         next.recommendations = raw.recommendations;
       return next;
     };
-    const savedId = draft.id || slugify(draft.title);
+    const savedId = source.id || slugify(source.title);
     const payload = {
       kind: "shore-tours",
       ...syncShoreTourStructuredFields({
-        ...draft,
+        ...source,
         id: savedId,
-        shortTitle: draft.shortTitle || draft.title,
-        pricePerPerson: draft.priceAdult,
-        image: draft.gallery?.[0] || draft.image,
-        schedule: normalizeSchedule(draft.schedule),
-        blockedDates: draft.blockedDates || [],
-        seo: draft.seo || { title: "", description: "", keywords: "" },
+        shortTitle: source.shortTitle || source.title,
+        pricePerPerson: source.priceAdult,
+        image: source.image || source.gallery?.[0] || "",
+        gallery: source.gallery?.length
+          ? source.gallery
+          : source.image
+            ? [source.image]
+            : [],
+        meetingPointImages: source.meetingPointImages || [],
+        schedule: normalizeSchedule(source.schedule),
+        blockedDates: source.blockedDates || [],
+        seo: source.seo || { title: "", description: "", keywords: "" },
         translations: {
           en: cleanLocale("en"),
           de: cleanLocale("de"),
@@ -293,6 +304,7 @@ export function ShoreToursPanel() {
         : saved.image
           ? [saved.image]
           : [],
+      meetingPointImages: [...(saved.meetingPointImages || [])],
       schedule: normalizeSchedule(saved.schedule),
       blockedDates: saved.blockedDates || [],
       seo: {
@@ -332,16 +344,41 @@ export function ShoreToursPanel() {
       if (!res.ok) throw new Error(data.error || "Error al subir");
       const url = data.url as string;
       const gallery = [...(draft.gallery || []), url];
-      setDraft({
+      const next = {
         ...draft,
         gallery,
         image: draft.image || url,
-      });
-      setMessage("Foto añadida");
+      };
+      setDraft(next);
+      await save(next);
+      setMessage("Foto añadida y guardada");
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "Error al subir");
     } finally {
       setUploading(false);
+    }
+  }
+
+  async function uploadMeetingPointPhoto(file: File) {
+    if (!draft) return;
+    setUploadingMeeting(true);
+    try {
+      const body = new FormData();
+      body.append("file", file);
+      body.append("folder", "shore-meeting-point");
+      const res = await fetch("/api/admin/upload", { method: "POST", body });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Error al subir");
+      const url = data.url as string;
+      const meetingPointImages = [...(draft.meetingPointImages || []), url];
+      const next = { ...draft, meetingPointImages };
+      setDraft(next);
+      await save(next);
+      setMessage("Foto de punto de encuentro añadida y guardada");
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : "Error al subir");
+    } finally {
+      setUploadingMeeting(false);
     }
   }
 
@@ -351,6 +388,24 @@ export function ShoreToursPanel() {
     const gallery = [...(draft.gallery || []), url];
     setDraft({ ...draft, gallery, image: draft.image || url });
     setNewPhotoUrl("");
+  }
+
+  function addMeetingPointUrl() {
+    if (!draft || !newMeetingUrl.trim()) return;
+    const url = newMeetingUrl.trim();
+    setDraft({
+      ...draft,
+      meetingPointImages: [...(draft.meetingPointImages || []), url],
+    });
+    setNewMeetingUrl("");
+  }
+
+  function setPrincipalImage(url: string) {
+    if (!draft) return;
+    const gallery = draft.gallery?.includes(url)
+      ? [url, ...(draft.gallery || []).filter((u) => u !== url)]
+      : [url, ...(draft.gallery || [])];
+    setDraft({ ...draft, image: url, gallery });
   }
 
   function updateTranslation(
@@ -711,7 +766,7 @@ export function ShoreToursPanel() {
               ))}
             </div>
 
-            <button type="button" onClick={save} className="btn-primary">
+            <button type="button" onClick={() => void save()} className="btn-primary">
               Actualizar datos
             </button>
           </section>
@@ -849,7 +904,7 @@ export function ShoreToursPanel() {
               </div>
             </div>
 
-            <button type="button" onClick={save} className="btn-primary">
+            <button type="button" onClick={() => void save()} className="btn-primary">
               Actualizar traducciones
             </button>
           </section>
@@ -914,7 +969,7 @@ export function ShoreToursPanel() {
                 )}
               </tbody>
             </table>
-            <button type="button" onClick={save} className="btn-primary">
+            <button type="button" onClick={() => void save()} className="btn-primary">
               Actualizar días
             </button>
           </section>
@@ -1008,7 +1063,7 @@ export function ShoreToursPanel() {
               </ul>
             )}
 
-            <button type="button" onClick={save} className="btn-primary">
+            <button type="button" onClick={() => void save()} className="btn-primary">
               Guardar disponibilidad
             </button>
           </section>
@@ -1056,7 +1111,7 @@ export function ShoreToursPanel() {
                 }
               />
             </Field>
-            <button type="button" onClick={save} className="btn-primary">
+            <button type="button" onClick={() => void save()} className="btn-primary">
               Actualizar SEO
             </button>
           </section>
@@ -1075,13 +1130,16 @@ export function ShoreToursPanel() {
                 value={draft.image || ""}
                 folder="shore-tours"
                 onChange={(url) => {
-                  setDraft({
+                  const gallery = draft.gallery?.includes(url)
+                    ? [url, ...(draft.gallery || []).filter((u) => u !== url)]
+                    : [url, ...(draft.gallery || [])];
+                  const next = {
                     ...draft,
                     image: url,
-                    gallery: draft.gallery?.includes(url)
-                      ? draft.gallery
-                      : [url, ...(draft.gallery || [])],
-                  });
+                    gallery,
+                  };
+                  setDraft(next);
+                  void save(next);
                 }}
               />
             </div>
@@ -1106,7 +1164,7 @@ export function ShoreToursPanel() {
                       <button
                         type="button"
                         className="text-xs font-bold text-ocean"
-                        onClick={() => setDraft({ ...draft, image: url })}
+                        onClick={() => setPrincipalImage(url)}
                       >
                         {draft.image === url ? "Principal" : "Hacer principal"}
                       </button>
@@ -1119,6 +1177,12 @@ export function ShoreToursPanel() {
                             gallery: (draft.gallery || []).filter(
                               (_, i) => i !== idx
                             ),
+                            image:
+                              draft.image === url
+                                ? (draft.gallery || []).filter(
+                                    (_, i) => i !== idx
+                                  )[0] || ""
+                                : draft.image,
                           })
                         }
                         aria-label="Eliminar foto"
@@ -1165,6 +1229,85 @@ export function ShoreToursPanel() {
               </label>
             </div>
 
+            <div>
+              <h3 className="mb-3 text-sm font-semibold text-ink">
+                Fotos del punto de encuentro
+              </h3>
+              <p className="mb-3 text-xs text-ink-muted">
+                Imágenes anotadas que se muestran en el modal «Punto de
+                encuentro» de la web (como en el puerto: control de policía,
+                guía, etc.).
+              </p>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {(draft.meetingPointImages || []).map((url, idx) => (
+                  <div
+                    key={`mp-${url}-${idx}`}
+                    className="overflow-hidden rounded-lg ring-1 ring-sand-line"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={url}
+                      alt={`Punto de encuentro ${idx + 1}`}
+                      className="h-40 w-full object-contain bg-sky-soft"
+                    />
+                    <div className="flex justify-end p-2">
+                      <button
+                        type="button"
+                        className="text-ink-muted hover:text-rose-600"
+                        onClick={() =>
+                          setDraft({
+                            ...draft,
+                            meetingPointImages: (
+                              draft.meetingPointImages || []
+                            ).filter((_, i) => i !== idx),
+                          })
+                        }
+                        aria-label="Eliminar foto de punto de encuentro"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-4 grid gap-3 md:grid-cols-[1fr_auto]">
+                <Field label="Añadir foto por URL">
+                  <input
+                    className={adminInput}
+                    value={newMeetingUrl}
+                    placeholder="/images/... o https://..."
+                    onChange={(e) => setNewMeetingUrl(e.target.value)}
+                  />
+                </Field>
+                <button
+                  type="button"
+                  onClick={addMeetingPointUrl}
+                  className="self-end rounded border border-sand-line px-4 py-2 text-sm font-bold"
+                >
+                  Añadir URL
+                </button>
+              </div>
+
+              <label className="mt-3 inline-flex cursor-pointer items-center gap-2 rounded-md bg-ocean px-4 py-2.5 text-sm font-bold text-white hover:bg-ocean-deep">
+                <Upload className="h-4 w-4" />
+                {uploadingMeeting
+                  ? "Subiendo…"
+                  : "Subir foto punto de encuentro"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  disabled={uploadingMeeting}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) uploadMeetingPointPhoto(file);
+                    e.target.value = "";
+                  }}
+                />
+              </label>
+            </div>
+
             <div className="grid gap-3 md:grid-cols-2">
               <Field label="URL del video en Youtube">
                 <input
@@ -1175,7 +1318,7 @@ export function ShoreToursPanel() {
                   }
                 />
               </Field>
-              <Field label="URL del mapa">
+              <Field label="URL del mapa (opcional)">
                 <input
                   className={adminInput}
                   value={draft.mapUrl || ""}
@@ -1185,14 +1328,13 @@ export function ShoreToursPanel() {
                   placeholder="https://www.google.com/maps/d/embed?mid=..."
                 />
                 <p className="mt-1 text-xs text-ink-muted">
-                  Usa un enlace de insertar mapa de Google Maps o My Maps
-                  (`/maps/embed` o `/maps/d/embed?mid=...`) para el punto de
-                  encuentro.
+                  Opcional. El punto de encuentro principal son las fotos de
+                  arriba; el mapa es un complemento.
                 </p>
               </Field>
             </div>
 
-            <button type="button" onClick={save} className="btn-primary">
+            <button type="button" onClick={() => void save()} className="btn-primary">
               Guardar multimedia
             </button>
           </section>

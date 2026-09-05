@@ -13,6 +13,7 @@ import {
 import { resolveShoreToursForStop } from "@/lib/cruise-shore-match";
 import { useLocale } from "@/components/LocaleProvider";
 import { CruiseTourBooking } from "@/components/CruiseTourBooking";
+import { MeetingPointModal } from "@/components/MeetingPointModal";
 
 type Props = {
   sailing: CruiseSailing;
@@ -23,7 +24,11 @@ export function CruiseItinerary({ sailing, tours }: Props) {
   const { dict, href, locale } = useLocale();
   const [openTour, setOpenTour] = useState<string | null>(null);
   const [bookingTour, setBookingTour] = useState<string | null>(null);
-  const [meetingOpen, setMeetingOpen] = useState(false);
+  const [meetingTourId, setMeetingTourId] = useState<string | null>(null);
+  const meetingTour = meetingTourId
+    ? tours.find((t) => t.id === meetingTourId)
+    : undefined;
+  const meetingImages = meetingTour?.meetingPointImages?.filter(Boolean) || [];
 
   const nightsLabel =
     sailing.nights == null
@@ -250,14 +255,19 @@ export function CruiseItinerary({ sailing, tours }: Props) {
                                     >
                                       {dict.cruises.moreInfo}
                                     </button>
-                                    <button
-                                      type="button"
-                                      onClick={() => setMeetingOpen(true)}
-                                      className="inline-flex items-center justify-center gap-1.5 rounded-full border border-ink/20 px-4 py-2.5 text-sm font-bold uppercase tracking-wide transition hover:border-ocean hover:text-ocean"
-                                    >
-                                      <MapPin className="h-4 w-4" />
-                                      {dict.cruises.meetingPoint}
-                                    </button>
+                                    {(tour.meetingPointImages?.length ?? 0) >
+                                      0 && (
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          setMeetingTourId(tour.id)
+                                        }
+                                        className="inline-flex items-center justify-center gap-1.5 rounded-full border border-ink/20 px-4 py-2.5 text-sm font-bold uppercase tracking-wide transition hover:border-ocean hover:text-ocean"
+                                      >
+                                        <MapPin className="h-4 w-4" />
+                                        {dict.cruises.meetingPoint}
+                                      </button>
+                                    )}
                                     <button
                                       type="button"
                                       onClick={() =>
@@ -299,31 +309,15 @@ export function CruiseItinerary({ sailing, tours }: Props) {
         </ol>
       </section>
 
-      {meetingOpen && (
-        <div
-          className="fixed inset-0 z-[80] flex items-end justify-center bg-bg-deep/50 p-4 sm:items-center"
-          role="dialog"
-          aria-modal="true"
-          onClick={() => setMeetingOpen(false)}
-        >
-          <div
-            className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 className="text-xl font-bold">{dict.cruises.meetingPointTitle}</h3>
-            <p className="mt-3 text-sm leading-relaxed text-ink-muted">
-              {dict.cruises.meetingPointBody}
-            </p>
-            <button
-              type="button"
-              className="btn-primary mt-6 w-full justify-center"
-              onClick={() => setMeetingOpen(false)}
-            >
-              OK
-            </button>
-          </div>
-        </div>
-      )}
+      <MeetingPointModal
+        open={Boolean(meetingTourId)}
+        title={dict.cruises.meetingPointTitle}
+        body={
+          meetingImages.length ? undefined : dict.cruises.meetingPointBody
+        }
+        images={meetingImages}
+        onClose={() => setMeetingTourId(null)}
+      />
     </div>
   );
 }

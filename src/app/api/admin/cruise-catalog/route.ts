@@ -283,6 +283,9 @@ export async function POST(request: Request) {
           "Cancelación gratuita hasta 48 horas antes.",
         youtubeUrl: body.youtubeUrl || "",
         mapUrl: body.mapUrl || "",
+        meetingPointImages: Array.isArray(body.meetingPointImages)
+          ? body.meetingPointImages
+          : [],
         schedule: body.schedule || undefined,
         blockedDates: body.blockedDates || [],
         seo: body.seo || { title: "", description: "", keywords: "" },
