@@ -9,11 +9,13 @@ import type {
 import { readCmsJson, readCmsJsonFresh, writeCmsJson } from "@/lib/supabase/cms-store";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import {
+  mergeSettingsOverlay,
   pickSettingsTranslations,
   SETTINGS_TRANSLATABLE_KEYS,
 } from "@/lib/settings-i18n";
 
 export {
+  mergeSettingsOverlay,
   pickSettingsTranslations,
   SETTINGS_TRANSLATABLE_KEYS,
   type SettingsTranslatableKey,
@@ -239,13 +241,7 @@ export async function localizeSettings(
 
   const translations = await loadTranslations(locale);
   const overlay = pickSettingsTranslations(translations.settings);
-  const merged: Partial<SiteSettings> = {};
-  for (const [key, value] of Object.entries(overlay)) {
-    if (typeof value === "string" && value.trim()) {
-      merged[key as keyof SiteSettings] = value as never;
-    }
-  }
-  return { ...settings, ...merged };
+  return mergeSettingsOverlay(settings, overlay);
 }
 
 export async function localizeTour(

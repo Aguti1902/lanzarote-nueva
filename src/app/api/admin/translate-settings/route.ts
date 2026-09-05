@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import {
   pickSettingsTranslations,
+  SETTINGS_STRING_KEYS,
   SETTINGS_TRANSLATABLE_KEYS,
+  type SettingsStringKey,
   type SettingsTranslatableKey,
 } from "@/lib/settings-i18n";
 import type { SiteSettings } from "@/types";
@@ -12,7 +14,7 @@ type TargetLocale = "en" | "de";
 
 function emptyOverlay(): Partial<SiteSettings> {
   const out: Partial<SiteSettings> = {};
-  for (const key of SETTINGS_TRANSLATABLE_KEYS) {
+  for (const key of SETTINGS_STRING_KEYS) {
     out[key] = "";
   }
   return out;
@@ -23,8 +25,6 @@ function localTranslate(
   source: Partial<SiteSettings>,
   target: TargetLocale
 ): Partial<SiteSettings> {
-  // Without API key we keep Spanish so the editor can still review/edit.
-  // Prefer copying source so the admin sees content to tweak.
   void target;
   return pickSettingsTranslations(source);
 }
@@ -37,7 +37,8 @@ async function translateWithOpenAI(
   const apiKey = process.env.OPENAI_API_KEY;
   const payload: Record<string, string> = {};
   for (const key of keys) {
-    const value = source[key];
+    if (!(SETTINGS_STRING_KEYS as readonly string[]).includes(key)) continue;
+    const value = source[key as SettingsStringKey];
     if (typeof value === "string" && value.trim()) {
       payload[key] = value;
     }
@@ -117,7 +118,7 @@ export async function POST(request: Request) {
         ? body.keys.filter((k: string) =>
             SETTINGS_TRANSLATABLE_KEYS.includes(k as SettingsTranslatableKey)
           )
-        : SETTINGS_TRANSLATABLE_KEYS
+        : [...SETTINGS_STRING_KEYS]
     ) as SettingsTranslatableKey[];
 
     const targets: TargetLocale[] = ["en", "de"];

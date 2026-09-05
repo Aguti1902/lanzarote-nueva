@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { PageBodyText } from "@/components/PageBodyText";
+import { PageContentBlocks } from "@/components/PageContentBlocks";
+import { PageFaqs } from "@/components/PageFaqs";
 import { PageHero } from "@/components/PageHero";
 import { getBlogPosts, getSettings } from "@/lib/content";
 import { formatDate } from "@/lib/format";
@@ -139,6 +141,18 @@ export default async function BlogPage({ params }: Props) {
           ))}
         </div>
       </div>
+
+      <PageContentBlocks
+        title={settings.blogBlocksTitle}
+        intro={settings.blogBlocksIntro}
+        blocks={settings.blogBlocks}
+      />
+
+      <PageFaqs
+        title={settings.blogFaqTitle}
+        faqs={settings.blogFaqs}
+        tone="soft"
+      />
     </>
   );
 }

@@ -1,16 +1,19 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Mail, MapPin, Phone } from "lucide-react";
+import { PageContentBlocks } from "@/components/PageContentBlocks";
+import { PageFaqs } from "@/components/PageFaqs";
 import { PageHero } from "@/components/PageHero";
 import { useLocale } from "@/components/LocaleProvider";
 import { useSettingsHero } from "@/hooks/useSettingsHero";
+import type { PageContentBlock, PageFaqItem, SiteSettings } from "@/types";
 
 const inputClass =
   "w-full rounded border border-sand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20";
 
 export default function ContactoPage() {
-  const { dict } = useLocale();
+  const { dict, locale } = useLocale();
   const hero = useSettingsHero("contact");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -19,6 +22,69 @@ export default function ContactoPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [ok, setOk] = useState(false);
+  const [faqTitle, setFaqTitle] = useState("");
+  const [faqs, setFaqs] = useState<PageFaqItem[]>([]);
+  const [blocksTitle, setBlocksTitle] = useState("");
+  const [blocksIntro, setBlocksIntro] = useState("");
+  const [blocks, setBlocks] = useState<PageContentBlock[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      try {
+        const [esRes, i18nRes] = await Promise.all([
+          fetch("/api/settings"),
+          locale === "es"
+            ? Promise.resolve(null)
+            : fetch(`/api/admin/content-translations?locale=${locale}`),
+        ]);
+        const esData = await esRes.json();
+        const settings = (esData.settings || {}) as SiteSettings;
+        let overlay: Partial<SiteSettings> = {};
+        if (i18nRes?.ok) {
+          const i18nData = await i18nRes.json();
+          overlay = (i18nData.settings || {}) as Partial<SiteSettings>;
+        }
+        if (cancelled) return;
+        setFaqTitle(
+          (typeof overlay.contactFaqTitle === "string" &&
+            overlay.contactFaqTitle.trim()) ||
+            settings.contactFaqTitle ||
+            ""
+        );
+        const overlayFaqs = overlay.contactFaqs;
+        setFaqs(
+          Array.isArray(overlayFaqs) && overlayFaqs.length > 0
+            ? overlayFaqs
+            : settings.contactFaqs || []
+        );
+        setBlocksTitle(
+          (typeof overlay.contactBlocksTitle === "string" &&
+            overlay.contactBlocksTitle.trim()) ||
+            settings.contactBlocksTitle ||
+            ""
+        );
+        setBlocksIntro(
+          (typeof overlay.contactBlocksIntro === "string" &&
+            overlay.contactBlocksIntro.trim()) ||
+            settings.contactBlocksIntro ||
+            ""
+        );
+        const overlayBlocks = overlay.contactBlocks;
+        setBlocks(
+          Array.isArray(overlayBlocks) && overlayBlocks.length > 0
+            ? overlayBlocks
+            : settings.contactBlocks || []
+        );
+      } catch {
+        /* ignore */
+      }
+    }
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [locale]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -51,16 +117,15 @@ export default function ContactoPage() {
         image={hero.image}
         title={dict.contact.title}
         subtitle={dict.contact.subtitle}
-        compact
         objectPosition={hero.objectPosition}
       />
 
-      <section className="mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-2 md:px-6">
+      <section className="mx-auto grid max-w-6xl gap-12 px-4 py-14 md:grid-cols-2 md:px-6">
         <div>
           <h2 className="text-2xl font-bold text-ink">{dict.contact.formTitle}</h2>
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
             <div>
-              <label className="mb-1 block text-sm font-bold">
+              <label className="mb-1 block text-xs font-semibold text-ink-muted">
                 {dict.contact.name}
               </label>
               <input
@@ -71,7 +136,7 @@ export default function ContactoPage() {
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-bold">
+              <label className="mb-1 block text-xs font-semibold text-ink-muted">
                 {dict.common.email}
               </label>
               <input
@@ -83,7 +148,7 @@ export default function ContactoPage() {
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-bold">
+              <label className="mb-1 block text-xs font-semibold text-ink-muted">
                 {dict.common.phone}
               </label>
               <input
@@ -93,7 +158,7 @@ export default function ContactoPage() {
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-bold">
+              <label className="mb-1 block text-xs font-semibold text-ink-muted">
                 {dict.contact.message}
               </label>
               <textarea
@@ -145,6 +210,14 @@ export default function ContactoPage() {
           </p>
         </div>
       </section>
+
+      <PageContentBlocks
+        title={blocksTitle}
+        intro={blocksIntro}
+        blocks={blocks}
+      />
+
+      <PageFaqs title={faqTitle} faqs={faqs} tone="soft" />
     </>
   );
 }

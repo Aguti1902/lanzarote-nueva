@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { CheckCircle2 } from "lucide-react";
 import { PageBodyText } from "@/components/PageBodyText";
+import { PageContentBlocks } from "@/components/PageContentBlocks";
+import { PageFaqs } from "@/components/PageFaqs";
 import { PageHero } from "@/components/PageHero";
 import { TransferBookingForm } from "@/components/TransferBookingForm";
 import { getSettings, getTransfersData } from "@/lib/content";
@@ -37,6 +39,15 @@ export default async function TrasladosPage({ params }: Props) {
     dict.transfers.hotelAirport,
     dict.transfers.roundTrip,
   ];
+
+  const faqs =
+    settings.transferFaqs && settings.transferFaqs.length > 0
+      ? settings.transferFaqs
+      : dict.transfers.faqs.map((f, i) => ({
+          id: `dict-tr-${i}`,
+          question: f.q,
+          answer: f.a,
+        }));
 
   return (
     <>
@@ -134,28 +145,17 @@ export default async function TrasladosPage({ params }: Props) {
         </div>
       </section>
 
-      <section className="border-t border-sand-line bg-sky-soft py-14">
-        <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <h2 className="text-2xl font-bold text-ink md:text-3xl">
-            {dict.transfers.faqTitle}
-          </h2>
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
-            {dict.transfers.faqs.map((faq) => (
-              <details
-                key={faq.q}
-                className="rounded-lg bg-white px-5 py-4 ring-1 ring-sand-line"
-              >
-                <summary className="cursor-pointer list-none text-sm font-bold text-ink">
-                  {faq.q}
-                </summary>
-                <p className="mt-3 text-sm leading-relaxed text-ink-muted">
-                  {faq.a}
-                </p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
+      <PageContentBlocks
+        title={settings.transferBlocksTitle}
+        intro={settings.transferBlocksIntro}
+        blocks={settings.transferBlocks}
+      />
+
+      <PageFaqs
+        title={settings.transferFaqTitle || dict.transfers.faqTitle}
+        faqs={faqs}
+        tone="soft"
+      />
     </>
   );
 }

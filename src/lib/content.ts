@@ -3,11 +3,22 @@ import type {
   BlogPost,
   CruiseCall,
   CruisesData,
+  PageContentBlock,
+  PageFaqItem,
   SiteSettings,
   Tour,
   TransferDestination,
   TransfersData,
 } from "@/types";
+import {
+  DEFAULT_EXCURSIONS_BLOCKS,
+  DEFAULT_EXCURSIONS_BLOCKS_INTRO,
+  DEFAULT_EXCURSIONS_BLOCKS_TITLE,
+  DEFAULT_EXCURSIONS_FAQ_TITLE,
+  DEFAULT_EXCURSIONS_FAQS,
+  DEFAULT_TRANSFER_FAQ_TITLE,
+  DEFAULT_TRANSFER_FAQS,
+} from "@/lib/page-content-defaults";
 import { readCmsJson, readCmsJsonFresh, writeCmsJson } from "@/lib/supabase/cms-store";
 
 async function readJson<T>(file: string): Promise<T> {
@@ -477,11 +488,95 @@ const defaultSettings: SiteSettings = {
     "Excursiones personalizadas · Empresa familiar de Lanzarote · Gracias por apoyar el comercio local · Grupos reducidos, solo en español",
   bannerEn: "",
   bannerDe: "",
+  excursionsFaqTitle: DEFAULT_EXCURSIONS_FAQ_TITLE,
+  excursionsFaqs: DEFAULT_EXCURSIONS_FAQS,
+  excursionsBlocksTitle: DEFAULT_EXCURSIONS_BLOCKS_TITLE,
+  excursionsBlocksIntro: DEFAULT_EXCURSIONS_BLOCKS_INTRO,
+  excursionsBlocks: DEFAULT_EXCURSIONS_BLOCKS,
+  transferFaqTitle: DEFAULT_TRANSFER_FAQ_TITLE,
+  transferFaqs: DEFAULT_TRANSFER_FAQS,
+  transferBlocksTitle: "",
+  transferBlocksIntro: "",
+  transferBlocks: [],
+  aboutFaqTitle: "",
+  aboutFaqs: [],
+  aboutBlocksTitle: "",
+  aboutBlocksIntro: "",
+  aboutBlocks: [],
+  blogFaqTitle: "",
+  blogFaqs: [],
+  blogBlocksTitle: "",
+  blogBlocksIntro: "",
+  blogBlocks: [],
+  cruiseFaqTitle: "",
+  cruiseFaqs: [],
+  cruiseBlocksTitle: "",
+  cruiseBlocksIntro: "",
+  cruiseBlocks: [],
+  housesFaqTitle: "",
+  housesFaqs: [],
+  housesBlocksTitle: "",
+  housesBlocksIntro: "",
+  housesBlocks: [],
+  contactFaqTitle: "",
+  contactFaqs: [],
+  contactBlocksTitle: "",
+  contactBlocksIntro: "",
+  contactBlocks: [],
 };
+
+function coalesceFaqs(
+  stored: PageFaqItem[] | undefined,
+  fallback: PageFaqItem[]
+): PageFaqItem[] {
+  return stored === undefined ? fallback : stored;
+}
+
+function coalesceBlocks(
+  stored: PageContentBlock[] | undefined,
+  fallback: PageContentBlock[]
+): PageContentBlock[] {
+  return stored === undefined ? fallback : stored;
+}
 
 export const getSettings = cache(async (): Promise<SiteSettings> => {
   const stored = await readJson<Partial<SiteSettings>>("settings.json");
-  return { ...defaultSettings, ...stored };
+  return {
+    ...defaultSettings,
+    ...stored,
+    // Si el CMS aún no tiene estos campos, usar el contenido de producción.
+    excursionsFaqTitle:
+      stored.excursionsFaqTitle ?? defaultSettings.excursionsFaqTitle,
+    excursionsFaqs: coalesceFaqs(
+      stored.excursionsFaqs,
+      defaultSettings.excursionsFaqs || []
+    ),
+    excursionsBlocksTitle:
+      stored.excursionsBlocksTitle ?? defaultSettings.excursionsBlocksTitle,
+    excursionsBlocksIntro:
+      stored.excursionsBlocksIntro ?? defaultSettings.excursionsBlocksIntro,
+    excursionsBlocks: coalesceBlocks(
+      stored.excursionsBlocks,
+      defaultSettings.excursionsBlocks || []
+    ),
+    transferFaqTitle:
+      stored.transferFaqTitle ?? defaultSettings.transferFaqTitle,
+    transferFaqs: coalesceFaqs(
+      stored.transferFaqs,
+      defaultSettings.transferFaqs || []
+    ),
+    transferBlocks: coalesceBlocks(stored.transferBlocks, []),
+    aboutFaqs: coalesceFaqs(stored.aboutFaqs, []),
+    aboutBlocks: coalesceBlocks(stored.aboutBlocks, []),
+    blogFaqs: coalesceFaqs(stored.blogFaqs, []),
+    blogBlocks: coalesceBlocks(stored.blogBlocks, []),
+    cruiseFaqs: coalesceFaqs(stored.cruiseFaqs, []),
+    cruiseBlocks: coalesceBlocks(stored.cruiseBlocks, []),
+    housesFaqs: coalesceFaqs(stored.housesFaqs, []),
+    housesBlocks: coalesceBlocks(stored.housesBlocks, []),
+    contactFaqs: coalesceFaqs(stored.contactFaqs, []),
+    contactBlocks: coalesceBlocks(stored.contactBlocks, []),
+  };
 });
 
 export async function saveSettings(settings: SiteSettings): Promise<void> {

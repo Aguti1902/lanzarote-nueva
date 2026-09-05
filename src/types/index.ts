@@ -138,6 +138,28 @@ export interface VacationHouse {
   sortOrder: number;
 }
 
+/** FAQ editable por página desde Ajustes. */
+export interface PageFaqItem {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+/**
+ * Apartado extra de contenido (texto + imagen) que se suma al texto base
+ * de la página sin sustituirlo.
+ */
+export interface PageContentBlock {
+  id: string;
+  title: string;
+  text: string;
+  image?: string;
+  linkText?: string;
+  linkHref?: string;
+  /** featured = fila ancha imagen+texto; card = celda de rejilla */
+  layout?: "featured" | "card";
+}
+
 export interface SiteSettings {
   brandName: string;
   tagline: string;
@@ -157,30 +179,65 @@ export interface SiteSettings {
   aboutHeroPosition?: string;
   aboutValues: string;
   aboutPromise: string;
+  aboutFaqTitle?: string;
+  aboutFaqs?: PageFaqItem[];
+  aboutBlocksTitle?: string;
+  aboutBlocksIntro?: string;
+  aboutBlocks?: PageContentBlock[];
   excursionsTitle: string;
   excursionsIntro: string;
   excursionsText: string;
   excursionsHeroImage: string;
   excursionsHeroPosition?: string;
+  excursionsFaqTitle?: string;
+  excursionsFaqs?: PageFaqItem[];
+  excursionsBlocksTitle?: string;
+  excursionsBlocksIntro?: string;
+  excursionsBlocks?: PageContentBlock[];
   blogTitle: string;
   blogIntro: string;
   blogText: string;
   blogHeroImage: string;
   blogHeroPosition?: string;
+  blogFaqTitle?: string;
+  blogFaqs?: PageFaqItem[];
+  blogBlocksTitle?: string;
+  blogBlocksIntro?: string;
+  blogBlocks?: PageContentBlock[];
   cruiseHeadline: string;
   cruiseIntro: string;
   cruiseText: string;
   cruiseHeroImage: string;
   cruiseHeroPosition?: string;
+  cruiseFaqTitle?: string;
+  cruiseFaqs?: PageFaqItem[];
+  cruiseBlocksTitle?: string;
+  cruiseBlocksIntro?: string;
+  cruiseBlocks?: PageContentBlock[];
   transferTitle: string;
   transferIntro: string;
   transferText: string;
   transferHeroImage: string;
   transferHeroPosition?: string;
+  transferFaqTitle?: string;
+  transferFaqs?: PageFaqItem[];
+  transferBlocksTitle?: string;
+  transferBlocksIntro?: string;
+  transferBlocks?: PageContentBlock[];
   housesHeroImage?: string;
   housesHeroPosition?: string;
+  housesFaqTitle?: string;
+  housesFaqs?: PageFaqItem[];
+  housesBlocksTitle?: string;
+  housesBlocksIntro?: string;
+  housesBlocks?: PageContentBlock[];
   contactHeroImage?: string;
   contactHeroPosition?: string;
+  contactFaqTitle?: string;
+  contactFaqs?: PageFaqItem[];
+  contactBlocksTitle?: string;
+  contactBlocksIntro?: string;
+  contactBlocks?: PageContentBlock[];
   companyLegalName?: string;
   companyTaxId?: string;
   companyAddress?: string;
