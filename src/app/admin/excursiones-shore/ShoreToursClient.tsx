@@ -115,6 +115,7 @@ function slugify(value: string) {
 export function ShoreToursPanel() {
   const [items, setItems] = useState<CruiseShoreTour[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [creating, setCreating] = useState(false);
   const [tab, setTab] = useState<DetailTab>("details");
   const [lang, setLang] = useState<LangKey>("es");
   const [draft, setDraft] = useState<CruiseShoreTour | null>(null);
@@ -141,6 +142,8 @@ export function ShoreToursPanel() {
   );
 
   useEffect(() => {
+    // Nueva excursión: el id aún no está en `items`; no borrar el draft.
+    if (creating) return;
     if (!selected) {
       setDraft(null);
       return;
@@ -168,10 +171,11 @@ export function ShoreToursPanel() {
     setTab("details");
     setLang("es");
     setMessage("");
-  }, [selected]);
+  }, [selected, creating]);
 
   function openNew() {
     const id = `shore-${Date.now()}`;
+    setCreating(true);
     setSelectedId(id);
     setDraft({
       id,
@@ -212,6 +216,11 @@ export function ShoreToursPanel() {
     setTab("details");
     setLang("es");
     setMessage("");
+  }
+
+  function selectTour(id: string | null) {
+    setCreating(false);
+    setSelectedId(id);
   }
 
   async function save() {
@@ -266,6 +275,7 @@ export function ShoreToursPanel() {
       return;
     }
     setMessage("Excursión guardada");
+    setCreating(false);
     await load();
     setSelectedId(savedId);
   }
@@ -276,6 +286,7 @@ export function ShoreToursPanel() {
       `/api/admin/cruise-catalog?kind=shore-tours&id=${encodeURIComponent(id)}`,
       { method: "DELETE" }
     );
+    setCreating(false);
     setSelectedId(null);
     await load();
   }
@@ -412,7 +423,7 @@ export function ShoreToursPanel() {
       <div className="space-y-6">
         <button
           type="button"
-          onClick={() => setSelectedId(null)}
+          onClick={() => selectTour(null)}
           className="text-sm font-bold text-ocean hover:underline"
         >
           ← Volver al listado
@@ -1196,7 +1207,7 @@ export function ShoreToursPanel() {
                     <button
                       type="button"
                       className="rounded border border-ocean/50 px-3 py-1.5 text-xs font-bold uppercase text-ocean"
-                      onClick={() => setSelectedId(t.id)}
+                      onClick={() => selectTour(t.id)}
                     >
                       Detalles
                     </button>

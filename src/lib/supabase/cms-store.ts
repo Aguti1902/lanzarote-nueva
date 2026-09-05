@@ -116,8 +116,10 @@ function getCachedReader(file: string): () => Promise<unknown> {
 }
 
 /**
- * Catálogo pesado / poco cambiante: JSON del deploy (evita bajar MBs de Storage
- * en cada regeneración ISR). settings/tours siguen por Storage+caché para el admin.
+ * Catálogo pesado / poco cambiante en público: JSON del deploy (evita bajar MBs
+ * de Storage en cada regeneración ISR).
+ * NO incluir aquí ficheros que el admin edita y debe persistir (p. ej.
+ * cruiseItineraries / tours / settings): esos van por Storage + caché.
  */
 const DEPLOY_LOCAL_CATALOG = new Set([
   "reviews.json",
@@ -126,9 +128,6 @@ const DEPLOY_LOCAL_CATALOG = new Set([
   "blog.json",
   "houses.json",
   "cruises.json",
-  "cruiseCompanies.json",
-  "cruisePortIndex.json",
-  "cruiseItineraries.json",
   "i18n/en.json",
   "i18n/de.json",
 ]);
@@ -145,6 +144,11 @@ export async function readCmsJson<T>(file: string): Promise<T> {
     }
   }
   return getCachedReader(file)() as Promise<T>;
+}
+
+/** Lectura sin caché (panel admin / mutaciones). Prefiere Storage si hay Supabase. */
+export async function readCmsJsonFresh<T>(file: string): Promise<T> {
+  return readCmsJsonUncached<T>(file);
 }
 
 function invalidateCmsCache(file: string) {
