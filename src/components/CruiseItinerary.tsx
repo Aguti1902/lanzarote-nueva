@@ -142,7 +142,16 @@ export function CruiseItinerary({ sailing, tours }: Props) {
                                   </div>
                                   {tour.priceAdult != null && (
                                     <span className="absolute top-3 right-3 rounded bg-white px-2.5 py-1 text-sm font-bold text-ocean shadow">
-                                      {formatPrice(tour.priceAdult)}
+                                      {formatPrice(
+                                        Number(tour.privatePrice) > 0
+                                          ? Number(tour.privatePrice)
+                                          : tour.priceAdult
+                                      )}
+                                      {Number(tour.privatePrice) > 0 ? (
+                                        <span className="ml-1 text-[10px] font-semibold uppercase text-ink-muted">
+                                          cerrado
+                                        </span>
+                                      ) : null}
                                     </span>
                                   )}
                                 </div>

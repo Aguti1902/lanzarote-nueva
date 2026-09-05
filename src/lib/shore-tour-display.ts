@@ -4,6 +4,50 @@ import type { CruiseShoreTour } from "@/types";
 const STALE_HIGHLIGHT =
   /(m[aá]ximo\s+\d+\s+personas)|(maximum\s+\d+\s+(people|persons))|(max\.?\s*\d+\s+personen)|(grupos?\s+peque[nñ]os)|(small\s+groups?)|(bis\s+zu\s+\d+\s+personen)|(hasta\s+\d+\s+personas)|(^duraci[oó]n\b)|(^tour\s+duration\b)|(^tourdauer\b)/i;
 
+/** Precio cerrado de grupo (p. ej. privada 700 € hasta 8 pax). */
+export function shoreTourIsFlatPrice(
+  tour: Pick<CruiseShoreTour, "privatePrice">
+): boolean {
+  return Number(tour.privatePrice) > 0;
+}
+
+/** Importe a cobrar: cerrado si hay privatePrice; si no, por persona. */
+export function shoreTourUnitPrice(
+  tour: Pick<
+    CruiseShoreTour,
+    "privatePrice" | "priceAdult" | "pricePerPerson"
+  >
+): number {
+  if (shoreTourIsFlatPrice(tour)) {
+    return Number(tour.privatePrice) || 0;
+  }
+  return Number(tour.pricePerPerson ?? tour.priceAdult ?? 0) || 0;
+}
+
+export function shoreTourMaxPassengers(
+  tour: Pick<CruiseShoreTour, "privateMaxPax" | "maxGroup">
+): number {
+  const privateMax = Number(tour.privateMaxPax);
+  if (Number.isFinite(privateMax) && privateMax > 0) return privateMax;
+  const max = Number(tour.maxGroup);
+  if (Number.isFinite(max) && max > 0) return max;
+  return 14;
+}
+
+export function shoreTourBookingTotal(
+  tour: Pick<
+    CruiseShoreTour,
+    "privatePrice" | "priceAdult" | "pricePerPerson"
+  >,
+  passengers: number
+): number {
+  const unit = shoreTourUnitPrice(tour);
+  if (shoreTourIsFlatPrice(tour)) {
+    return Math.round(unit * 100) / 100;
+  }
+  return Math.round(unit * Math.max(1, passengers) * 100) / 100;
+}
+
 export function shoreTourDurationLabel(
   tour: CruiseShoreTour,
   hoursTemplate = "{n} horas"

@@ -19,6 +19,10 @@ import { getTransfersData } from "@/lib/content";
 import { getCruiseShoreTourById } from "@/lib/cruise-itineraries";
 import { getTourById } from "@/lib/content";
 import { isTourDateBookable } from "@/lib/tour-availability";
+import {
+  shoreTourBookingTotal,
+  shoreTourMaxPassengers,
+} from "@/lib/shore-tour-display";
 import { notifyNewBooking } from "@/lib/notify";
 import {
   calcTransferTotal,
@@ -70,9 +74,18 @@ export async function POST(request: Request) {
       );
     }
 
+    const adultsNum = Number(adults) || 1;
+    const childrenNum = Number(children) || 0;
+    let resolvedTotal = Number(totalPrice) || 0;
+
+    let shoreTourForPricing: Awaited<
+      ReturnType<typeof getCruiseShoreTourById>
+    > = undefined;
+
     if (tourId) {
       const tourIdStr = String(tourId);
       const shoreTour = await getCruiseShoreTourById(tourIdStr);
+      shoreTourForPricing = shoreTour;
       if (shoreTour && isDateBlocked(shoreTour.blockedDates, String(date))) {
         return NextResponse.json(
           { error: "Esta fecha no está disponible para la excursión" },
@@ -134,9 +147,19 @@ export async function POST(request: Request) {
         ? locale.trim().toLowerCase().slice(0, 5)
         : undefined;
 
-    const adultsNum = Number(adults) || 1;
-    const childrenNum = Number(children) || 0;
-    let resolvedTotal = Number(totalPrice) || 0;
+    if (shoreTourForPricing) {
+      const pax = adultsNum + childrenNum;
+      const maxPax = shoreTourMaxPassengers(shoreTourForPricing);
+      if (pax > maxPax) {
+        return NextResponse.json(
+          {
+            error: `Esta excursión admite un máximo de ${maxPax} personas`,
+          },
+          { status: 400 }
+        );
+      }
+      resolvedTotal = shoreTourBookingTotal(shoreTourForPricing, pax);
+    }
 
     if (type === "transfer" && transferPayload) {
       const transfers = await getTransfersData();

@@ -115,7 +115,16 @@ export default async function CruiseShoreTourPage({
             />
             {tour.priceAdult != null && (
               <span className="absolute top-4 right-4 rounded bg-white px-3 py-1.5 text-base font-bold text-ocean shadow">
-                {formatPrice(tour.priceAdult)}
+                {formatPrice(
+                  Number(tour.privatePrice) > 0
+                    ? Number(tour.privatePrice)
+                    : tour.priceAdult
+                )}
+                {Number(tour.privatePrice) > 0 ? (
+                  <span className="ml-1 text-[10px] font-semibold uppercase text-ink-muted">
+                    cerrado
+                  </span>
+                ) : null}
               </span>
             )}
           </div>
@@ -213,8 +222,22 @@ export default async function CruiseShoreTourPage({
                 {dict.cruises.browseSubtitle}
               </p>
               <p className="mt-4 text-2xl font-extrabold text-ocean">
-                {tour.priceAdult != null ? formatPrice(tour.priceAdult) : "—"}
+                {tour.priceAdult != null || Number(tour.privatePrice) > 0
+                  ? formatPrice(
+                      Number(tour.privatePrice) > 0
+                        ? Number(tour.privatePrice)
+                        : Number(tour.priceAdult)
+                    )
+                  : "—"}
               </p>
+              {Number(tour.privatePrice) > 0 ? (
+                <p className="mt-1 text-xs text-ink-muted">
+                  {dict.booking.flatPrice}
+                  {tour.privateMaxPax
+                    ? ` · máx. ${tour.privateMaxPax}`
+                    : ""}
+                </p>
+              ) : null}
               <Link
                 href={localePath(locale, "/excursiones-cruceros")}
                 className="btn-primary mt-6 inline-flex w-full justify-center"

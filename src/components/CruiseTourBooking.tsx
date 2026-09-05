@@ -12,6 +12,12 @@ import {
 import type { CruiseSailing, CruiseShoreTour, PaymentMethod } from "@/types";
 import { formatPrice } from "@/lib/format";
 import { splitPaymentAmounts } from "@/lib/payments";
+import {
+  shoreTourBookingTotal,
+  shoreTourIsFlatPrice,
+  shoreTourMaxPassengers,
+  shoreTourUnitPrice,
+} from "@/lib/shore-tour-display";
 import { useCart } from "@/components/CartProvider";
 import { useLocale } from "@/components/LocaleProvider";
 
@@ -36,8 +42,9 @@ export function CruiseTourBooking({
   const router = useRouter();
   const { addItem } = useCart();
   const { dict, href } = useLocale();
-  const price = tour.pricePerPerson ?? tour.priceAdult ?? 0;
-  const max = tour.maxGroup ?? 14;
+  const isFlat = shoreTourIsFlatPrice(tour);
+  const price = shoreTourUnitPrice(tour);
+  const max = shoreTourMaxPassengers(tour);
   const dateBlocked = useMemo(
     () =>
       Boolean(
@@ -47,7 +54,7 @@ export function CruiseTourBooking({
     [callDate, tour.blockedDates]
   );
 
-  const [passengers, setPassengers] = useState(2);
+  const [passengers, setPassengers] = useState(Math.min(2, max));
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -57,7 +64,10 @@ export function CruiseTourBooking({
   const [cartMsg, setCartMsg] = useState("");
   const [mode, setMode] = useState<"quick" | "checkout">("quick");
 
-  const total = useMemo(() => passengers * price, [passengers, price]);
+  const total = useMemo(
+    () => shoreTourBookingTotal(tour, passengers),
+    [passengers, tour]
+  );
   const split = useMemo(
     () => splitPaymentAmounts(total, paymentMethod),
     [total, paymentMethod]
@@ -97,6 +107,9 @@ export function CruiseTourBooking({
     `Salida crucero: ${sailing.departureDate}`,
     `Escala: ${portName} · ${callDate}`,
     sailing.id ? `Ref. salida: ${sailing.id}` : "",
+    isFlat
+      ? `Precio cerrado: ${formatPrice(price)} (máx. ${max} personas)`
+      : "",
   ]
     .filter(Boolean)
     .join(" · ");
@@ -112,6 +125,10 @@ export function CruiseTourBooking({
       setError(dict.cruises.selectPassengers);
       return;
     }
+    if (passengers > max) {
+      setError(dict.cruises.selectPassengers);
+      return;
+    }
     addItem({
       tourId: tour.id,
       slug: `cruise/${tour.id}`,
@@ -122,6 +139,7 @@ export function CruiseTourBooking({
       children: 0,
       priceAdult: price,
       priceChild: 0,
+      pricingMode: isFlat ? "flat" : "per_person",
       cruiseShip: sailing.shipName,
       cruiseCompany: sailing.companyName,
       sailingId: sailing.id,
@@ -217,7 +235,10 @@ export function CruiseTourBooking({
           >
             {Array.from({ length: max }, (_, i) => i + 1).map((n) => (
               <option key={n} value={n}>
-                {n} {n === 1 ? dict.cruises.passengerSingular : dict.cruises.passengerPlural}
+                {n}{" "}
+                {n === 1
+                  ? dict.cruises.passengerSingular
+                  : dict.cruises.passengerPlural}
               </option>
             ))}
           </select>
@@ -228,7 +249,9 @@ export function CruiseTourBooking({
             {formatPrice(total)}
           </p>
           <p className="text-[11px] text-ink-muted">
-            {formatPrice(price)} / {dict.cruises.perPerson}
+            {isFlat
+              ? `${dict.booking.flatPrice} · máx. ${max}`
+              : `${formatPrice(price)} / ${dict.cruises.perPerson}`}
           </p>
         </div>
       </div>
@@ -273,7 +296,10 @@ export function CruiseTourBooking({
       )}
 
       {mode === "checkout" && (
-        <form onSubmit={handleBookNow} className="mt-4 space-y-3 border-t border-sand-line pt-4">
+        <form
+          onSubmit={handleBookNow}
+          className="mt-4 space-y-3 border-t border-sand-line pt-4"
+        >
           <input
             className={inputClass}
             placeholder={dict.booking.name}
@@ -318,7 +344,8 @@ export function CruiseTourBooking({
               </label>
             ))}
           </div>
-          {(paymentMethod === "deposit_20" || paymentMethod === "deposit_10") && (
+          {(paymentMethod === "deposit_20" ||
+            paymentMethod === "deposit_10") && (
             <p className="text-xs text-ink-muted">
               {dict.cart.now} {formatPrice(split.amountPaidCard)} ·{" "}
               {dict.cart.cashDay} {formatPrice(split.amountDueCash)}
