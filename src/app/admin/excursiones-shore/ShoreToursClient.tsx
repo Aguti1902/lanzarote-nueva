@@ -136,42 +136,44 @@ export function ShoreToursPanel() {
     load();
   }, []);
 
-  const selected = useMemo(
-    () => items.find((t) => t.id === selectedId) || null,
-    [items, selectedId]
-  );
-
   useEffect(() => {
     // Nueva excursión: el id aún no está en `items`; no borrar el draft.
     if (creating) return;
-    if (!selected) {
+    if (!selectedId) {
+      setDraft(null);
+      return;
+    }
+    // Solo al cambiar de ficha (no al refrescar `items` tras guardar),
+    // para no pisar el draft ni el mensaje de éxito.
+    const current = items.find((t) => t.id === selectedId);
+    if (!current) {
       setDraft(null);
       return;
     }
     setDraft({
-      ...selected,
-      gallery: selected.gallery?.length
-        ? [...selected.gallery]
-        : selected.image
-          ? [selected.image]
+      ...current,
+      gallery: current.gallery?.length
+        ? [...current.gallery]
+        : current.image
+          ? [current.image]
           : [],
-      schedule: normalizeSchedule(selected.schedule),
-      blockedDates: selected.blockedDates || [],
+      schedule: normalizeSchedule(current.schedule),
+      blockedDates: current.blockedDates || [],
       seo: {
         title: "",
         description: "",
         keywords: "",
-        ...(selected.seo || {}),
+        ...(current.seo || {}),
       },
       translations: {
-        en: { ...emptyTranslation(), ...(selected.translations?.en || {}) },
-        de: { ...emptyTranslation(), ...(selected.translations?.de || {}) },
+        en: { ...emptyTranslation(), ...(current.translations?.en || {}) },
+        de: { ...emptyTranslation(), ...(current.translations?.de || {}) },
       },
     });
     setTab("details");
     setLang("es");
-    setMessage("");
-  }, [selected, creating]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- solo al cambiar de id
+  }, [selectedId, creating]);
 
   function openNew() {
     const id = `shore-${Date.now()}`;
@@ -269,15 +271,42 @@ export function ShoreToursPanel() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
+    const data = await res.json().catch(() => ({}));
     if (!res.ok) {
-      const data = await res.json().catch(() => ({}));
       setMessage(data.error || "No se pudo guardar");
       return;
     }
-    setMessage("Excursión guardada");
+    const saved = (data.item || payload) as CruiseShoreTour;
     setCreating(false);
-    await load();
-    setSelectedId(savedId);
+    setItems((prev) => {
+      const idx = prev.findIndex((t) => t.id === saved.id);
+      if (idx < 0) return [...prev, saved];
+      const next = [...prev];
+      next[idx] = saved;
+      return next;
+    });
+    setSelectedId(saved.id);
+    setDraft({
+      ...saved,
+      gallery: saved.gallery?.length
+        ? [...saved.gallery]
+        : saved.image
+          ? [saved.image]
+          : [],
+      schedule: normalizeSchedule(saved.schedule),
+      blockedDates: saved.blockedDates || [],
+      seo: {
+        title: "",
+        description: "",
+        keywords: "",
+        ...(saved.seo || {}),
+      },
+      translations: {
+        en: { ...emptyTranslation(), ...(saved.translations?.en || {}) },
+        de: { ...emptyTranslation(), ...(saved.translations?.de || {}) },
+      },
+    });
+    setMessage("Excursión guardada");
   }
 
   async function remove(id: string) {
@@ -1193,7 +1222,10 @@ export function ShoreToursPanel() {
           <tbody>
             {items.map((t, idx) => (
               <tr key={t.id} className="border-b border-sand-line">
-                <td className="px-4 py-3 text-ink-muted">{idx + 1}</td>
+                <td className="px-4 py-3 text-ink-muted">
+                  <span className="font-semibold text-ink">{idx + 1}</span>
+                  <span className="mt-0.5 block text-[11px]">{t.id}</span>
+                </td>
                 <td className="px-4 py-3 font-semibold">{t.title}</td>
                 <td className="px-4 py-3">{t.port || "Lanzarote"}</td>
                 <td className="px-4 py-3">

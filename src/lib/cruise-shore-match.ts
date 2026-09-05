@@ -45,6 +45,14 @@ export const LEGACY_SHORE_TOUR_ALIASES: Record<string, string> = {
     "shore-2",
 };
 
+/**
+ * Excursiones de una escala:
+ * 1) Las de `tourIds` (orden explícito), si siguen activas.
+ * 2) Más el resto de activas del mismo puerto (p. ej. privada shore-10).
+ *
+ * Antes, si había tourIds (shore-1..3) no se llegaba al fallback por puerto,
+ * así que activar/editar la privada #10 no tenía efecto en la web.
+ */
 export function resolveShoreToursForStop(
   tourIds: string[] | undefined,
   stopPort: string,
@@ -55,17 +63,22 @@ export function resolveShoreToursForStop(
     (id) => LEGACY_SHORE_TOUR_ALIASES[id] || id
   );
 
-  const byId: CruiseShoreTour[] = [];
+  const result: CruiseShoreTour[] = [];
   const seen = new Set<string>();
+
   for (const id of resolvedIds) {
     const tour = map.get(id);
     if (!tour || tour.active === false || seen.has(tour.id)) continue;
     seen.add(tour.id);
-    byId.push(tour);
+    result.push(tour);
   }
-  if (byId.length) return byId;
 
-  return tours.filter(
-    (t) => t.active !== false && shoreTourMatchesPort(t, stopPort)
-  );
+  for (const tour of tours) {
+    if (tour.active === false || seen.has(tour.id)) continue;
+    if (!shoreTourMatchesPort(tour, stopPort)) continue;
+    seen.add(tour.id);
+    result.push(tour);
+  }
+
+  return result;
 }

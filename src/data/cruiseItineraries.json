@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-01T00:54:11.542Z",
+  "updatedAt": "2026-09-05",
   "source": "Itinerarios scrape + shore tours legacy remapeados a escalas por puerto",
   "companies": [
     {
@@ -741,26 +741,31 @@
     {
       "id": "shore-10",
       "title": "Excursiones privadas para pasajeros de cruceros en Lanzarote",
-      "shortTitle": "Panoramica",
-      "summary": "El turismo de masas está quedando atrás, ya que muchos viajeros hoy en día optan por excursiones privadas que les permiten personalizar horarios e itinerarios a su gusto.\n Ofrecemos la oportunidad de explorar Lanzarote a través de un tour privado, diseñado específicam",
-      "description": "El turismo de masas está quedando atrás, ya que muchos viajeros hoy en día optan por excursiones privadas que les permiten personalizar horarios e itinerarios a su gusto.\n Ofrecemos la oportunidad de explorar Lanzarote a través de un tour privado, diseñado específicamente para satisfacer sus intereses y deseos, lo que le permitirá disfrutar de la isla de una manera más íntima. Las visitas se adaptan a su ritmo, sin presiones, y si lo desea, puede modificar el recorrido en cualquier momento durante la excursión.\n Con nuestra excursión privada, evitamos las largas colas en los centros turísticos y, si eligen visitar el parque nacional de Timanfaya, podrán hacerlo sin necesidad de comprar las entradas con antelación, ni hacer trasbordo ya que contamos con la autorización para realizar la ruta de los volcanes en nuestro propio transporte. Nuestros vehículos garantizan un viaje cómodo, y nuestros guías profesionales, expertos en la zona, están listos para crear un itinerario que se ajuste a sus preferencias, brindando atención personalizada y compartiendo información sobre los lugares de interés.\n Si lo desea, le ayudaremos a planificar su recorrido para que aproveche al máximo su día en Lanzarote, descubriendo tanto los lugares emblemáticos como los rincones menos conocidos. En nuestros tours privados, un guía oficial le acompañará para enriquecer su experiencia con datos sobre los sitios que visitará. La seguridad es primordial, por lo que nuestras excursiones se realizan en minibús, ya que la normativa prohíbe el uso de coches de alquiler para este tipo de actividades.\n Al elegir una excursión privada, disfrutará de un guía oficial exclusivo, adaptaremos el recorrido a su disponibilidad y gestionaremos las entradas para que su experiencia sea lo más fluida posible.",
+      "shortTitle": "Excursión Privada para Cruceros",
+      "summary": "Excursiones Privadas para Cruceros en Lanzarote: Tu Tour a Medida y Sin Estrés¡\n",
+      "description": "Saca el máximo partido a tu escala en Lanzarote! Si llegas en crucero al puerto de Arrecife, te ofrecemos la forma más exclusiva, cómoda y segura de descubrir la isla. Olvídate de los autobuses masivos del barco y disfruta de un servicio VIP diseñado única y exclusivamente para ti y tus acompañantes.\n\nNos adaptamos por completo a la hora de llegada y salida de tu crucero. Tu guía oficial y chófer privado te estarán esperando a pie de muelle en la terminal de cruceros con un cartel con tu nombre. Desde allí, iniciaremos un itinerario totalmente flexible y adaptado a tus intereses: desde la fuerza volcánica de Timanfaya (con acceso preferente sin colas y sin transbordos) hasta las obras maestras de César Manrique. Planificamos el día minuciosamente para garantizarte un regreso puntual y sin prisas al barco antes del embarque. \n\n¡Tu tranquilidad es nuestra prioridad!",
       "priceAdult": 700,
       "pricePerPerson": 700,
       "image": "/images/heroes/cruise.jpg",
-      "gallery": [],
+      "gallery": [
+        "/images/heroes/cruise.jpg"
+      ],
       "duration": "5 horas",
       "durationHours": 5,
       "places": [
         "Lanzarote"
       ],
       "highlights": [
-        "Lanzarote"
+        "Excursión en grupos pequeños, máximo 8 personas",
+        "Directamente en el muelle de cruceros de Arrecife.",
+        "Regreso al barco 100% garantizado a tiempo.",
+        "Minibús privado climatizado, guía oficial en exclusiva y seguro de viaje."
       ],
       "maxGroup": 8,
       "privatePrice": 700,
       "privateMaxPax": 8,
       "port": "Lanzarote",
-      "active": false,
+      "active": true,
       "currency": "EUR",
       "allowCard": true,
       "allowBizum": true,
@@ -768,13 +773,158 @@
       "translations": {
         "en": {
           "title": "Private shore excursions for cruise passengers in Lanzarote",
-          "description": "<p>Mass tourism is becoming a thing of the past, as many travelers now prefer private excursions that allow them to customize their schedules and itineraries to their liking.</p><br><p>We offer the chance to explore Lanzarote through a private tour tailored specifically to your interests and desires, enabling you to experience the island in a more intimate way. The visits are paced according to your preferences, free from pressure, and you can modify the route at any time during the excursion. With our private tour, you can skip the long lines at tourist hotspots, and if you choose to visit the Timanfaya National Park, you won’t need to buy tickets in advance as we have the authorization to conduct the volcanic route in our own transport. Our vehicles ensure a comfortable journey, and our professional guides, who are experts in the area, are ready to create an itinerary that fits your preferences, providing personalized attention and sharing insights about the attractions.</p><br><p>If you wish, we can assist you in planning your route to make the most of your day in Lanzarote, uncovering both iconic sites and hidden gems. During our private tours, an official guide will accompany you to enhance your experience with information about the places you visit. Safety is our top priority, which is why our excursions are conducted in minibuses, as regulations prohibit the use of rental cars for such activities. By choosing a private excursion, you will enjoy an exclusive official guide, we will pick you up from your specified location to save you time, adapt the itinerary to your availability, and manage the tickets to ensure your experience is as smooth as possible.</p>"
+          "shortTitle": "Private Shore Excursions / Cruise Excursions",
+          "summary": "Private Shore Excursions in Lanzarote: Your Tailor-Made, Stress-Free Tour",
+          "description": "Make the absolute most of your port stop in Lanzarote! If you are arriving on a cruise ship at the Port of Arrecife, we offer you the most exclusive, comfortable, and secure way to discover the island. Forget the ship’s crowded tour buses and enjoy a VIP service designed solely for you and your companions.\n\nWe fully adapt to your cruise ship's arrival and departure times. Your exclusive official guide and private driver will be waiting for you right at the pier in the cruise terminal, holding a sign with your name. From there, we will start a fully flexible itinerary tailored to your interests: from the volcanic power of Timanfaya (with priority skip-the-line access and no bus transfers) to César Manrique’s masterpieces. We meticulously plan the day to guarantee a punctual, stress-free return to your ship well before departure. \n\nYour peace of mind is our priority!",
+          "highlights": [
+            "Pick-up & Drop-off: Directly at the Arrecife cruise pier.",
+            "100% guaranteed on-time return to your cruise.",
+            "Private air-conditioned minibus, exclusive official guide, and travel insurance."
+          ],
+          "places": [
+            "Lanzarote"
+          ]
         },
         "de": {
           "title": "Private Landausflüge für Kreuzfahrtgäste auf Lanzarote",
-          "description": "<p>Der Massentourismus verliert zunehmend an Bedeutung, da viele Reisende heutzutage private Ausflüge bevorzugen, die es ihnen ermöglichen, Zeitpläne und Routen nach ihren Wünschen zu gestalten.</p>&#13;&#10;<br><p>Wir bieten Ihnen die Möglichkeit, Lanzarote durch eine maßgeschneiderte private Tour zu erkunden, die speziell auf Ihre Interessen und Wünsche abgestimmt ist. So können Sie die Insel auf eine intimere Weise genießen, ohne Zeitdruck, und haben die Freiheit, den Verlauf der Tour jederzeit anzupassen.</p><br><p>Mit unserer privaten Tour umgehen Sie lange Warteschlangen an den Sehenswürdigkeiten. Wenn Sie den Nationalpark Timanfaya besuchen möchten, können Sie dies ohne vorherige Ticketbuchung tun, da wir die Genehmigung haben, die Vulkanroute mit unserem eigenen Transportmittel zu befahren. Unsere Fahrzeuge sorgen für eine bequeme Reise, und unsere professionellen Guides, die sich bestens in der Region auskennen, sind bereit, ein individuelles Programm zu erstellen, das auf Ihre Vorlieben abgestimmt ist, während sie Ihnen interessante Informationen über die besuchten Orte vermitteln.</p><br><p>Gerne unterstützen wir Sie bei der Planung Ihrer Route, damit Sie Ihren Tag auf Lanzarote optimal nutzen können, indem Sie sowohl die berühmten Sehenswürdigkeiten als auch weniger bekannte Ecken entdecken. Bei unseren privaten Touren begleitet Sie ein offizieller Guide, der Ihre Erfahrung mit wertvollen Informationen bereichert. Sicherheit hat für uns höchste Priorität, weshalb unsere Ausflüge in einem Minibus durchgeführt werden, da die Vorschriften die Nutzung von Mietwagen für solche Aktivitäten untersagen.</p><br><p>Wenn Sie sich für eine private Tour entscheiden, profitieren Sie von einem exklusiven offiziellen Guide, wir holen Sie an einem von Ihnen gewünschten Ort ab, um Zeit zu sparen, passen die Route an Ihre Verfügbarkeit an und kümmern uns um die Ticketbuchungen, damit Ihr Erlebnis so reibungslos wie möglich verläuft.</p>"
+          "shortTitle": "Private Landausflüge / Landausflüge für Kreuzfahrtgäste",
+          "summary": "Landausflüge auf Lanzarote: Pünktlich zurück zum Schiff!Machen Sie das Beste aus Ihrem Hafenstopp in Arrecife. Wir bieten Ihnen maßgeschneiderte Landausflüge in kleinen Gruppen oder private Touren, perfekt abgestimmt auf die Liegezeiten Ihres Kreuzfahrtschiffes. Entdecken Sie Timanfaya und die Höhepunkte der Insel stressfrei, ohne lange Warteschlangen und mit einer garantierten Rückkehr zum Schiff",
+          "description": "Machen Sie das Beste aus Ihrem Hafenstopp auf Lanzarote! Wenn Sie mit dem Kreuzfahrtschiff im Hafen von Arrecife ankommen, bieten wir Ihnen die exklusivste, komfortabelste und sicherste Möglichkeit, die Insel zu entdecken. Vergessen Sie die überfüllten Ausflugsbusse des Schiffes und genießen Sie einen VIP-Service, der einzig und allein für Sie und Ihre Begleitung konzipiert ist.\n\nWir passen uns vollkommen den Ankunfts- und Ablegezeiten Ihres Kreuzfahrtschiffes an. Ihr exklusiver offizieller Reiseleiter und Ihr privater Fahrer erwarten Sie direkt am Kai im Kreuzfahrtterminal mit einem Schild, auf dem Ihr Name steht. Von dort aus starten wir eine vollkommen flexible Route, die ganz auf Ihre Interessen abgestimmt ist: Von der vulkanischen Kraft von Timanfaya (mit bevorzugtem Einlass ohne Warteschlangen und ohne lästiges Umsteigen) bis hin zu den Meisterwerken von César Manrique. Wir planen den Tag minuziös, um Ihnen eine pünktliche und entspannte Rückkehr zum Schiff weit vor der Abfahrt zu garantieren. \n\nIhre Sorgenfreiheit ist unsere Priorität!",
+          "places": [
+            "Lanzarote"
+          ],
+          "included": [
+            "Abholung & Rückbringung: Direkt am Kreuzfahrtkai in Arrecife.",
+            "Pünktlich-zurück-zum-Schiff-Garantie: 100 % garantierte rechtzeitige Rückkehr zu Ihrem Kreuzfahrtschiff.",
+            "Alles Inbegriffen: Privater, klimatisierter Minibus, exklusiver offizieller Reiseleiter und Reiseversicherung."
+          ]
         }
-      }
+      },
+      "schedule": {
+        "Playa Blanca": {
+          "morning": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "afternoon": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "evening": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        "Puerto del Carmen": {
+          "morning": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "afternoon": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "evening": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        "Costa Teguise": {
+          "morning": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "afternoon": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "evening": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        "Arrecife": {
+          "morning": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "afternoon": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "evening": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      },
+      "blockedDates": [],
+      "seo": {
+        "title": "",
+        "description": "",
+        "keywords": ""
+      },
+      "minPax": 1
     },
     {
       "id": "shore-11",
