@@ -5,7 +5,7 @@ import type {
   CruiseSailing,
   CruiseShoreTour,
 } from "@/types";
-import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
+import { readCmsJson, readCmsJsonFresh, writeCmsJson } from "@/lib/supabase/cms-store";
 
 const emptyData: CruiseItinerariesData = {
   updatedAt: "",
@@ -27,6 +27,17 @@ export const getCruiseItinerariesData = cache(
     }
   }
 );
+
+/** Lectura fresca (admin / API de escritura): siempre Storage si está configurado. */
+export async function getCruiseItinerariesDataFresh(): Promise<CruiseItinerariesData> {
+  try {
+    return await readCmsJsonFresh<CruiseItinerariesData>(
+      "cruiseItineraries.json"
+    );
+  } catch {
+    return emptyData;
+  }
+}
 
 export function clearCruiseItinerariesCache() {
   // Compat: la invalidación real va por revalidateTag en writeCmsJson.

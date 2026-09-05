@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import {
-  getCruiseCompanies,
-  getCruiseItinerariesData,
-  getCruiseShoreTours,
+  getCruiseItinerariesDataFresh,
   saveCruiseItinerariesData,
 } from "@/lib/cruise-itineraries";
 import type {
@@ -95,11 +93,12 @@ export async function GET(request: Request) {
   const sailingId = searchParams.get("sailing");
 
   if (kind === "shore-tours") {
-    return NextResponse.json({ items: await getCruiseShoreTours() });
+    const data = await getCruiseItinerariesDataFresh();
+    return NextResponse.json({ items: data.shoreTours || [] });
   }
 
   if (kind === "sailings") {
-    const data = await getCruiseItinerariesData();
+    const data = await getCruiseItinerariesDataFresh();
     let items = data.sailings;
     if (companySlug) {
       items = items.filter((s) => s.companySlug === companySlug);
@@ -117,24 +116,24 @@ export async function GET(request: Request) {
   }
 
   if (kind === "company" && companySlug) {
-    const companies = await getCruiseCompanies();
-    const company = companies.find((c) => c.slug === companySlug);
+    const data = await getCruiseItinerariesDataFresh();
+    const company = (data.companies || []).find((c) => c.slug === companySlug);
     if (!company) {
       return NextResponse.json({ error: "No encontrada" }, { status: 404 });
     }
-    const data = await getCruiseItinerariesData();
     const sailings = data.sailings.filter((s) => s.companySlug === companySlug);
     return NextResponse.json({ item: company, sailings });
   }
 
-  return NextResponse.json({ items: await getCruiseCompanies() });
+  const data = await getCruiseItinerariesDataFresh();
+  return NextResponse.json({ items: data.companies || [] });
 }
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const kind = body.kind || "companies";
-    const data = await getCruiseItinerariesData();
+    const data = await getCruiseItinerariesDataFresh();
 
     if (kind === "companies") {
       const slug = slugify(String(body.slug || body.name || ""));
@@ -306,7 +305,7 @@ export async function PUT(request: Request) {
   try {
     const body = await request.json();
     const kind = body.kind || "companies";
-    const data = await getCruiseItinerariesData();
+    const data = await getCruiseItinerariesDataFresh();
 
     if (kind === "companies") {
       const idx = data.companies.findIndex((c) => c.slug === body.slug);
@@ -463,7 +462,7 @@ export async function DELETE(request: Request) {
     if (!id) {
       return NextResponse.json({ error: "Falta id" }, { status: 400 });
     }
-    const data = await getCruiseItinerariesData();
+    const data = await getCruiseItinerariesDataFresh();
 
     if (kind === "companies") {
       const next = data.companies.filter((c) => c.slug !== id);
