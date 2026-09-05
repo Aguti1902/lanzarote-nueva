@@ -29,20 +29,30 @@ export default function AdminRedireccionesPage() {
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
-    await fetch("/api/admin/extras?resource=redirects", {
+    const res = await fetch("/api/admin/extras?resource=redirects", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      alert(data.error || "No se pudo guardar la redirección");
+      return;
+    }
     setForm({ fromSlug: "", toSlug: "", locale: "es", httpCode: 301 });
     await load();
   }
 
   async function remove(id: string) {
     if (!confirm("¿Eliminar redirección?")) return;
-    await fetch(`/api/admin/extras?resource=redirects&id=${id}`, {
+    const res = await fetch(`/api/admin/extras?resource=redirects&id=${id}`, {
       method: "DELETE",
     });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      alert(data.error || "No se pudo eliminar");
+      return;
+    }
     await load();
   }
 

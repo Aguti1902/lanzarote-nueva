@@ -1,5 +1,5 @@
 import type { VacationHouse } from "@/types";
-import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
+import { readCmsJson, readCmsJsonFresh, writeCmsJson } from "@/lib/supabase/cms-store";
 
 function slugify(value: string): string {
   return value
@@ -39,6 +39,15 @@ export async function getHouses(): Promise<VacationHouse[]> {
   }
 }
 
+async function getHousesFresh(): Promise<VacationHouse[]> {
+  try {
+    const list = await readCmsJsonFresh<VacationHouse[]>("houses.json");
+    return list.map(normalizeHouse).sort((a, b) => a.sortOrder - b.sortOrder);
+  } catch {
+    return [];
+  }
+}
+
 export async function getPublicHouses(): Promise<VacationHouse[]> {
   return (await getHouses()).filter((h) => h.active && h.redirectUrl);
 }
@@ -53,7 +62,7 @@ export async function saveHouses(houses: VacationHouse[]): Promise<void> {
 export async function upsertHouse(
   input: Partial<VacationHouse> & Pick<VacationHouse, "title" | "redirectUrl">
 ): Promise<VacationHouse> {
-  const houses = await getHouses();
+  const houses = await getHousesFresh();
   const baseId = slugify(input.id || input.title);
   let id = input.id || baseId;
   if (!input.id) {
@@ -96,7 +105,7 @@ export async function upsertHouse(
 }
 
 export async function deleteHouse(id: string): Promise<boolean> {
-  const houses = await getHouses();
+  const houses = await getHousesFresh();
   const next = houses.filter((h) => h.id !== id);
   if (next.length === houses.length) return false;
   await saveHouses(next);

@@ -114,8 +114,12 @@ export default function AdminReservasPage() {
   }
 
   async function syncFromDeploy() {
-    setSyncMsg("Sincronizando CMS completo…");
-    const res = await fetch("/api/admin/sync-cms", { method: "POST" });
+    setSyncMsg("Sincronizando catálogo estático (sin pisar datos editables)…");
+    const res = await fetch("/api/admin/sync-cms", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({}),
+    });
     const data = await res.json();
     if (!res.ok) {
       setSyncMsg(data.error || "Error al sincronizar");

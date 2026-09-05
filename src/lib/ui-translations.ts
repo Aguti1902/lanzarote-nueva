@@ -1,7 +1,7 @@
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
 import { locales } from "@/i18n/config";
-import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
+import { readCmsJson, readCmsJsonFresh, writeCmsJson } from "@/lib/supabase/cms-store";
 
 export type UiTranslationOverrides = {
   es: Record<string, string>;
@@ -47,7 +47,19 @@ export async function updateUiTranslations(
   if (!locales.includes(locale)) {
     throw new Error(`Locale no soportado: ${locale}`);
   }
-  const data = await getUiTranslationOverrides();
+  let data: UiTranslationOverrides;
+  try {
+    const raw = await readCmsJsonFresh<Partial<UiTranslationOverrides>>(
+      "uiTranslations.json"
+    );
+    data = {
+      es: raw.es || {},
+      en: raw.en || {},
+      de: raw.de || {},
+    };
+  } catch {
+    data = emptyMaps();
+  }
   const next = { ...(data[locale] || {}) };
   for (const [key, value] of Object.entries(entries)) {
     const trimmed = value.trim();

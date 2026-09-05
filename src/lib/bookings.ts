@@ -34,8 +34,8 @@ function countLegacy(list: Booking[]): number {
 let cmsSyncInFlight: Promise<void> | null = null;
 
 /**
- * Si el JSON del deploy tiene la migración MariaDB y Supabase Storage aún no,
- * usa el del deploy y lo sube a Storage (una vez) para no perder datos en prod.
+ * Prefer Storage as source of truth once it has bookings.
+ * Only seed from the deploy JSON when remote is empty (first migration).
  */
 async function resolveBookingsList(): Promise<Booking[]> {
   const local = await readLocalCmsJson<Booking[]>("bookings.json");
@@ -53,21 +53,15 @@ async function resolveBookingsList(): Promise<Booking[]> {
     return local;
   }
 
-  const localLegacy = countLegacy(local);
-  const remoteLegacy = countLegacy(remote);
-  const localWins =
-    localLegacy > remoteLegacy + 50 ||
-    (local.length > remote.length + 200 && localLegacy >= 100);
-
-  if (!localWins) {
-    return remote.length ? remote : local;
+  if (remote.length > 0) {
+    return remote;
   }
 
-  if (!cmsSyncInFlight) {
+  if (local.length > 0 && !cmsSyncInFlight) {
     cmsSyncInFlight = writeCmsJson("bookings.json", local)
       .then(() => {
         console.info(
-          `[bookings] Sincronizadas ${local.length} reservas del deploy → Supabase Storage (legacy ${localLegacy} vs remote ${remoteLegacy})`
+          `[bookings] Semilla inicial: ${local.length} reservas del deploy → Supabase Storage`
         );
       })
       .catch((error) => {
