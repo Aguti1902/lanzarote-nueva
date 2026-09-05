@@ -9,6 +9,29 @@ export const maxDuration = 120;
 
 const dataDir = path.join(process.cwd(), "src/data");
 
+/**
+ * Ficheros que el panel edita en vivo. Un sync masivo deploy → Storage
+ * los sobrescribiría con datos antiguos del bundle.
+ */
+const PROTECTED_LIVE_CMS = new Set([
+  "bookings.json",
+  "invoices.json",
+  "messages.json",
+  "tours.json",
+  "settings.json",
+  "transfers.json",
+  "blog.json",
+  "houses.json",
+  "cruises.json",
+  "cruiseItineraries.json",
+  "cruiseCompanies.json",
+  "cruisePortIndex.json",
+  "adminExtras.json",
+  "uiTranslations.json",
+  "i18n/en.json",
+  "i18n/de.json",
+]);
+
 async function listCmsJsonFiles(): Promise<string[]> {
   const out: string[] = [];
   const entries = await fs.readdir(dataDir, { withFileTypes: true });
@@ -46,7 +69,12 @@ export async function GET() {
     } catch {
       count = 0;
     }
-    details.push({ file, bytes: raw.length, count });
+    details.push({
+      file,
+      bytes: raw.length,
+      count,
+      protected: PROTECTED_LIVE_CMS.has(file),
+    });
   }
   return NextResponse.json({
     supabase: isSupabaseConfigured(),
@@ -54,8 +82,10 @@ export async function GET() {
   });
 }
 
-export async function POST() {
+export async function POST(request: Request) {
   try {
+    const body = await request.json().catch(() => ({}));
+    const force = body?.force === true;
     const files = await listCmsJsonFiles();
     if (!isSupabaseConfigured()) {
       return NextResponse.json({
@@ -68,7 +98,12 @@ export async function POST() {
     }
 
     const uploaded: { file: string; bytes: number }[] = [];
+    const skipped: string[] = [];
     for (const file of files) {
+      if (!force && PROTECTED_LIVE_CMS.has(file)) {
+        skipped.push(file);
+        continue;
+      }
       const raw = await fs.readFile(path.join(dataDir, file), "utf8");
       const data = JSON.parse(raw);
       await writeCmsJson(file, data);
@@ -79,8 +114,12 @@ export async function POST() {
       ok: true,
       synced: true,
       supabase: true,
+      force,
       uploaded,
-      message: `Subidos ${uploaded.length} ficheros CMS a Supabase Storage`,
+      skipped,
+      message: force
+        ? `Subidos ${uploaded.length} ficheros CMS a Supabase Storage (force)`
+        : `Subidos ${uploaded.length} ficheros; omitidos ${skipped.length} editables en vivo (use force:true para forzar)`,
     });
   } catch (e) {
     return NextResponse.json(

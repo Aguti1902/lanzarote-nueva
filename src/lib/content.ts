@@ -8,10 +8,15 @@ import type {
   TransferDestination,
   TransfersData,
 } from "@/types";
-import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
+import { readCmsJson, readCmsJsonFresh, writeCmsJson } from "@/lib/supabase/cms-store";
 
 async function readJson<T>(file: string): Promise<T> {
   return readCmsJson<T>(file);
+}
+
+/** Lectura fresca para mutaciones del admin (evita RMW sobre datos viejos). */
+async function readJsonFresh<T>(file: string): Promise<T> {
+  return readCmsJsonFresh<T>(file);
 }
 
 async function writeJson(file: string, data: unknown): Promise<void> {
@@ -66,7 +71,7 @@ export async function saveTours(tours: Tour[]): Promise<void> {
 }
 
 export async function upsertTour(tour: Tour): Promise<Tour> {
-  const tours = await getTours();
+  const tours = await readJsonFresh<Tour[]>("tours.json");
   const idx = tours.findIndex((t) => t.id === tour.id);
   if (idx === -1) tours.push(tour);
   else tours[idx] = tour;
@@ -77,7 +82,7 @@ export async function upsertTour(tour: Tour): Promise<Tour> {
 export async function createTour(
   input: Partial<Tour> & Pick<Tour, "title" | "shortTitle" | "category">
 ): Promise<Tour> {
-  const tours = await getTours();
+  const tours = await readJsonFresh<Tour[]>("tours.json");
   const baseSlug = slugify(input.slug || input.shortTitle || input.title);
   let slug = baseSlug;
   let n = 2;
@@ -172,7 +177,7 @@ export async function createTour(
 }
 
 export async function deleteTour(id: string): Promise<boolean> {
-  const tours = await getTours();
+  const tours = await readJsonFresh<Tour[]>("tours.json");
   const next = tours.filter((t) => t.id !== id);
   if (next.length === tours.length) return false;
   await saveTours(next);
@@ -196,7 +201,7 @@ export async function saveTransfersData(data: TransfersData): Promise<void> {
 export async function upsertTransfer(
   dest: TransferDestination
 ): Promise<TransferDestination> {
-  const data = await getTransfersData();
+  const data = await readJsonFresh<TransfersData>("transfers.json");
   const idx = data.destinations.findIndex((d) => d.id === dest.id);
   if (idx === -1) data.destinations.push(dest);
   else data.destinations[idx] = dest;
@@ -207,7 +212,7 @@ export async function upsertTransfer(
 export async function createTransfer(
   input: Partial<TransferDestination> & Pick<TransferDestination, "name">
 ): Promise<TransferDestination> {
-  const data = await getTransfersData();
+  const data = await readJsonFresh<TransfersData>("transfers.json");
   const baseSlug = slugify(input.slug || input.name);
   let slug = baseSlug;
   let n = 2;
@@ -230,7 +235,7 @@ export async function createTransfer(
 }
 
 export async function deleteTransfer(id: string): Promise<boolean> {
-  const data = await getTransfersData();
+  const data = await readJsonFresh<TransfersData>("transfers.json");
   const next = data.destinations.filter((d) => d.id !== id);
   if (next.length === data.destinations.length) return false;
   data.destinations = next;
@@ -241,7 +246,7 @@ export async function deleteTransfer(id: string): Promise<boolean> {
 export async function updateTransferHighlights(
   highlights: string[]
 ): Promise<string[]> {
-  const data = await getTransfersData();
+  const data = await readJsonFresh<TransfersData>("transfers.json");
   data.highlights = highlights;
   await saveTransfersData(data);
   return highlights;
@@ -262,7 +267,7 @@ export async function saveBlogPosts(posts: BlogPost[]): Promise<void> {
 }
 
 export async function upsertBlogPost(post: BlogPost): Promise<BlogPost> {
-  const posts = await getBlogPosts();
+  const posts = await readJsonFresh<BlogPost[]>("blog.json");
   const idx = posts.findIndex((p) => p.slug === post.slug);
   if (idx === -1) posts.unshift(post);
   else posts[idx] = post;
@@ -273,7 +278,7 @@ export async function upsertBlogPost(post: BlogPost): Promise<BlogPost> {
 export async function createBlogPost(
   input: Partial<BlogPost> & Pick<BlogPost, "title" | "excerpt" | "content">
 ): Promise<BlogPost> {
-  const posts = await getBlogPosts();
+  const posts = await readJsonFresh<BlogPost[]>("blog.json");
   const baseSlug = slugify(input.slug || input.title);
   let slug = baseSlug;
   let n = 2;
@@ -296,7 +301,7 @@ export async function createBlogPost(
 }
 
 export async function deleteBlogPost(slug: string): Promise<boolean> {
-  const posts = await getBlogPosts();
+  const posts = await readJsonFresh<BlogPost[]>("blog.json");
   const next = posts.filter((p) => p.slug !== slug);
   if (next.length === posts.length) return false;
   await saveBlogPosts(next);
@@ -357,8 +362,21 @@ export async function saveCruisesData(data: CruisesData): Promise<void> {
   });
 }
 
+async function loadCruisesDataFresh(): Promise<CruisesData> {
+  try {
+    const stored = await readJsonFresh<Partial<CruisesData>>("cruises.json");
+    return {
+      ...defaultCruisesData,
+      ...stored,
+      calls: sortCruiseCalls(stored.calls || []),
+    };
+  } catch {
+    return defaultCruisesData;
+  }
+}
+
 export async function upsertCruiseCall(call: CruiseCall): Promise<CruiseCall> {
-  const data = await getCruisesData();
+  const data = await loadCruisesDataFresh();
   const idx = data.calls.findIndex((c) => c.id === call.id);
   if (idx === -1) data.calls.push(call);
   else data.calls[idx] = call;
@@ -370,7 +388,7 @@ export async function createCruiseCall(
   input: Partial<CruiseCall> &
     Pick<CruiseCall, "date" | "shipName" | "company">
 ): Promise<CruiseCall> {
-  const data = await getCruisesData();
+  const data = await loadCruisesDataFresh();
   const base = slugify(
     `${input.date}-${input.shipName}-${input.shipCode || "ship"}`
   );
@@ -398,7 +416,7 @@ export async function createCruiseCall(
 }
 
 export async function deleteCruiseCall(id: string): Promise<boolean> {
-  const data = await getCruisesData();
+  const data = await loadCruisesDataFresh();
   const next = data.calls.filter((c) => c.id !== id);
   if (next.length === data.calls.length) return false;
   data.calls = next;

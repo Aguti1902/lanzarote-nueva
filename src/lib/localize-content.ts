@@ -6,7 +6,7 @@ import type {
   Tour,
   TransfersData,
 } from "@/types";
-import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
+import { readCmsJson, readCmsJsonFresh, writeCmsJson } from "@/lib/supabase/cms-store";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import {
   pickSettingsTranslations,
@@ -90,12 +90,17 @@ export function clearContentTranslationCache() {
 }
 
 function loadTranslations(
-  locale: TranslatedLocale
+  locale: TranslatedLocale,
+  options?: { fresh?: boolean }
 ): Promise<ContentTranslations> {
-  const cached = translationCache.get(locale);
-  if (cached) return cached;
+  const fresh = options?.fresh === true;
+  if (!fresh) {
+    const cached = translationCache.get(locale);
+    if (cached) return cached;
+  }
 
-  const pending = readCmsJson<ContentTranslations>(`i18n/${locale}.json`).then(
+  const reader = fresh ? readCmsJsonFresh : readCmsJson;
+  const pending = reader<ContentTranslations>(`i18n/${locale}.json`).then(
     (data) => ({
       ...emptyContentTranslations(),
       ...data,
@@ -108,7 +113,7 @@ function loadTranslations(
     })
   );
 
-  if (!isSupabaseConfigured()) {
+  if (!fresh && !isSupabaseConfigured()) {
     translationCache.set(locale, pending);
   }
   return pending;
@@ -133,7 +138,7 @@ export async function patchSettingsTranslations(
   locale: TranslatedLocale,
   settingsPatch: Partial<SiteSettings>
 ): Promise<ContentTranslations> {
-  const data = await loadTranslations(locale);
+  const data = await loadTranslations(locale, { fresh: true });
   const picked = pickSettingsTranslations(settingsPatch);
   data.settings = {
     ...data.settings,

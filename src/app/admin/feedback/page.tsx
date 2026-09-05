@@ -45,11 +45,16 @@ export default function AdminFeedbackPage() {
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
-    await fetch("/api/admin/extras?resource=feedback", {
+    const res = await fetch("/api/admin/extras?resource=feedback", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      alert(data.error || "No se pudo guardar el feedback");
+      return;
+    }
     setForm({
       bookingId: "",
       customerName: "",
@@ -64,9 +69,14 @@ export default function AdminFeedbackPage() {
 
   async function remove(id: string) {
     if (!confirm("¿Eliminar feedback?")) return;
-    await fetch(`/api/admin/extras?resource=feedback&id=${id}`, {
+    const res = await fetch(`/api/admin/extras?resource=feedback&id=${id}`, {
       method: "DELETE",
     });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      alert(data.error || "No se pudo eliminar");
+      return;
+    }
     await load();
   }
 

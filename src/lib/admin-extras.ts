@@ -6,7 +6,7 @@ import type {
   PaymentLink,
   SeoRedirect,
 } from "@/types";
-import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
+import { readCmsJsonFresh, writeCmsJson } from "@/lib/supabase/cms-store";
 
 export type AdminExtrasData = {
   paymentLinks: PaymentLink[];
@@ -30,7 +30,7 @@ const empty: AdminExtrasData = {
 
 async function readData(): Promise<AdminExtrasData> {
   try {
-    const stored = await readCmsJson<Partial<AdminExtrasData>>(
+    const stored = await readCmsJsonFresh<Partial<AdminExtrasData>>(
       "adminExtras.json"
     );
     return { ...empty, ...stored };

@@ -60,11 +60,16 @@ export default function AdminColaboradoresPage() {
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
-    await fetch("/api/admin/extras?resource=collaborators", {
+    const res = await fetch("/api/admin/extras?resource=collaborators", {
       method: editing ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editing ? { ...form, id: editing.id } : form),
     });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      alert(data.error || "No se pudo guardar el colaborador");
+      return;
+    }
     setEditing(null);
     setForm({
       name: "",
@@ -80,9 +85,17 @@ export default function AdminColaboradoresPage() {
 
   async function remove(id: string) {
     if (!confirm("¿Eliminar colaborador?")) return;
-    await fetch(`/api/admin/extras?resource=collaborators&id=${id}`, {
-      method: "DELETE",
-    });
+    const res = await fetch(
+      `/api/admin/extras?resource=collaborators&id=${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      alert(data.error || "No se pudo eliminar");
+      return;
+    }
     await load();
   }
 

@@ -116,20 +116,13 @@ function getCachedReader(file: string): () => Promise<unknown> {
 }
 
 /**
- * Catálogo pesado / poco cambiante en público: JSON del deploy (evita bajar MBs
- * de Storage en cada regeneración ISR).
- * NO incluir aquí ficheros que el admin edita y debe persistir (p. ej.
- * cruiseItineraries / tours / settings): esos van por Storage + caché.
+ * Solo catálogo de solo lectura en público (sin editor admin que deba
+ * persistir en Storage). Todo lo editable (tours, settings, transfers,
+ * blog, houses, cruises, itinerarios, i18n, etc.) va por Storage + caché.
  */
 const DEPLOY_LOCAL_CATALOG = new Set([
   "reviews.json",
   "tripadvisor.json",
-  "transfers.json",
-  "blog.json",
-  "houses.json",
-  "cruises.json",
-  "i18n/en.json",
-  "i18n/de.json",
 ]);
 
 export async function readCmsJson<T>(file: string): Promise<T> {
