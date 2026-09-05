@@ -147,11 +147,6 @@ export function CruiseItinerary({ sailing, tours }: Props) {
                                           ? Number(tour.privatePrice)
                                           : tour.priceAdult
                                       )}
-                                      {Number(tour.privatePrice) > 0 ? (
-                                        <span className="ml-1 text-[10px] font-semibold uppercase text-ink-muted">
-                                          cerrado
-                                        </span>
-                                      ) : null}
                                     </span>
                                   )}
                                 </div>

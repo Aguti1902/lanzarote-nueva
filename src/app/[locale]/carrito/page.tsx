@@ -121,7 +121,7 @@ export default function CarritoPage() {
                           item.adults === 1
                             ? dict.cruises.passengerSingular
                             : dict.cruises.passengerPlural
-                        } · ${dict.booking.flatPrice}`
+                        }`
                       : item.source === "cruise"
                         ? `${item.adults} ${
                             item.adults === 1

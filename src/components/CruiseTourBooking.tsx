@@ -108,7 +108,7 @@ export function CruiseTourBooking({
     `Escala: ${portName} · ${callDate}`,
     sailing.id ? `Ref. salida: ${sailing.id}` : "",
     isFlat
-      ? `Precio cerrado: ${formatPrice(price)} (máx. ${max} personas)`
+      ? `Precio grupo: ${formatPrice(price)} (máx. ${max} personas)`
       : "",
   ]
     .filter(Boolean)
@@ -250,7 +250,7 @@ export function CruiseTourBooking({
           </p>
           <p className="text-[11px] text-ink-muted">
             {isFlat
-              ? `${dict.booking.flatPrice} · máx. ${max}`
+              ? `máx. ${max}`
               : `${formatPrice(price)} / ${dict.cruises.perPerson}`}
           </p>
         </div>

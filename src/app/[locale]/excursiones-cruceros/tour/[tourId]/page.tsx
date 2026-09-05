@@ -120,11 +120,6 @@ export default async function CruiseShoreTourPage({
                     ? Number(tour.privatePrice)
                     : tour.priceAdult
                 )}
-                {Number(tour.privatePrice) > 0 ? (
-                  <span className="ml-1 text-[10px] font-semibold uppercase text-ink-muted">
-                    cerrado
-                  </span>
-                ) : null}
               </span>
             )}
           </div>
@@ -230,12 +225,12 @@ export default async function CruiseShoreTourPage({
                     )
                   : "—"}
               </p>
-              {Number(tour.privatePrice) > 0 ? (
+              {Number(tour.privatePrice) > 0 && tour.privateMaxPax ? (
                 <p className="mt-1 text-xs text-ink-muted">
-                  {dict.booking.flatPrice}
-                  {tour.privateMaxPax
-                    ? ` · máx. ${tour.privateMaxPax}`
-                    : ""}
+                  {dict.cruises.smallGroupMax.replace(
+                    "{n}",
+                    String(tour.privateMaxPax)
+                  )}
                 </p>
               ) : null}
               <Link
