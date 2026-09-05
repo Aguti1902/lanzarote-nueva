@@ -46,7 +46,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const base = await getTourBySlug(slug);
   if (!base) return { title: dict.nav.excursions };
   const tour = await localizeTour(base, locale);
-  return { title: tour.shortTitle, description: tour.summary };
+  return {
+    title: tour.seo?.title || tour.shortTitle,
+    description: tour.seo?.description || tour.summary,
+    keywords: tour.seo?.keywords || undefined,
+  };
 }
 
 export default async function TourDetailPage({ params }: Props) {

@@ -66,6 +66,7 @@ function emptyTranslation(): TourTranslation {
     included: [],
     notIncluded: [],
     recommendations: [],
+    seo: { title: "", description: "", keywords: "" },
   };
 }
 
@@ -318,6 +319,16 @@ export function TourEditor({ initial }: { initial?: Tour }) {
         if (raw.notIncluded?.length) next.notIncluded = raw.notIncluded;
         if (raw.recommendations?.length)
           next.recommendations = raw.recommendations;
+        const seoTitle = raw.seo?.title?.trim() || "";
+        const seoDescription = raw.seo?.description?.trim() || "";
+        const seoKeywords = raw.seo?.keywords?.trim() || "";
+        if (seoTitle || seoDescription || seoKeywords) {
+          next.seo = {
+            title: seoTitle,
+            description: seoDescription,
+            keywords: seoKeywords,
+          };
+        }
         return next;
       };
       const payload = {
@@ -1076,35 +1087,90 @@ export function TourEditor({ initial }: { initial?: Tour }) {
 
       {tab === "seo" && (
         <section className="space-y-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
-          <h2 className="text-lg font-bold">SEO</h2>
+          <div className="flex flex-wrap items-end gap-4">
+            <Field label="Idioma del SEO">
+              <select
+                className={adminInput}
+                value={lang}
+                onChange={(e) => setLang(e.target.value as LangKey)}
+              >
+                <option value="es">Español</option>
+                <option value="en">Inglés</option>
+                <option value="de">Alemán</option>
+              </select>
+            </Field>
+            <h2 className="pb-2 text-lg font-bold">
+              SEO (
+              {lang === "es" ? "Español" : lang === "en" ? "Inglés" : "Alemán"})
+            </h2>
+          </div>
           <Field label="Meta title">
             <input
               className={adminInput}
-              value={tour.seo?.title || ""}
-              onChange={(e) =>
-                set("seo", { ...(tour.seo || {}), title: e.target.value })
+              value={
+                lang === "es"
+                  ? tour.seo?.title || ""
+                  : tour.translations?.[lang]?.seo?.title || ""
               }
+              onChange={(e) => {
+                if (lang === "es") {
+                  set("seo", { ...(tour.seo || {}), title: e.target.value });
+                } else {
+                  updateTranslation(lang, {
+                    seo: {
+                      ...(tour.translations?.[lang]?.seo || {}),
+                      title: e.target.value,
+                    },
+                  });
+                }
+              }}
             />
           </Field>
           <Field label="Meta description">
             <textarea
               className={adminTextarea}
-              value={tour.seo?.description || ""}
-              onChange={(e) =>
-                set("seo", {
-                  ...(tour.seo || {}),
-                  description: e.target.value,
-                })
+              value={
+                lang === "es"
+                  ? tour.seo?.description || ""
+                  : tour.translations?.[lang]?.seo?.description || ""
               }
+              onChange={(e) => {
+                if (lang === "es") {
+                  set("seo", {
+                    ...(tour.seo || {}),
+                    description: e.target.value,
+                  });
+                } else {
+                  updateTranslation(lang, {
+                    seo: {
+                      ...(tour.translations?.[lang]?.seo || {}),
+                      description: e.target.value,
+                    },
+                  });
+                }
+              }}
             />
           </Field>
           <Field label="Keywords">
             <input
               className={adminInput}
-              value={tour.seo?.keywords || ""}
-              onChange={(e) =>
-                set("seo", { ...(tour.seo || {}), keywords: e.target.value })
+              value={
+                lang === "es"
+                  ? tour.seo?.keywords || ""
+                  : tour.translations?.[lang]?.seo?.keywords || ""
               }
+              onChange={(e) => {
+                if (lang === "es") {
+                  set("seo", { ...(tour.seo || {}), keywords: e.target.value });
+                } else {
+                  updateTranslation(lang, {
+                    seo: {
+                      ...(tour.translations?.[lang]?.seo || {}),
+                      keywords: e.target.value,
+                    },
+                  });
+                }
+              }}
             />
           </Field>
           <button

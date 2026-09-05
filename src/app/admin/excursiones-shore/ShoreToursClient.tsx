@@ -64,6 +64,7 @@ function emptyTranslation(): CruiseShoreTourTranslation {
     included: [],
     notIncluded: [],
     recommendations: [],
+    seo: { title: "", description: "", keywords: "" },
   };
 }
 
@@ -250,6 +251,16 @@ export function ShoreToursPanel() {
       if (raw.notIncluded?.length) next.notIncluded = raw.notIncluded;
       if (raw.recommendations?.length)
         next.recommendations = raw.recommendations;
+      const seoTitle = raw.seo?.title?.trim() || "";
+      const seoDescription = raw.seo?.description?.trim() || "";
+      const seoKeywords = raw.seo?.keywords?.trim() || "";
+      if (seoTitle || seoDescription || seoKeywords) {
+        next.seo = {
+          title: seoTitle,
+          description: seoDescription,
+          keywords: seoKeywords,
+        };
+      }
       return next;
     };
     const savedId = source.id || slugify(source.title);
@@ -1097,44 +1108,104 @@ export function ShoreToursPanel() {
 
         {tab === "seo" && (
           <section className="space-y-4 rounded-xl bg-white p-5 ring-1 ring-sand-line">
-            <h2 className="text-lg font-bold">SEO</h2>
+            <div className="flex flex-wrap items-end gap-4">
+              <Field label="Idioma del SEO">
+                <select
+                  className={adminInput}
+                  value={lang}
+                  onChange={(e) => setLang(e.target.value as LangKey)}
+                >
+                  <option value="es">Español</option>
+                  <option value="en">Inglés</option>
+                  <option value="de">Alemán</option>
+                </select>
+              </Field>
+              <h2 className="pb-2 text-lg font-bold">
+                SEO (
+                {lang === "es"
+                  ? "Español"
+                  : lang === "en"
+                    ? "Inglés"
+                    : "Alemán"}
+                )
+              </h2>
+            </div>
             <Field label="Meta title">
               <input
                 className={adminInput}
-                value={draft.seo?.title || ""}
-                onChange={(e) =>
-                  setDraft({
-                    ...draft,
-                    seo: { ...(draft.seo || {}), title: e.target.value },
-                  })
+                value={
+                  lang === "es"
+                    ? draft.seo?.title || ""
+                    : draft.translations?.[lang]?.seo?.title || ""
                 }
+                onChange={(e) => {
+                  if (lang === "es") {
+                    setDraft({
+                      ...draft,
+                      seo: { ...(draft.seo || {}), title: e.target.value },
+                    });
+                  } else {
+                    updateTranslation(lang, {
+                      seo: {
+                        ...(draft.translations?.[lang]?.seo || {}),
+                        title: e.target.value,
+                      },
+                    });
+                  }
+                }}
               />
             </Field>
             <Field label="Meta description">
               <textarea
                 className={adminTextarea}
-                value={draft.seo?.description || ""}
-                onChange={(e) =>
-                  setDraft({
-                    ...draft,
-                    seo: {
-                      ...(draft.seo || {}),
-                      description: e.target.value,
-                    },
-                  })
+                value={
+                  lang === "es"
+                    ? draft.seo?.description || ""
+                    : draft.translations?.[lang]?.seo?.description || ""
                 }
+                onChange={(e) => {
+                  if (lang === "es") {
+                    setDraft({
+                      ...draft,
+                      seo: {
+                        ...(draft.seo || {}),
+                        description: e.target.value,
+                      },
+                    });
+                  } else {
+                    updateTranslation(lang, {
+                      seo: {
+                        ...(draft.translations?.[lang]?.seo || {}),
+                        description: e.target.value,
+                      },
+                    });
+                  }
+                }}
               />
             </Field>
             <Field label="Keywords">
               <input
                 className={adminInput}
-                value={draft.seo?.keywords || ""}
-                onChange={(e) =>
-                  setDraft({
-                    ...draft,
-                    seo: { ...(draft.seo || {}), keywords: e.target.value },
-                  })
+                value={
+                  lang === "es"
+                    ? draft.seo?.keywords || ""
+                    : draft.translations?.[lang]?.seo?.keywords || ""
                 }
+                onChange={(e) => {
+                  if (lang === "es") {
+                    setDraft({
+                      ...draft,
+                      seo: { ...(draft.seo || {}), keywords: e.target.value },
+                    });
+                  } else {
+                    updateTranslation(lang, {
+                      seo: {
+                        ...(draft.translations?.[lang]?.seo || {}),
+                        keywords: e.target.value,
+                      },
+                    });
+                  }
+                }}
               />
             </Field>
             <button type="button" onClick={() => void save()} className="btn-primary">

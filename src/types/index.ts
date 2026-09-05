@@ -16,6 +16,12 @@ export type PaymentStatus =
   | "refunded";
 export type CashStatus = "pending" | "collected" | "waived" | "none";
 
+export interface TourSeo {
+  title?: string;
+  description?: string;
+  keywords?: string;
+}
+
 export interface TourTranslation {
   title?: string;
   shortTitle?: string;
@@ -26,6 +32,7 @@ export interface TourTranslation {
   included?: string[];
   notIncluded?: string[];
   recommendations?: string[];
+  seo?: TourSeo;
 }
 
 export type TourScheduleSlot = "morning" | "afternoon" | "evening";
@@ -87,11 +94,7 @@ export interface Tour {
     language?: string;
     seats: number;
   }>;
-  seo?: {
-    title?: string;
-    description?: string;
-    keywords?: string;
-  };
+  seo?: TourSeo;
   translations?: {
     en?: TourTranslation;
     de?: TourTranslation;
@@ -381,6 +384,7 @@ export interface CruiseShoreTourTranslation {
   included?: string[];
   notIncluded?: string[];
   recommendations?: string[];
+  seo?: TourSeo;
 }
 
 export interface CruiseShoreTour {
@@ -428,11 +432,7 @@ export interface CruiseShoreTour {
     language?: string;
     seats: number;
   }>;
-  seo?: {
-    title?: string;
-    description?: string;
-    keywords?: string;
-  };
+  seo?: TourSeo;
   translations?: {
     en?: CruiseShoreTourTranslation;
     de?: CruiseShoreTourTranslation;

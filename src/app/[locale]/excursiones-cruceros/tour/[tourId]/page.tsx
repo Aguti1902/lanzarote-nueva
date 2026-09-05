@@ -40,7 +40,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const base = await getCruiseShoreTourById(tourId);
   if (!base) return { title: dict.cruises.browseTitle };
   const tour = await localizeShoreTour(base, locale);
-  return { title: tour.title || dict.cruises.browseTitle };
+  return {
+    title: tour.seo?.title || tour.title || dict.cruises.browseTitle,
+    description: tour.seo?.description || tour.summary || undefined,
+    keywords: tour.seo?.keywords || undefined,
+  };
 }
 
 export default async function CruiseShoreTourPage({

@@ -165,8 +165,45 @@ export function hasTranslationContent(
   return Object.values(value).some((entry) => {
     if (typeof entry === "string") return entry.trim().length > 0;
     if (Array.isArray(entry)) return entry.length > 0;
+    if (entry && typeof entry === "object") {
+      return hasTranslationContent(entry as Record<string, unknown>);
+    }
     return false;
   });
+}
+
+function asSeoRecord(
+  value: unknown
+): { title?: string; description?: string; keywords?: string } | undefined {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
+  return value as { title?: string; description?: string; keywords?: string };
+}
+
+/** Fusiona SEO traducido con el base (ES), campo a campo. */
+export function resolveLocalizedSeo(
+  baseSeo: { title?: string; description?: string; keywords?: string } | undefined,
+  embedded: Record<string, unknown> | undefined,
+  fileOverlay?: Record<string, unknown> | undefined
+): { title?: string; description?: string; keywords?: string } | undefined {
+  const fromEmbedded = asSeoRecord(embedded?.seo);
+  const fromFile = asSeoRecord(fileOverlay?.seo);
+  const title =
+    (fromEmbedded?.title || "").trim() ||
+    (fromFile?.title || "").trim() ||
+    (baseSeo?.title || "").trim() ||
+    undefined;
+  const description =
+    (fromEmbedded?.description || "").trim() ||
+    (fromFile?.description || "").trim() ||
+    (baseSeo?.description || "").trim() ||
+    undefined;
+  const keywords =
+    (fromEmbedded?.keywords || "").trim() ||
+    (fromFile?.keywords || "").trim() ||
+    (baseSeo?.keywords || "").trim() ||
+    undefined;
+  if (!title && !description && !keywords) return baseSeo;
+  return { title, description, keywords };
 }
 
 function pickTranslatedArrays(
@@ -292,6 +329,7 @@ export async function localizeTour(
     ...strings,
     ...arrays,
     shortTitle,
+    seo: resolveLocalizedSeo(tour.seo, embedded, fileOverlay),
   } as Tour;
 }
 
@@ -377,6 +415,7 @@ export async function localizeShoreTour(
     ...strings,
     ...arrays,
     shortTitle,
+    seo: resolveLocalizedSeo(tour.seo, embedded, fileOverlay),
   } as CruiseShoreTour;
 }
 
