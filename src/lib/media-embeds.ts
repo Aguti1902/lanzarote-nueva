@@ -27,14 +27,34 @@ export function youtubeEmbedUrl(raw: string | undefined | null): string | null {
 
 export function mapEmbedUrl(raw: string | undefined | null): string | null {
   if (!raw?.trim()) return null;
-  const value = raw.trim();
-  const isEmbedPath =
-    /google\.[^/\s]+\/maps\/embed/i.test(value) ||
-    /maps\.google\.[^/\s]+\/maps\/embed/i.test(value);
-  const isOutputEmbed =
-    /[?&]output=embed\b/i.test(value) &&
-    /(google\.[^/\s]+\/maps|maps\.google\.)/i.test(value);
-  if (isEmbedPath || isOutputEmbed) return value;
+  let value = raw.trim();
+
+  // Si pegan el HTML completo del iframe, extraer el src.
+  const iframeSrc = value.match(
+    /<iframe[^>]+src=["']([^"']+)["']/i
+  )?.[1];
+  if (iframeSrc) value = iframeSrc.trim();
+
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "http:" && url.protocol !== "https:") return null;
+    const host = url.hostname.replace(/^www\./i, "");
+    const path = url.pathname;
+    const isGoogleMapsHost =
+      /(^|\.)google\./i.test(host) || /^maps\.google\./i.test(host);
+
+    if (!isGoogleMapsHost) return null;
+
+    // Google Maps embed clásico: /maps/embed?...
+    // Google My Maps (punto de encuentro): /maps/d/embed?mid=...
+    const isEmbedPath =
+      /\/maps\/embed\/?/i.test(path) || /\/maps\/d\/embed\/?/i.test(path);
+    const isOutputEmbed = url.searchParams.get("output") === "embed";
+
+    if (isEmbedPath || isOutputEmbed) return url.toString();
+  } catch {
+    return null;
+  }
   return null;
 }
 

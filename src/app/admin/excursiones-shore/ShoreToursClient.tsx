@@ -649,7 +649,13 @@ export function ShoreToursPanel() {
                   onChange={(e) =>
                     setDraft({ ...draft, mapUrl: e.target.value })
                   }
+                  placeholder="https://www.google.com/maps/d/embed?mid=..."
                 />
+                <p className="mt-1 text-xs text-ink-muted">
+                  Usa un enlace de insertar mapa de Google Maps o My Maps
+                  (`/maps/embed` o `/maps/d/embed?mid=...`) para el punto de
+                  encuentro.
+                </p>
               </Field>
               <Field
                 label="Ruta de la excursión (separar por ,)"
@@ -1176,7 +1182,13 @@ export function ShoreToursPanel() {
                   onChange={(e) =>
                     setDraft({ ...draft, mapUrl: e.target.value })
                   }
+                  placeholder="https://www.google.com/maps/d/embed?mid=..."
                 />
+                <p className="mt-1 text-xs text-ink-muted">
+                  Usa un enlace de insertar mapa de Google Maps o My Maps
+                  (`/maps/embed` o `/maps/d/embed?mid=...`) para el punto de
+                  encuentro.
+                </p>
               </Field>
             </div>
 

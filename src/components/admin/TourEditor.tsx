@@ -607,11 +607,12 @@ export function TourEditor({ initial }: { initial?: Tour }) {
                 className={adminInput}
                 value={tour.mapUrl || ""}
                 onChange={(e) => set("mapUrl", e.target.value)}
-                placeholder="URL de Google Maps (preferible enlace /maps/embed?...)"
+                placeholder="https://www.google.com/maps/d/embed?mid=..."
               />
               <p className="mt-1 text-xs text-ink-muted">
-                Usa un enlace de «Insertar mapa» de Google Maps para verlo
-                embebido en la web.
+                Usa un enlace de «Insertar mapa» de Google Maps o My Maps
+                (`/maps/embed` o `/maps/d/embed?mid=...`) para verlo embebido en
+                la web.
               </p>
             </Field>
 

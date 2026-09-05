@@ -10,6 +10,7 @@ import {
 } from "@/lib/cruise-itineraries";
 import { formatDateShort, formatPrice } from "@/lib/format";
 import { localizeShoreTour } from "@/lib/localize-content";
+import { isHttpUrl, mapEmbedUrl, youtubeEmbedUrl } from "@/lib/media-embeds";
 import {
   shoreTourDurationLabel,
   shoreTourPublicHighlights,
@@ -72,6 +73,11 @@ export default async function CruiseShoreTourPage({
   const portName =
     sailing?.stops.find((s) => s.date === callDate)?.port ||
     "Lanzarote, Canary Islands";
+
+  const videoSrc = youtubeEmbedUrl(tour.youtubeUrl);
+  const mapSrc = mapEmbedUrl(tour.mapUrl);
+  const mapLink =
+    !mapSrc && isHttpUrl(tour.mapUrl) ? tour.mapUrl!.trim() : null;
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-14">
@@ -194,6 +200,61 @@ export default async function CruiseShoreTourPage({
               </div>
             )}
           </div>
+
+          {videoSrc && (
+            <section className="mt-8">
+              <h2 className="font-bold text-ink">{dict.tourDetail.video}</h2>
+              <div className="mt-3 overflow-hidden rounded-xl ring-1 ring-sand-line">
+                <div className="relative aspect-video w-full bg-bg-deep">
+                  <iframe
+                    src={videoSrc}
+                    title={dict.tourDetail.video}
+                    className="absolute inset-0 h-full w-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                  />
+                </div>
+              </div>
+            </section>
+          )}
+
+          {(mapSrc || mapLink) && (
+            <section className="mt-8">
+              <h2 className="font-bold text-ink">
+                {dict.cruises.meetingPointTitle}
+              </h2>
+              <p className="mt-2 text-sm text-ink-muted">
+                {dict.cruises.meetingPointBody}
+              </p>
+              {mapSrc ? (
+                <div className="mt-3 overflow-hidden rounded-xl ring-1 ring-sand-line">
+                  <div className="relative aspect-[4/3] w-full bg-bg md:aspect-[16/9]">
+                    <iframe
+                      src={mapSrc}
+                      title={dict.cruises.meetingPoint}
+                      className="absolute inset-0 h-full w-full border-0"
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      allowFullScreen
+                    />
+                  </div>
+                </div>
+              ) : (
+                <p className="mt-3">
+                  <a
+                    href={mapLink!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-bold text-ocean hover:underline"
+                  >
+                    {dict.booking.openMap}
+                  </a>
+                </p>
+              )}
+            </section>
+          )}
 
           {tour.cancellationPolicy && (
             <p className="mt-6 text-xs text-ink-muted">
