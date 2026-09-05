@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Anchor, Clock, MapPin, Ship } from "lucide-react";
 import { CruiseSchedule } from "@/components/CruiseSchedule";
 import { PageBodyText } from "@/components/PageBodyText";
+import { PageContentBlocks } from "@/components/PageContentBlocks";
+import { PageFaqs } from "@/components/PageFaqs";
 import { PageHero } from "@/components/PageHero";
 import { TourCard } from "@/components/TourCard";
 import { getCruiseCalls, getCruisesData, getCruiseTours, getSettings } from "@/lib/content";
@@ -137,6 +139,18 @@ export default async function CruceristasPage({ params }: Props) {
           </div>
         </section>
       )}
+
+      <PageContentBlocks
+        title={settings.cruiseBlocksTitle}
+        intro={settings.cruiseBlocksIntro}
+        blocks={settings.cruiseBlocks}
+      />
+
+      <PageFaqs
+        title={settings.cruiseFaqTitle}
+        faqs={settings.cruiseFaqs}
+        tone="soft"
+      />
     </>
   );
 }

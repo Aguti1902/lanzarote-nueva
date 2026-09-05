@@ -526,23 +526,51 @@ const es: Dictionary = {
     faqs: [
       {
         q: "¿Cuándo recibiré el bono para la excursión?",
-        a: "Tras confirmar la reserva recibirá un email con el bono y los detalles de recogida.",
+        a: "Una vez finalizado el proceso de compra recibirá un mail con la confirmación y el número de referencia. Así mismo, podrá descargar su factura e imprimir el bono que debe entregar al guía.",
       },
       {
         q: "¿Cuáles son las formas de pago disponibles?",
-        a: "En excursiones y cruceros: 20% con tarjeta y el resto en efectivo, o el 100% online (tarjeta/Bizum). Los traslados se pagan íntegros online.",
+        a: "Puede pagar con tarjeta de crédito, PayPal o Stripe.",
       },
       {
-        q: "¿Dónde será el punto de encuentro?",
-        a: "Le recogemos en la puerta de su alojamiento. El punto exacto aparece en su bono.",
+        q: "¿Dónde será el punto de encuentro con el guía?",
+        a: "Les recogemos en su alojamiento en las principales zonas turísticas de Lanzarote y en caso de que venga en un crucero, el punto de encuentro será el muelle donde atraque su crucero, una vez pasado la oficina del control de policía.",
       },
       {
         q: "¿Cuál es la política de cancelación?",
-        a: "Cancelación gratuita hasta 48 horas antes de la recogida.",
+        a: "Puede cambiar el día o cancelar el viaje hasta las 24h antes de la hora de inicio. En el caso de cancelaciones con menos de 24 horas antes del tour no habrá devolución.",
+      },
+      {
+        q: "¿Qué tipo de vehículos utilizamos para las excursiones?",
+        a: "Utilizamos minibuses pero actualmente no tenemos micros adaptado para sillas de ruedas.",
       },
       {
         q: "¿Cuáles son los idiomas de las excursiones?",
-        a: "No mezclamos idiomas: nuestras excursiones se realizan solo en español.",
+        a: "Realizamos excursiones en español, inglés y alemán, pero no mezclamos idiomas.",
+      },
+      {
+        q: "¿Cómo consigo la factura por el servicio contratado?",
+        a: "Podrá descargar su bono de excursión y su factura una vez finalizado el proceso de compra.",
+      },
+      {
+        q: "¿Con cuánta anticipación debo reservar mi excursión?",
+        a: "Recomendamos hagan las reservas lo antes posible ya que las plazas son limitadas.",
+      },
+      {
+        q: "¿Cómo puedo reservar un tour privado para mi familia, grupo de amigos, instituto o asociación?",
+        a: "Ofrecemos tours privados que puede reservar en nuestra web o si lo prefiere puede contactarnos por mail.",
+      },
+      {
+        q: "¿Qué pasa si pierdo mi Bono de excursión?",
+        a: "Esto no es un problema en absoluto! Podrá mostrar al guía su bono a través de su teléfono móvil.",
+      },
+      {
+        q: "Si me olvida algo en el autobús, ¿cómo puedo recuperarlo?",
+        a: "Póngase en contacto con nuestra oficina al tf 0034 646 08 05 85",
+      },
+      {
+        q: "¿Qué pasa si me separé del grupo?",
+        a: "Nuestros guías siempre explican claramente los lugares y horarios de reunión y todas las excursiones se realizan a tiempo. Esperamos un máximo de 10 minutos sobre la hora establecida. Si su grupo ya se ha ido, por favor, póngase en contacto con nuestra oficina (0034 646 08 05 85).",
       },
     ],
   },
@@ -562,15 +590,27 @@ const es: Dictionary = {
     faqs: [
       {
         q: "¿Dónde encontraré a mi chófer?",
-        a: "Le esperamos en la terminal de llegadas con un cartel con su nombre.",
+        a: "Todos nuestros traslados son servicios privados. Su conductor está en exclusividad para usted y estará esperando en la terminal con un cartel con su nombre para llevarle a su alojamiento o destino. Equipaje especial. Se acepta equipaje especial siempre que nos lo indique en la reserva para que podamos organizar el transporte adecuado. Las sillas para bebés y alzadores son gratuitos. Cada bicicleta tiene un costo adicional de 10.00 € por viaje que hay que abonar en efectivo al conductor",
+      },
+      {
+        q: "¿Qué sucede si no puedo encontrar a mi chófer?",
+        a: "En el caso improbable de que no localice inmediatamente a su conductor, le pedimos que nos llame a cualquiera de números teléfonos. Nos pondremos en contacto con el conductor y lo enviaremos directamente a su ubicación.",
       },
       {
         q: "¿Qué pasa si mi vuelo tiene un retraso?",
-        a: "Hacemos seguimiento de vuelos y adaptamos la recogida sin coste adicional.",
+        a: "Cuando usted realiza su reserva debe indicar el número de su vuelo para que nuestro chófer pueda comprobar el estado de su vuelo y le recoja a la hora correcta.",
       },
       {
         q: "¿Cómo funciona la política de cancelación?",
-        a: "Cancelación gratuita hasta 48 horas antes del servicio.",
+        a: "No hay gastos de cancelación hasta 24 horas antes del servicio.",
+      },
+      {
+        q: "¿Cuándo es mejor reservar mi traslado?",
+        a: "Le sugerimos que haga la reserva tan pronto como conozca los detalles de su vuelo.",
+      },
+      {
+        q: "¿Cómo puedo recuperar un artículo olvidado en el vehículo?",
+        a: "Si cree que podría haber dejado algún artículo en el vehículo, póngase en contacto con nuestro Equipo de Servicio al Cliente. Confíe en nuestra profesionalidad para organizar su traslado en Lanzarote.",
       },
     ],
   },

@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { ExternalLink, Home, MapPin, Users, BedDouble, Ruler } from "lucide-react";
+import { PageContentBlocks } from "@/components/PageContentBlocks";
+import { PageFaqs } from "@/components/PageFaqs";
 import { PageHero } from "@/components/PageHero";
 import { getSettings } from "@/lib/content";
 import { getPublicHouses } from "@/lib/houses";
+import { localizeSettings } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 
@@ -21,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CasasPage({ params }: Props) {
   const locale = resolveLocale((await params).locale);
   const [settings, dict, houses] = await Promise.all([
-    getSettings(),
+    getSettings().then((s) => localizeSettings(s, locale)),
     getDictionary(locale),
     getPublicHouses(),
   ]);
@@ -146,6 +149,18 @@ export default async function CasasPage({ params }: Props) {
           </div>
         )}
       </section>
+
+      <PageContentBlocks
+        title={settings.housesBlocksTitle}
+        intro={settings.housesBlocksIntro}
+        blocks={settings.housesBlocks}
+      />
+
+      <PageFaqs
+        title={settings.housesFaqTitle}
+        faqs={settings.housesFaqs}
+        tone="soft"
+      />
     </>
   );
 }

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
+import { PageContentBlocks } from "@/components/PageContentBlocks";
+import { PageFaqs } from "@/components/PageFaqs";
 import { PageHero } from "@/components/PageHero";
 import { getSettings } from "@/lib/content";
 import { localizeSettings } from "@/lib/localize-content";
@@ -129,6 +131,18 @@ export default async function SobreNosotrosPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      <PageContentBlocks
+        title={settings.aboutBlocksTitle}
+        intro={settings.aboutBlocksIntro}
+        blocks={settings.aboutBlocks}
+      />
+
+      <PageFaqs
+        title={settings.aboutFaqTitle}
+        faqs={settings.aboutFaqs}
+        tone="soft"
+      />
     </>
   );
 }

@@ -2,12 +2,16 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { Locale } from "@/i18n/config";
-import type { SiteSettings } from "@/types";
+import type { PageContentBlock, PageFaqItem, SiteSettings } from "@/types";
+import { ContentBlocksEditor } from "@/components/admin/ContentBlocksEditor";
+import { FaqEditor } from "@/components/admin/FaqEditor";
 import { Field, adminInput, adminTextarea } from "@/components/admin/Field";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import {
   pickSettingsTranslations,
+  SETTINGS_STRING_KEYS,
   SETTINGS_TRANSLATABLE_KEYS,
+  type SettingsStringKey,
   type SettingsTranslatableKey,
 } from "@/lib/settings-i18n";
 
@@ -29,30 +33,65 @@ const empty: SiteSettings = {
   aboutHeroPosition: "50% 40%",
   aboutValues: "",
   aboutPromise: "",
+  aboutFaqTitle: "",
+  aboutFaqs: [],
+  aboutBlocksTitle: "",
+  aboutBlocksIntro: "",
+  aboutBlocks: [],
   excursionsTitle: "",
   excursionsIntro: "",
   excursionsText: "",
   excursionsHeroImage: "",
   excursionsHeroPosition: "50% 40%",
+  excursionsFaqTitle: "",
+  excursionsFaqs: [],
+  excursionsBlocksTitle: "",
+  excursionsBlocksIntro: "",
+  excursionsBlocks: [],
   blogTitle: "",
   blogIntro: "",
   blogText: "",
   blogHeroImage: "",
   blogHeroPosition: "50% 40%",
+  blogFaqTitle: "",
+  blogFaqs: [],
+  blogBlocksTitle: "",
+  blogBlocksIntro: "",
+  blogBlocks: [],
   cruiseHeadline: "",
   cruiseIntro: "",
   cruiseText: "",
   cruiseHeroImage: "",
   cruiseHeroPosition: "50% 45%",
+  cruiseFaqTitle: "",
+  cruiseFaqs: [],
+  cruiseBlocksTitle: "",
+  cruiseBlocksIntro: "",
+  cruiseBlocks: [],
   transferTitle: "",
   transferIntro: "",
   transferText: "",
   transferHeroImage: "",
   transferHeroPosition: "50% 45%",
+  transferFaqTitle: "",
+  transferFaqs: [],
+  transferBlocksTitle: "",
+  transferBlocksIntro: "",
+  transferBlocks: [],
   housesHeroImage: "",
   housesHeroPosition: "50% 40%",
+  housesFaqTitle: "",
+  housesFaqs: [],
+  housesBlocksTitle: "",
+  housesBlocksIntro: "",
+  housesBlocks: [],
   contactHeroImage: "",
   contactHeroPosition: "50% 40%",
+  contactFaqTitle: "",
+  contactFaqs: [],
+  contactBlocksTitle: "",
+  contactBlocksIntro: "",
+  contactBlocks: [],
   companyLegalName: "",
   companyTaxId: "",
   companyAddress: "",
@@ -89,16 +128,49 @@ const SECTION_KEYS: Record<SectionId, SettingsTranslatableKey[]> = {
     "aboutText",
     "aboutValues",
     "aboutPromise",
+    "aboutFaqTitle",
+    "aboutBlocksTitle",
+    "aboutBlocksIntro",
   ],
-  excursions: ["excursionsTitle", "excursionsIntro", "excursionsText"],
-  blog: ["blogTitle", "blogIntro", "blogText"],
-  cruise: ["cruiseHeadline", "cruiseIntro", "cruiseText"],
-  transfers: ["transferTitle", "transferIntro", "transferText"],
+  excursions: [
+    "excursionsTitle",
+    "excursionsIntro",
+    "excursionsText",
+    "excursionsFaqTitle",
+    "excursionsBlocksTitle",
+    "excursionsBlocksIntro",
+  ],
+  blog: [
+    "blogTitle",
+    "blogIntro",
+    "blogText",
+    "blogFaqTitle",
+    "blogBlocksTitle",
+    "blogBlocksIntro",
+  ],
+  cruise: [
+    "cruiseHeadline",
+    "cruiseIntro",
+    "cruiseText",
+    "cruiseFaqTitle",
+    "cruiseBlocksTitle",
+    "cruiseBlocksIntro",
+  ],
+  transfers: [
+    "transferTitle",
+    "transferIntro",
+    "transferText",
+    "transferFaqTitle",
+    "transferBlocksTitle",
+    "transferBlocksIntro",
+  ],
 };
 
 function emptyOverlay(): Partial<SiteSettings> {
   return pickSettingsTranslations(
-    Object.fromEntries(SETTINGS_TRANSLATABLE_KEYS.map((k) => [k, ""])) as Partial<SiteSettings>
+    Object.fromEntries(
+      SETTINGS_STRING_KEYS.map((k) => [k, ""])
+    ) as Partial<SiteSettings>
   );
 }
 
@@ -142,7 +214,7 @@ export default function AdminAjustesPage() {
   const overlay = locale === "en" ? en : locale === "de" ? de : null;
   const setOverlay = locale === "en" ? setEn : locale === "de" ? setDe : null;
 
-  function textValue(key: SettingsTranslatableKey): string {
+  function textValue(key: SettingsStringKey): string {
     if (locale === "es") {
       const v = settings[key];
       return typeof v === "string" ? v : "";
@@ -151,7 +223,7 @@ export default function AdminAjustesPage() {
     return typeof v === "string" ? v : "";
   }
 
-  function setText(key: SettingsTranslatableKey, value: string) {
+  function setText(key: SettingsStringKey, value: string) {
     if (locale === "es") {
       setSettings((prev) => ({ ...prev, [key]: value }));
       return;
@@ -161,6 +233,80 @@ export default function AdminAjustesPage() {
 
   function setShared<K extends keyof SiteSettings>(key: K, value: SiteSettings[K]) {
     setSettings((prev) => ({ ...prev, [key]: value }));
+  }
+
+  function faqsValue(
+    key: keyof Pick<
+      SiteSettings,
+      | "aboutFaqs"
+      | "excursionsFaqs"
+      | "blogFaqs"
+      | "cruiseFaqs"
+      | "transferFaqs"
+      | "housesFaqs"
+      | "contactFaqs"
+    >
+  ): PageFaqItem[] {
+    if (locale === "es") return settings[key] || [];
+    const overlayList = overlay?.[key];
+    return Array.isArray(overlayList) ? overlayList : [];
+  }
+
+  function setFaqs(
+    key: keyof Pick<
+      SiteSettings,
+      | "aboutFaqs"
+      | "excursionsFaqs"
+      | "blogFaqs"
+      | "cruiseFaqs"
+      | "transferFaqs"
+      | "housesFaqs"
+      | "contactFaqs"
+    >,
+    value: PageFaqItem[]
+  ) {
+    if (locale === "es") {
+      setSettings((prev) => ({ ...prev, [key]: value }));
+      return;
+    }
+    setOverlay?.((prev) => ({ ...prev, [key]: value }));
+  }
+
+  function blocksValue(
+    key: keyof Pick<
+      SiteSettings,
+      | "aboutBlocks"
+      | "excursionsBlocks"
+      | "blogBlocks"
+      | "cruiseBlocks"
+      | "transferBlocks"
+      | "housesBlocks"
+      | "contactBlocks"
+    >
+  ): PageContentBlock[] {
+    if (locale === "es") return settings[key] || [];
+    const overlayList = overlay?.[key];
+    return Array.isArray(overlayList) ? overlayList : [];
+  }
+
+  function setBlocks(
+    key: keyof Pick<
+      SiteSettings,
+      | "aboutBlocks"
+      | "excursionsBlocks"
+      | "blogBlocks"
+      | "cruiseBlocks"
+      | "transferBlocks"
+      | "housesBlocks"
+      | "contactBlocks"
+    >,
+    value: PageContentBlock[]
+  ) {
+    if (locale === "es") {
+      setSettings((prev) => ({ ...prev, [key]: value }));
+      return;
+    }
+    setOverlay?.((prev) => ({ ...prev, [key]: value }));
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -461,6 +607,38 @@ export default function AdminAjustesPage() {
             onChange={(url) => setShared("aboutImageSecondary", url)}
             aspectRatio={4 / 3}
           />
+          <ContentBlocksEditor
+            sectionTitle={textValue("aboutBlocksTitle")}
+            sectionIntro={textValue("aboutBlocksIntro")}
+            blocks={blocksValue("aboutBlocks")}
+            folder="about"
+            onTitleChange={(v) => setText("aboutBlocksTitle", v)}
+            onIntroChange={(v) => setText("aboutBlocksIntro", v)}
+            onChange={(blocks) => setBlocks("aboutBlocks", blocks)}
+            onCopyFromBase={
+              locale === "es"
+                ? undefined
+                : () => {
+                    setText("aboutBlocksTitle", settings.aboutBlocksTitle || "");
+                    setText("aboutBlocksIntro", settings.aboutBlocksIntro || "");
+                    setBlocks("aboutBlocks", settings.aboutBlocks || []);
+                  }
+            }
+          />
+          <FaqEditor
+            title={textValue("aboutFaqTitle")}
+            faqs={faqsValue("aboutFaqs")}
+            onTitleChange={(v) => setText("aboutFaqTitle", v)}
+            onChange={(faqs) => setFaqs("aboutFaqs", faqs)}
+            onCopyFromBase={
+              locale === "es"
+                ? undefined
+                : () => {
+                    setText("aboutFaqTitle", settings.aboutFaqTitle || "");
+                    setFaqs("aboutFaqs", settings.aboutFaqs || []);
+                  }
+            }
+          />
         </section>
 
         <section className="space-y-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
@@ -510,6 +688,50 @@ export default function AdminAjustesPage() {
             aspectRatio={16 / 9}
             hint={HERO_HINT}
           />
+          <ContentBlocksEditor
+            sectionTitle={textValue("excursionsBlocksTitle")}
+            sectionIntro={textValue("excursionsBlocksIntro")}
+            blocks={blocksValue("excursionsBlocks")}
+            folder="excursions"
+            onTitleChange={(v) => setText("excursionsBlocksTitle", v)}
+            onIntroChange={(v) => setText("excursionsBlocksIntro", v)}
+            onChange={(blocks) => setBlocks("excursionsBlocks", blocks)}
+            onCopyFromBase={
+              locale === "es"
+                ? undefined
+                : () => {
+                    setText(
+                      "excursionsBlocksTitle",
+                      settings.excursionsBlocksTitle || ""
+                    );
+                    setText(
+                      "excursionsBlocksIntro",
+                      settings.excursionsBlocksIntro || ""
+                    );
+                    setBlocks(
+                      "excursionsBlocks",
+                      settings.excursionsBlocks || []
+                    );
+                  }
+            }
+          />
+          <FaqEditor
+            title={textValue("excursionsFaqTitle")}
+            faqs={faqsValue("excursionsFaqs")}
+            onTitleChange={(v) => setText("excursionsFaqTitle", v)}
+            onChange={(faqs) => setFaqs("excursionsFaqs", faqs)}
+            onCopyFromBase={
+              locale === "es"
+                ? undefined
+                : () => {
+                    setText(
+                      "excursionsFaqTitle",
+                      settings.excursionsFaqTitle || ""
+                    );
+                    setFaqs("excursionsFaqs", settings.excursionsFaqs || []);
+                  }
+            }
+          />
         </section>
 
         <section className="space-y-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
@@ -557,6 +779,38 @@ export default function AdminAjustesPage() {
             aspectRatio={16 / 9}
             hint={HERO_HINT}
           />
+          <ContentBlocksEditor
+            sectionTitle={textValue("blogBlocksTitle")}
+            sectionIntro={textValue("blogBlocksIntro")}
+            blocks={blocksValue("blogBlocks")}
+            folder="blog"
+            onTitleChange={(v) => setText("blogBlocksTitle", v)}
+            onIntroChange={(v) => setText("blogBlocksIntro", v)}
+            onChange={(blocks) => setBlocks("blogBlocks", blocks)}
+            onCopyFromBase={
+              locale === "es"
+                ? undefined
+                : () => {
+                    setText("blogBlocksTitle", settings.blogBlocksTitle || "");
+                    setText("blogBlocksIntro", settings.blogBlocksIntro || "");
+                    setBlocks("blogBlocks", settings.blogBlocks || []);
+                  }
+            }
+          />
+          <FaqEditor
+            title={textValue("blogFaqTitle")}
+            faqs={faqsValue("blogFaqs")}
+            onTitleChange={(v) => setText("blogFaqTitle", v)}
+            onChange={(faqs) => setFaqs("blogFaqs", faqs)}
+            onCopyFromBase={
+              locale === "es"
+                ? undefined
+                : () => {
+                    setText("blogFaqTitle", settings.blogFaqTitle || "");
+                    setFaqs("blogFaqs", settings.blogFaqs || []);
+                  }
+            }
+          />
         </section>
 
         <section className="space-y-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
@@ -603,6 +857,44 @@ export default function AdminAjustesPage() {
             onObjectPositionChange={(pos) => setShared("cruiseHeroPosition", pos)}
             aspectRatio={16 / 9}
             hint={HERO_HINT}
+          />
+          <ContentBlocksEditor
+            sectionTitle={textValue("cruiseBlocksTitle")}
+            sectionIntro={textValue("cruiseBlocksIntro")}
+            blocks={blocksValue("cruiseBlocks")}
+            folder="cruise"
+            onTitleChange={(v) => setText("cruiseBlocksTitle", v)}
+            onIntroChange={(v) => setText("cruiseBlocksIntro", v)}
+            onChange={(blocks) => setBlocks("cruiseBlocks", blocks)}
+            onCopyFromBase={
+              locale === "es"
+                ? undefined
+                : () => {
+                    setText(
+                      "cruiseBlocksTitle",
+                      settings.cruiseBlocksTitle || ""
+                    );
+                    setText(
+                      "cruiseBlocksIntro",
+                      settings.cruiseBlocksIntro || ""
+                    );
+                    setBlocks("cruiseBlocks", settings.cruiseBlocks || []);
+                  }
+            }
+          />
+          <FaqEditor
+            title={textValue("cruiseFaqTitle")}
+            faqs={faqsValue("cruiseFaqs")}
+            onTitleChange={(v) => setText("cruiseFaqTitle", v)}
+            onChange={(faqs) => setFaqs("cruiseFaqs", faqs)}
+            onCopyFromBase={
+              locale === "es"
+                ? undefined
+                : () => {
+                    setText("cruiseFaqTitle", settings.cruiseFaqTitle || "");
+                    setFaqs("cruiseFaqs", settings.cruiseFaqs || []);
+                  }
+            }
           />
         </section>
 
@@ -653,6 +945,44 @@ export default function AdminAjustesPage() {
             aspectRatio={16 / 9}
             hint={HERO_HINT}
           />
+          <ContentBlocksEditor
+            sectionTitle={textValue("transferBlocksTitle")}
+            sectionIntro={textValue("transferBlocksIntro")}
+            blocks={blocksValue("transferBlocks")}
+            folder="transfers"
+            onTitleChange={(v) => setText("transferBlocksTitle", v)}
+            onIntroChange={(v) => setText("transferBlocksIntro", v)}
+            onChange={(blocks) => setBlocks("transferBlocks", blocks)}
+            onCopyFromBase={
+              locale === "es"
+                ? undefined
+                : () => {
+                    setText(
+                      "transferBlocksTitle",
+                      settings.transferBlocksTitle || ""
+                    );
+                    setText(
+                      "transferBlocksIntro",
+                      settings.transferBlocksIntro || ""
+                    );
+                    setBlocks("transferBlocks", settings.transferBlocks || []);
+                  }
+            }
+          />
+          <FaqEditor
+            title={textValue("transferFaqTitle")}
+            faqs={faqsValue("transferFaqs")}
+            onTitleChange={(v) => setText("transferFaqTitle", v)}
+            onChange={(faqs) => setFaqs("transferFaqs", faqs)}
+            onCopyFromBase={
+              locale === "es"
+                ? undefined
+                : () => {
+                    setText("transferFaqTitle", settings.transferFaqTitle || "");
+                    setFaqs("transferFaqs", settings.transferFaqs || []);
+                  }
+            }
+          />
         </section>
 
         <section className="space-y-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
@@ -666,6 +996,44 @@ export default function AdminAjustesPage() {
             onObjectPositionChange={(pos) => setShared("housesHeroPosition", pos)}
             aspectRatio={16 / 9}
             hint={HERO_HINT}
+          />
+          <ContentBlocksEditor
+            sectionTitle={textValue("housesBlocksTitle")}
+            sectionIntro={textValue("housesBlocksIntro")}
+            blocks={blocksValue("housesBlocks")}
+            folder="houses"
+            onTitleChange={(v) => setText("housesBlocksTitle", v)}
+            onIntroChange={(v) => setText("housesBlocksIntro", v)}
+            onChange={(blocks) => setBlocks("housesBlocks", blocks)}
+            onCopyFromBase={
+              locale === "es"
+                ? undefined
+                : () => {
+                    setText(
+                      "housesBlocksTitle",
+                      settings.housesBlocksTitle || ""
+                    );
+                    setText(
+                      "housesBlocksIntro",
+                      settings.housesBlocksIntro || ""
+                    );
+                    setBlocks("housesBlocks", settings.housesBlocks || []);
+                  }
+            }
+          />
+          <FaqEditor
+            title={textValue("housesFaqTitle")}
+            faqs={faqsValue("housesFaqs")}
+            onTitleChange={(v) => setText("housesFaqTitle", v)}
+            onChange={(faqs) => setFaqs("housesFaqs", faqs)}
+            onCopyFromBase={
+              locale === "es"
+                ? undefined
+                : () => {
+                    setText("housesFaqTitle", settings.housesFaqTitle || "");
+                    setFaqs("housesFaqs", settings.housesFaqs || []);
+                  }
+            }
           />
         </section>
 
@@ -682,6 +1050,44 @@ export default function AdminAjustesPage() {
             }
             aspectRatio={16 / 9}
             hint={HERO_HINT}
+          />
+          <ContentBlocksEditor
+            sectionTitle={textValue("contactBlocksTitle")}
+            sectionIntro={textValue("contactBlocksIntro")}
+            blocks={blocksValue("contactBlocks")}
+            folder="contact"
+            onTitleChange={(v) => setText("contactBlocksTitle", v)}
+            onIntroChange={(v) => setText("contactBlocksIntro", v)}
+            onChange={(blocks) => setBlocks("contactBlocks", blocks)}
+            onCopyFromBase={
+              locale === "es"
+                ? undefined
+                : () => {
+                    setText(
+                      "contactBlocksTitle",
+                      settings.contactBlocksTitle || ""
+                    );
+                    setText(
+                      "contactBlocksIntro",
+                      settings.contactBlocksIntro || ""
+                    );
+                    setBlocks("contactBlocks", settings.contactBlocks || []);
+                  }
+            }
+          />
+          <FaqEditor
+            title={textValue("contactFaqTitle")}
+            faqs={faqsValue("contactFaqs")}
+            onTitleChange={(v) => setText("contactFaqTitle", v)}
+            onChange={(faqs) => setFaqs("contactFaqs", faqs)}
+            onCopyFromBase={
+              locale === "es"
+                ? undefined
+                : () => {
+                    setText("contactFaqTitle", settings.contactFaqTitle || "");
+                    setFaqs("contactFaqs", settings.contactFaqs || []);
+                  }
+            }
           />
         </section>
 

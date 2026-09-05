@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageBodyText } from "@/components/PageBodyText";
+import { PageContentBlocks } from "@/components/PageContentBlocks";
+import { PageFaqs } from "@/components/PageFaqs";
 import { PageHero } from "@/components/PageHero";
 import { TourCard } from "@/components/TourCard";
 import { getSettings, getPublicTours } from "@/lib/content";
@@ -30,6 +32,15 @@ export default async function ExcursionesPage({ params }: Props) {
     getSettings().then((s) => localizeSettings(s, locale)),
   ]);
 
+  const faqs =
+    settings.excursionsFaqs && settings.excursionsFaqs.length > 0
+      ? settings.excursionsFaqs
+      : dict.excursions.faqs.map((f, i) => ({
+          id: `dict-exc-${i}`,
+          question: f.q,
+          answer: f.a,
+        }));
+
   return (
     <>
       <PageHero
@@ -52,36 +63,27 @@ export default async function ExcursionesPage({ params }: Props) {
         </div>
       </section>
 
-      <section className="border-y border-sand-line bg-white py-14">
-        <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <h2 className="text-2xl font-bold text-ink md:text-3xl">
-            {dict.excursions.faqTitle}
-          </h2>
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
-            {dict.excursions.faqs.map((faq) => (
-              <details
-                key={faq.q}
-                className="group rounded-lg bg-sky-soft px-5 py-4 ring-1 ring-sand-line open:bg-white"
-              >
-                <summary className="cursor-pointer list-none text-sm font-bold text-ink">
-                  {faq.q}
-                </summary>
-                <p className="mt-3 text-sm leading-relaxed text-ink-muted">
-                  {faq.a}
-                </p>
-              </details>
-            ))}
-          </div>
-          <p className="mt-10 text-center text-sm text-ink-muted">
-            {dict.excursions.cruiseHint}{" "}
-            <Link
-              href={localePath(locale, "/excursiones-cruceros")}
-              className="font-bold text-ocean hover:underline"
-            >
-              {dict.excursions.cruiseLink}
-            </Link>
-          </p>
-        </div>
+      <PageContentBlocks
+        title={settings.excursionsBlocksTitle}
+        intro={settings.excursionsBlocksIntro}
+        blocks={settings.excursionsBlocks}
+      />
+
+      <PageFaqs
+        title={settings.excursionsFaqTitle || dict.excursions.faqTitle}
+        faqs={faqs}
+      />
+
+      <section className="pb-14">
+        <p className="mx-auto max-w-6xl px-4 text-center text-sm text-ink-muted md:px-6">
+          {dict.excursions.cruiseHint}{" "}
+          <Link
+            href={localePath(locale, "/excursiones-cruceros")}
+            className="font-bold text-ocean hover:underline"
+          >
+            {dict.excursions.cruiseLink}
+          </Link>
+        </p>
       </section>
     </>
   );
