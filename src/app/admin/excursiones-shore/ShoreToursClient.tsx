@@ -229,12 +229,12 @@ export function ShoreToursPanel() {
     setSelectedId(id);
   }
 
-  async function save(override?: CruiseShoreTour) {
+  async function save(override?: CruiseShoreTour): Promise<boolean> {
     const source = override || draft;
-    if (!source) return;
+    if (!source) return false;
     if (!source.title.trim()) {
       setMessage("El título es obligatorio");
-      return;
+      return false;
     }
     const isNew = !items.some((t) => t.id === source.id);
     const cleanLocale = (locale: "en" | "de") => {
@@ -253,6 +253,21 @@ export function ShoreToursPanel() {
       return next;
     };
     const savedId = source.id || slugify(source.title);
+    const gallery = (
+      source.gallery?.length
+        ? source.gallery
+        : source.image
+          ? [source.image]
+          : []
+    ).filter(Boolean);
+    const image = source.image || gallery[0] || "";
+    // La principal siempre va primero en la galería para no perderla.
+    const orderedGallery =
+      image && gallery.includes(image)
+        ? [image, ...gallery.filter((u) => u !== image)]
+        : image
+          ? [image, ...gallery]
+          : gallery;
     const payload = {
       kind: "shore-tours",
       ...syncShoreTourStructuredFields({
@@ -260,13 +275,9 @@ export function ShoreToursPanel() {
         id: savedId,
         shortTitle: source.shortTitle || source.title,
         pricePerPerson: source.priceAdult,
-        image: source.image || source.gallery?.[0] || "",
-        gallery: source.gallery?.length
-          ? source.gallery
-          : source.image
-            ? [source.image]
-            : [],
-        meetingPointImages: source.meetingPointImages || [],
+        image,
+        gallery: orderedGallery,
+        meetingPointImages: (source.meetingPointImages || []).filter(Boolean),
         schedule: normalizeSchedule(source.schedule),
         blockedDates: source.blockedDates || [],
         seo: source.seo || { title: "", description: "", keywords: "" },
@@ -285,7 +296,7 @@ export function ShoreToursPanel() {
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
       setMessage(data.error || "No se pudo guardar");
-      return;
+      return false;
     }
     const saved = (data.item || payload) as CruiseShoreTour;
     setCreating(false);
@@ -299,6 +310,7 @@ export function ShoreToursPanel() {
     setSelectedId(saved.id);
     setDraft({
       ...saved,
+      image: saved.image || "",
       gallery: saved.gallery?.length
         ? [...saved.gallery]
         : saved.image
@@ -319,6 +331,7 @@ export function ShoreToursPanel() {
       },
     });
     setMessage("Excursión guardada");
+    return true;
   }
 
   async function remove(id: string) {
@@ -350,8 +363,8 @@ export function ShoreToursPanel() {
         image: draft.image || url,
       };
       setDraft(next);
-      await save(next);
-      setMessage("Foto añadida y guardada");
+      const ok = await save(next);
+      if (ok) setMessage("Foto añadida y guardada");
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "Error al subir");
     } finally {
@@ -373,8 +386,8 @@ export function ShoreToursPanel() {
       const meetingPointImages = [...(draft.meetingPointImages || []), url];
       const next = { ...draft, meetingPointImages };
       setDraft(next);
-      await save(next);
-      setMessage("Foto de punto de encuentro añadida y guardada");
+      const ok = await save(next);
+      if (ok) setMessage("Foto de punto de encuentro añadida y guardada");
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "Error al subir");
     } finally {
@@ -382,30 +395,43 @@ export function ShoreToursPanel() {
     }
   }
 
-  function addPhotoUrl() {
+  async function addPhotoUrl() {
     if (!draft || !newPhotoUrl.trim()) return;
     const url = newPhotoUrl.trim();
     const gallery = [...(draft.gallery || []), url];
-    setDraft({ ...draft, gallery, image: draft.image || url });
+    const next = {
+      ...draft,
+      gallery,
+      image: draft.image || url,
+    };
+    setDraft(next);
     setNewPhotoUrl("");
+    const ok = await save(next);
+    if (ok) setMessage("Foto añadida y guardada");
   }
 
-  function addMeetingPointUrl() {
+  async function addMeetingPointUrl() {
     if (!draft || !newMeetingUrl.trim()) return;
     const url = newMeetingUrl.trim();
-    setDraft({
+    const next = {
       ...draft,
       meetingPointImages: [...(draft.meetingPointImages || []), url],
-    });
+    };
+    setDraft(next);
     setNewMeetingUrl("");
+    const ok = await save(next);
+    if (ok) setMessage("Foto de punto de encuentro añadida y guardada");
   }
 
-  function setPrincipalImage(url: string) {
+  async function setPrincipalImage(url: string) {
     if (!draft) return;
     const gallery = draft.gallery?.includes(url)
       ? [url, ...(draft.gallery || []).filter((u) => u !== url)]
       : [url, ...(draft.gallery || [])];
-    setDraft({ ...draft, image: url, gallery });
+    const next = { ...draft, image: url, gallery };
+    setDraft(next);
+    const ok = await save(next);
+    if (ok) setMessage("Imagen principal actualizada");
   }
 
   function updateTranslation(
@@ -1139,7 +1165,9 @@ export function ShoreToursPanel() {
                     gallery,
                   };
                   setDraft(next);
-                  void save(next);
+                  void save(next).then((ok) => {
+                    if (ok) setMessage("Imagen principal actualizada");
+                  });
                 }}
               />
             </div>
@@ -1171,20 +1199,21 @@ export function ShoreToursPanel() {
                       <button
                         type="button"
                         className="text-ink-muted hover:text-rose-600"
-                        onClick={() =>
-                          setDraft({
+                        onClick={() => {
+                          const gallery = (draft.gallery || []).filter(
+                            (_, i) => i !== idx
+                          );
+                          const next = {
                             ...draft,
-                            gallery: (draft.gallery || []).filter(
-                              (_, i) => i !== idx
-                            ),
+                            gallery,
                             image:
                               draft.image === url
-                                ? (draft.gallery || []).filter(
-                                    (_, i) => i !== idx
-                                  )[0] || ""
+                                ? gallery[0] || ""
                                 : draft.image,
-                          })
-                        }
+                          };
+                          setDraft(next);
+                          void save(next);
+                        }}
                         aria-label="Eliminar foto"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -1254,14 +1283,16 @@ export function ShoreToursPanel() {
                       <button
                         type="button"
                         className="text-ink-muted hover:text-rose-600"
-                        onClick={() =>
-                          setDraft({
+                        onClick={() => {
+                          const next = {
                             ...draft,
                             meetingPointImages: (
                               draft.meetingPointImages || []
                             ).filter((_, i) => i !== idx),
-                          })
-                        }
+                          };
+                          setDraft(next);
+                          void save(next);
+                        }}
                         aria-label="Eliminar foto de punto de encuentro"
                       >
                         <Trash2 className="h-4 w-4" />

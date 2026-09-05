@@ -423,9 +423,30 @@ export async function PUT(request: Request) {
         return NextResponse.json({ error: "No encontrado" }, { status: 404 });
       }
       const { kind: _kind, ...rest } = body;
+      const prev = data.shoreTours[idx];
+      const gallery = Array.isArray(rest.gallery)
+        ? (rest.gallery as string[]).filter(Boolean)
+        : prev.gallery || [];
+      const image =
+        (typeof rest.image === "string" && rest.image) ||
+        gallery[0] ||
+        prev.image ||
+        "";
+      const orderedGallery =
+        image && gallery.includes(image)
+          ? [image, ...gallery.filter((u) => u !== image)]
+          : image
+            ? [image, ...gallery]
+            : gallery;
+      const meetingPointImages = Array.isArray(rest.meetingPointImages)
+        ? (rest.meetingPointImages as string[]).filter(Boolean)
+        : prev.meetingPointImages || [];
       data.shoreTours[idx] = syncShoreTourStructuredFields({
-        ...data.shoreTours[idx],
+        ...prev,
         ...rest,
+        image,
+        gallery: orderedGallery,
+        meetingPointImages,
       }) as CruiseShoreTour;
       await save(data);
       return NextResponse.json({ item: data.shoreTours[idx] });
