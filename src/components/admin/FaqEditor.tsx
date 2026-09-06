@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { Field, adminInput } from "@/components/admin/Field";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import type { PageFaqItem } from "@/types";
+import { expandPackedFaqs } from "@/lib/faq-normalize";
 import { newPageItemId } from "@/lib/page-content-defaults";
 
 export function FaqEditor({
@@ -18,6 +20,16 @@ export function FaqEditor({
   onChange: (faqs: PageFaqItem[]) => void;
   onCopyFromBase?: () => void;
 }) {
+  const expandedOnce = useRef(false);
+
+  useEffect(() => {
+    if (expandedOnce.current) return;
+    const expanded = expandPackedFaqs(faqs);
+    if (expanded.length <= faqs.length) return;
+    expandedOnce.current = true;
+    onChange(expanded);
+  }, [faqs, onChange]);
+
   function update(index: number, patch: Partial<PageFaqItem>) {
     onChange(faqs.map((f, i) => (i === index ? { ...f, ...patch } : f)));
   }

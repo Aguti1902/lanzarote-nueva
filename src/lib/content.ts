@@ -19,6 +19,7 @@ import {
   DEFAULT_TRANSFER_FAQ_TITLE,
   DEFAULT_TRANSFER_FAQS,
 } from "@/lib/page-content-defaults";
+import { expandPackedFaqs } from "@/lib/faq-normalize";
 import {
   readCmsJson,
   readCmsJsonFresh,
@@ -568,7 +569,8 @@ function coalesceFaqs(
   stored: PageFaqItem[] | undefined,
   fallback: PageFaqItem[]
 ): PageFaqItem[] {
-  return stored === undefined ? fallback : stored;
+  const base = stored === undefined ? fallback : stored;
+  return expandPackedFaqs(base);
 }
 
 function coalesceBlocks(
