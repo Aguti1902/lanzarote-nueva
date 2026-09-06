@@ -178,6 +178,10 @@ export type Dictionary = {
     excursionsForShip: string;
     cantFindCruise: string;
     durationLabelShort: string;
+    filterAllShips: string;
+    filterAllMonths: string;
+    showMoreSailings: string;
+    noSailingsForFilters: string;
     faqTitle: string;
     faqs: { q: string; a: string }[];
   };
@@ -712,6 +716,10 @@ const es: Dictionary = {
     excursionsForShip: "Excursiones para {ship}",
     cantFindCruise: "¿No encuentra su crucero?",
     durationLabelShort: "Duración",
+    filterAllShips: "Todos los barcos",
+    filterAllMonths: "Todos los meses",
+    showMoreSailings: "Ver más salidas",
+    noSailingsForFilters: "No hay salidas con estos filtros.",
     faqTitle: "Preguntas frecuentes sobre excursiones para cruceros",
     faqs: [
       {
@@ -1255,6 +1263,10 @@ const en: Dictionary = {
     excursionsForShip: "Excursions for {ship}",
     cantFindCruise: "Can't find your cruise?",
     durationLabelShort: "Duration",
+    filterAllShips: "All ships",
+    filterAllMonths: "All months",
+    showMoreSailings: "Show more sailings",
+    noSailingsForFilters: "No sailings match these filters.",
     faqTitle: "Frequently asked questions about shore excursions",
     faqs: [
       {
@@ -1796,6 +1808,10 @@ const de: Dictionary = {
     excursionsForShip: "Ausflüge für {ship}",
     cantFindCruise: "Kreuzfahrt nicht gefunden?",
     durationLabelShort: "Dauer",
+    filterAllShips: "Alle Schiffe",
+    filterAllMonths: "Alle Monate",
+    showMoreSailings: "Weitere Abfahrten anzeigen",
+    noSailingsForFilters: "Keine Abfahrten für diese Filter.",
     faqTitle: "Häufige Fragen zu Landausflügen für Kreuzfahrten",
     faqs: [
       {
