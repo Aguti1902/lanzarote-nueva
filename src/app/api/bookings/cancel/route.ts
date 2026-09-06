@@ -75,9 +75,7 @@ export async function POST(request: Request) {
       cancellationReason: reason,
       cancelledAt: new Date().toISOString(),
       cancellationFee: assessment.fee,
-      ...(assessment.refundAmount > 0
-        ? { paymentStatus: "refunded" as const }
-        : {}),
+      // No marcar "refunded" hasta que Stripe ejecute el refund real
     });
 
     if (!updated) {

@@ -529,9 +529,7 @@ export async function PATCH(request: Request) {
           (cancellationReason && String(cancellationReason).trim()) ||
           existing.cancellationReason ||
           "admin",
-        ...(assessment.refundAmount > 0
-          ? { paymentStatus: "refunded" as const }
-          : {}),
+        // No marcar "refunded" hasta el refund real en Stripe
       });
       if (!booking) {
         return NextResponse.json({ error: "No encontrada" }, { status: 404 });

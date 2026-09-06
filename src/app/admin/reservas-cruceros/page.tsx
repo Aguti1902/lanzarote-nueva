@@ -268,6 +268,9 @@ export default function AdminReservasCrucerosPage() {
                     <PaymentStatusBadge
                       status={b.paymentStatus || "unpaid"}
                       size="sm"
+                      bookingStatus={b.status}
+                      amountPaidCard={b.amountPaidCard}
+                      stripeRefundId={b.stripeRefundId}
                     />
                   </div>
                 </td>

@@ -428,6 +428,9 @@ export default function AdminReservasPage() {
                       <PaymentStatusBadge
                         status={b.paymentStatus || "unpaid"}
                         size="sm"
+                        bookingStatus={b.status}
+                        amountPaidCard={b.amountPaidCard}
+                        stripeRefundId={b.stripeRefundId}
                       />
                     </div>
                     {b.invoiceId && (

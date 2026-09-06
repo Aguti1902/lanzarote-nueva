@@ -122,7 +122,7 @@ export function CancelBookingPanel({
                 Corresponde devolver {money(assessment.refundAmount)}
                 {isOnlineCardMethod(booking.paymentMethod) &&
                 (booking.amountPaidCard || 0) > 0
-                  ? " (use el botón Refund en Stripe tras cancelar)."
+                  ? ". Tras cancelar, pulse «Refund Stripe» para devolver el dinero a la tarjeta (hasta entonces NO está devuelto)."
                   : "."}{" "}
                 Se emitirá factura en negativo (abono) con IGIC 7%.
               </span>

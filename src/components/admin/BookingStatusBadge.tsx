@@ -51,10 +51,56 @@ const paymentConfig: Record<
     className: "bg-sky-100 text-sky-900 ring-sky-200",
   },
   refunded: {
-    label: "Devuelto",
+    label: "Devuelto (Stripe)",
     className: "bg-violet-100 text-violet-900 ring-violet-200",
   },
 };
+
+/**
+ * Solo se considera "devuelto" si existe stripeRefundId (refund real en Stripe).
+ * Cancelada + tarjeta cobrada sin refund → pendiente.
+ */
+export function resolvePaymentDisplay(input: {
+  paymentStatus: PaymentStatus;
+  status?: BookingStatus;
+  amountPaidCard?: number;
+  stripeRefundId?: string;
+}): {
+  label: string;
+  className: string;
+  kind: "normal" | "pending_refund" | "refunded";
+} {
+  if (input.stripeRefundId) {
+    return {
+      label: "Devuelto (Stripe)",
+      className: paymentConfig.refunded.className,
+      kind: "refunded",
+    };
+  }
+
+  const cardPaid = (input.amountPaidCard || 0) > 0;
+  if (input.status === "cancelled" && cardPaid) {
+    return {
+      label: "Pendiente refund Stripe",
+      className: "bg-amber-100 text-amber-950 ring-amber-300",
+      kind: "pending_refund",
+    };
+  }
+
+  // "refunded" sin stripeRefundId = marca antigua incorrecta → no mostrar como devuelto
+  if (input.paymentStatus === "refunded" && !cardPaid) {
+    return {
+      label: "Devuelto (Stripe)",
+      className: paymentConfig.refunded.className,
+      kind: "refunded",
+    };
+  }
+
+  const statusKey =
+    input.paymentStatus === "refunded" ? "paid" : input.paymentStatus;
+  const item = paymentConfig[statusKey] || paymentConfig.unpaid;
+  return { label: item.label, className: item.className, kind: "normal" };
+}
 
 export function BookingStatusBadge({
   status,
@@ -84,11 +130,22 @@ export function BookingStatusBadge({
 export function PaymentStatusBadge({
   status,
   size = "md",
+  bookingStatus,
+  amountPaidCard,
+  stripeRefundId,
 }: {
   status: PaymentStatus;
   size?: "sm" | "md";
+  bookingStatus?: BookingStatus;
+  amountPaidCard?: number;
+  stripeRefundId?: string;
 }) {
-  const item = paymentConfig[status] || paymentConfig.unpaid;
+  const display = resolvePaymentDisplay({
+    paymentStatus: status,
+    status: bookingStatus,
+    amountPaidCard,
+    stripeRefundId,
+  });
   const sizing =
     size === "sm"
       ? "gap-1 px-2 py-0.5 text-[10px]"
@@ -97,10 +154,10 @@ export function PaymentStatusBadge({
 
   return (
     <span
-      className={`inline-flex items-center rounded-md font-bold uppercase tracking-wide ring-1 ${item.className} ${sizing}`}
+      className={`inline-flex items-center rounded-md font-bold uppercase tracking-wide ring-1 ${display.className} ${sizing}`}
     >
       <Wallet className={iconSize} aria-hidden />
-      {item.label}
+      {display.label}
     </span>
   );
 }

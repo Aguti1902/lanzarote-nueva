@@ -510,10 +510,20 @@ export function BookingDetailModal({
                     <dt className="w-44 shrink-0 text-ink-muted">
                       Estado del pago
                     </dt>
-                    <dd>
+                    <dd className="space-y-1">
                       <PaymentStatusBadge
                         status={booking.paymentStatus || "unpaid"}
+                        bookingStatus={booking.status}
+                        amountPaidCard={booking.amountPaidCard}
+                        stripeRefundId={booking.stripeRefundId}
                       />
+                      {booking.status === "cancelled" &&
+                        (booking.amountPaidCard || 0) > 0 &&
+                        !booking.stripeRefundId && (
+                          <p className="text-xs text-amber-800">
+                            El dinero aún no se ha devuelto. Pulse «Refund Stripe».
+                          </p>
+                        )}
                     </dd>
                   </div>
                   <Row
