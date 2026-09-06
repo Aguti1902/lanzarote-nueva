@@ -1,4 +1,8 @@
-import { looksLikeHtml, sanitizeContentHtml } from "@/lib/sanitize-html";
+import {
+  looksLikeHtml,
+  sanitizeContentHtml,
+  RICH_CONTENT_CLASS,
+} from "@/lib/sanitize-html";
 
 /** Renderiza descripción de tour: HTML sanitizado o párrafos de texto plano. */
 export function RichContent({
@@ -16,7 +20,7 @@ export function RichContent({
     if (!html) return null;
     return (
       <div
-        className={`rich-content space-y-3 leading-relaxed text-ink-muted [&_b]:font-bold [&_b]:text-ink [&_strong]:font-bold [&_strong]:text-ink [&_u]:underline [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-ink [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-ink ${className}`}
+        className={`${RICH_CONTENT_CLASS} ${className}`}
         dangerouslySetInnerHTML={{ __html: html }}
       />
     );

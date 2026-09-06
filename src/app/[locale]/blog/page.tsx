@@ -19,6 +19,7 @@ import {
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
+import { stripHtml } from "@/lib/sanitize-html";
 
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
 export const revalidate = 300;
@@ -93,7 +94,7 @@ export default async function BlogPage({ params }: Props) {
                 {featured.title}
               </h2>
               <p className="mt-3 text-base leading-relaxed text-ink-muted">
-                {featured.excerpt}
+                {stripHtml(featured.excerpt)}
               </p>
               <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-ocean">
                 {dict.blog.readArticle}
@@ -139,7 +140,7 @@ export default async function BlogPage({ params }: Props) {
                   {post.title}
                 </h2>
                 <p className="mt-2 line-clamp-3 flex-1 text-sm text-ink-muted">
-                  {post.excerpt}
+                  {stripHtml(post.excerpt)}
                 </p>
                 <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-ocean">
                   {dict.blog.readMore} <ArrowRight className="h-3.5 w-3.5" />

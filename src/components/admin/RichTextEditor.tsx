@@ -1,7 +1,21 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Bold, Underline, Type, Palette } from "lucide-react";
+import {
+  AlignCenter,
+  AlignJustify,
+  AlignLeft,
+  AlignRight,
+  Bold,
+  Indent,
+  List,
+  ListOrdered,
+  Outdent,
+  Palette,
+  Type,
+  Underline,
+} from "lucide-react";
+import type { ReactNode } from "react";
 
 const SIZES = [
   { label: "Normal", value: "3" },
@@ -29,7 +43,31 @@ function plainToHtml(value: string): string {
     .join("");
 }
 
-/** Editor con negrita, subrayado, tamaño y color (HTML ligero). */
+function ToolbarBtn({
+  title,
+  onClick,
+  children,
+}: {
+  title: string;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      className="rounded p-1.5 text-ink hover:bg-white"
+      title={title}
+      onMouseDown={(e) => {
+        e.preventDefault();
+        onClick();
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
+/** Editor tipográfico: negrita, listas, sangría, alineación, tamaño y color. */
 export function RichTextEditor({
   label,
   value,
@@ -80,29 +118,51 @@ export function RichTextEditor({
         <p className="text-sm font-medium text-ink">{label}</p>
       ) : null}
       <div className="overflow-hidden rounded-lg border border-sand-line bg-white">
-        <div className="flex flex-wrap items-center gap-1 border-b border-sand-line bg-sky-soft/50 px-2 py-1.5">
-          <button
-            type="button"
-            className="rounded p-1.5 text-ink hover:bg-white"
-            title="Negrita"
-            onMouseDown={(e) => {
-              e.preventDefault();
-              run("bold");
-            }}
-          >
+        <div className="flex flex-wrap items-center gap-0.5 border-b border-sand-line bg-sky-soft/50 px-2 py-1.5">
+          <ToolbarBtn title="Negrita" onClick={() => run("bold")}>
             <Bold className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            className="rounded p-1.5 text-ink hover:bg-white"
-            title="Subrayado"
-            onMouseDown={(e) => {
-              e.preventDefault();
-              run("underline");
-            }}
-          >
+          </ToolbarBtn>
+          <ToolbarBtn title="Subrayado" onClick={() => run("underline")}>
             <Underline className="h-4 w-4" />
-          </button>
+          </ToolbarBtn>
+          <span className="mx-1 h-4 w-px bg-sand-line" />
+          <ToolbarBtn
+            title="Viñetas"
+            onClick={() => run("insertUnorderedList")}
+          >
+            <List className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn
+            title="Numeración"
+            onClick={() => run("insertOrderedList")}
+          >
+            <ListOrdered className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn title="Disminuir sangría" onClick={() => run("outdent")}>
+            <Outdent className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn title="Aumentar sangría" onClick={() => run("indent")}>
+            <Indent className="h-4 w-4" />
+          </ToolbarBtn>
+          <span className="mx-1 h-4 w-px bg-sand-line" />
+          <ToolbarBtn
+            title="Alinear a la izquierda"
+            onClick={() => run("justifyLeft")}
+          >
+            <AlignLeft className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn title="Centrar" onClick={() => run("justifyCenter")}>
+            <AlignCenter className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn
+            title="Alinear a la derecha"
+            onClick={() => run("justifyRight")}
+          >
+            <AlignRight className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn title="Justificar" onClick={() => run("justifyFull")}>
+            <AlignJustify className="h-4 w-4" />
+          </ToolbarBtn>
           <span className="mx-1 h-4 w-px bg-sand-line" />
           <label className="inline-flex items-center gap-1 text-xs text-ink-muted">
             <Type className="h-3.5 w-3.5" />
@@ -141,15 +201,14 @@ export function RichTextEditor({
           aria-multiline="true"
           contentEditable
           suppressContentEditableWarning
-          className="max-w-none px-3 py-2.5 text-sm leading-relaxed text-ink outline-none"
+          className="rich-editor max-w-none px-3 py-2.5 text-sm leading-relaxed text-ink outline-none [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5"
           style={{ minHeight }}
           onInput={emit}
           onBlur={emit}
         />
       </div>
       <p className="text-xs text-ink-muted">
-        Usa negrita, subrayado, tamaño y color para destacar palabras clave
-        (SEO on-page).
+        Formato: negrita, listas, sangría, alineación, tamaño y color.
       </p>
     </div>
   );

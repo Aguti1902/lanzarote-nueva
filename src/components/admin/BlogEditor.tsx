@@ -10,7 +10,8 @@ import {
   getBlogTopicTags,
   withBlogLocaleTag,
 } from "@/lib/blog-locale";
-import { Field, adminInput, adminTextarea } from "@/components/admin/Field";
+import { Field, adminInput } from "@/components/admin/Field";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 
 export function BlogEditor({ initial }: { initial?: BlogPost }) {
   const router = useRouter();
@@ -142,19 +143,17 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         />
       </Field>
       <Field label="Extracto *">
-        <textarea
-          className={adminTextarea}
-          required
+        <RichTextEditor
           value={post.excerpt || ""}
-          onChange={(e) => setPost({ ...post, excerpt: e.target.value })}
+          onChange={(html) => setPost({ ...post, excerpt: html })}
+          minHeight={90}
         />
       </Field>
-      <Field label="Contenido * (párrafos separados por línea en blanco; **negrita**)">
-        <textarea
-          className={`${adminTextarea} min-h-[220px]`}
-          required
+      <Field label="Contenido *">
+        <RichTextEditor
           value={post.content || ""}
-          onChange={(e) => setPost({ ...post, content: e.target.value })}
+          onChange={(html) => setPost({ ...post, content: html })}
+          minHeight={280}
         />
       </Field>
       <div className="grid gap-4 md:grid-cols-2">

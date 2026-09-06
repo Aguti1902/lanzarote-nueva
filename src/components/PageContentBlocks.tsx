@@ -1,6 +1,12 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { RichContent } from "@/components/RichContent";
 import type { PageContentBlock } from "@/types";
+import {
+  looksLikeHtml,
+  sanitizeContentHtml,
+  RICH_CONTENT_CLASS,
+} from "@/lib/sanitize-html";
 
 function BlockLink({
   href,
@@ -24,6 +30,10 @@ function BlockLink({
   );
 }
 
+function BlockBody({ text }: { text: string }) {
+  return <RichContent text={text} className="!space-y-2 text-sm md:text-base" />;
+}
+
 function FeaturedBlock({ block }: { block: PageContentBlock }) {
   return (
     <article className="grid gap-6 md:grid-cols-2 md:items-center">
@@ -40,16 +50,12 @@ function FeaturedBlock({ block }: { block: PageContentBlock }) {
       ) : null}
       <div>
         <h3 className="text-xl font-bold text-ink md:text-2xl">{block.title}</h3>
-        <div className="mt-3 space-y-3 text-sm leading-relaxed text-ink-muted md:text-base">
-          {block.text
-            .split(/\n\n+/)
-            .map((p) => p.trim())
-            .filter(Boolean)
-            .map((p) => (
-              <p key={p.slice(0, 40)}>{p}</p>
-            ))}
+        <div className="mt-3">
+          <BlockBody text={block.text} />
         </div>
-        <BlockLink href={block.linkHref}>{block.linkText || block.linkHref}</BlockLink>
+        <BlockLink href={block.linkHref}>
+          {block.linkText || block.linkHref}
+        </BlockLink>
       </div>
     </article>
   );
@@ -70,16 +76,12 @@ function CardBlock({ block }: { block: PageContentBlock }) {
         </div>
       ) : null}
       <h3 className="mt-4 text-lg font-bold text-ink">{block.title}</h3>
-      <div className="mt-2 space-y-2 text-sm leading-relaxed text-ink-muted">
-        {block.text
-          .split(/\n\n+/)
-          .map((p) => p.trim())
-          .filter(Boolean)
-          .map((p) => (
-            <p key={p.slice(0, 40)}>{p}</p>
-          ))}
+      <div className="mt-2">
+        <BlockBody text={block.text} />
       </div>
-      <BlockLink href={block.linkHref}>{block.linkText || block.linkHref}</BlockLink>
+      <BlockLink href={block.linkHref}>
+        {block.linkText || block.linkHref}
+      </BlockLink>
     </article>
   );
 }
@@ -100,6 +102,10 @@ export function PageContentBlocks({
 
   const featured = items.filter((b) => b.layout === "featured");
   const cards = items.filter((b) => b.layout !== "featured");
+  const introRaw = (intro || "").trim();
+  const introHtml = looksLikeHtml(introRaw)
+    ? sanitizeContentHtml(introRaw)
+    : "";
 
   return (
     <section className={`border-t border-sand-line bg-white py-14 ${className}`}>
@@ -107,11 +113,16 @@ export function PageContentBlocks({
         {title ? (
           <h2 className="text-2xl font-bold text-ink md:text-3xl">{title}</h2>
         ) : null}
-        {intro ? (
+        {introHtml ? (
+          <div
+            className={`${RICH_CONTENT_CLASS} max-w-3xl text-base ${title ? "mt-4" : ""}`}
+            dangerouslySetInnerHTML={{ __html: introHtml }}
+          />
+        ) : introRaw ? (
           <p
             className={`max-w-3xl text-base leading-relaxed text-ink-muted ${title ? "mt-4" : ""}`}
           >
-            {intro}
+            {introRaw}
           </p>
         ) : null}
 

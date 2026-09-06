@@ -1,3 +1,4 @@
+import { RichContent } from "@/components/RichContent";
 import type { PageFaqItem } from "@/types";
 
 export function PageFaqs({
@@ -18,12 +19,12 @@ export function PageFaqs({
 
   const sectionBg = tone === "soft" ? "bg-sky-soft" : "bg-white";
   const itemBg =
-    tone === "soft"
-      ? "bg-white"
-      : "bg-sky-soft open:bg-white";
+    tone === "soft" ? "bg-white" : "bg-sky-soft open:bg-white";
 
   return (
-    <section className={`border-y border-sand-line ${sectionBg} py-14 ${className}`}>
+    <section
+      className={`border-y border-sand-line ${sectionBg} py-14 ${className}`}
+    >
       <div className="mx-auto max-w-6xl px-4 md:px-6">
         {title ? (
           <h2 className="text-2xl font-bold text-ink md:text-3xl">{title}</h2>
@@ -37,9 +38,9 @@ export function PageFaqs({
               <summary className="cursor-pointer list-none text-sm font-bold text-ink">
                 {faq.question}
               </summary>
-              <p className="mt-3 text-sm leading-relaxed text-ink-muted">
-                {faq.answer}
-              </p>
+              <div className="mt-3 text-sm">
+                <RichContent text={faq.answer} className="!space-y-2" />
+              </div>
             </details>
           ))}
         </div>

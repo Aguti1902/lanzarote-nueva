@@ -1,6 +1,7 @@
 "use client";
 
-import { Field, adminInput, adminTextarea } from "@/components/admin/Field";
+import { Field, adminInput } from "@/components/admin/Field";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import type { PageFaqItem } from "@/types";
 import { newPageItemId } from "@/lib/page-content-defaults";
 
@@ -121,10 +122,10 @@ export function FaqEditor({
               />
             </Field>
             <Field label="Respuesta">
-              <textarea
-                className={`${adminTextarea} min-h-[80px]`}
+              <RichTextEditor
                 value={faq.answer}
-                onChange={(e) => update(index, { answer: e.target.value })}
+                onChange={(html) => update(index, { answer: html })}
+                minHeight={100}
               />
             </Field>
           </div>
