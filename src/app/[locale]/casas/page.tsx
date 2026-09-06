@@ -6,7 +6,7 @@ import { PageFaqs } from "@/components/PageFaqs";
 import { PageHero } from "@/components/PageHero";
 import { getSettings } from "@/lib/content";
 import { getPublicHouses } from "@/lib/houses";
-import { localizeSettings } from "@/lib/localize-content";
+import { localizeHouses, localizeSettings } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 
@@ -26,7 +26,7 @@ export default async function CasasPage({ params }: Props) {
   const [settings, dict, houses] = await Promise.all([
     getSettings().then((s) => localizeSettings(s, locale)),
     getDictionary(locale),
-    getPublicHouses(),
+    getPublicHouses().then((list) => localizeHouses(list, locale)),
   ]);
 
   return (

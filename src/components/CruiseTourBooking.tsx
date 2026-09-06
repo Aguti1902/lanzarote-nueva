@@ -20,6 +20,7 @@ import {
 } from "@/lib/shore-tour-display";
 import { useCart } from "@/components/CartProvider";
 import { useLocale } from "@/components/LocaleProvider";
+import { ShoreMeetingPointButton } from "@/components/ShoreMeetingPointButton";
 
 const inputClass =
   "w-full rounded border border-sand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20";
@@ -223,6 +224,16 @@ export function CruiseTourBooking({
             {dict.common.close}
           </button>
         )}
+      </div>
+
+      <div className="mt-4">
+        <ShoreMeetingPointButton
+          images={tour.meetingPointImages}
+          title={dict.cruises.meetingPointTitle}
+          body={dict.cruises.meetingPointBody}
+          buttonLabel={dict.cruises.meetingPoint}
+          className="inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-ocean bg-white px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-ocean transition hover:bg-ocean hover:text-white"
+        />
       </div>
 
       {tooSoon ? (

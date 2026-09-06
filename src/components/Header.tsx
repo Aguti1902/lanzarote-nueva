@@ -27,6 +27,7 @@ export function Header() {
     },
     { href: href("/casas"), path: "/casas", label: dict.nav.houses },
     { href: href("/blog"), path: "/blog", label: dict.nav.blog },
+    { href: href("/contacto"), path: "/contacto", label: dict.nav.contact },
   ];
 
   useEffect(() => {
@@ -141,13 +142,6 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href={href("/contacto")}
-              onClick={() => setOpen(false)}
-              className="rounded-lg px-3 py-3 text-base font-semibold uppercase tracking-wide text-white hover:bg-white/10"
-            >
-              {dict.nav.contact}
-            </Link>
           </nav>
         </div>
       )}
