@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import type { BlogPost } from "@/types";
-import { getBlogPostLocale } from "@/lib/blog-locale";
+import { getBlogPostLanguageCoverage } from "@/lib/blog-locale";
 import { formatDate } from "@/lib/format";
 
 export default function AdminBlogPage() {
@@ -37,7 +37,7 @@ export default function AdminBlogPage() {
         <div>
           <h1 className="font-display text-3xl text-ink">Blog</h1>
           <p className="mt-1 text-sm text-ink-muted">
-            Gestiona entradas del blog
+            Un artículo = ES + EN + DE en el mismo contenido
           </p>
         </div>
         <Link
@@ -54,7 +54,7 @@ export default function AdminBlogPage() {
           <thead className="border-b border-sand-line bg-bg text-ink-muted">
             <tr>
               <th className="px-4 py-3 font-medium">Título</th>
-              <th className="px-4 py-3 font-medium">Idioma</th>
+              <th className="px-4 py-3 font-medium">Idiomas</th>
               <th className="px-4 py-3 font-medium">Fecha</th>
               <th className="px-4 py-3 font-medium">Autor</th>
               <th className="px-4 py-3 font-medium">Acciones</th>
@@ -75,8 +75,17 @@ export default function AdminBlogPage() {
                     <p className="font-medium">{p.title}</p>
                     <p className="text-xs text-ink-muted">/blog/{p.slug}</p>
                   </td>
-                  <td className="px-4 py-3 uppercase text-xs font-semibold text-ocean">
-                    {getBlogPostLocale(p)}
+                  <td className="px-4 py-3">
+                    <div className="flex flex-wrap gap-1">
+                      {getBlogPostLanguageCoverage(p).map((lang) => (
+                        <span
+                          key={lang}
+                          className="rounded bg-sky-soft px-1.5 py-0.5 text-[10px] font-bold uppercase text-ocean"
+                        >
+                          {lang}
+                        </span>
+                      ))}
+                    </div>
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">
                     {formatDate(p.date)}

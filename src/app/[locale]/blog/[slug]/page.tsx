@@ -6,8 +6,8 @@ import { ArrowLeft } from "lucide-react";
 import { getBlogPosts, getPostBySlug } from "@/lib/content";
 import {
   filterBlogPostsByLocale,
-  getBlogPostLocale,
   getBlogTopicTags,
+  isBlogPostVisibleInLocale,
 } from "@/lib/blog-locale";
 import { formatDate } from "@/lib/format";
 import {
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = resolveLocale(raw);
   const dict = await getDictionary(locale);
   const base = await getPostBySlug(slug);
-  if (!base || getBlogPostLocale(base) !== locale) {
+  if (!base || !isBlogPostVisibleInLocale(base, locale)) {
     return { title: dict.blog.eyebrow };
   }
   const post = await localizeBlogPost(base, locale);
@@ -47,7 +47,7 @@ export default async function BlogPostPage({ params }: Props) {
   const dict = await getDictionary(locale);
   const base = await getPostBySlug(slug);
   if (!base) notFound();
-  if (getBlogPostLocale(base) !== locale) notFound();
+  if (!isBlogPostVisibleInLocale(base, locale)) notFound();
 
   const post = await localizeBlogPost(base, locale);
   const all = await getBlogPosts().then(async (posts) =>

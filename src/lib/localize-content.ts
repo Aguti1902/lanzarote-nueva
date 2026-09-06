@@ -381,6 +381,19 @@ export async function localizeBlogPost(
 ): Promise<BlogPost> {
   if (locale === "es") return post;
 
+  // 1) Traducciones embebidas en el mismo artículo (modelo actual)
+  const embedded = post.translations?.[locale as "en" | "de"];
+  if (embedded) {
+    return {
+      ...post,
+      title: embedded.title?.trim() || post.title,
+      excerpt: embedded.excerpt?.trim() || post.excerpt,
+      content: embedded.content?.trim() || post.content,
+      author: embedded.author?.trim() || post.author,
+    };
+  }
+
+  // 2) Overlay legado en i18n/{locale}.json por slug
   const translations = await loadTranslations(locale);
   const overlay = translations.blog[post.slug];
   return overlay ? { ...post, ...overlay } : post;

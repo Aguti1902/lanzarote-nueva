@@ -4,39 +4,143 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Sparkles } from "lucide-react";
 import type { Locale } from "@/i18n/config";
-import type { BlogPost } from "@/types";
+import type { BlogPost, BlogPostTranslation } from "@/types";
 import {
-  getBlogPostLocale,
+  getBlogLanguageTag,
   getBlogTopicTags,
-  withBlogLocaleTag,
 } from "@/lib/blog-locale";
 import { Field, adminInput } from "@/components/admin/Field";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 
+type LangFields = {
+  title: string;
+  excerpt: string;
+  content: string;
+  author: string;
+};
+
+const emptyLang = (author = ""): LangFields => ({
+  title: "",
+  excerpt: "",
+  content: "",
+  author,
+});
+
+function blockToFields(
+  block: BlogPostTranslation | undefined,
+  fallbackAuthor = ""
+): LangFields {
+  return {
+    title: block?.title || "",
+    excerpt: block?.excerpt || "",
+    content: block?.content || "",
+    author: block?.author || fallbackAuthor,
+  };
+}
+
+function fieldsToBlock(fields: LangFields): BlogPostTranslation {
+  return {
+    title: fields.title,
+    excerpt: fields.excerpt,
+    content: fields.content,
+    author: fields.author,
+  };
+}
+
+/** Hidrata pestañas ES/EN/DE; migra posts legado de un solo idioma. */
+function hydrateFromPost(initial?: BlogPost): {
+  es: LangFields;
+  en: LangFields;
+  de: LangFields;
+} {
+  const defaultAuthor =
+    initial?.author || "Equipo Lanzarote Experience Tours";
+
+  if (!initial) {
+    return {
+      es: emptyLang(defaultAuthor),
+      en: emptyLang(),
+      de: emptyLang(),
+    };
+  }
+
+  const hasEmbedded =
+    Boolean(initial.translations?.en) || Boolean(initial.translations?.de);
+  const langTag = getBlogLanguageTag(initial);
+
+  if (hasEmbedded || !langTag || langTag === "es") {
+    return {
+      es: {
+        title: initial.title || "",
+        excerpt: initial.excerpt || "",
+        content: initial.content || "",
+        author: initial.author || defaultAuthor,
+      },
+      en: blockToFields(initial.translations?.en),
+      de: blockToFields(initial.translations?.de),
+    };
+  }
+
+  if (langTag === "en") {
+    return {
+      es: emptyLang(defaultAuthor),
+      en: {
+        title: initial.title || "",
+        excerpt: initial.excerpt || "",
+        content: initial.content || "",
+        author: initial.author || "",
+      },
+      de: blockToFields(initial.translations?.de),
+    };
+  }
+
+  return {
+    es: emptyLang(defaultAuthor),
+    en: blockToFields(initial.translations?.en),
+    de: {
+      title: initial.title || "",
+      excerpt: initial.excerpt || "",
+      content: initial.content || "",
+      author: initial.author || "",
+    },
+  };
+}
+
+const LANG_TABS: { id: Locale; label: string }[] = [
+  { id: "es", label: "Español" },
+  { id: "en", label: "English" },
+  { id: "de", label: "Deutsch" },
+];
+
 export function BlogEditor({ initial }: { initial?: BlogPost }) {
   const router = useRouter();
-  const [locale, setLocale] = useState<Locale>(
-    initial ? getBlogPostLocale(initial) : "es"
-  );
+  const hydrated = hydrateFromPost(initial);
+  const [editLocale, setEditLocale] = useState<Locale>("es");
+  const [es, setEs] = useState<LangFields>(hydrated.es);
+  const [en, setEn] = useState<LangFields>(hydrated.en);
+  const [de, setDe] = useState<LangFields>(hydrated.de);
   const [topicTags, setTopicTags] = useState(
     getBlogTopicTags(initial?.tags).join(", ")
   );
-  const [post, setPost] = useState<Partial<BlogPost>>(
-    initial || {
-      title: "",
-      excerpt: "",
-      content: "",
-      image: "/images/heroes/blog.jpg",
-      date: new Date().toISOString().slice(0, 10),
-      author: "Equipo Lanzarote Experience Tours",
-      tags: ["es"],
-    }
+  const [meta, setMeta] = useState({
+    slug: initial?.slug || "",
+    image: initial?.image || "/images/heroes/blog.jpg",
+    date: initial?.date || new Date().toISOString().slice(0, 10),
+  });
+  const [topic, setTopic] = useState(
+    hydrated.es.title || hydrated.en.title || hydrated.de.title || ""
   );
-  const [topic, setTopic] = useState(initial?.title || "");
   const [saving, setSaving] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState("");
   const isEdit = Boolean(initial);
+
+  const active = editLocale === "es" ? es : editLocale === "en" ? en : de;
+  const setActive = (next: LangFields) => {
+    if (editLocale === "es") setEs(next);
+    else if (editLocale === "en") setEn(next);
+    else setDe(next);
+  };
 
   async function generateWithAI() {
     setGenerating(true);
@@ -45,16 +149,19 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
       const res = await fetch("/api/blog/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topic: topic || post.title, locale }),
+        body: JSON.stringify({
+          topic: topic || active.title,
+          locale: editLocale,
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error al generar");
-      setPost((prev) => ({
-        ...prev,
-        title: data.title || prev.title,
-        excerpt: data.excerpt || prev.excerpt,
-        content: data.content || prev.content,
-      }));
+      setActive({
+        ...active,
+        title: data.title || active.title,
+        excerpt: data.excerpt || active.excerpt,
+        content: data.content || active.content,
+      });
       if (data.tags?.length) {
         setTopicTags(getBlogTopicTags(data.tags).join(", "));
       }
@@ -71,17 +178,34 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
     setSaving(true);
     setError("");
     try {
-      const tags = withBlogLocaleTag(
-        topicTags
-          .split(",")
-          .map((s) => s.trim())
-          .filter(Boolean),
-        locale
-      );
+      if (!es.title.trim() || !es.excerpt.trim() || !es.content.trim()) {
+        throw new Error(
+          "Complete título, extracto y contenido en español (pestaña ES). Las traducciones EN/DE van en el mismo artículo."
+        );
+      }
+      const tags = topicTags
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+      const body: Partial<BlogPost> = {
+        ...(isEdit && initial?.slug ? { slug: initial.slug } : {}),
+        ...(meta.slug && isEdit ? { slug: meta.slug } : {}),
+        title: es.title,
+        excerpt: es.excerpt,
+        content: es.content,
+        author: es.author || "Equipo Lanzarote Experience Tours",
+        image: meta.image,
+        date: meta.date,
+        tags,
+        translations: {
+          en: fieldsToBlock(en),
+          de: fieldsToBlock(de),
+        },
+      };
       const res = await fetch("/api/blog", {
         method: isEdit ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...post, tags }),
+        body: JSON.stringify(body),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error");
@@ -102,7 +226,8 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
       <div className="rounded-lg bg-sky-soft p-4 ring-1 ring-sand-line">
         <p className="text-sm font-bold text-ink">Generar con IA</p>
         <p className="mt-1 text-xs text-ink-muted">
-          Escriba un tema y genere borrador. Revise antes de publicar.
+          Genera el borrador en el idioma de la pestaña activa. Complete ES, EN
+          y DE en el mismo artículo.
         </p>
         <div className="mt-3 flex flex-col gap-2 sm:flex-row">
           <input
@@ -118,69 +243,125 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
             className="inline-flex items-center justify-center gap-2 rounded bg-ocean px-4 py-2.5 text-sm font-bold text-white hover:bg-ocean-deep disabled:opacity-60"
           >
             <Sparkles className="h-4 w-4" />
-            {generating ? "Generando…" : "Generar"}
+            {generating
+              ? "Generando…"
+              : `Generar (${editLocale.toUpperCase()})`}
           </button>
         </div>
       </div>
 
-      <Field label="Idioma del artículo *">
-        <select
-          className={adminInput}
-          value={locale}
-          onChange={(e) => setLocale(e.target.value as Locale)}
-        >
-          <option value="es">Español (ES)</option>
-          <option value="en">English (EN)</option>
-          <option value="de">Deutsch (DE)</option>
-        </select>
-      </Field>
-      <Field label="Título *">
+      <div className="flex flex-wrap gap-2 border-b border-sand-line pb-3">
+        {LANG_TABS.map((tab) => {
+          const filled =
+            tab.id === "es"
+              ? Boolean(es.title.trim())
+              : tab.id === "en"
+                ? Boolean(en.title.trim() || en.content.trim())
+                : Boolean(de.title.trim() || de.content.trim());
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setEditLocale(tab.id)}
+              className={`rounded px-3 py-1.5 text-sm font-semibold transition ${
+                editLocale === tab.id
+                  ? "bg-ocean text-white"
+                  : "bg-bg text-ink-muted hover:text-ink"
+              }`}
+            >
+              {tab.label}
+              {filled ? (
+                <span className="ml-1.5 text-[10px] opacity-80">●</span>
+              ) : null}
+            </button>
+          );
+        })}
+      </div>
+      <p className="text-xs text-ink-muted">
+        Un solo artículo con las tres versiones. El español es la base; EN y DE
+        se guardan como traducciones del mismo slug.
+      </p>
+
+      <Field
+        label={
+          editLocale === "es"
+            ? "Título (ES) *"
+            : editLocale === "en"
+              ? "Title (EN)"
+              : "Titel (DE)"
+        }
+      >
         <input
           className={adminInput}
-          required
-          value={post.title || ""}
-          onChange={(e) => setPost({ ...post, title: e.target.value })}
+          required={editLocale === "es"}
+          value={active.title}
+          onChange={(e) => setActive({ ...active, title: e.target.value })}
         />
       </Field>
-      <Field label="Extracto *">
+      <Field
+        label={
+          editLocale === "es"
+            ? "Extracto (ES) *"
+            : editLocale === "en"
+              ? "Excerpt (EN)"
+              : "Auszug (DE)"
+        }
+      >
         <RichTextEditor
-          value={post.excerpt || ""}
-          onChange={(html) => setPost({ ...post, excerpt: html })}
+          value={active.excerpt}
+          onChange={(html) => setActive({ ...active, excerpt: html })}
           minHeight={90}
         />
       </Field>
-      <Field label="Contenido *">
+      <Field
+        label={
+          editLocale === "es"
+            ? "Contenido (ES) *"
+            : editLocale === "en"
+              ? "Content (EN)"
+              : "Inhalt (DE)"
+        }
+      >
         <RichTextEditor
-          value={post.content || ""}
-          onChange={(html) => setPost({ ...post, content: html })}
+          value={active.content}
+          onChange={(html) => setActive({ ...active, content: html })}
           minHeight={280}
         />
       </Field>
+      <Field
+        label={
+          editLocale === "es"
+            ? "Autor (ES)"
+            : editLocale === "en"
+              ? "Author (EN)"
+              : "Autor (DE)"
+        }
+      >
+        <input
+          className={adminInput}
+          value={active.author}
+          onChange={(e) => setActive({ ...active, author: e.target.value })}
+        />
+      </Field>
+
       <div className="grid gap-4 md:grid-cols-2">
         <Field label="Fecha">
           <input
             type="date"
             className={adminInput}
-            value={post.date || ""}
-            onChange={(e) => setPost({ ...post, date: e.target.value })}
+            value={meta.date}
+            onChange={(e) => setMeta({ ...meta, date: e.target.value })}
           />
         </Field>
-        <Field label="Autor">
+        <Field label="URL imagen">
           <input
             className={adminInput}
-            value={post.author || ""}
-            onChange={(e) => setPost({ ...post, author: e.target.value })}
+            value={meta.image}
+            onChange={(e) => setMeta({ ...meta, image: e.target.value })}
           />
         </Field>
       </div>
-      <Field label="URL imagen">
-        <input
-          className={adminInput}
-          value={post.image || ""}
-          onChange={(e) => setPost({ ...post, image: e.target.value })}
-        />
-      </Field>
-      <Field label="Tags temáticos (separados por coma, sin idioma)">
+      <Field label="Tags temáticos (separados por coma)">
         <input
           className={adminInput}
           value={topicTags}
