@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { BookingWidget } from "@/components/BookingWidget";
 import { ReviewsSection } from "@/components/ReviewsSection";
+import { RichContent } from "@/components/RichContent";
 import { getTourBySlug, getPublicTours } from "@/lib/content";
 import {
   cleanTourDescription,
@@ -147,14 +148,8 @@ export default async function TourDetailPage({ params }: Props) {
             )}
           </div>
 
-          <div className="mt-6 space-y-4 text-base leading-relaxed text-ink-muted md:text-lg">
-            {description
-              .split(/\n+/)
-              .map((p) => p.trim())
-              .filter(Boolean)
-              .map((paragraph) => (
-                <p key={paragraph.slice(0, 48)}>{paragraph}</p>
-              ))}
+          <div className="mt-6 text-base md:text-lg">
+            <RichContent text={description} />
           </div>
 
           {tour.gallery.length > 1 && (

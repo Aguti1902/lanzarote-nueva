@@ -147,8 +147,16 @@ export default async function CruceristasPage({ params }: Props) {
       />
 
       <PageFaqs
-        title={settings.cruiseFaqTitle}
-        faqs={settings.cruiseFaqs}
+        title={settings.cruiseFaqTitle || dict.cruises.faqTitle}
+        faqs={
+          settings.cruiseFaqs && settings.cruiseFaqs.length > 0
+            ? settings.cruiseFaqs
+            : dict.cruises.faqs.map((f, i) => ({
+                id: `dict-cruise-${i}`,
+                question: f.q,
+                answer: f.a,
+              }))
+        }
         tone="soft"
       />
     </>

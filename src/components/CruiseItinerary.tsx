@@ -14,6 +14,7 @@ import { resolveShoreToursForStop } from "@/lib/cruise-shore-match";
 import { useLocale } from "@/components/LocaleProvider";
 import { CruiseTourBooking } from "@/components/CruiseTourBooking";
 import { MeetingPointModal } from "@/components/MeetingPointModal";
+import { RichContent } from "@/components/RichContent";
 
 type Props = {
   sailing: CruiseSailing;
@@ -207,9 +208,9 @@ export function CruiseItinerary({ sailing, tours }: Props) {
                                   {expanded && (
                                     <div className="space-y-3 rounded-lg bg-sky-soft/80 p-3 text-sm leading-relaxed text-ink-muted">
                                       {tour.description && (
-                                        <p className="whitespace-pre-line">
-                                          {tour.description}
-                                        </p>
+                                        <div className="text-sm">
+                                          <RichContent text={tour.description} />
+                                        </div>
                                       )}
                                       {tour.included && tour.included.length > 0 && (
                                         <div>

@@ -26,6 +26,7 @@ export function Header() {
       label: dict.nav.cruises,
     },
     { href: href("/casas"), path: "/casas", label: dict.nav.houses },
+    { href: href("/blog"), path: "/blog", label: dict.nav.blog },
   ];
 
   useEffect(() => {

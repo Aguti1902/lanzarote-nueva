@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CruiseTourBooking } from "@/components/CruiseTourBooking";
+import { RichContent } from "@/components/RichContent";
 import { ShoreMeetingPointButton } from "@/components/ShoreMeetingPointButton";
 import {
   getCruiseSailing,
@@ -188,8 +189,8 @@ export default async function CruiseShoreTourPage({
           </div>
 
           {tour.description && (
-            <div className="prose-cruise mt-8 whitespace-pre-line text-sm leading-relaxed text-ink-muted">
-              {tour.description}
+            <div className="prose-cruise mt-8 text-sm">
+              <RichContent text={tour.description} />
             </div>
           )}
 

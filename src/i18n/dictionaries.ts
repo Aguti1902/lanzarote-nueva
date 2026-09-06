@@ -7,6 +7,7 @@ export type Dictionary = {
     transfers: string;
     cruises: string;
     houses: string;
+    blog: string;
     contact: string;
     cart: string;
     manageBooking: string;
@@ -172,6 +173,8 @@ export type Dictionary = {
     prevMonth: string;
     nextMonth: string;
     orBrowseByCompany: string;
+    faqTitle: string;
+    faqs: { q: string; a: string }[];
   };
   about: {
     welcome: string;
@@ -429,6 +432,7 @@ const es: Dictionary = {
     transfers: "Traslados",
     cruises: "Cruceros",
     houses: "Casas",
+    blog: "Blog",
     contact: "Contacto",
     cart: "Carrito",
     manageBooking: "Gestione su reserva",
@@ -465,19 +469,10 @@ const es: Dictionary = {
       "Excursiones personalizadas · Empresa familiar de Lanzarote · Gracias por apoyar el comercio local · Grupos reducidos, solo en español",
     advantages: [
       { text: "Mini-bus desinfectado con Ozono." },
-      { text: "Mini-bus climatizado y con WIFI Gratis", bold: "WIFI Gratis" },
-      {
-        text: "Grupos reducidos, máximo 14 personas",
-        bold: "máximo 14 personas",
-      },
-      {
-        text: "No mezclamos idiomas, sólo en Español",
-        bold: "sólo en Español",
-      },
-      {
-        text: "Le recogemos en la puerta de su alojamiento",
-        bold: "alojamiento",
-      },
+      { text: "Mini-bus climatizado y con WIFI Gratis" },
+      { text: "Grupos reducidos, máximo 14 personas" },
+      { text: "No mezclamos idiomas, sólo en Español" },
+      { text: "Le recogemos en la puerta de su alojamiento" },
     ],
     toursTitle: "Lanzarote tours",
     toursKicker: "Experiencias",
@@ -701,6 +696,29 @@ const es: Dictionary = {
     prevMonth: "Mes anterior",
     nextMonth: "Mes siguiente",
     orBrowseByCompany: "O busque por compañía de cruceros",
+    faqTitle: "Preguntas frecuentes sobre excursiones para cruceros",
+    faqs: [
+      {
+        q: "¿Dónde es el punto de encuentro?",
+        a: "El punto de encuentro con la guía es el control de policía del puerto. El transporte estará en el aparcamiento externo (caminata de unos 10 minutos desde el barco, según atracadero).",
+      },
+      {
+        q: "¿Garantizan la vuelta al barco a tiempo?",
+        a: "Sí. Organizamos las excursiones shore para que regrese a su crucero con margen. Si por causa nuestra llegara tarde, le devolvemos el importe.",
+      },
+      {
+        q: "¿En qué idiomas se realizan las excursiones?",
+        a: "Ofrecemos excursiones en español, inglés y alemán, pero no mezclamos idiomas en el mismo grupo.",
+      },
+      {
+        q: "¿Cuál es la política de cancelación?",
+        a: "Puede cambiar el día o cancelar hasta 24 horas antes de la hora de inicio. Con menos de 24 horas no hay devolución.",
+      },
+      {
+        q: "¿Cómo recibo el bono de la excursión?",
+        a: "Tras la compra recibirá un email de confirmación con el número de referencia. Podrá descargar e imprimir el bono o mostrarlo en el móvil al guía.",
+      },
+    ],
   },
   about: {
     welcome: "¡Bienvenidos a Lanzarote!",
@@ -989,6 +1007,7 @@ const en: Dictionary = {
     transfers: "Transfers",
     cruises: "Cruises",
     houses: "Homes",
+    blog: "Blog",
     contact: "Contact",
     cart: "Cart",
     manageBooking: "Manage booking",
@@ -1025,19 +1044,10 @@ const en: Dictionary = {
       "Tailored excursions · Family business from Lanzarote · Thank you for supporting local trade · Small groups, Spanish only",
     advantages: [
       { text: "Ozone-disinfected mini-bus." },
-      {
-        text: "Air-conditioned mini-bus with free WIFI",
-        bold: "free WIFI",
-      },
-      { text: "Small groups, max. 14 people", bold: "max. 14 people" },
-      {
-        text: "We don't mix languages, Spanish only",
-        bold: "Spanish only",
-      },
-      {
-        text: "We pick you up at your accommodation",
-        bold: "accommodation",
-      },
+      { text: "Air-conditioned mini-bus with free WIFI" },
+      { text: "Small groups, max. 14 people" },
+      { text: "We don't mix languages, Spanish only" },
+      { text: "We pick you up at your accommodation" },
     ],
     toursTitle: "Lanzarote tours",
     toursKicker: "Experiences",
@@ -1217,6 +1227,29 @@ const en: Dictionary = {
     prevMonth: "Previous month",
     nextMonth: "Next month",
     orBrowseByCompany: "Or browse by cruise line",
+    faqTitle: "Frequently asked questions about shore excursions",
+    faqs: [
+      {
+        q: "Where is the meeting point?",
+        a: "You meet your guide at the port police control. Transport waits in the outer parking area (about a 10-minute walk from the ship, depending on the berth).",
+      },
+      {
+        q: "Do you guarantee return to the ship on time?",
+        a: "Yes. Shore excursions are planned so you return with margin. If we cause a delay back to the ship, we refund the tour.",
+      },
+      {
+        q: "Which languages are the tours in?",
+        a: "We offer tours in Spanish, English and German, but we do not mix languages in the same group.",
+      },
+      {
+        q: "What is the cancellation policy?",
+        a: "You can change the day or cancel up to 24 hours before start time. Within 24 hours there is no refund.",
+      },
+      {
+        q: "How do I receive my voucher?",
+        a: "After purchase you get a confirmation email with your reference. You can download and print the voucher or show it on your phone to the guide.",
+      },
+    ],
   },
   about: {
     welcome: "Welcome to Lanzarote!",
@@ -1500,6 +1533,7 @@ const de: Dictionary = {
     transfers: "Transfers",
     cruises: "Kreuzfahrten",
     houses: "Häuser",
+    blog: "Blog",
     contact: "Kontakt",
     cart: "Warenkorb",
     manageBooking: "Buchung verwalten",
@@ -1536,22 +1570,10 @@ const de: Dictionary = {
       "Individuelle Ausflüge · Familienunternehmen aus Lanzarote · Danke für die Unterstützung lokaler Betriebe · Kleine Gruppen, nur auf Spanisch",
     advantages: [
       { text: "Minibus mit Ozon desinfiziert." },
-      {
-        text: "Klimatisierter Minibus mit gratis WIFI",
-        bold: "gratis WIFI",
-      },
-      {
-        text: "Kleine Gruppen, maximal 14 Personen",
-        bold: "maximal 14 Personen",
-      },
-      {
-        text: "Keine Sprachmischung, nur auf Spanisch",
-        bold: "nur auf Spanisch",
-      },
-      {
-        text: "Abholung an Ihrer Unterkunft",
-        bold: "Unterkunft",
-      },
+      { text: "Klimatisierter Minibus mit gratis WIFI" },
+      { text: "Kleine Gruppen, maximal 14 Personen" },
+      { text: "Keine Sprachmischung, nur auf Spanisch" },
+      { text: "Abholung an Ihrer Unterkunft" },
     ],
     toursTitle: "Lanzarote tours",
     toursKicker: "Erlebnisse",
@@ -1734,6 +1756,29 @@ const de: Dictionary = {
     prevMonth: "Vorheriger Monat",
     nextMonth: "Nächster Monat",
     orBrowseByCompany: "Oder nach Reederei suchen",
+    faqTitle: "Häufige Fragen zu Landausflügen für Kreuzfahrten",
+    faqs: [
+      {
+        q: "Wo ist der Treffpunkt?",
+        a: "Sie treffen Ihre Reiseleitung an der Hafen-Polizeikontrolle. Der Transfer wartet am äußeren Parkplatz (ca. 10 Minuten Fußweg vom Schiff, je nach Liegeplatz).",
+      },
+      {
+        q: "Garantieren Sie die pünktliche Rückkehr zum Schiff?",
+        a: "Ja. Die Landausflüge sind so geplant, dass Sie mit Zeitpuffer zurückkehren. Bei einer von uns verursachten Verspätung erstatten wir den Ausflug.",
+      },
+      {
+        q: "In welchen Sprachen finden die Touren statt?",
+        a: "Wir bieten Touren auf Spanisch, Englisch und Deutsch an, mischen aber keine Sprachen in derselben Gruppe.",
+      },
+      {
+        q: "Wie ist die Stornierungsrichtlinie?",
+        a: "Sie können bis 24 Stunden vor Beginn ändern oder stornieren. Innerhalb von 24 Stunden gibt es keine Rückerstattung.",
+      },
+      {
+        q: "Wie erhalte ich meinen Gutschein?",
+        a: "Nach dem Kauf erhalten Sie eine Bestätigungs-E-Mail mit Ihrer Referenz. Sie können den Gutschein herunterladen und ausdrucken oder am Handy vorzeigen.",
+      },
+    ],
   },
   about: {
     welcome: "Willkommen auf Lanzarote!",

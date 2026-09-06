@@ -57,23 +57,11 @@ const advantageIcons: LucideIcon[] = [
 
 function AdvantageLabel({
   text,
-  bold,
 }: {
   text: string;
   bold?: string;
 }) {
-  if (!bold || !text.includes(bold)) {
-    return <>{text}</>;
-  }
-  const [before, ...rest] = text.split(bold);
-  const after = rest.join(bold);
-  return (
-    <>
-      {before}
-      <strong className="font-bold text-ink">{bold}</strong>
-      {after}
-    </>
-  );
+  return <>{text}</>;
 }
 
 type Props = { params: Promise<{ locale: string }> };

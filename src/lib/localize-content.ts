@@ -11,6 +11,7 @@ import { isSupabaseConfigured } from "@/lib/supabase/client";
 import {
   mergeSettingsOverlay,
   pickSettingsTranslations,
+  SETTINGS_FAQ_LIST_KEYS,
   SETTINGS_TRANSLATABLE_KEYS,
 } from "@/lib/settings-i18n";
 
@@ -278,7 +279,34 @@ export async function localizeSettings(
 
   const translations = await loadTranslations(locale);
   const overlay = pickSettingsTranslations(translations.settings);
-  return mergeSettingsOverlay(settings, overlay);
+  const merged = mergeSettingsOverlay(settings, overlay);
+
+  // Si no hay FAQs traducidas en el overlay, vaciar las de ES para que
+  // las páginas usen el diccionario (EN/DE) en lugar del español del CMS.
+  for (const key of SETTINGS_FAQ_LIST_KEYS) {
+    const fromOverlay = overlay[key];
+    if (!Array.isArray(fromOverlay) || fromOverlay.length === 0) {
+      merged[key] = [];
+    }
+  }
+
+  const faqTitleKeys = [
+    "aboutFaqTitle",
+    "excursionsFaqTitle",
+    "blogFaqTitle",
+    "cruiseFaqTitle",
+    "transferFaqTitle",
+    "housesFaqTitle",
+    "contactFaqTitle",
+  ] as const;
+  for (const key of faqTitleKeys) {
+    const fromOverlay = overlay[key];
+    if (typeof fromOverlay !== "string" || !fromOverlay.trim()) {
+      merged[key] = "";
+    }
+  }
+
+  return merged;
 }
 
 export async function localizeTour(

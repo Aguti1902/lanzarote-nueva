@@ -7,6 +7,7 @@ import { ContentBlocksEditor } from "@/components/admin/ContentBlocksEditor";
 import { FaqEditor } from "@/components/admin/FaqEditor";
 import { Field, adminInput, adminTextarea } from "@/components/admin/Field";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import {
   pickSettingsTranslations,
   SETTINGS_STRING_KEYS,
@@ -569,11 +570,11 @@ export default function AdminAjustesPage() {
               onChange={(e) => setText("aboutLead", e.target.value)}
             />
           </Field>
-          <Field label="Texto completo (párrafos con línea en blanco)">
-            <textarea
-              className={`${adminTextarea} min-h-[200px]`}
+          <Field label="Texto completo (formato: negrita, tamaño, color)">
+            <RichTextEditor
               value={textValue("aboutText")}
-              onChange={(e) => setText("aboutText", e.target.value)}
+              onChange={(html) => setText("aboutText", html)}
+              minHeight={200}
             />
           </Field>
           <Field label="Valores (uno por línea)">
@@ -669,11 +670,11 @@ export default function AdminAjustesPage() {
               onChange={(e) => setText("excursionsIntro", e.target.value)}
             />
           </Field>
-          <Field label="Texto completo (párrafos con línea en blanco)">
-            <textarea
-              className={`${adminTextarea} min-h-[160px]`}
+          <Field label="Texto completo (formato: negrita, tamaño, color)">
+            <RichTextEditor
               value={textValue("excursionsText")}
-              onChange={(e) => setText("excursionsText", e.target.value)}
+              onChange={(html) => setText("excursionsText", html)}
+              minHeight={160}
             />
           </Field>
           <ImageUploadField
@@ -762,11 +763,11 @@ export default function AdminAjustesPage() {
               onChange={(e) => setText("blogIntro", e.target.value)}
             />
           </Field>
-          <Field label="Texto completo (párrafos con línea en blanco)">
-            <textarea
-              className={`${adminTextarea} min-h-[160px]`}
+          <Field label="Texto completo (formato: negrita, tamaño, color)">
+            <RichTextEditor
               value={textValue("blogText")}
-              onChange={(e) => setText("blogText", e.target.value)}
+              onChange={(html) => setText("blogText", html)}
+              minHeight={160}
             />
           </Field>
           <ImageUploadField
@@ -841,11 +842,11 @@ export default function AdminAjustesPage() {
               onChange={(e) => setText("cruiseIntro", e.target.value)}
             />
           </Field>
-          <Field label="Texto completo (párrafos con línea en blanco)">
-            <textarea
-              className={`${adminTextarea} min-h-[160px]`}
+          <Field label="Texto completo (formato: negrita, tamaño, color)">
+            <RichTextEditor
               value={textValue("cruiseText")}
-              onChange={(e) => setText("cruiseText", e.target.value)}
+              onChange={(html) => setText("cruiseText", html)}
+              minHeight={160}
             />
           </Field>
           <ImageUploadField
@@ -926,11 +927,11 @@ export default function AdminAjustesPage() {
               onChange={(e) => setText("transferIntro", e.target.value)}
             />
           </Field>
-          <Field label="Texto completo (párrafos con línea en blanco)">
-            <textarea
-              className={`${adminTextarea} min-h-[200px]`}
+          <Field label="Texto completo (formato: negrita, tamaño, color)">
+            <RichTextEditor
               value={textValue("transferText")}
-              onChange={(e) => setText("transferText", e.target.value)}
+              onChange={(html) => setText("transferText", html)}
+              minHeight={200}
             />
           </Field>
           <ImageUploadField

@@ -10,14 +10,9 @@ import type {
   TourScheduleSlot,
   TourTranslation,
 } from "@/types";
-import {
-  Field,
-  adminInput,
-  adminTextarea,
-  arrayToLines,
-  linesToArray,
-} from "@/components/admin/Field";
+import { Field, adminInput, adminTextarea, arrayToLines, linesToArray } from "@/components/admin/Field";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { isFlatPriceTour } from "@/lib/tour-pricing";
 
 type EditorTab =
@@ -857,14 +852,13 @@ export function TourEditor({ initial }: { initial?: Tour }) {
               />
             </Field>
             <Field label="Descripción larga del tour">
-              <textarea
-                className={`${adminTextarea} min-h-[180px]`}
+              <RichTextEditor
                 value={translationFields.description || ""}
-                onChange={(e) => {
-                  if (lang === "es") set("description", e.target.value);
-                  else
-                    updateTranslation(lang, { description: e.target.value });
+                onChange={(html) => {
+                  if (lang === "es") set("description", html);
+                  else updateTranslation(lang, { description: html });
                 }}
+                minHeight={200}
               />
             </Field>
             <div className="grid gap-4 md:grid-cols-2">
@@ -1103,6 +1097,25 @@ export function TourEditor({ initial }: { initial?: Tour }) {
               SEO (
               {lang === "es" ? "Español" : lang === "en" ? "Inglés" : "Alemán"})
             </h2>
+          </div>
+          <div className="rounded-lg bg-sky-soft/60 px-4 py-3 text-sm text-ink-muted ring-1 ring-sand-line">
+            <p className="font-semibold text-ink">Cómo rellenar el SEO</p>
+            <ol className="mt-2 list-decimal space-y-1 pl-5">
+              <li>Elige el idioma (ES / EN / DE) y completa los 3 campos.</li>
+              <li>
+                <strong>Meta title</strong>: ~50–60 caracteres, con la palabra
+                clave principal (ej. «Excursión Timanfaya Lanzarote»).
+              </li>
+              <li>
+                <strong>Meta description</strong>: ~140–160 caracteres que
+                inviten a hacer clic; incluye beneficio y destino.
+              </li>
+              <li>
+                <strong>Keywords</strong>: palabras clave separadas por comas
+                (ej. timanfaya, excursión lanzarote, sur lanzarote).
+              </li>
+              <li>Repite en inglés y alemán, y pulsa «Actualizar SEO».</li>
+            </ol>
           </div>
           <Field label="Meta title">
             <input

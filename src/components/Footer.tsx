@@ -62,6 +62,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href={href("/blog")} className="transition hover:text-white">
+                  {dict.nav.blog}
+                </Link>
+              </li>
+              <li>
                 <Link href={href("/sobre-nosotros")} className="transition hover:text-white">
                   {dict.nav.about}
                 </Link>

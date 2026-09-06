@@ -160,6 +160,10 @@ export function formatTourLanguages(
 /** Quita bloques legacy de salidas/precios pegados al final de la descripción. */
 export function cleanTourDescription(text: string): string {
   if (!text) return "";
+  // Conservar HTML del editor enriquecido.
+  if (/<\/?[a-z][\s\S]*>/i.test(text)) {
+    return text.trim();
+  }
   let out = text
     .replace(/\r\n/g, "\n")
     .replace(/\u00ad/g, "")
