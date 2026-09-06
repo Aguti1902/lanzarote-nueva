@@ -19,7 +19,12 @@ import {
   DEFAULT_TRANSFER_FAQ_TITLE,
   DEFAULT_TRANSFER_FAQS,
 } from "@/lib/page-content-defaults";
-import { readCmsJson, readCmsJsonFresh, writeCmsJson } from "@/lib/supabase/cms-store";
+import {
+  readCmsJson,
+  readCmsJsonFresh,
+  readLocalCmsJson,
+  writeCmsJson,
+} from "@/lib/supabase/cms-store";
 
 async function readJson<T>(file: string): Promise<T> {
   return readCmsJson<T>(file);
@@ -197,8 +202,36 @@ export async function deleteTour(id: string): Promise<boolean> {
 
 /* ── Transfers ── */
 
+/** Textos antiguos del CMS en vivo antes del copy actualizado. */
+function transfersHighlightsLookLegacy(highlights: string[] | undefined): boolean {
+  if (!highlights?.length) return true;
+  return highlights.some((h) =>
+    /Vehículo climatizado|Seguimiento de vuelos|Tarifa fija: sin sorpresas|Disponible aeropuerto|Recibimiento en terminal con cartel con su nombre|Air-conditioned vehicle(?!s)|Flight tracking(?! &)|Airport\s*→\s*hotel/i.test(
+      h
+    )
+  );
+}
+
+/**
+ * Si el CMS aún tiene el copy viejo, usa el seed del deploy (src/data).
+ * No pisa ediciones nuevas del admin que ya no coincidan con el legado.
+ */
+async function withTransferHighlightSeed(
+  data: TransfersData
+): Promise<TransfersData> {
+  if (!transfersHighlightsLookLegacy(data.highlights)) return data;
+  try {
+    const seed = await readLocalCmsJson<TransfersData>("transfers.json");
+    if (!seed.highlights?.length) return data;
+    return { ...data, highlights: seed.highlights };
+  } catch {
+    return data;
+  }
+}
+
 export const getTransfersData = cache(async (): Promise<TransfersData> => {
-  return readJson<TransfersData>("transfers.json");
+  const data = await readJson<TransfersData>("transfers.json");
+  return withTransferHighlightSeed(data);
 });
 
 export async function getTransferDestinations(): Promise<TransferDestination[]> {

@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale } from "@/components/LocaleProvider";
+import { TRANSFER_DIRECTION_EVENT } from "@/components/TransferRouteChips";
 import { formatPrice } from "@/lib/format";
 import { minBookableDateIso, isServiceDateWithinLeadTime } from "@/lib/booking-lead-time";
 import {
@@ -40,6 +41,23 @@ export function TransferBookingForm({
   const [flightNumber, setFlightNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    function onDirection(e: Event) {
+      const detail = (e as CustomEvent<{ direction?: TransferDirection }>).detail;
+      const next = detail?.direction;
+      if (
+        next === "airport_to_hotel" ||
+        next === "hotel_to_airport" ||
+        next === "return"
+      ) {
+        setDirection(next);
+      }
+    }
+    window.addEventListener(TRANSFER_DIRECTION_EVENT, onDirection);
+    return () =>
+      window.removeEventListener(TRANSFER_DIRECTION_EVENT, onDirection);
+  }, []);
 
   const dest =
     destinations.find((d) => d.id === destination) || destinations[0];
@@ -131,8 +149,9 @@ export function TransferBookingForm({
 
   return (
     <form
+      id="reservar-traslado"
       onSubmit={handleSubmit}
-      className="rounded-xl bg-surface p-6 ring-1 ring-sand-line"
+      className="rounded-xl bg-surface p-6 ring-1 ring-sand-line scroll-mt-24"
     >
       <h3 className="font-display text-2xl text-ink">{dict.transferForm.title}</h3>
       <p className="mt-1 text-sm text-ink-muted">{dict.transferForm.subtitle}</p>

@@ -5,6 +5,7 @@ import { PageContentBlocks } from "@/components/PageContentBlocks";
 import { PageFaqs } from "@/components/PageFaqs";
 import { PageHero } from "@/components/PageHero";
 import { TransferBookingForm } from "@/components/TransferBookingForm";
+import { TransferRouteChips } from "@/components/TransferRouteChips";
 import { getSettings, getTransfersData } from "@/lib/content";
 import { formatPrice } from "@/lib/format";
 import {
@@ -13,6 +14,7 @@ import {
 } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
+import type { TransferDirection } from "@/lib/transfer-price";
 
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
 export const revalidate = 300;
@@ -34,10 +36,16 @@ export default async function TrasladosPage({ params }: Props) {
     getSettings().then((s) => localizeSettings(s, locale)),
   ]);
 
-  const chips = [
-    dict.transfers.airportHotel,
-    dict.transfers.hotelAirport,
-    dict.transfers.roundTrip,
+  const chips: { label: string; direction: TransferDirection }[] = [
+    {
+      label: dict.transfers.airportHotel,
+      direction: "airport_to_hotel",
+    },
+    {
+      label: dict.transfers.hotelAirport,
+      direction: "hotel_to_airport",
+    },
+    { label: dict.transfers.roundTrip, direction: "return" },
   ];
 
   const faqs =
@@ -66,16 +74,7 @@ export default async function TrasladosPage({ params }: Props) {
               className="!mx-0 !max-w-none !px-0 !py-0"
             />
 
-            <div className="mt-8 grid gap-4 sm:grid-cols-3">
-              {chips.map((label) => (
-                <div
-                  key={label}
-                  className="rounded-lg bg-ocean px-5 py-4 text-center text-sm font-bold text-white"
-                >
-                  {label}
-                </div>
-              ))}
-            </div>
+            <TransferRouteChips chips={chips} />
 
             <ul className="mt-10 grid gap-3 sm:grid-cols-2">
               {transfers.highlights.map((h) => (

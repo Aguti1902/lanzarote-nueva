@@ -6,7 +6,12 @@ import type {
   Tour,
   TransfersData,
 } from "@/types";
-import { readCmsJson, readCmsJsonFresh, writeCmsJson } from "@/lib/supabase/cms-store";
+import {
+  readCmsJson,
+  readCmsJsonFresh,
+  readLocalCmsJson,
+  writeCmsJson,
+} from "@/lib/supabase/cms-store";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import {
   mergeSettingsOverlay,
@@ -395,7 +400,34 @@ export async function localizeTransfers(
   if (locale === "es") return data;
 
   const translations = await loadTranslations(locale);
-  return { ...data, ...translations.transfers };
+  let highlights = translations.transfers?.highlights;
+
+  const looksLegacy =
+    !highlights?.length ||
+    highlights.some((h) =>
+      /Air-conditioned vehicle(?!s)|Flight tracking(?! &)|Airport\s*→\s*hotel|Klimatisierter Wagen|Flugüberwachung(?! in Echtzeit)|Flughafen\s*→/i.test(
+        h
+      )
+    );
+
+  if (looksLegacy) {
+    try {
+      const local = await readLocalCmsJson<{
+        transfers?: { highlights?: string[] };
+      }>(`i18n/${locale}.json`);
+      if (local.transfers?.highlights?.length) {
+        highlights = local.transfers.highlights;
+      }
+    } catch {
+      // keep CMS / empty
+    }
+  }
+
+  return {
+    ...data,
+    ...(translations.transfers || {}),
+    ...(highlights?.length ? { highlights } : {}),
+  };
 }
 
 export async function localizeShoreTour(
