@@ -17,6 +17,12 @@ import {
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
+import { RichContent } from "@/components/RichContent";
+import {
+  looksLikeHtml,
+  sanitizeContentHtml,
+  RICH_CONTENT_CLASS,
+} from "@/lib/sanitize-html";
 
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
 export const revalidate = 300;
@@ -48,9 +54,11 @@ export default async function BlogPostPage({ params }: Props) {
     localizeBlogPosts(filterBlogPostsByLocale(posts, locale), locale)
   );
   const related = all.filter((p) => p.slug !== post.slug).slice(0, 2);
-  const paragraphs = post.content.split("\n\n");
   const lp = (path: string) => localePath(locale, path);
   const topicTags = getBlogTopicTags(post.tags);
+  const excerptHtml = looksLikeHtml(post.excerpt)
+    ? sanitizeContentHtml(post.excerpt)
+    : "";
 
   return (
     <article>
@@ -92,21 +100,18 @@ export default async function BlogPostPage({ params }: Props) {
           <ArrowLeft className="h-4 w-4" />
           {dict.blog.eyebrow}
         </Link>
-        <p className="mt-8 text-lg leading-relaxed text-ink-muted">
-          {post.excerpt}
-        </p>
+        {excerptHtml ? (
+          <div
+            className={`${RICH_CONTENT_CLASS} mt-8 text-lg`}
+            dangerouslySetInnerHTML={{ __html: excerptHtml }}
+          />
+        ) : (
+          <p className="mt-8 text-lg leading-relaxed text-ink-muted">
+            {post.excerpt}
+          </p>
+        )}
         <div className="prose-blog mt-8">
-          {paragraphs.map((block, i) => {
-            if (block.startsWith("**") && block.endsWith("**")) {
-              return (
-                <h2 key={i} className="mt-8 mb-2 font-display text-2xl text-ink">
-                  {block.replace(/\*\*/g, "")}
-                </h2>
-              );
-            }
-            const html = block.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-            return <p key={i} dangerouslySetInnerHTML={{ __html: html }} />;
-          })}
+          <RichContent text={post.content} className="text-base" />
         </div>
       </div>
 

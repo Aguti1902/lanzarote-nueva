@@ -524,10 +524,10 @@ export default function AdminAjustesPage() {
             />
           </Field>
           <Field label="Subtítulo">
-            <textarea
-              className={adminTextarea}
+            <RichTextEditor
               value={textValue("homeSubheadline")}
-              onChange={(e) => setText("homeSubheadline", e.target.value)}
+              onChange={(html) => setText("homeSubheadline", html)}
+              minHeight={90}
             />
           </Field>
           <ImageUploadField
@@ -564,13 +564,13 @@ export default function AdminAjustesPage() {
             />
           </Field>
           <Field label="Entradilla">
-            <textarea
-              className={adminTextarea}
+            <RichTextEditor
               value={textValue("aboutLead")}
-              onChange={(e) => setText("aboutLead", e.target.value)}
+              onChange={(html) => setText("aboutLead", html)}
+              minHeight={100}
             />
           </Field>
-          <Field label="Texto completo (formato: negrita, tamaño, color)">
+          <Field label="Texto completo">
             <RichTextEditor
               value={textValue("aboutText")}
               onChange={(html) => setText("aboutText", html)}
@@ -585,10 +585,10 @@ export default function AdminAjustesPage() {
             />
           </Field>
           <Field label="Promesa">
-            <textarea
-              className={adminTextarea}
+            <RichTextEditor
               value={textValue("aboutPromise")}
-              onChange={(e) => setText("aboutPromise", e.target.value)}
+              onChange={(html) => setText("aboutPromise", html)}
+              minHeight={100}
             />
           </Field>
           <ImageUploadField
@@ -673,13 +673,13 @@ export default function AdminAjustesPage() {
             />
           </Field>
           <Field label="Entradilla">
-            <textarea
-              className={adminTextarea}
+            <RichTextEditor
               value={textValue("excursionsIntro")}
-              onChange={(e) => setText("excursionsIntro", e.target.value)}
+              onChange={(html) => setText("excursionsIntro", html)}
+              minHeight={100}
             />
           </Field>
-          <Field label="Texto completo (formato: negrita, tamaño, color)">
+          <Field label="Texto completo">
             <RichTextEditor
               value={textValue("excursionsText")}
               onChange={(html) => setText("excursionsText", html)}
@@ -766,13 +766,13 @@ export default function AdminAjustesPage() {
             />
           </Field>
           <Field label="Entradilla">
-            <textarea
-              className={adminTextarea}
+            <RichTextEditor
               value={textValue("blogIntro")}
-              onChange={(e) => setText("blogIntro", e.target.value)}
+              onChange={(html) => setText("blogIntro", html)}
+              minHeight={100}
             />
           </Field>
-          <Field label="Texto completo (formato: negrita, tamaño, color)">
+          <Field label="Texto completo">
             <RichTextEditor
               value={textValue("blogText")}
               onChange={(html) => setText("blogText", html)}
@@ -845,13 +845,13 @@ export default function AdminAjustesPage() {
             />
           </Field>
           <Field label="Entradilla">
-            <textarea
-              className={adminTextarea}
+            <RichTextEditor
               value={textValue("cruiseIntro")}
-              onChange={(e) => setText("cruiseIntro", e.target.value)}
+              onChange={(html) => setText("cruiseIntro", html)}
+              minHeight={100}
             />
           </Field>
-          <Field label="Texto completo (formato: negrita, tamaño, color)">
+          <Field label="Texto completo">
             <RichTextEditor
               value={textValue("cruiseText")}
               onChange={(html) => setText("cruiseText", html)}
@@ -930,13 +930,13 @@ export default function AdminAjustesPage() {
             />
           </Field>
           <Field label="Entradilla">
-            <textarea
-              className={adminTextarea}
+            <RichTextEditor
               value={textValue("transferIntro")}
-              onChange={(e) => setText("transferIntro", e.target.value)}
+              onChange={(html) => setText("transferIntro", html)}
+              minHeight={100}
             />
           </Field>
-          <Field label="Texto completo (formato: negrita, tamaño, color)">
+          <Field label="Texto completo">
             <RichTextEditor
               value={textValue("transferText")}
               onChange={(html) => setText("transferText", html)}

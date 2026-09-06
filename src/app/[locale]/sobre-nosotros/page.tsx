@@ -5,11 +5,13 @@ import { CheckCircle2 } from "lucide-react";
 import { PageContentBlocks } from "@/components/PageContentBlocks";
 import { PageFaqs } from "@/components/PageFaqs";
 import { PageHero } from "@/components/PageHero";
+import { RichContent } from "@/components/RichContent";
 import { getSettings } from "@/lib/content";
 import { localizeSettings } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
+import { stripHtml } from "@/lib/sanitize-html";
 
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
 export const revalidate = 300;
@@ -28,7 +30,7 @@ export default async function SobreNosotrosPage({ params }: Props) {
   const settings = await localizeSettings(await getSettings(), locale);
   const values = settings.aboutValues
     .split("\n")
-    .map((v) => v.trim())
+    .map((v) => stripHtml(v).trim())
     .filter(Boolean);
   const lp = (path: string) => localePath(locale, path);
 
@@ -46,16 +48,11 @@ export default async function SobreNosotrosPage({ params }: Props) {
           <h2 className="text-3xl font-bold text-ink md:text-4xl">
             {dict.about.welcome}
           </h2>
-          <p className="mt-4 leading-relaxed text-ink-muted">
-            {settings.aboutLead}
-          </p>
-          <div className="mt-4 space-y-4 text-base leading-relaxed text-ink-muted">
-            {settings.aboutText
-              .split("\n\n")
-              .filter(Boolean)
-              .map((p) => (
-                <p key={p.slice(0, 40)}>{p}</p>
-              ))}
+          <div className="mt-4">
+            <RichContent text={settings.aboutLead} />
+          </div>
+          <div className="mt-4">
+            <RichContent text={settings.aboutText} className="text-base" />
           </div>
         </div>
         <div className="relative aspect-[4/5] overflow-hidden rounded-lg ring-1 ring-sand-line">
@@ -113,9 +110,9 @@ export default async function SobreNosotrosPage({ params }: Props) {
             </div>
             <div className="flex flex-col justify-center p-8 md:p-10">
               <h2 className="text-3xl font-bold">{dict.about.promise}</h2>
-              <p className="mt-4 text-sm leading-relaxed text-white/90 md:text-base">
-                {settings.aboutPromise}
-              </p>
+              <div className="mt-4 text-sm leading-relaxed text-white/90 md:text-base [&_.rich-content]:text-white/90 [&_b]:text-white [&_strong]:text-white">
+                <RichContent text={settings.aboutPromise} />
+              </div>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link href={lp("/excursiones")} className="btn-primary">
                   {dict.about.seeExcursions}

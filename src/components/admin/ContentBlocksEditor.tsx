@@ -1,7 +1,8 @@
 "use client";
 
-import { Field, adminInput, adminTextarea } from "@/components/admin/Field";
+import { Field, adminInput } from "@/components/admin/Field";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import type { PageContentBlock } from "@/types";
 import { newPageItemId } from "@/lib/page-content-defaults";
 
@@ -88,10 +89,10 @@ export function ContentBlocksEditor({
         />
       </Field>
       <Field label="Introducción de la sección">
-        <textarea
-          className={adminTextarea}
+        <RichTextEditor
           value={sectionIntro}
-          onChange={(e) => onIntroChange(e.target.value)}
+          onChange={onIntroChange}
+          minHeight={90}
         />
       </Field>
       {blocks.length === 0 ? (
@@ -155,10 +156,10 @@ export function ContentBlocksEditor({
               />
             </Field>
             <Field label="Texto">
-              <textarea
-                className={`${adminTextarea} min-h-[100px]`}
+              <RichTextEditor
                 value={block.text}
-                onChange={(e) => update(index, { text: e.target.value })}
+                onChange={(html) => update(index, { text: html })}
+                minHeight={120}
               />
             </Field>
             <ImageUploadField
