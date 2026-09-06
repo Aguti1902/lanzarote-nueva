@@ -2,12 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  CreditCard,
-  Percent,
-  ShoppingCart,
-  Smartphone,
-} from "lucide-react";
+import { CreditCard, Percent, ShoppingCart } from "lucide-react";
 import type { CruiseSailing, CruiseShoreTour, PaymentMethod } from "@/types";
 import { formatPrice } from "@/lib/format";
 import { isServiceDateWithinLeadTime } from "@/lib/booking-lead-time";
@@ -64,7 +59,7 @@ export function CruiseTourBooking({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("deposit_20");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [cartMsg, setCartMsg] = useState("");
@@ -82,22 +77,16 @@ export function CruiseTourBooking({
   const methods = (
     [
       {
-        id: "deposit_20" as const,
-        label: dict.booking.deposit,
-        icon: <Percent className="h-4 w-4" />,
-        show: tour.allowCard !== false,
-      },
-      {
         id: "card" as const,
         label: dict.booking.card,
         icon: <CreditCard className="h-4 w-4" />,
         show: tour.allowCard !== false,
       },
       {
-        id: "bizum" as const,
-        label: dict.booking.bizum,
-        icon: <Smartphone className="h-4 w-4" />,
-        show: tour.allowBizum !== false,
+        id: "deposit_20" as const,
+        label: dict.booking.deposit,
+        icon: <Percent className="h-4 w-4" />,
+        show: tour.allowCard !== false,
       },
       // Cruceros: no "pago el día" — evita facturas sin cobro real.
     ] as const

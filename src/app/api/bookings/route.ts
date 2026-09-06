@@ -235,7 +235,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error:
-            "En excursiones de crucero no está disponible el pago el día del tour. Elija tarjeta, Bizum o depósito 20%.",
+            "En excursiones de crucero no está disponible el pago el día del tour. Elija pago 100% online o depósito 20%.",
         },
         { status: 400 }
       );

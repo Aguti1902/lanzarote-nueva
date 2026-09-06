@@ -23,7 +23,7 @@ export default function CarritoPage() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [hotel, setHotel] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("deposit_20");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -42,7 +42,7 @@ export default function CarritoPage() {
 
   useEffect(() => {
     if (hasCruiseItem && paymentMethod === "pay_on_day") {
-      setPaymentMethod("deposit_20");
+      setPaymentMethod("card");
     }
   }, [hasCruiseItem, paymentMethod]);
 
@@ -229,9 +229,8 @@ export default function CarritoPage() {
                   setPaymentMethod(e.target.value as PaymentMethod)
                 }
               >
-                <option value="deposit_20">{dict.booking.deposit}</option>
                 <option value="card">{dict.booking.card}</option>
-                <option value="bizum">{dict.booking.bizum}</option>
+                <option value="deposit_20">{dict.booking.deposit}</option>
                 {!hasCruiseItem && (
                   <option value="pay_on_day">{dict.booking.payOnDay}</option>
                 )}

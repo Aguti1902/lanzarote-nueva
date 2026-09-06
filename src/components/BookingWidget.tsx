@@ -29,7 +29,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
   const [children, setChildren] = useState(0);
   const [hours, setHours] = useState(4);
   const [paymentMethod, setPaymentMethod] =
-    useState<PaymentMethod>("deposit_20");
+    useState<PaymentMethod>("card");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -93,19 +93,14 @@ export function BookingWidget({ tour }: { tour: Tour }) {
   const methods = (
     [
       {
-        id: "deposit_20" as const,
-        label: dict.booking.deposit,
-        show: tour.allowCard,
-      },
-      {
         id: "card" as const,
         label: dict.booking.card,
         show: tour.allowCard,
       },
       {
-        id: "bizum" as const,
-        label: dict.booking.bizum,
-        show: tour.allowBizum,
+        id: "deposit_20" as const,
+        label: dict.booking.deposit,
+        show: tour.allowCard,
       },
       {
         id: "pay_on_day" as const,
