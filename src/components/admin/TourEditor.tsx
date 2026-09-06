@@ -766,8 +766,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {(
               [
-                ["allowCard", "Pago con tarjeta"],
-                ["allowBizum", "Pago con Bizum"],
+                ["allowCard", "Pago 100% online"],
                 ["allowPayOnDay", "Pago el día del tour"],
                 ["cruiseFriendly", "Visible para cruceristas"],
                 ["featured", "Destacada en inicio"],

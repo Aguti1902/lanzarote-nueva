@@ -330,7 +330,6 @@ export function TransferBookingForm({
             }
           >
             <option value="card">{dict.booking.card}</option>
-            <option value="bizum">{dict.booking.bizum}</option>
           </select>
         </label>
       </div>
@@ -358,7 +357,7 @@ export function TransferBookingForm({
             </p>
           )}
           <p className="mt-1 text-xs font-medium text-ocean">
-            {dict.booking.card} / {dict.booking.bizum}
+            {dict.booking.card}
           </p>
         </div>
         <button

@@ -785,8 +785,7 @@ export function ShoreToursPanel() {
             <div className="grid gap-3 sm:grid-cols-3">
               {(
                 [
-                  ["allowCard", "Pago con tarjeta"],
-                  ["allowBizum", "Pago con Bizum"],
+                  ["allowCard", "Pago 100% online"],
                   ["allowPayOnDay", "Pago el día (desactivado en web cruceros)"],
                 ] as const
               ).map(([key, label]) => (

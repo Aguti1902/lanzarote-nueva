@@ -32,8 +32,7 @@ async function buildKnowledge(): Promise<string> {
     .map((t) => {
       const group = t.groupSize ? groupSizeLabel(t.groupSize) : t.category;
       const pay = [
-        t.allowCard && "tarjeta 100% online",
-        t.allowBizum && "Bizum 100% online",
+        t.allowCard && "pago 100% online",
         t.allowCard && "20% tarjeta + resto efectivo",
         t.allowPayOnDay && "pago el día del tour",
       ]
@@ -85,8 +84,8 @@ URL cruceros: /excursiones-cruceros
 URL calendario escalas Lanzarote: /cruceristas
 
 INFO CLAVE:
-- Grupo reducido: máx. 8 personas, pago anticipado con tarjeta o Bizum.
-- Grupo grande: hasta 20 personas, tarjeta, Bizum o pago el día del tour.
+- Grupo reducido: máx. 8 personas, pago anticipado 100% online o depósito.
+- Grupo grande: hasta 20 personas, pago 100% online, depósito o pago el día del tour.
 - Tour privado y minibus a disposición disponibles.
 - Cancelación gratuita habitualmente hasta 48h antes.
 `.trim();
@@ -119,15 +118,15 @@ function localReply(message: string, knowledge: string): string {
   }
 
   if (/pago|bizum|tarjeta|efectivo|cobro/.test(q)) {
-    return "En **grupo grande** puedes pagar con tarjeta, Bizum o el día del tour. En **grupo reducido**, privado y minibus se confirma normalmente con tarjeta o Bizum. Los traslados admiten tarjeta, Bizum o pago al conductor.";
+    return "En **grupo grande** puedes pagar 100% online, con depósito 20% o el día del tour. En **grupo reducido**, privado y minibus se confirma normalmente con pago 100% online o depósito. Los traslados se pagan 100% online.";
   }
 
   if (/grupo reducido|pequeño|intimo|intim/.test(q)) {
-    return "El **grupo reducido** es máximo 8 personas: más cercanía con el guía y ritmo flexible. Tenemos Ruta Sur y Grand Tour en este formato. Precio un poco más alto que el grupo grande, con pago anticipado (tarjeta/Bizum). ¿Quieres media jornada (Ruta Sur) o día completo (Grand Tour)?";
+    return "El **grupo reducido** es máximo 8 personas: más cercanía con el guía y ritmo flexible. Tenemos Ruta Sur y Grand Tour en este formato. Precio un poco más alto que el grupo grande, con pago anticipado (100% online o depósito). ¿Quieres media jornada (Ruta Sur) o día completo (Grand Tour)?";
   }
 
   if (/grupo grande|barato|econom|precio bajo|masivo/.test(q)) {
-    return "El **grupo grande** (hasta 20 personas) ofrece el mismo itinerario a mejor precio. Puedes pagar con tarjeta, Bizum o el día del tour. Ideal si priorizas el precio. ¿Ruta Sur (~5 h) o Grand Tour (~9 h)?";
+    return "El **grupo grande** (hasta 20 personas) ofrece el mismo itinerario a mejor precio. Puedes pagar 100% online, con depósito o el día del tour. Ideal si priorizas el precio. ¿Ruta Sur (~5 h) o Grand Tour (~9 h)?";
   }
 
   if (/privado|exclusiv|a medida|familia/.test(q)) {
