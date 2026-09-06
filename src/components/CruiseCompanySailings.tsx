@@ -126,9 +126,6 @@ export function CruiseCompanySailings({
             </p>
             <p className="text-sm font-semibold text-ink">
               {filtered.length} {dict.cruises.companySailings}
-              {shipFilter !== "all" || monthFilter !== "all"
-                ? ` · ${sailings.length} ${dict.cruises.filterAllShips.toLowerCase()}`
-                : ""}
             </p>
           </div>
         </div>
