@@ -77,6 +77,15 @@ const COPY = {
     partial: "Parcial",
     payOnDay: "Pago el día del servicio",
     refunded: "Reembolsado",
+    cancelPolicyTitle: "Política de cancelación",
+    cancelPolicyBody:
+      "Si recibimos su solicitud de cancelación con más de 48 horas de antelación respecto a la hora de recogida del servicio que desea cancelar, se le reembolsará el importe íntegro. Si la cancelación se produce con menos de 48 horas antes de la hora prevista del servicio que desea cancelar, no se reembolsará ningún importe.",
+    legalNotice: [
+      "Este mensaje va dirigido, de manera exclusiva, a su destinatario y puede contener información confidencial y sujeta al secreto profesional, cuya divulgación no está permitida por Ley.",
+      "En caso de haber recibido este mensaje por error, le rogamos que de forma inmediata, nos lo comunique mediante correo electrónico remitido a nuestra atención y proceda a su eliminación, así como a la de cualquier documento adjunto al mismo.",
+      "Asimismo, le comunicamos que la distribución, copia o utilización de este mensaje, o de cualquier documento adjunto al mismo, cualquiera que fuera su finalidad, están prohibidas por la ley.",
+      "En aras del cumplimiento del Reglamento (UE) 2016/679 del Parlamento Europeo y del Consejo, de 27 de abril de 2016, puede ejercer los derechos de acceso, rectificación, cancelación, limitación, oposición y portabilidad de manera gratuita mediante correo electrónico a: info@lanzaroteexperiencetours.com o bien en la siguiente dirección: C/ Calderetas, 100, C.P. 35550, San Bartolomé - Lanzarote (Las Palmas).",
+    ],
   },
   en: {
     brand: "Lanzarote Experience Tours",
@@ -125,6 +134,15 @@ const COPY = {
     partial: "Partial",
     payOnDay: "Pay on the day",
     refunded: "Refunded",
+    cancelPolicyTitle: "Cancellation policy",
+    cancelPolicyBody:
+      "In case of receiving your request for cancellation more than 48 hours in advance regarding the time of collection of the service you wish to cancel, you will be refunded the full amount. If the cancellation occurs less than 48 hours before the scheduled time for the service you wish to cancel, no amount will be refunded.",
+    legalNotice: [
+      "This message is intended exclusively for its recipient and may contain confidential information subject to professional secrecy, the disclosure of which is not permitted by law.",
+      "If you have received this message in error, please notify us immediately by email and delete it, as well as any attached documents.",
+      "Likewise, the distribution, copying or use of this message, or of any document attached to it, for any purpose whatsoever, is prohibited by law.",
+      "In accordance with Regulation (EU) 2016/679 of the European Parliament and of the Council of 27 April 2016, you may exercise your rights of access, rectification, erasure, restriction, objection and portability free of charge by email to: info@lanzaroteexperiencetours.com or at the following address: C/ Calderetas, 100, C.P. 35550, San Bartolomé - Lanzarote (Las Palmas).",
+    ],
   },
   de: {
     brand: "Lanzarote Experience Tours",
@@ -173,6 +191,15 @@ const COPY = {
     partial: "Teilweise",
     payOnDay: "Zahlung am Tourtag",
     refunded: "Erstattet",
+    cancelPolicyTitle: "Stornierungsbedingungen",
+    cancelPolicyBody:
+      "Wenn wir Ihre Stornierungsanfrage mehr als 48 Stunden vor der Abholzeit des zu stornierenden Service erhalten, wird Ihnen der volle Betrag erstattet. Erfolgt die Stornierung weniger als 48 Stunden vor der geplanten Uhrzeit des zu stornierenden Service, wird kein Betrag erstattet.",
+    legalNotice: [
+      "Diese Nachricht ist ausschließlich für den Empfänger bestimmt und kann vertrauliche Informationen enthalten, die dem Berufsgeheimnis unterliegen und deren Weitergabe gesetzlich nicht gestattet ist.",
+      "Sollten Sie diese Nachricht irrtümlich erhalten haben, bitten wir Sie, uns dies unverzüglich per E-Mail mitzuteilen und die Nachricht sowie etwaige Anhänge zu löschen.",
+      "Ebenso ist die Verteilung, das Kopieren oder die Nutzung dieser Nachricht oder eines Anhangs, zu welchem Zweck auch immer, gesetzlich untersagt.",
+      "Zur Einhaltung der Verordnung (EU) 2016/679 des Europäischen Parlaments und des Rates vom 27. April 2016 können Sie Ihre Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Widerspruch und Datenübertragbarkeit kostenlos per E-Mail an info@lanzaroteexperiencetours.com oder unter folgender Adresse ausüben: C/ Calderetas, 100, C.P. 35550, San Bartolomé - Lanzarote (Las Palmas).",
+    ],
   },
 } as const;
 
@@ -231,9 +258,11 @@ function layout(opts: {
   bodyHtml: string;
   footerHelp: string;
   brand: string;
+  lang?: LocaleKey;
 }) {
+  const lang = opts.lang || "es";
   return `<!DOCTYPE html>
-<html lang="es">
+<html lang="${lang}">
 <head><meta charset="utf-8" /><meta name="viewport" content="width=device-width" />
 <title>${escapeHtml(opts.title)}</title></head>
 <body style="margin:0;padding:0;background:#f3f4f6;font-family:Georgia,'Times New Roman',serif;color:#1a1d24">
@@ -255,6 +284,24 @@ function layout(opts: {
     </td></tr>
   </table>
 </body></html>`;
+}
+
+function confirmationLegalBlock(c: (typeof COPY)[LocaleKey]) {
+  const legalHtml = c.legalNotice
+    .map(
+      (p) =>
+        `<p style="margin:0 0 10px;font-size:11px;line-height:1.5;color:#6b7280">${escapeHtml(p)}</p>`
+    )
+    .join("");
+  return `
+    <div style="margin:28px 0 0;padding-top:20px;border-top:3px solid #eb4823">
+      <h2 style="margin:0 0 10px;font-size:18px;line-height:1.3;color:#1a1d24;font-family:Georgia,'Times New Roman',serif">${escapeHtml(c.cancelPolicyTitle)}</h2>
+      <p style="margin:0 0 20px;font-size:13px;line-height:1.55;color:#4f5665">${escapeHtml(c.cancelPolicyBody)}</p>
+      <div style="margin:0;padding-top:16px;border-top:3px solid #eb4823">
+        ${legalHtml}
+      </div>
+    </div>
+  `;
 }
 
 function bookingSummaryRows(
@@ -399,6 +446,7 @@ export async function sendCustomerBookingEmail(
       .join("");
   }
 
+  const showPolicyLegal = kind === "confirmation";
   const bodyHtml = `
     <p style="margin:0 0 8px;font-size:14px;color:#4f5665">${escapeHtml(c.greeting(booking.customer.name || ""))}</p>
     <h1 style="margin:0 0 12px;font-size:26px;line-height:1.2;color:#1a1d24;font-family:Georgia,'Times New Roman',serif">${escapeHtml(title)}</h1>
@@ -408,6 +456,7 @@ export async function sendCustomerBookingEmail(
       ${extraRows}
     </table>
     <div style="margin:0 0 8px">${actions}</div>
+    ${showPolicyLegal ? confirmationLegalBlock(c) : ""}
   `;
 
   const textLines = [
@@ -430,6 +479,15 @@ export async function sendCustomerBookingEmail(
     kind === "confirmation" ? `${c.cancel}: ${links.cancel}` : "",
     links.invoice ? `${c.viewInvoice}: ${links.invoice}` : "",
     "",
+    ...(showPolicyLegal
+      ? [
+          c.cancelPolicyTitle,
+          c.cancelPolicyBody,
+          "",
+          ...c.legalNotice,
+          "",
+        ]
+      : []),
     c.footerHelp,
   ].filter(Boolean);
 
@@ -444,6 +502,7 @@ export async function sendCustomerBookingEmail(
       bodyHtml,
       footerHelp: c.footerHelp,
       brand: c.brand,
+      lang: locale,
     }),
     replyTo: mailbox,
   });
@@ -517,6 +576,7 @@ export async function sendContactAutoReply(input: {
       bodyHtml: `<p style="margin:0;font-size:15px;line-height:1.6;color:#1a1d24;white-space:pre-wrap;font-family:ui-sans-serif,system-ui,sans-serif">${escapeHtml(text)}</p>`,
       footerHelp: COPY[locale].footerHelp,
       brand: COPY[locale].brand,
+      lang: locale,
     }),
     replyTo: MAILBOX.support,
   });
