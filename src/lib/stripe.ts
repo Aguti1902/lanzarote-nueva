@@ -133,3 +133,67 @@ export async function createStripeCheckoutForPayment(
         : session.payment_intent?.id,
   };
 }
+
+/**
+ * Devuelve a la tarjeta el importe indicado vía PaymentIntent de Stripe.
+ * `amountEuros` es opcional: si se omite, Stripe reembolsa el total cobrado.
+ */
+export async function createStripeRefund(input: {
+  paymentIntentId: string;
+  amountEuros?: number;
+  reason?: "duplicate" | "fraudulent" | "requested_by_customer";
+  metadata?: Record<string, string>;
+}): Promise<{
+  refundId: string;
+  amountEuros: number;
+  status: string;
+  paymentIntentId: string;
+}> {
+  const stripe = getStripe();
+  if (!stripe) {
+    throw new Error("Stripe no está configurado");
+  }
+
+  const piId = input.paymentIntentId.trim();
+  if (!piId) {
+    throw new Error("Falta el PaymentIntent de Stripe");
+  }
+
+  const payload: Stripe.RefundCreateParams = {
+    payment_intent: piId,
+    reason: input.reason || "requested_by_customer",
+    metadata: input.metadata,
+  };
+
+  if (input.amountEuros != null) {
+    const cents = Math.round(Number(input.amountEuros) * 100);
+    if (cents <= 0) {
+      throw new Error("El importe a devolver debe ser mayor que 0");
+    }
+    payload.amount = cents;
+  }
+
+  const refund = await stripe.refunds.create(payload);
+  return {
+    refundId: refund.id,
+    amountEuros: Math.round((refund.amount || 0)) / 100,
+    status: refund.status || "unknown",
+    paymentIntentId: piId,
+  };
+}
+
+/** Obtiene el PaymentIntent desde un Checkout Session si hace falta. */
+export async function resolvePaymentIntentId(input: {
+  paymentIntentId?: string;
+  checkoutSessionId?: string;
+}): Promise<string> {
+  if (input.paymentIntentId?.trim()) return input.paymentIntentId.trim();
+  const sessionId = input.checkoutSessionId?.trim();
+  if (!sessionId) return "";
+  const stripe = getStripe();
+  if (!stripe) return "";
+  const session = await stripe.checkout.sessions.retrieve(sessionId);
+  return typeof session.payment_intent === "string"
+    ? session.payment_intent
+    : session.payment_intent?.id || "";
+}

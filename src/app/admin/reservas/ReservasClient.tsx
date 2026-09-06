@@ -605,6 +605,24 @@ export default function AdminReservasPage() {
             }
             window.alert(`Email enviado a ${data.to || "el cliente"}`);
           }}
+          onRefund={async (id) => {
+            const res = await fetch("/api/bookings/refund", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id }),
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+              window.alert(data.error || "No se pudo hacer el refund");
+              return;
+            }
+            if (data.booking) {
+              setBookings((prev) =>
+                prev.map((b) => (b.id === id ? data.booking : b))
+              );
+            }
+            window.alert(data.message || "Refund enviado a Stripe");
+          }}
         />
       )}
     </div>

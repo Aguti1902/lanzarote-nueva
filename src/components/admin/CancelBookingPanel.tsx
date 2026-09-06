@@ -10,6 +10,7 @@ import {
   type CancelReasonId,
 } from "@/lib/cancellation";
 import { formatDateShort } from "@/lib/format";
+import { isOnlineCardMethod } from "@/lib/payments";
 
 function money(n: number) {
   return new Intl.NumberFormat("es-ES", {
@@ -118,8 +119,12 @@ export function CancelBookingPanel({
             </span>
             {assessment.refundAmount > 0 ? (
               <span className="mt-2 block font-bold text-success">
-                Se devolverá {money(assessment.refundAmount)} y se emitirá una
-                factura en negativo (abono) con IGIC 7%.
+                Corresponde devolver {money(assessment.refundAmount)}
+                {isOnlineCardMethod(booking.paymentMethod) &&
+                (booking.amountPaidCard || 0) > 0
+                  ? " (use el botón Refund en Stripe tras cancelar)."
+                  : "."}{" "}
+                Se emitirá factura en negativo (abono) con IGIC 7%.
               </span>
             ) : assessment.free ? (
               <span className="mt-2 block font-bold text-success">

@@ -87,6 +87,7 @@ export function BookingDetailModal({
   onSaveCustomer,
   onSaveAmount,
   onResendEmail,
+  onRefund,
   initialView = "details",
 }: {
   booking: Booking;
@@ -99,6 +100,7 @@ export function BookingDetailModal({
   onSaveCustomer?: (id: string, customer: CustomerPatch) => void | Promise<void>;
   onSaveAmount?: (id: string, amountTotal: number) => void | Promise<void>;
   onResendEmail?: (id: string, kind: "confirmation" | "cancellation" | "request") => void | Promise<void>;
+  onRefund?: (id: string) => void | Promise<void>;
   initialView?: "details" | "cancel";
 }) {
   const [view, setView] = useState<"details" | "cancel">(
@@ -365,6 +367,41 @@ export function BookingDetailModal({
                       : "Reenviar email al cliente"}
                 </button>
               )}
+              {onRefund &&
+                !booking.stripeRefundId &&
+                (booking.amountPaidCard || 0) > 0 && (
+                  <button
+                    type="button"
+                    disabled={submitting}
+                    onClick={async () => {
+                      const amountHint =
+                        booking.status === "cancelled"
+                          ? "según la política de cancelación"
+                          : "el total cobrado con tarjeta";
+                      const ok = window.confirm(
+                        `¿Enviar refund a Stripe ${amountHint} para ${booking.id}?\n\nEsto devolverá el dinero a la tarjeta del cliente.`
+                      );
+                      if (!ok) return;
+                      setSubmitting(true);
+                      try {
+                        await onRefund(booking.id);
+                      } finally {
+                        setSubmitting(false);
+                      }
+                    }}
+                    className="rounded bg-emerald-700 px-4 py-2 text-sm font-bold text-white hover:bg-emerald-800 disabled:opacity-60"
+                  >
+                    {submitting ? "Refund…" : "Refund Stripe"}
+                  </button>
+                )}
+              {booking.stripeRefundId && (
+                <span className="inline-flex items-center rounded border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-800">
+                  Refund OK · {booking.stripeRefundId}
+                  {booking.stripeRefundAmount != null
+                    ? ` · ${money(booking.stripeRefundAmount)}`
+                    : ""}
+                </span>
+              )}
             </div>
 
             <div className="grid gap-8 px-5 py-6 md:grid-cols-2 md:px-8">
@@ -504,6 +541,15 @@ export function BookingDetailModal({
                         value={money(booking.cancellationFee)}
                       />
                     )}
+                  {booking.stripePaymentIntentId && (
+                    <Row
+                      label="Stripe PI"
+                      value={booking.stripePaymentIntentId}
+                    />
+                  )}
+                  {booking.stripeRefundId && (
+                    <Row label="Stripe refund" value={booking.stripeRefundId} />
+                  )}
                 </dl>
               </section>
 

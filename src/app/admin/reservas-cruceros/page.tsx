@@ -312,6 +312,20 @@ export default function AdminReservasCrucerosPage() {
             await setStatus(id, "completed");
           }}
           onSaveCustomer={saveCustomer}
+          onRefund={async (id) => {
+            const res = await fetch("/api/bookings/refund", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id }),
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+              window.alert(data.error || "No se pudo hacer el refund");
+              return;
+            }
+            await load();
+            window.alert(data.message || "Refund enviado a Stripe");
+          }}
         />
       )}
     </div>

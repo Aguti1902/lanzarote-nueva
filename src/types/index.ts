@@ -527,6 +527,10 @@ export interface Booking {
   /** Refs Stripe (no van en notas del cliente). */
   stripeCheckoutSessionId?: string;
   stripePaymentIntentId?: string;
+  /** Refund ejecutado en Stripe (si aplica). */
+  stripeRefundId?: string;
+  stripeRefundedAt?: string;
+  stripeRefundAmount?: number;
   cancellationReason?: string;
   cancelledAt?: string;
   cancellationFee?: number;
