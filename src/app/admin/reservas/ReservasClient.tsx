@@ -155,7 +155,7 @@ export default function AdminReservasPage() {
     await fetch("/api/invoices", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ bookingId }),
+      body: JSON.stringify({ bookingId, force: true }),
     });
     await load();
   }
