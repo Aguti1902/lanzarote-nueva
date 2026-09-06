@@ -1042,7 +1042,7 @@ const en: Dictionary = {
   },
   home: {
     ctaOffers: "See our offers",
-    ctaCruise: "Arriving by cruise",
+    ctaCruise: "Shore Excursions",
     marquee:
       "Tailored excursions · Family business from Lanzarote · Thank you for supporting local trade · Small groups, Spanish only",
     advantages: [
@@ -1570,7 +1570,7 @@ const de: Dictionary = {
   },
   home: {
     ctaOffers: "Unsere Angebote ansehen",
-    ctaCruise: "Mit dem Kreuzfahrtschiff",
+    ctaCruise: "Landausflüge",
     marquee:
       "Individuelle Ausflüge · Familienunternehmen aus Lanzarote · Danke für die Unterstützung lokaler Betriebe · Kleine Gruppen, nur auf Spanisch",
     advantages: [
