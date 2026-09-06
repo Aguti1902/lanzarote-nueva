@@ -326,15 +326,9 @@ export function TransferBookingForm({
           <span className="mb-1 block text-sm font-medium">
             {dict.transferForm.payment}
           </span>
-          <select
-            className={inputClass}
-            value={paymentMethod}
-            onChange={(e) =>
-              setPaymentMethod(e.target.value as PaymentMethod)
-            }
-          >
-            <option value="card">{dict.booking.card}</option>
-          </select>
+          <div className="flex items-center gap-2 rounded-lg border border-ocean bg-sky-soft/60 px-3 py-2.5 text-sm font-semibold text-ocean">
+            {dict.booking.card}
+          </div>
         </label>
       </div>
 

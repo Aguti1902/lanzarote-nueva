@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ShoppingCart, Trash2 } from "lucide-react";
+import { CreditCard, Percent, ShoppingCart, Trash2, Wallet } from "lucide-react";
 import { useCart } from "@/components/CartProvider";
 import { useLocale } from "@/components/LocaleProvider";
 import { formatPrice } from "@/lib/format";
@@ -251,19 +251,56 @@ export default function CarritoPage() {
                 value={hotel}
                 onChange={(e) => setHotel(e.target.value)}
               />
-              <select
-                className={inputClass}
-                value={paymentMethod}
-                onChange={(e) =>
-                  setPaymentMethod(e.target.value as PaymentMethod)
-                }
-              >
-                <option value="card">{dict.booking.card}</option>
-                <option value="deposit_20">{dict.booking.deposit}</option>
-                {!hasCruiseItem && (
-                  <option value="pay_on_day">{dict.booking.payOnDay}</option>
-                )}
-              </select>
+              <div>
+                <p className="mb-2 text-sm font-medium text-ink">
+                  {dict.booking.paymentMethod}
+                </p>
+                <div className="grid gap-2">
+                  {(
+                    [
+                      {
+                        id: "card" as const,
+                        label: dict.booking.card,
+                        icon: <CreditCard className="h-4 w-4 shrink-0" />,
+                        show: true,
+                      },
+                      {
+                        id: "deposit_20" as const,
+                        label: dict.booking.deposit,
+                        icon: <Percent className="h-4 w-4 shrink-0" />,
+                        show: true,
+                      },
+                      {
+                        id: "pay_on_day" as const,
+                        label: dict.booking.payOnDay,
+                        icon: <Wallet className="h-4 w-4 shrink-0" />,
+                        show: !hasCruiseItem,
+                      },
+                    ] as const
+                  )
+                    .filter((m) => m.show)
+                    .map((m) => (
+                      <label
+                        key={m.id}
+                        className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2.5 text-sm transition ${
+                          paymentMethod === m.id
+                            ? "border-ocean bg-sky-soft/60 font-semibold text-ocean"
+                            : "border-sand-line bg-white text-ink-muted hover:border-ocean/40"
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          className="sr-only"
+                          name="cart-payment-method"
+                          checked={paymentMethod === m.id}
+                          onChange={() => setPaymentMethod(m.id)}
+                        />
+                        {m.icon}
+                        <span className="leading-snug">{m.label}</span>
+                      </label>
+                    ))}
+                </div>
+              </div>
               {error && <p className="text-sm text-red-600">{error}</p>}
               <button
                 type="submit"

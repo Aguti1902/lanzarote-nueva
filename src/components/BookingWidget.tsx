@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ShoppingCart } from "lucide-react";
+import { CreditCard, Percent, ShoppingCart, Wallet } from "lucide-react";
 import type { CruiseCall, PaymentMethod, Tour } from "@/types";
 import { formatPrice } from "@/lib/format";
 import { isFlatPriceTour } from "@/lib/tour-pricing";
@@ -98,16 +98,19 @@ export function BookingWidget({ tour }: { tour: Tour }) {
       {
         id: "card" as const,
         label: dict.booking.card,
+        icon: <CreditCard className="h-4 w-4 shrink-0" />,
         show: tour.allowCard,
       },
       {
         id: "deposit_20" as const,
         label: dict.booking.deposit,
+        icon: <Percent className="h-4 w-4 shrink-0" />,
         show: tour.allowCard,
       },
       {
         id: "pay_on_day" as const,
         label: dict.booking.payOnDay,
+        icon: <Wallet className="h-4 w-4 shrink-0" />,
         show: tour.allowPayOnDay,
       },
     ] as const
@@ -424,20 +427,29 @@ export function BookingWidget({ tour }: { tour: Tour }) {
             {dict.booking.requestHint}
           </p>
         ) : (
-          <Field label={dict.booking.paymentMethod}>
-            <select
-              className={inputClass}
-              value={paymentMethod}
-              onChange={(e) =>
-                setPaymentMethod(e.target.value as PaymentMethod)
-              }
-            >
+          <Field label={dict.booking.paymentMethod} as="div">
+            <div className="grid gap-2">
               {methods.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.label}
-                </option>
+                <label
+                  key={m.id}
+                  className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2.5 text-sm transition ${
+                    paymentMethod === m.id
+                      ? "border-ocean bg-sky-soft/60 font-semibold text-ocean"
+                      : "border-sand-line bg-white text-ink-muted hover:border-ocean/40"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    className="sr-only"
+                    name="booking-payment-method"
+                    checked={paymentMethod === m.id}
+                    onChange={() => setPaymentMethod(m.id)}
+                  />
+                  {m.icon}
+                  <span className="leading-snug">{m.label}</span>
+                </label>
               ))}
-            </select>
+            </div>
           </Field>
         )}
 
