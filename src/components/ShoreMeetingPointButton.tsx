@@ -5,23 +5,23 @@ import { MapPin } from "lucide-react";
 import { MeetingPointModal } from "@/components/MeetingPointModal";
 
 type Props = {
-  images: string[];
+  images?: string[];
   title: string;
   body?: string;
   buttonLabel: string;
   className?: string;
 };
 
-/** Botón + modal de fotos del punto de encuentro (ficha shore). */
+/** Botón + modal de punto de encuentro (ficha shore). Siempre visible. */
 export function ShoreMeetingPointButton({
-  images,
+  images = [],
   title,
   body,
   buttonLabel,
   className,
 }: Props) {
   const [open, setOpen] = useState(false);
-  if (!images.length) return null;
+  const photos = images.filter(Boolean);
 
   return (
     <>
@@ -30,7 +30,7 @@ export function ShoreMeetingPointButton({
         onClick={() => setOpen(true)}
         className={
           className ||
-          "inline-flex items-center justify-center gap-1.5 rounded-full border border-ink/20 px-4 py-2.5 text-sm font-bold uppercase tracking-wide transition hover:border-ocean hover:text-ocean"
+          "inline-flex items-center justify-center gap-1.5 rounded-full border border-ocean bg-ocean/5 px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-ocean transition hover:bg-ocean hover:text-white"
         }
       >
         <MapPin className="h-4 w-4" />
@@ -40,7 +40,7 @@ export function ShoreMeetingPointButton({
         open={open}
         title={title}
         body={body}
-        images={images}
+        images={photos}
         onClose={() => setOpen(false)}
       />
     </>

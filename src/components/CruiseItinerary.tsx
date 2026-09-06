@@ -256,19 +256,14 @@ export function CruiseItinerary({ sailing, tours }: Props) {
                                     >
                                       {dict.cruises.moreInfo}
                                     </button>
-                                    {(tour.meetingPointImages?.length ?? 0) >
-                                      0 && (
-                                      <button
-                                        type="button"
-                                        onClick={() =>
-                                          setMeetingTourId(tour.id)
-                                        }
-                                        className="inline-flex items-center justify-center gap-1.5 rounded-full border border-ink/20 px-4 py-2.5 text-sm font-bold uppercase tracking-wide transition hover:border-ocean hover:text-ocean"
-                                      >
-                                        <MapPin className="h-4 w-4" />
-                                        {dict.cruises.meetingPoint}
-                                      </button>
-                                    )}
+                                    <button
+                                      type="button"
+                                      onClick={() => setMeetingTourId(tour.id)}
+                                      className="inline-flex items-center justify-center gap-1.5 rounded-full border border-ocean bg-ocean/5 px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-ocean transition hover:bg-ocean hover:text-white"
+                                    >
+                                      <MapPin className="h-4 w-4" />
+                                      {dict.cruises.meetingPoint}
+                                    </button>
                                     <button
                                       type="button"
                                       onClick={() =>
@@ -313,9 +308,7 @@ export function CruiseItinerary({ sailing, tours }: Props) {
       <MeetingPointModal
         open={Boolean(meetingTourId)}
         title={dict.cruises.meetingPointTitle}
-        body={
-          meetingImages.length ? undefined : dict.cruises.meetingPointBody
-        }
+        body={dict.cruises.meetingPointBody}
         images={meetingImages}
         onClose={() => setMeetingTourId(null)}
       />
