@@ -323,11 +323,16 @@ export default function AdminReservasCrucerosPage() {
             });
             const data = await res.json().catch(() => ({}));
             if (!res.ok) {
-              window.alert(data.error || "No se pudo hacer el refund");
-              return;
+              return {
+                ok: false,
+                message: data.error || "No se pudo hacer el refund",
+              };
             }
             await load();
-            window.alert(data.message || "Refund enviado a Stripe");
+            return {
+              ok: true,
+              message: data.message || "Refund enviado a Stripe",
+            };
           }}
         />
       )}

@@ -597,16 +597,22 @@ export default function AdminReservasPage() {
             });
             const data = await res.json().catch(() => ({}));
             if (!res.ok) {
-              window.alert(data.error || "No se pudo reenviar el email");
-              return;
+              return {
+                ok: false,
+                message: data.error || "No se pudo reenviar el email",
+              };
             }
             if (data.skipped) {
-              window.alert(
-                "RESEND_API_KEY no está configurada en este entorno; el envío se ha omitido."
-              );
-              return;
+              return {
+                ok: false,
+                message:
+                  "RESEND_API_KEY no está configurada en este entorno; el envío se ha omitido.",
+              };
             }
-            window.alert(`Email enviado a ${data.to || "el cliente"}`);
+            return {
+              ok: true,
+              message: `Email enviado a ${data.to || "el cliente"}`,
+            };
           }}
           onRefund={async (id) => {
             const res = await fetch("/api/bookings/refund", {
@@ -616,15 +622,20 @@ export default function AdminReservasPage() {
             });
             const data = await res.json().catch(() => ({}));
             if (!res.ok) {
-              window.alert(data.error || "No se pudo hacer el refund");
-              return;
+              return {
+                ok: false,
+                message: data.error || "No se pudo hacer el refund",
+              };
             }
             if (data.booking) {
               setBookings((prev) =>
                 prev.map((b) => (b.id === id ? data.booking : b))
               );
             }
-            window.alert(data.message || "Refund enviado a Stripe");
+            return {
+              ok: true,
+              message: data.message || "Refund enviado a Stripe",
+            };
           }}
         />
       )}

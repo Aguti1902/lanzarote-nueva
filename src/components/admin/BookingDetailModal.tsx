@@ -22,6 +22,10 @@ import {
 } from "@/lib/voucher";
 import { CancelBookingPanel } from "@/components/admin/CancelBookingPanel";
 import {
+  AdminConfirmDialog,
+  AdminToast,
+} from "@/components/admin/AdminNotice";
+import {
   BookingStatusBadge,
   PaymentStatusBadge,
 } from "@/components/admin/BookingStatusBadge";
@@ -99,14 +103,24 @@ export function BookingDetailModal({
   onComplete?: (id: string) => void;
   onSaveCustomer?: (id: string, customer: CustomerPatch) => void | Promise<void>;
   onSaveAmount?: (id: string, amountTotal: number) => void | Promise<void>;
-  onResendEmail?: (id: string, kind: "confirmation" | "cancellation" | "request") => void | Promise<void>;
-  onRefund?: (id: string) => void | Promise<void>;
+  onResendEmail?: (
+    id: string,
+    kind: "confirmation" | "cancellation" | "request"
+  ) => Promise<{ ok: boolean; message: string } | void> | { ok: boolean; message: string } | void;
+  onRefund?: (
+    id: string
+  ) => Promise<{ ok: boolean; message: string } | void> | { ok: boolean; message: string } | void;
   initialView?: "details" | "cancel";
 }) {
   const [view, setView] = useState<"details" | "cancel">(
     booking.status === "cancelled" ? "details" : initialView
   );
   const [submitting, setSubmitting] = useState(false);
+  const [refundConfirmOpen, setRefundConfirmOpen] = useState(false);
+  const [notice, setNotice] = useState<{
+    type: "success" | "error" | "info";
+    message: string;
+  } | null>(null);
   const [editingCustomer, setEditingCustomer] = useState(false);
   const [editingAmount, setEditingAmount] = useState(false);
   const [savingAmount, setSavingAmount] = useState(false);
@@ -322,9 +336,11 @@ export function BookingDetailModal({
                 onClick={() => {
                   const ok = openVoucherPrintWindow(voucherHtml(booking));
                   if (!ok) {
-                    window.alert(
-                      "El navegador ha bloqueado la ventana de impresión. Permita ventanas emergentes para este sitio e inténtelo de nuevo."
-                    );
+                    setNotice({
+                      type: "error",
+                      message:
+                        "El navegador ha bloqueado la ventana de impresión. Permita ventanas emergentes para este sitio e inténtelo de nuevo.",
+                    });
                   }
                 }}
                 className="rounded border border-sand-line px-4 py-2 text-sm font-bold text-ink hover:bg-sky-soft"
@@ -353,7 +369,21 @@ export function BookingDetailModal({
                           : "confirmation";
                     setSubmitting(true);
                     try {
-                      await onResendEmail(booking.id, kind);
+                      const result = await onResendEmail(booking.id, kind);
+                      if (result) {
+                        setNotice({
+                          type: result.ok ? "success" : "error",
+                          message: result.message,
+                        });
+                      }
+                    } catch (err) {
+                      setNotice({
+                        type: "error",
+                        message:
+                          err instanceof Error
+                            ? err.message
+                            : "No se pudo reenviar el email",
+                      });
                     } finally {
                       setSubmitting(false);
                     }
@@ -373,25 +403,10 @@ export function BookingDetailModal({
                   <button
                     type="button"
                     disabled={submitting}
-                    onClick={async () => {
-                      const amountHint =
-                        booking.status === "cancelled"
-                          ? "según la política de cancelación"
-                          : "el total cobrado con tarjeta";
-                      const ok = window.confirm(
-                        `¿Enviar refund a Stripe ${amountHint} para ${booking.id}?\n\nEsto devolverá el dinero a la tarjeta del cliente.`
-                      );
-                      if (!ok) return;
-                      setSubmitting(true);
-                      try {
-                        await onRefund(booking.id);
-                      } finally {
-                        setSubmitting(false);
-                      }
-                    }}
+                    onClick={() => setRefundConfirmOpen(true)}
                     className="rounded bg-emerald-700 px-4 py-2 text-sm font-bold text-white hover:bg-emerald-800 disabled:opacity-60"
                   >
-                    {submitting ? "Refund…" : "Refund Stripe"}
+                    Refund Stripe
                   </button>
                 )}
               {booking.stripeRefundId && (
@@ -858,6 +873,55 @@ export function BookingDetailModal({
           </>
         )}
       </div>
+
+      <AdminConfirmDialog
+        open={refundConfirmOpen}
+        title="Confirmar refund Stripe"
+        body={
+          booking.status === "cancelled"
+            ? `Se enviará un refund a Stripe según la política de cancelación para ${booking.id}.\n\nEsto devolverá el dinero a la tarjeta del cliente.`
+            : `Se enviará un refund a Stripe del importe cobrado con tarjeta para ${booking.id}.\n\nEsto devolverá el dinero a la tarjeta del cliente.`
+        }
+        confirmLabel="Sí, devolver"
+        cancelLabel="Cancelar"
+        tone="success"
+        busy={submitting}
+        onCancel={() => {
+          if (!submitting) setRefundConfirmOpen(false);
+        }}
+        onConfirm={async () => {
+          if (!onRefund) return;
+          setSubmitting(true);
+          try {
+            const result = await onRefund(booking.id);
+            setRefundConfirmOpen(false);
+            if (result) {
+              setNotice({
+                type: result.ok ? "success" : "error",
+                message: result.message,
+              });
+            } else {
+              setNotice({
+                type: "success",
+                message: "Refund enviado a Stripe",
+              });
+            }
+          } catch (err) {
+            setRefundConfirmOpen(false);
+            setNotice({
+              type: "error",
+              message:
+                err instanceof Error
+                  ? err.message
+                  : "No se pudo hacer el refund",
+            });
+          } finally {
+            setSubmitting(false);
+          }
+        }}
+      />
+
+      <AdminToast notice={notice} onClose={() => setNotice(null)} />
     </div>
   );
 }
