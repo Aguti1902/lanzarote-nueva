@@ -11,6 +11,13 @@ import {
   formatPrice,
   paymentLabel,
 } from "@/lib/format";
+import {
+  emailBody,
+  emailCta,
+  emailLayout,
+  emailRow,
+  EMAIL_BRAND,
+} from "@/lib/email-layout";
 import { escapeHtml, formatFromAddress, sendEmail, type SendEmailResult } from "@/lib/mail";
 import { MAILBOX, resolveBookingMailbox } from "@/lib/mail-routing";
 import { isOnlineCardMethod } from "@/lib/payments";
@@ -237,55 +244,6 @@ function bookingLinks(booking: Booking, origin: string, locale: LocaleKey) {
   };
 }
 
-function row(label: string, value: string) {
-  if (!value || value === "—") return "";
-  return `<tr>
-    <td style="padding:8px 0;color:#4f5665;font-size:14px;vertical-align:top;width:38%">${escapeHtml(label)}</td>
-    <td style="padding:8px 0;color:#1a1d24;font-size:14px;font-weight:600;text-align:right">${value}</td>
-  </tr>`;
-}
-
-function cta(href: string, label: string, primary = false) {
-  const bg = primary ? "#eb4823" : "#ffffff";
-  const color = primary ? "#ffffff" : "#eb4823";
-  const border = primary ? "#eb4823" : "#eb4823";
-  return `<a href="${escapeHtml(href)}" style="display:inline-block;margin:4px 6px 4px 0;padding:12px 18px;background:${bg};color:${color};border:1px solid ${border};text-decoration:none;font-size:14px;font-weight:700">${escapeHtml(label)}</a>`;
-}
-
-function layout(opts: {
-  title: string;
-  preheader: string;
-  bodyHtml: string;
-  footerHelp: string;
-  brand: string;
-  lang?: LocaleKey;
-}) {
-  const lang = opts.lang || "es";
-  return `<!DOCTYPE html>
-<html lang="${lang}">
-<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width" />
-<title>${escapeHtml(opts.title)}</title></head>
-<body style="margin:0;padding:0;background:#f3f4f6;font-family:Georgia,'Times New Roman',serif;color:#1a1d24">
-  <div style="display:none;max-height:0;overflow:hidden;opacity:0">${escapeHtml(opts.preheader)}</div>
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f3f4f6;padding:24px 12px">
-    <tr><td align="center">
-      <table role="presentation" width="100%" style="max-width:560px;background:#ffffff;border-radius:4px;overflow:hidden;border:1px solid #e5e7eb">
-        <tr><td style="background:#1a1d24;padding:18px 24px">
-          <p style="margin:0;color:#ffffff;font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:700">${escapeHtml(opts.brand)}</p>
-        </td></tr>
-        <tr><td style="padding:28px 24px;font-family:ui-sans-serif,system-ui,sans-serif">
-          ${opts.bodyHtml}
-        </td></tr>
-        <tr><td style="padding:0 24px 28px;font-family:ui-sans-serif,system-ui,sans-serif">
-          <p style="margin:0;font-size:13px;line-height:1.5;color:#4f5665">${escapeHtml(opts.footerHelp)}</p>
-          <p style="margin:12px 0 0;font-size:12px;color:#9ca3af">${escapeHtml(opts.brand)} · +34 646 08 05 85</p>
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`;
-}
-
 function confirmationLegalBlock(c: (typeof COPY)[LocaleKey]) {
   const legalHtml = c.legalNotice
     .map(
@@ -319,24 +277,26 @@ function bookingSummaryRows(
   const returnTime = bookingReturnTime(booking);
 
   return [
-    row(c.locator, `<span style="color:#eb4823">${escapeHtml(booking.id)}</span>`),
-    row(c.service, escapeHtml(booking.tourTitle)),
-    row(c.date, escapeHtml(formatDate(booking.date, locale))),
-    serviceTime ? row(c.time, escapeHtml(serviceTime)) : "",
-    returnDate ? row(c.returnDate, escapeHtml(formatDate(returnDate, locale))) : "",
-    returnTime ? row(c.returnTime, escapeHtml(returnTime)) : "",
-    row(c.people, escapeHtml(peopleText)),
-    row(c.total, escapeHtml(formatPrice(total, "EUR", locale))),
-    row(c.payment, escapeHtml(paymentLabel(booking.paymentMethod, locale))),
-    row(
+    emailRow(c.locator, `<span style="color:#eb4823">${escapeHtml(booking.id)}</span>`),
+    emailRow(c.service, escapeHtml(booking.tourTitle)),
+    emailRow(c.date, escapeHtml(formatDate(booking.date, locale))),
+    serviceTime ? emailRow(c.time, escapeHtml(serviceTime)) : "",
+    returnDate
+      ? emailRow(c.returnDate, escapeHtml(formatDate(returnDate, locale)))
+      : "",
+    returnTime ? emailRow(c.returnTime, escapeHtml(returnTime)) : "",
+    emailRow(c.people, escapeHtml(peopleText)),
+    emailRow(c.total, escapeHtml(formatPrice(total, "EUR", locale))),
+    emailRow(c.payment, escapeHtml(paymentLabel(booking.paymentMethod, locale))),
+    emailRow(
       c.paymentStatus,
       escapeHtml(paymentStatusLabel(booking.paymentStatus, locale, c))
     ),
     booking.customer.hotel
-      ? row(c.hotel, escapeHtml(booking.customer.hotel))
+      ? emailRow(c.hotel, escapeHtml(booking.customer.hotel))
       : "",
     booking.customer.cruiseShip
-      ? row(c.cruise, escapeHtml(booking.customer.cruiseShip))
+      ? emailRow(c.cruise, escapeHtml(booking.customer.cruiseShip))
       : "",
   ]
     .filter(Boolean)
@@ -403,7 +363,7 @@ export async function sendCustomerBookingEmail(
     title = c.requestTitle;
     lead = c.requestLead;
     subject = c.requestSubject(booking.id);
-    actions = cta(links.manage, c.manage, true);
+    actions = emailCta(links.manage, c.manage, true);
   } else if (kind === "cancellation") {
     title = c.cancellationTitle;
     lead = c.cancellationLead;
@@ -411,15 +371,15 @@ export async function sendCustomerBookingEmail(
     const assessment = options?.assessment;
     if (assessment) {
       if (assessment.free) {
-        extraRows += row(c.fee, escapeHtml(c.freeCancel));
+        extraRows += emailRow(c.fee, escapeHtml(c.freeCancel));
       } else {
-        extraRows += row(
+        extraRows += emailRow(
           c.fee,
           escapeHtml(formatPrice(assessment.fee, "EUR", locale))
         );
       }
       if (assessment.refundAmount > 0) {
-        extraRows += row(
+        extraRows += emailRow(
           c.refund,
           escapeHtml(formatPrice(assessment.refundAmount, "EUR", locale))
         );
@@ -430,34 +390,31 @@ export async function sendCustomerBookingEmail(
         CANCEL_REASON_LABELS[
           options.reason as keyof typeof CANCEL_REASON_LABELS
         ] || options.reason;
-      extraRows += row(c.reason, escapeHtml(label));
+      extraRows += emailRow(c.reason, escapeHtml(label));
     }
-    actions = cta(links.manage, c.manage, true);
+    actions = emailCta(links.manage, c.manage, true);
   } else {
     actions = [
-      cta(links.voucher, c.viewVoucher, true),
-      cta(links.manage, c.manage),
+      emailCta(links.voucher, c.viewVoucher, true),
+      emailCta(links.manage, c.manage),
       booking.status !== "cancelled" && booking.status !== "completed"
-        ? cta(links.cancel, c.cancel)
+        ? emailCta(links.cancel, c.cancel)
         : "",
-      links.invoice ? cta(links.invoice, c.viewInvoice) : "",
+      links.invoice ? emailCta(links.invoice, c.viewInvoice) : "",
     ]
       .filter(Boolean)
       .join("");
   }
 
   const showPolicyLegal = kind === "confirmation";
-  const bodyHtml = `
-    <p style="margin:0 0 8px;font-size:14px;color:#4f5665">${escapeHtml(c.greeting(booking.customer.name || ""))}</p>
-    <h1 style="margin:0 0 12px;font-size:26px;line-height:1.2;color:#1a1d24;font-family:Georgia,'Times New Roman',serif">${escapeHtml(title)}</h1>
-    <p style="margin:0 0 20px;font-size:15px;line-height:1.55;color:#4f5665">${escapeHtml(lead)}</p>
-    <table role="presentation" width="100%" style="border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;margin:0 0 20px">
-      ${bookingSummaryRows(booking, locale, c)}
-      ${extraRows}
-    </table>
-    <div style="margin:0 0 8px">${actions}</div>
-    ${showPolicyLegal ? confirmationLegalBlock(c) : ""}
-  `;
+  const bodyHtml = emailBody({
+    eyebrow: c.greeting(booking.customer.name || ""),
+    title,
+    lead,
+    rowsHtml: `${bookingSummaryRows(booking, locale, c)}${extraRows}`,
+    actionsHtml: actions,
+    extraHtml: showPolicyLegal ? confirmationLegalBlock(c) : "",
+  });
 
   const textLines = [
     c.greeting(booking.customer.name || ""),
@@ -496,7 +453,7 @@ export async function sendCustomerBookingEmail(
     from,
     subject,
     text: textLines.join("\n"),
-    html: layout({
+    html: emailLayout({
       title: subject,
       preheader: `${title} · ${booking.id}`,
       bodyHtml,
@@ -519,6 +476,8 @@ export async function notifyOpsCancellation(
     cruiseShip: booking.customer?.cruiseShip,
     bookingId: booking.id,
   });
+  const origin = resolvePublicOrigin();
+  const adminUrl = `${origin}/admin/reservas?q=${encodeURIComponent(booking.id)}`;
   const text = [
     "Reserva cancelada",
     "",
@@ -533,16 +492,55 @@ export async function notifyOpsCancellation(
     booking.cancellationReason
       ? `Motivo: ${booking.cancellationReason}`
       : "",
+    "",
+    `Abrir en admin: ${adminUrl}`,
   ]
     .filter(Boolean)
     .join("\n");
+
+  const rowsHtml = [
+    emailRow(
+      "Localizador",
+      `<span style="color:#eb4823">${escapeHtml(booking.id)}</span>`
+    ),
+    emailRow("Servicio", escapeHtml(booking.tourTitle)),
+    emailRow("Fecha", escapeHtml(booking.date)),
+    emailRow(
+      "Cliente",
+      escapeHtml(`${booking.customer.name} <${booking.customer.email}>`)
+    ),
+    emailRow("Teléfono", escapeHtml(booking.customer.phone || "—")),
+    assessment
+      ? emailRow(
+          "Cargo / devolución",
+          escapeHtml(`${assessment.fee} € / ${assessment.refundAmount} €`)
+        )
+      : "",
+    booking.cancellationReason
+      ? emailRow("Motivo", escapeHtml(booking.cancellationReason))
+      : "",
+  ]
+    .filter(Boolean)
+    .join("");
 
   return sendEmail({
     to,
     from: formatFromAddress(to),
     subject: `[Cancelación] ${booking.id} · ${booking.tourTitle}`,
     text,
-    html: `<pre style="font-family:ui-sans-serif,system-ui,sans-serif;white-space:pre-wrap;line-height:1.5">${escapeHtml(text)}</pre>`,
+    html: emailLayout({
+      title: `Cancelación ${booking.id}`,
+      preheader: `Reserva cancelada · ${booking.id}`,
+      bodyHtml: emailBody({
+        title: "Reserva cancelada",
+        lead: "Notificación interna: el cliente ha cancelado o se ha cancelado la reserva.",
+        rowsHtml,
+        actionsHtml: emailCta(adminUrl, "Abrir en el panel", true),
+      }),
+      footerHelp: "Notificación interna · Lanzarote Experience Tours.",
+      brand: EMAIL_BRAND,
+      lang: "es",
+    }),
     replyTo: booking.customer.email,
   });
 }
@@ -570,7 +568,7 @@ export async function sendContactAutoReply(input: {
     from: formatFromAddress(MAILBOX.support),
     subject: subjects[locale],
     text,
-    html: layout({
+    html: emailLayout({
       title: subjects[locale],
       preheader: subjects[locale],
       bodyHtml: `<p style="margin:0;font-size:15px;line-height:1.6;color:#1a1d24;white-space:pre-wrap;font-family:ui-sans-serif,system-ui,sans-serif">${escapeHtml(text)}</p>`,
