@@ -41,7 +41,7 @@ export type Dictionary = {
     ctaOffers: string;
     ctaCruise: string;
     marquee: string;
-    advantages: { text: string; bold?: string }[];
+    advantages: { text: string }[];
     toursTitle: string;
     toursKicker: string;
     transfersKicker: string;
@@ -469,7 +469,6 @@ const es: Dictionary = {
     marquee:
       "Excursiones personalizadas · Empresa familiar de Lanzarote · Gracias por apoyar el comercio local · Grupos reducidos, solo en español",
     advantages: [
-      { text: "Mini-bus desinfectado con Ozono." },
       { text: "Mini-bus climatizado y con WIFI Gratis" },
       { text: "Grupos reducidos, máximo 14 personas" },
       { text: "No mezclamos idiomas, sólo en Español" },
@@ -1046,7 +1045,6 @@ const en: Dictionary = {
     marquee:
       "Tailored excursions · Family business from Lanzarote · Thank you for supporting local trade · Small groups, Spanish only",
     advantages: [
-      { text: "Ozone-disinfected mini-bus." },
       { text: "Air-conditioned mini-bus with free WIFI" },
       { text: "Small groups, max. 14 people" },
       { text: "We don't mix languages, Spanish only" },
@@ -1574,7 +1572,6 @@ const de: Dictionary = {
     marquee:
       "Individuelle Ausflüge · Familienunternehmen aus Lanzarote · Danke für die Unterstützung lokaler Betriebe · Kleine Gruppen, nur auf Spanisch",
     advantages: [
-      { text: "Minibus mit Ozon desinfiziert." },
       { text: "Klimatisierter Minibus mit gratis WIFI" },
       { text: "Kleine Gruppen, maximal 14 Personen" },
       { text: "Keine Sprachmischung, nur auf Spanisch" },
@@ -2070,19 +2067,43 @@ const de: Dictionary = {
 
 const dictionaries: Record<Locale, Dictionary> = { es, en, de };
 
+const OZONE_ADVANTAGE_RE = /ozono|ozone|ozon\b/i;
+
+function sanitizeDictionary(dict: Dictionary): Dictionary {
+  const advantages = (dict.home.advantages || [])
+    .map((item) => ({ text: String(item?.text || "").trim() }))
+    .filter((item) => item.text && !OZONE_ADVANTAGE_RE.test(item.text));
+  if (advantages.length === dict.home.advantages.length) {
+    const unchanged = advantages.every(
+      (item, i) => item.text === dict.home.advantages[i]?.text
+    );
+    if (unchanged) return dict;
+  }
+  return {
+    ...dict,
+    home: { ...dict.home, advantages },
+  };
+}
+
 export async function getDictionary(locale: Locale): Promise<Dictionary> {
   const base = dictionaries[locale] ?? dictionaries.es;
   const { applyTranslationOverrides, getOverridesForLocale } = await import(
     "@/lib/ui-translations"
   );
   const overrides = await getOverridesForLocale(locale);
-  return applyTranslationOverrides(base, overrides);
+  // Evita que overlays CMS reintroduzcan negritas en ventajas del home.
+  const cleaned = Object.fromEntries(
+    Object.entries(overrides).filter(
+      ([key]) => !/^home\.advantages\.\d+\.bold$/.test(key)
+    )
+  );
+  return sanitizeDictionary(applyTranslationOverrides(base, cleaned));
 }
 
 export function getDictionarySync(locale: Locale): Dictionary {
-  return dictionaries[locale] ?? dictionaries.es;
+  return sanitizeDictionary(dictionaries[locale] ?? dictionaries.es);
 }
 
 export function getBaseDictionary(locale: Locale): Dictionary {
-  return dictionaries[locale] ?? dictionaries.es;
+  return sanitizeDictionary(dictionaries[locale] ?? dictionaries.es);
 }
