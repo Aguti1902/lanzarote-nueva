@@ -11,7 +11,7 @@ import {
   formatPrice,
   paymentLabel,
 } from "@/lib/format";
-import { escapeHtml, sendEmail, type SendEmailResult } from "@/lib/mail";
+import { escapeHtml, formatFromAddress, sendEmail, type SendEmailResult } from "@/lib/mail";
 import { MAILBOX, resolveBookingMailbox } from "@/lib/mail-routing";
 import { isOnlineCardMethod } from "@/lib/payments";
 import { resolvePublicOrigin } from "@/lib/voucher";
@@ -342,7 +342,9 @@ export async function sendCustomerBookingEmail(
     tourId: booking.tourId,
     groupId: booking.groupId,
     cruiseShip: booking.customer?.cruiseShip,
+    bookingId: booking.id,
   });
+  const from = formatFromAddress(mailbox);
 
   let title: string = c.confirmationTitle;
   let lead: string = c.confirmationLead;
@@ -433,6 +435,7 @@ export async function sendCustomerBookingEmail(
 
   return sendEmail({
     to,
+    from,
     subject,
     text: textLines.join("\n"),
     html: layout({
@@ -455,6 +458,7 @@ export async function notifyOpsCancellation(
     tourId: booking.tourId,
     groupId: booking.groupId,
     cruiseShip: booking.customer?.cruiseShip,
+    bookingId: booking.id,
   });
   const text = [
     "Reserva cancelada",
@@ -476,6 +480,7 @@ export async function notifyOpsCancellation(
 
   return sendEmail({
     to,
+    from: formatFromAddress(to),
     subject: `[Cancelación] ${booking.id} · ${booking.tourTitle}`,
     text,
     html: `<pre style="font-family:ui-sans-serif,system-ui,sans-serif;white-space:pre-wrap;line-height:1.5">${escapeHtml(text)}</pre>`,
@@ -503,6 +508,7 @@ export async function sendContactAutoReply(input: {
   const text = bodies[locale];
   return sendEmail({
     to: input.email,
+    from: formatFromAddress(MAILBOX.support),
     subject: subjects[locale],
     text,
     html: layout({

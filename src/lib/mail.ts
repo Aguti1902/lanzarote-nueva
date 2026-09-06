@@ -1,8 +1,9 @@
 /**
  * Envío de correo vía Resend (HTTPS).
  * Requiere RESEND_API_KEY en el entorno.
- * From por defecto: Lanzarote Experience Tours <onboarding@resend.dev>
- *   (cámbialo con MAIL_FROM cuando el dominio esté verificado en Resend).
+ *
+ * Remitente por defecto según buzón (booking@ / cruise@ / …).
+ * MAIL_FROM solo actúa como fallback global si no se pasa `from`.
  */
 
 type SendEmailInput = {
@@ -10,6 +11,8 @@ type SendEmailInput = {
   subject: string;
   text: string;
   html?: string;
+  /** Remitente completo, p.ej. `Lanzarote Experience Tours <booking@…>` */
+  from?: string;
   replyTo?: string;
 };
 
@@ -17,10 +20,25 @@ export type SendEmailResult =
   | { ok: true; id?: string; skipped?: boolean }
   | { ok: false; error: string };
 
-function fromAddress() {
+export function formatFromAddress(
+  email: string,
+  displayName = "Lanzarote Experience Tours"
+) {
+  const addr = email.trim();
+  if (!addr) {
+    return (
+      process.env.MAIL_FROM?.trim() ||
+      "Lanzarote Experience Tours <booking@lanzaroteexperiencetours.com>"
+    );
+  }
+  if (addr.includes("<")) return addr;
+  return `${displayName} <${addr}>`;
+}
+
+function defaultFromAddress() {
   return (
     process.env.MAIL_FROM?.trim() ||
-    "Lanzarote Experience Tours <onboarding@resend.dev>"
+    formatFromAddress("booking@lanzaroteexperiencetours.com")
   );
 }
 
@@ -39,6 +57,7 @@ export async function sendEmail(
   }
 
   const to = Array.isArray(input.to) ? input.to : [input.to];
+  const from = input.from?.trim() || defaultFromAddress();
   try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -47,7 +66,7 @@ export async function sendEmail(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: fromAddress(),
+        from,
         to,
         subject: input.subject,
         text: input.text,
@@ -63,7 +82,7 @@ export async function sendEmail(
     if (!res.ok) {
       const msg =
         data.error?.message || data.message || `HTTP ${res.status}`;
-      console.error("[mail] Resend error:", msg);
+      console.error("[mail] Resend error:", msg, { from, to });
       return { ok: false, error: msg };
     }
     return { ok: true, id: data.id };

@@ -1,5 +1,5 @@
 import type { Booking } from "@/types";
-import { sendEmail, textToHtml } from "@/lib/mail";
+import { formatFromAddress, sendEmail, textToHtml } from "@/lib/mail";
 import { MAILBOX, resolveBookingMailbox } from "@/lib/mail-routing";
 
 export async function notifyContactMessage(input: {
@@ -23,6 +23,7 @@ export async function notifyContactMessage(input: {
 
   return sendEmail({
     to: MAILBOX.support,
+    from: formatFromAddress(MAILBOX.support),
     subject: `[Contacto web] ${input.name}`,
     text,
     html: textToHtml(text),
@@ -41,6 +42,7 @@ export async function notifyNewBooking(
     groupId: booking.groupId,
     cruiseShip: booking.customer?.cruiseShip,
     source: meta?.source,
+    bookingId: booking.id,
   });
 
   const kindLabel =
@@ -88,6 +90,7 @@ export async function notifyNewBooking(
 
   return sendEmail({
     to,
+    from: formatFromAddress(to),
     subject: `[${kindLabel}] ${booking.id} · ${booking.tourTitle}`,
     text,
     html: textToHtml(text),
