@@ -9,6 +9,19 @@ import {
 import { bookingLocaleLabel } from "@/lib/booking-display";
 import { customerFacingNotes } from "@/lib/customer-notes";
 
+function resolvePublicOrigin(origin?: string): string {
+  const raw =
+    (origin && origin.trim()) ||
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "") ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "") ||
+    "https://lanzarote-nueva.vercel.app";
+  const withProto = raw.startsWith("http") ? raw : `https://${raw}`;
+  return withProto.replace(/\/$/, "");
+}
+
 export type VoucherCompany = {
   brandName: string;
   legalName: string;
@@ -120,6 +133,7 @@ export function buildVoucherHtml(
     company?: Partial<VoucherCompany>;
     labels?: Partial<VoucherLabels>;
     origin?: string;
+    locale?: string;
     logoUrl?: string;
   }
 ): string {
@@ -134,13 +148,18 @@ export function buildVoucherHtml(
     ...options?.company,
   };
 
-  const origin = (options?.origin || "").replace(/\/$/, "");
+  const origin = resolvePublicOrigin(options?.origin);
+  const locale =
+    options?.locale === "en" || options?.locale === "de"
+      ? options.locale
+      : booking.locale === "en" || booking.locale === "de"
+        ? booking.locale
+        : "es";
   // Always embed logo as data URI so print/download/blob windows never break,
   // and it stays visible on the voucher (logo is white → needs dark plate).
   const logoUrl = options?.logoUrl || BRAND_LOGO_DATA_URI;
-  const verifyUrl = origin
-    ? `${origin}/es/voucher?id=${encodeURIComponent(booking.id)}`
-    : `LET:${booking.id}`;
+  // QR → ficha de la reserva (por si el cliente no imprime el voucher)
+  const verifyUrl = `${origin}/${locale}/reserva/confirmacion?id=${encodeURIComponent(booking.id)}`;
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=8&data=${encodeURIComponent(verifyUrl)}`;
 
   const people = booking.adults + (booking.children || 0);
@@ -263,6 +282,7 @@ export function buildVoucherHtml(
     line-height: 1.45;
   }
   .qr-wrap { text-align: center; }
+  .qr-wrap a { display: inline-block; }
   .qr-wrap img {
     width: 132px;
     height: 132px;
@@ -391,8 +411,10 @@ export function buildVoucherHtml(
         </p>
       </div>
       <div class="qr-wrap">
-        <img src="${esc(qrUrl)}" alt="QR ${esc(booking.id)}" width="132" height="132" />
-        <p>Escanee para verificar</p>
+        <a href="${esc(verifyUrl)}" target="_blank" rel="noopener noreferrer" title="${esc(booking.id)}">
+          <img src="${esc(qrUrl)}" alt="QR ${esc(booking.id)}" width="132" height="132" />
+        </a>
+        <p>Escanee para ver la reserva</p>
       </div>
     </div>
     <div class="title-block">

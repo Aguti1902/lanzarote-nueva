@@ -46,6 +46,7 @@ export default async function VoucherPage({ params, searchParams }: Props) {
 
   const html = buildVoucherHtml(booking, {
     origin,
+    locale,
     company: {
       brandName: settings.brandName,
       legalName: settings.companyLegalName || settings.brandName,

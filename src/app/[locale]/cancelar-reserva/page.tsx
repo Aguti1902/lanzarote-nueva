@@ -1,7 +1,8 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import type { Booking } from "@/types";
 import { assessCancellation } from "@/lib/cancellation";
@@ -15,8 +16,9 @@ const inputClass =
 
 type Step = "lookup" | "cancel" | "done";
 
-export default function CancelarReservaPage() {
+function CancelarReservaContent() {
   const { dict, href } = useLocale();
+  const searchParams = useSearchParams();
   const hero = useSettingsHero("excursions");
   const c = dict.cancel;
   const [step, setStep] = useState<Step>("lookup");
@@ -28,11 +30,57 @@ export default function CancelarReservaPage() {
   const [selected, setSelected] = useState(false);
   const [reason, setReason] = useState("");
   const [doneMessage, setDoneMessage] = useState("");
+  const [autoTried, setAutoTried] = useState(false);
 
   const assessment = useMemo(
     () => (booking ? assessCancellation(booking) : null),
     [booking]
   );
+
+  async function lookupBooking(idValue: string, emailValue: string) {
+    const res = await fetch("/api/bookings/lookup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ booking_id: idValue, email: emailValue }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Error");
+    const found = data.booking as Booking;
+    if (found.status === "cancelled") {
+      throw new Error(c.alreadyCancelled);
+    }
+    if (found.status === "completed") {
+      throw new Error(c.alreadyCompleted);
+    }
+    setBooking(found);
+    setSelected(true);
+    setReason("");
+    setStep("cancel");
+  }
+
+  useEffect(() => {
+    if (autoTried) return;
+    const idParam = (
+      searchParams.get("id") ||
+      searchParams.get("booking_id") ||
+      ""
+    ).trim();
+    const emailParam = (searchParams.get("email") || "").trim();
+    if (idParam) setBookingId(idParam);
+    if (emailParam) setEmail(emailParam);
+    setAutoTried(true);
+    if (idParam && emailParam) {
+      setLoading(true);
+      setError("");
+      lookupBooking(idParam, emailParam)
+        .catch((err) => {
+          setError(err instanceof Error ? err.message : "Error");
+          setStep("lookup");
+        })
+        .finally(() => setLoading(false));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- one-shot from URL
+  }, [searchParams, autoTried]);
 
   async function handleLookup(e: FormEvent) {
     e.preventDefault();
@@ -40,26 +88,7 @@ export default function CancelarReservaPage() {
     setBooking(null);
     setLoading(true);
     try {
-      const res = await fetch("/api/bookings/lookup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ booking_id: bookingId, email }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Error");
-      const found = data.booking as Booking;
-      if (found.status === "cancelled") {
-        setError(c.alreadyCancelled);
-        return;
-      }
-      if (found.status === "completed") {
-        setError(c.alreadyCompleted);
-        return;
-      }
-      setBooking(found);
-      setSelected(false);
-      setReason("");
-      setStep("cancel");
+      await lookupBooking(bookingId, email);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error");
     } finally {
@@ -78,7 +107,7 @@ export default function CancelarReservaPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           booking_id: booking.id,
-          email,
+          email: email || booking.customer.email,
           reason,
           confirm_service: selected,
         }),
@@ -298,5 +327,20 @@ export default function CancelarReservaPage() {
         )}
       </section>
     </>
+  );
+}
+
+
+export default function CancelarReservaPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="mx-auto max-w-2xl px-4 py-14 text-ink-muted md:px-6">
+          Cargando…
+        </div>
+      }
+    >
+      <CancelarReservaContent />
+    </Suspense>
   );
 }

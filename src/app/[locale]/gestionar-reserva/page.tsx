@@ -1,7 +1,8 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, Suspense, useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import type { Booking } from "@/types";
 import {
   bookingReturnDate,
@@ -16,17 +17,18 @@ import { useSettingsHero } from "@/hooks/useSettingsHero";
 const inputClass =
   "w-full rounded border border-sand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20";
 
-export default function GestionarReservaPage() {
+function GestionarReservaContent() {
   const { dict, href } = useLocale();
+  const searchParams = useSearchParams();
   const hero = useSettingsHero("excursions");
   const [bookingId, setBookingId] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [booking, setBooking] = useState<Booking | null>(null);
+  const [autoTried, setAutoTried] = useState(false);
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  async function lookup(idValue: string, emailValue: string) {
     setError("");
     setBooking(null);
     setLoading(true);
@@ -34,7 +36,7 @@ export default function GestionarReservaPage() {
       const res = await fetch("/api/bookings/lookup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ booking_id: bookingId, email }),
+        body: JSON.stringify({ booking_id: idValue, email: emailValue }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error");
@@ -45,6 +47,29 @@ export default function GestionarReservaPage() {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    if (autoTried) return;
+    const idParam = (searchParams.get("id") || searchParams.get("booking_id") || "").trim();
+    const emailParam = (searchParams.get("email") || "").trim();
+    if (idParam) setBookingId(idParam);
+    if (emailParam) setEmail(emailParam);
+    setAutoTried(true);
+    if (idParam && emailParam) {
+      void lookup(idParam, emailParam);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- one-shot from URL
+  }, [searchParams, autoTried]);
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    await lookup(bookingId, email);
+  }
+
+  const cancelHref = booking
+    ? href("/cancelar-reserva") +
+      `?id=${encodeURIComponent(booking.id)}&email=${encodeURIComponent(booking.customer.email)}`
+    : href("/cancelar-reserva");
 
   return (
     <>
@@ -170,7 +195,7 @@ export default function GestionarReservaPage() {
               {booking.status !== "cancelled" &&
                 booking.status !== "completed" && (
                   <Link
-                    href={href("/cancelar-reserva")}
+                    href={cancelHref}
                     className="inline-flex items-center justify-center border border-red-300 px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50"
                   >
                     {dict.manage.cancelBooking}
@@ -198,5 +223,19 @@ export default function GestionarReservaPage() {
         )}
       </section>
     </>
+  );
+}
+
+export default function GestionarReservaPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="mx-auto max-w-xl px-4 py-14 text-ink-muted md:px-6">
+          Cargando…
+        </div>
+      }
+    >
+      <GestionarReservaContent />
+    </Suspense>
   );
 }

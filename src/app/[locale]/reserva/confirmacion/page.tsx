@@ -151,7 +151,8 @@ export default async function ConfirmacionPage({ params, searchParams }: Props) 
               {dict.confirmation.viewVoucher}
             </Link>
             <Link
-              href={localePath(locale, "/gestionar-reserva")}
+              href={localePath(locale, "/gestionar-reserva") +
+                `?id=${encodeURIComponent(booking.id)}&email=${encodeURIComponent(booking.customer.email)}`}
               className="inline-flex items-center justify-center gap-2 border border-ocean/40 px-4 py-3 text-sm font-bold text-ocean hover:bg-sky-soft"
             >
               <UserRound className="h-4 w-4" />
@@ -159,7 +160,10 @@ export default async function ConfirmacionPage({ params, searchParams }: Props) 
             </Link>
             {booking.status !== "cancelled" && booking.status !== "completed" && (
               <Link
-                href={localePath(locale, "/cancelar-reserva")}
+                href={
+                  localePath(locale, "/cancelar-reserva") +
+                  `?id=${encodeURIComponent(booking.id)}&email=${encodeURIComponent(booking.customer.email)}`
+                }
                 className="inline-flex items-center justify-center gap-2 border border-red-300 px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50 sm:col-span-2"
               >
                 <XCircle className="h-4 w-4" />

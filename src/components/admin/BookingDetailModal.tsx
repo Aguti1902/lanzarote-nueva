@@ -64,6 +64,7 @@ function serviceKind(b: Booking) {
 function voucherHtml(b: Booking) {
   return buildVoucherHtml(b, {
     origin: typeof window !== "undefined" ? window.location.origin : "",
+    locale: b.locale === "en" || b.locale === "de" ? b.locale : "es",
   });
 }
 
