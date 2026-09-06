@@ -467,11 +467,11 @@ const es: Dictionary = {
     ctaOffers: "Ver nuestras ofertas",
     ctaCruise: "Llegas en crucero",
     marquee:
-      "Excursiones personalizadas · Empresa familiar de Lanzarote · Gracias por apoyar el comercio local · Grupos reducidos, solo en español",
+      "Excursiones personalizadas · Empresa familiar de Lanzarote · Gracias por apoyar el comercio local · Grupos reducidos",
     advantages: [
-      { text: "Mini-bus climatizado y con WIFI Gratis" },
-      { text: "Grupos reducidos, máximo 14 personas" },
-      { text: "No mezclamos idiomas, sólo en Español" },
+      { text: "Mini-bus climatizado" },
+      { text: "Grupos reducidos" },
+      { text: "No mezclamos idiomas" },
       { text: "Le recogemos en la puerta de su alojamiento" },
     ],
     toursTitle: "Lanzarote tours",
@@ -485,7 +485,7 @@ const es: Dictionary = {
     agencyKicker: "Empresa familiar",
     agencyTitle: "Agencia de excursiones",
     agencyBody:
-      "Vigilamos la calidad con grupos pequeños, minibuses propios y visitas solo en español.",
+      "Vigilamos la calidad con grupos pequeños y minibuses propios.",
     agencyCta: "Conocer LET",
     islandKicker: "La isla",
     islandTitle: "Aproveche al máximo su visita a Lanzarote",
@@ -1043,11 +1043,11 @@ const en: Dictionary = {
     ctaOffers: "See our offers",
     ctaCruise: "Shore Excursions",
     marquee:
-      "Tailored excursions · Family business from Lanzarote · Thank you for supporting local trade · Small groups, Spanish only",
+      "Tailored excursions · Family business from Lanzarote · Thank you for supporting local trade · Small groups",
     advantages: [
-      { text: "Air-conditioned mini-bus with free WIFI" },
-      { text: "Small groups, max. 14 people" },
-      { text: "We don't mix languages, Spanish only" },
+      { text: "Air-conditioned mini-bus" },
+      { text: "Small groups" },
+      { text: "We don't mix languages" },
       { text: "We pick you up at your accommodation" },
     ],
     toursTitle: "Lanzarote tours",
@@ -1061,7 +1061,7 @@ const en: Dictionary = {
     agencyKicker: "Family business",
     agencyTitle: "Excursion agency",
     agencyBody:
-      "We protect quality with small groups, our own minibuses and Spanish-only tours.",
+      "We protect quality with small groups and our own minibuses.",
     agencyCta: "Meet LET",
     islandKicker: "The island",
     islandTitle: "Make the most of your visit to Lanzarote",
@@ -1570,11 +1570,11 @@ const de: Dictionary = {
     ctaOffers: "Unsere Angebote ansehen",
     ctaCruise: "Landausflüge",
     marquee:
-      "Individuelle Ausflüge · Familienunternehmen aus Lanzarote · Danke für die Unterstützung lokaler Betriebe · Kleine Gruppen, nur auf Spanisch",
+      "Individuelle Ausflüge · Familienunternehmen aus Lanzarote · Danke für die Unterstützung lokaler Betriebe · Kleine Gruppen",
     advantages: [
-      { text: "Klimatisierter Minibus mit gratis WIFI" },
-      { text: "Kleine Gruppen, maximal 14 Personen" },
-      { text: "Keine Sprachmischung, nur auf Spanisch" },
+      { text: "Klimatisierter Minibus" },
+      { text: "Kleine Gruppen" },
+      { text: "Keine Sprachmischung" },
       { text: "Abholung an Ihrer Unterkunft" },
     ],
     toursTitle: "Lanzarote tours",
@@ -1588,7 +1588,7 @@ const de: Dictionary = {
     agencyKicker: "Familienunternehmen",
     agencyTitle: "Ausflugsagentur",
     agencyBody:
-      "Wir sichern Qualität mit kleinen Gruppen, eigenen Minibussen und Touren nur auf Spanisch.",
+      "Wir sichern Qualität mit kleinen Gruppen und eigenen Minibussen.",
     agencyCta: "LET kennenlernen",
     islandKicker: "Die Insel",
     islandTitle: "Holen Sie das Beste aus Ihrem Besuch auf Lanzarote",

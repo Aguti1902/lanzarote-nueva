@@ -524,7 +524,7 @@ const defaultSettings: SiteSettings = {
   companyAddress: "",
   taxRate: 7,
   bannerEs:
-    "Excursiones personalizadas · Empresa familiar de Lanzarote · Gracias por apoyar el comercio local · Grupos reducidos, solo en español",
+    "Excursiones personalizadas · Empresa familiar de Lanzarote · Gracias por apoyar el comercio local · Grupos reducidos",
   bannerEn: "",
   bannerDe: "",
   excursionsFaqTitle: DEFAULT_EXCURSIONS_FAQ_TITLE,
