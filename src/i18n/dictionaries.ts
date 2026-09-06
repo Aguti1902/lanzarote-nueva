@@ -173,6 +173,11 @@ export type Dictionary = {
     prevMonth: string;
     nextMonth: string;
     orBrowseByCompany: string;
+    companyPageIntro: string;
+    companyBenefits: string[];
+    excursionsForShip: string;
+    cantFindCruise: string;
+    durationLabelShort: string;
     faqTitle: string;
     faqs: { q: string; a: string }[];
   };
@@ -623,7 +628,7 @@ const es: Dictionary = {
       "Timanfaya, El Golfo, Jameos… lo mejor de la isla en el tiempo de su escala.",
     recommended: "Excursiones para cruceristas",
     recommendedText:
-      "Experiencias únicas en cada escala, con grupos reducidos y solo en español.",
+      "Experiencias únicas en cada escala, con grupos pequeños y minibuses propios.",
     privateTitle: "¿Prefiere algo privado?",
     privateText:
       "La opción más flexible si viaja en familia o quiere un itinerario a medida.",
@@ -696,6 +701,17 @@ const es: Dictionary = {
     prevMonth: "Mes anterior",
     nextMonth: "Mes siguiente",
     orBrowseByCompany: "O busque por compañía de cruceros",
+    companyPageIntro:
+      "Ofrecemos excursiones en cada escala de Canarias. Empresa familiar local, grupos pequeños y minibuses propios, con regreso a tiempo a su barco.",
+    companyBenefits: [
+      "Garantizamos su regreso a tiempo a su barco",
+      "No mezclamos idiomas",
+      "Grupos pequeños",
+      "Minibús climatizado",
+    ],
+    excursionsForShip: "Excursiones para {ship}",
+    cantFindCruise: "¿No encuentra su crucero?",
+    durationLabelShort: "Duración",
     faqTitle: "Preguntas frecuentes sobre excursiones para cruceros",
     faqs: [
       {
@@ -1156,7 +1172,7 @@ const en: Dictionary = {
     essentialsText:
       "Timanfaya, El Golfo, Jameos… the best of the island in your time ashore.",
     recommended: "Shore excursions",
-    recommendedText: "Unique experiences for every port call, in small Spanish-only groups.",
+    recommendedText: "Unique experiences for every port call, in small groups with our own minibuses.",
     privateTitle: "Prefer something private?",
     privateText: "The most flexible option for families or a custom itinerary.",
     scheduleKicker: "Season",
@@ -1228,6 +1244,17 @@ const en: Dictionary = {
     prevMonth: "Previous month",
     nextMonth: "Next month",
     orBrowseByCompany: "Or browse by cruise line",
+    companyPageIntro:
+      "We offer excursions at every Canary Islands port call. A local family business, small groups and our own minibuses, with a guaranteed return to your ship.",
+    companyBenefits: [
+      "We guarantee your return to the ship on time",
+      "We don't mix languages",
+      "Small groups",
+      "Air-conditioned minibus",
+    ],
+    excursionsForShip: "Excursions for {ship}",
+    cantFindCruise: "Can't find your cruise?",
+    durationLabelShort: "Duration",
     faqTitle: "Frequently asked questions about shore excursions",
     faqs: [
       {
@@ -1685,7 +1712,7 @@ const de: Dictionary = {
       "Timanfaya, El Golfo, Jameos… das Beste der Insel in Ihrer Landzeit.",
     recommended: "Landausflüge",
     recommendedText:
-      "Einzigartige Erlebnisse für jeden Hafenstopp, in kleinen spanischsprachigen Gruppen.",
+      "Einzigartige Erlebnisse für jeden Hafenstopp, in kleinen Gruppen mit eigenen Minibussen.",
     privateTitle: "Lieber privat?",
     privateText:
       "Die flexibelste Option für Familien oder eine individuelle Route.",
@@ -1758,6 +1785,17 @@ const de: Dictionary = {
     prevMonth: "Vorheriger Monat",
     nextMonth: "Nächster Monat",
     orBrowseByCompany: "Oder nach Reederei suchen",
+    companyPageIntro:
+      "Wir bieten Ausflüge an jedem Kanaren-Hafenstopp. Lokales Familienunternehmen, kleine Gruppen und eigene Minibusse – mit pünktlicher Rückkehr zum Schiff.",
+    companyBenefits: [
+      "Wir garantieren die pünktliche Rückkehr zum Schiff",
+      "Keine Sprachmischung",
+      "Kleine Gruppen",
+      "Klimatisierter Minibus",
+    ],
+    excursionsForShip: "Ausflüge für {ship}",
+    cantFindCruise: "Kreuzfahrt nicht gefunden?",
+    durationLabelShort: "Dauer",
     faqTitle: "Häufige Fragen zu Landausflügen für Kreuzfahrten",
     faqs: [
       {
