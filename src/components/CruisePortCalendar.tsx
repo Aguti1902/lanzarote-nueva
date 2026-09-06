@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import type { CruiseCall } from "@/types";
 import { formatDate, formatDateShort, formatWeekday } from "@/lib/format";
+import { minBookableDateIso } from "@/lib/booking-lead-time";
 import { useLocale } from "@/components/LocaleProvider";
 
 export type CalendarCall = CruiseCall & {
@@ -51,11 +52,13 @@ export function CruisePortCalendar({ calls, season, port }: Props) {
     return map;
   }, [calls]);
 
-  const today = new Date().toISOString().slice(0, 10);
+  const minBookable = minBookableDateIso();
   const initialMonth =
-    months.find((m) => m >= today.slice(0, 7)) || months[0] || today.slice(0, 7);
+    months.find((m) => m >= minBookable.slice(0, 7)) ||
+    months[0] ||
+    minBookable.slice(0, 7);
   const initialDate =
-    [...callsByDate.keys()].find((d) => d >= today) ||
+    [...callsByDate.keys()].find((d) => d >= minBookable) ||
     [...callsByDate.keys()][0] ||
     "";
 
@@ -159,9 +162,10 @@ export function CruisePortCalendar({ calls, season, port }: Props) {
               const day = i + 1;
               const iso = toIso(year, monthNum - 1, day);
               const dayCalls = callsByDate.get(iso) || [];
-              const hasShips = dayCalls.length > 0;
+              const withinLead = iso >= minBookable;
+              const hasShips = dayCalls.length > 0 && withinLead;
               const selected = selectedDate === iso;
-              const isToday = iso === today;
+              const isMinDay = iso === minBookable;
 
               return (
                 <button
@@ -175,7 +179,7 @@ export function CruisePortCalendar({ calls, season, port }: Props) {
                       : hasShips
                         ? "bg-ocean/10 text-ocean-deep hover:bg-ocean/20"
                         : "text-ink-muted/35"
-                  } ${isToday && !selected ? "ring-1 ring-ocean/40" : ""}`}
+                  } ${isMinDay && !selected ? "ring-1 ring-ocean/40" : ""}`}
                   aria-label={
                     hasShips
                       ? `${formatDateShort(iso)} · ${dayCalls.length} ${

@@ -6,21 +6,32 @@ export function minBookableDateTime(now = new Date()): Date {
   return new Date(now.getTime() + MIN_BOOKING_LEAD_HOURS * 60 * 60 * 1000);
 }
 
-/** Primera fecha ISO (YYYY-MM-DD) en la que se puede reservar (fecha-only). */
+/**
+ * Primera fecha ISO (YYYY-MM-DD) reservable cuando solo hay día (sin hora).
+ * Exige que el inicio del día de servicio (00:00) quede a ≥ 48 h de ahora.
+ * Ej.: si ahora+48h cae a las 19:56 del día D, el primer día válido es D+1.
+ */
 export function minBookableDateIso(now = new Date()): string {
   const min = minBookableDateTime(now);
-  // Si solo hay fecha (sin hora), exigimos que el día completo quede
-  // a ≥48 h: el inicio del día de servicio (00:00 local) no puede ser
-  // anterior a now+48h → usamos el día calendario de now+48h.
-  const y = min.getFullYear();
-  const m = String(min.getMonth() + 1).padStart(2, "0");
-  const d = String(min.getDate()).padStart(2, "0");
+  const startOfMinDay = new Date(
+    min.getFullYear(),
+    min.getMonth(),
+    min.getDate()
+  );
+  const first =
+    startOfMinDay.getTime() >= min.getTime()
+      ? startOfMinDay
+      : new Date(min.getFullYear(), min.getMonth(), min.getDate() + 1);
+  const y = first.getFullYear();
+  const m = String(first.getMonth() + 1).padStart(2, "0");
+  const d = String(first.getDate()).padStart(2, "0");
   return `${y}-${m}-${d}`;
 }
 
 /**
- * True si la fecha (y hora opcional HH:mm) respeta la antelación mínima.
- * Sin hora, se valida solo el día calendario (≥ minBookableDateIso).
+ * True si la fecha (y hora opcional HH:mm) respeta la antelación mínima de 48 h.
+ * - Con hora: serviceDateTime >= ahora + 48 h.
+ * - Sin hora: día calendario >= minBookableDateIso (inicio del día ≥ ahora+48h).
  */
 export function isServiceDateWithinLeadTime(
   isoDate: string,
