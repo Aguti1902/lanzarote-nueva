@@ -12,6 +12,9 @@ const dataDir = path.join(process.cwd(), "src/data");
 /**
  * Ficheros que el panel edita en vivo. Un sync masivo deploy → Storage
  * los sobrescribiría con datos antiguos del bundle.
+ *
+ * NUNCA se suben desde este endpoint (ni con force). El panel / APIs de
+ * admin son la única vía de escritura para estos ficheros.
  */
 const PROTECTED_LIVE_CMS = new Set([
   "bookings.json",
@@ -84,8 +87,8 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json().catch(() => ({}));
-    const force = body?.force === true;
+    // force se ignora a propósito: nunca pisar datos del panel con el bundle.
+    await request.json().catch(() => ({}));
     const files = await listCmsJsonFiles();
     if (!isSupabaseConfigured()) {
       return NextResponse.json({
@@ -100,7 +103,7 @@ export async function POST(request: Request) {
     const uploaded: { file: string; bytes: number }[] = [];
     const skipped: string[] = [];
     for (const file of files) {
-      if (!force && PROTECTED_LIVE_CMS.has(file)) {
+      if (PROTECTED_LIVE_CMS.has(file)) {
         skipped.push(file);
         continue;
       }
@@ -114,12 +117,10 @@ export async function POST(request: Request) {
       ok: true,
       synced: true,
       supabase: true,
-      force,
+      force: false,
       uploaded,
       skipped,
-      message: force
-        ? `Subidos ${uploaded.length} ficheros CMS a Supabase Storage (force)`
-        : `Subidos ${uploaded.length} ficheros; omitidos ${skipped.length} editables en vivo (use force:true para forzar)`,
+      message: `Subidos ${uploaded.length} ficheros auxiliares; omitidos ${skipped.length} editables del panel (protegidos).`,
     });
   } catch (e) {
     return NextResponse.json(

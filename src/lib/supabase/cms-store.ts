@@ -155,6 +155,7 @@ function invalidateCmsCache(file: string) {
 /**
  * Write CMS JSON to Supabase Storage and mirror to local disk when possible.
  * On Vercel, local write may be ephemeral; Storage is the durable source.
+ * Antes de sobrescribir, guarda una copia en `backups/<file>.<timestamp>.json`.
  */
 export async function writeCmsJson(file: string, data: unknown): Promise<void> {
   if (!isSupabaseConfigured()) {
@@ -172,6 +173,25 @@ export async function writeCmsJson(file: string, data: unknown): Promise<void> {
       contentType: "application/json",
       cacheControl: "0",
     } as const;
+
+    // Backup del contenido actual (si existe) para poder recuperar ediciones del panel.
+    try {
+      const { data: existing, error: dlErr } = await sb.storage
+        .from(CMS_BUCKET)
+        .download(file);
+      if (!dlErr && existing) {
+        const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+        const bakPath = `backups/${file}.${stamp}.json`;
+        const bakBuf = Buffer.from(await existing.arrayBuffer());
+        await sb.storage.from(CMS_BUCKET).upload(bakPath, bakBuf, {
+          upsert: false,
+          contentType: "application/json",
+          cacheControl: "0",
+        });
+      }
+    } catch {
+      // No bloquear el guardado si el backup falla.
+    }
 
     const updated = await sb.storage.from(CMS_BUCKET).update(file, payload, options);
     if (updated.error) {
