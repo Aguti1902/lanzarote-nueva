@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import type { Booking, BookingStatus } from "@/types";
 import { formatDate, formatPrice, paymentLabel } from "@/lib/format";
-import { compareBookingsByServiceAsc } from "@/lib/booking-display";
+import { compareBookingsByServiceNearest } from "@/lib/booking-display";
 import {
   DateRangeFilter,
   emptyDateRange,
@@ -229,7 +229,7 @@ export default function AdminReservasPage() {
         .toLowerCase();
       return hay.includes(q);
     });
-    return [...list].sort(compareBookingsByServiceAsc);
+    return [...list].sort(compareBookingsByServiceNearest);
   }, [bookings, tab, dateField, range, query]);
 
   const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
