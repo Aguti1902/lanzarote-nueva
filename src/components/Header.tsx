@@ -8,6 +8,7 @@ import { Menu, ShoppingCart, User, X } from "lucide-react";
 import { useCart } from "@/components/CartProvider";
 import { useLocale } from "@/components/LocaleProvider";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { internalPathFromPathname } from "@/i18n/path";
 
 export function Header() {
   const pathname = usePathname();
@@ -15,6 +16,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const { count } = useCart();
   const { dict, href } = useLocale();
+  const internalPath = internalPathFromPathname(pathname);
 
   const links = [
     { href: href("/sobre-nosotros"), path: "/sobre-nosotros", label: dict.nav.about },
@@ -65,13 +67,14 @@ export function Header() {
             const isCruiseNav = link.path === "/excursiones-cruceros";
             const isExcursionsNav = link.path === "/excursiones";
             const active = isCruiseNav
-              ? pathname.includes("/excursiones-cruceros") ||
-                pathname.includes("/crucero/") ||
-                pathname.includes("/cruceristas")
+              ? internalPath.startsWith("/excursiones-cruceros") ||
+                internalPath.startsWith("/crucero/") ||
+                internalPath.startsWith("/cruceristas")
               : isExcursionsNav
-                ? pathname.includes("/excursiones") &&
-                  !pathname.includes("/excursiones-cruceros")
-                : pathname.includes(link.path);
+                ? internalPath.startsWith("/excursiones") &&
+                  !internalPath.startsWith("/excursiones-cruceros")
+                : internalPath === link.path ||
+                  internalPath.startsWith(`${link.path}/`);
             return (
               <Link
                 key={link.path}

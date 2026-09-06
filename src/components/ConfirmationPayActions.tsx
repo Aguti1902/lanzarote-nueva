@@ -6,6 +6,8 @@ import { CreditCard, FileText } from "lucide-react";
 import { formatPrice } from "@/lib/format";
 import { expectedOnlineCharge } from "@/lib/payments";
 import type { Booking } from "@/types";
+import { isLocale, type Locale } from "@/i18n/config";
+import { localePath } from "@/i18n/path";
 
 export function ConfirmationPayActions({
   booking,
@@ -145,7 +147,10 @@ export function ConfirmationPayActions({
   }
 
   const invoiceHref = invoiceId
-    ? `/${locale}/factura?id=${encodeURIComponent(invoiceId)}`
+    ? `${localePath(
+        (isLocale(locale) ? locale : "es") as Locale,
+        "/factura"
+      )}?id=${encodeURIComponent(invoiceId)}`
     : "";
 
   if (waitingStripe) {

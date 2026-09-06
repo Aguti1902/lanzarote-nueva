@@ -8,6 +8,8 @@ import {
 } from "@/lib/booking-time";
 import { bookingLocaleLabel } from "@/lib/booking-display";
 import { customerFacingNotes } from "@/lib/customer-notes";
+import type { Locale } from "@/i18n/config";
+import { localePath } from "@/i18n/path";
 
 export function resolvePublicOrigin(origin?: string): string {
   const raw =
@@ -159,7 +161,7 @@ export function buildVoucherHtml(
   // and it stays visible on the voucher (logo is white → needs dark plate).
   const logoUrl = options?.logoUrl || BRAND_LOGO_DATA_URI;
   // QR → ficha de la reserva (por si el cliente no imprime el voucher)
-  const verifyUrl = `${origin}/${locale}/reserva/confirmacion?id=${encodeURIComponent(booking.id)}`;
+  const verifyUrl = `${origin}${localePath(locale as Locale, "/reserva/confirmacion")}?id=${encodeURIComponent(booking.id)}`;
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=8&data=${encodeURIComponent(verifyUrl)}`;
 
   const people = booking.adults + (booking.children || 0);

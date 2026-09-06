@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { defaultLocale, isLocale, locales } from "@/i18n/config";
+import {
+  canonicalLocalizedPathname,
+  rewriteToInternalPathname,
+} from "@/i18n/path";
 import { resolveLegacyRedirect } from "@/lib/legacy-redirects";
 
 const PUBLIC_FILE = /\.(.*)$/;
@@ -42,8 +46,22 @@ export function middleware(request: NextRequest) {
 
   const segment = pathname.split("/")[1];
   if (segment && isLocale(segment)) {
-    // No Set-Cookie aquí: LanguageSwitcher guarda el locale.
-    // Evita romper la caché CDN/edge del HTML/RSC.
+    // Slugs en español (u otro idioma) con locale en/de → URL canónica traducida
+    const canonical = canonicalLocalizedPathname(pathname);
+    if (canonical && canonical !== pathname) {
+      const url = request.nextUrl.clone();
+      url.pathname = canonical;
+      return NextResponse.redirect(url, 301);
+    }
+
+    // /en/excursions → rewrite interno a /en/excursiones (carpetas App Router)
+    const rewriteTarget = rewriteToInternalPathname(pathname);
+    if (rewriteTarget && rewriteTarget !== pathname) {
+      const url = request.nextUrl.clone();
+      url.pathname = rewriteTarget;
+      return NextResponse.rewrite(url);
+    }
+
     return NextResponse.next();
   }
 

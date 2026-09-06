@@ -9,6 +9,8 @@ import {
   createStripeCheckoutForPayment,
   isStripeConfigured,
 } from "@/lib/stripe";
+import { type Locale } from "@/i18n/config";
+import { localePath } from "@/i18n/path";
 
 function serviceTypeForBooking(
   booking: Booking
@@ -82,10 +84,10 @@ export async function createStripeCheckoutForBookings(
 
   const confirmationPath =
     payable.length === 1
-      ? `/${localeNorm}/reserva/confirmacion?id=${encodeURIComponent(primary.id)}&paid=1`
-      : `/${localeNorm}/reserva/confirmacion?id=${encodeURIComponent(primary.id)}&paid=1&multi=1`;
+      ? `${localePath(localeNorm as Locale, "/reserva/confirmacion")}?id=${encodeURIComponent(primary.id)}&paid=1`
+      : `${localePath(localeNorm as Locale, "/reserva/confirmacion")}?id=${encodeURIComponent(primary.id)}&paid=1&multi=1`;
 
-  const cancelPath = `/${localeNorm}/reserva/confirmacion?id=${encodeURIComponent(primary.id)}&cancelled=1`;
+  const cancelPath = `${localePath(localeNorm as Locale, "/reserva/confirmacion")}?id=${encodeURIComponent(primary.id)}&cancelled=1`;
 
   const checkout = await createStripeCheckoutForPayment(payment, {
     origin: options?.origin,

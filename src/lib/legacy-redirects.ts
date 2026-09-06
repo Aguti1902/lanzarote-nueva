@@ -3,14 +3,14 @@
  * (lanzaroteexperiencetours.com) hacia las rutas de la nueva.
  *
  * Clave: pathname sin barra final, en minúsculas.
- * Valor: destino absoluto (con locale cuando aplica).
+ * Valor: destino absoluto (con locale y slugs del idioma).
  */
 export const LEGACY_PATH_REDIRECTS: Record<string, string> = {
   // —— Secciones ES (sin locale en la antigua / sitelinks Google) ——
   "/casas-vacacionales": "/es/casas",
   "/traslados-aeropuerto": "/es/traslados",
 
-  // —— ES con locale ——
+  // —— ES con locale (aliases EN → ES canónico) ——
   "/es/about-us": "/es/sobre-nosotros",
   "/es/contact": "/es/contacto",
   "/es/cart": "/es/carrito",
@@ -20,33 +20,48 @@ export const LEGACY_PATH_REDIRECTS: Record<string, string> = {
   "/es/holiday-homes": "/es/casas",
   "/es/vacation-homes": "/es/casas",
 
-  // —— EN (segmentos en inglés en la antigua) ——
-  "/en/about-us": "/en/sobre-nosotros",
-  "/en/contact": "/en/contacto",
-  "/en/cart": "/en/carrito",
-  "/en/manage-booking": "/en/gestionar-reserva",
-  "/en/excursions": "/en/excursiones",
-  "/en/transfers-airport": "/en/traslados",
-  "/en/airport-transfers": "/en/traslados",
-  "/en/cruise-excursions": "/en/excursiones-cruceros",
-  "/en/shore-excursions": "/en/excursiones-cruceros",
-  "/en/vacation-homes": "/en/casas",
-  "/en/holiday-homes": "/en/casas",
-  "/en/casas-vacacionales": "/en/casas",
+  // —— EN (destinos con slugs en inglés) ——
+  "/en/sobre-nosotros": "/en/about-us",
+  "/en/contacto": "/en/contact",
+  "/en/carrito": "/en/cart",
+  "/en/gestionar-reserva": "/en/manage-booking",
+  "/en/cancelar-reserva": "/en/cancel-booking",
+  "/en/excursiones": "/en/excursions",
+  "/en/traslados": "/en/airport-transfers",
+  "/en/transfers-airport": "/en/airport-transfers",
+  "/en/excursiones-cruceros": "/en/shore-excursions",
+  "/en/cruise-excursions": "/en/shore-excursions",
+  "/en/casas": "/en/holiday-homes",
+  "/en/vacation-homes": "/en/holiday-homes",
+  "/en/casas-vacacionales": "/en/holiday-homes",
+  "/en/cruceristas": "/en/cruise-passengers",
+  "/en/cruceros": "/en/cruises",
+  "/en/factura": "/en/invoice",
+  "/en/reserva/confirmacion": "/en/booking/confirmation",
 
-  // —— DE ——
-  "/de/about-us": "/de/sobre-nosotros",
-  "/de/contact": "/de/contacto",
-  "/de/cart": "/de/carrito",
-  "/de/manage-booking": "/de/gestionar-reserva",
-  "/de/ausfluge": "/de/excursiones",
-  "/de/ausflüge": "/de/excursiones",
-  "/de/flughafen-transfer": "/de/traslados",
-  "/de/kreuzfahrtausfluge": "/de/excursiones-cruceros",
-  "/de/kreuzfahrtausflüge": "/de/excursiones-cruceros",
-  "/de/casas-vacacionales": "/de/casas",
-  "/de/ferienhauser": "/de/casas",
-  "/de/ferienhäuser": "/de/casas",
+  // —— DE (destinos con slugs en alemán) ——
+  "/de/sobre-nosotros": "/de/uber-uns",
+  "/de/contacto": "/de/kontakt",
+  "/de/carrito": "/de/warenkorb",
+  "/de/gestionar-reserva": "/de/buchung-verwalten",
+  "/de/cancelar-reserva": "/de/buchung-stornieren",
+  "/de/excursiones": "/de/ausfluege",
+  "/de/traslados": "/de/flughafen-transfer",
+  "/de/excursiones-cruceros": "/de/kreuzfahrtausfluege",
+  "/de/casas": "/de/ferienhaeuser",
+  "/de/casas-vacacionales": "/de/ferienhaeuser",
+  "/de/ferienhauser": "/de/ferienhaeuser",
+  "/de/ferienhäuser": "/de/ferienhaeuser",
+  "/de/ausflüge": "/de/ausfluege",
+  "/de/kreuzfahrtausflüge": "/de/kreuzfahrtausfluege",
+  "/de/cruceristas": "/de/kreuzfahrtgaeste",
+  "/de/cruceros": "/de/kreuzfahrten",
+  "/de/factura": "/de/rechnung",
+  "/de/reserva/confirmacion": "/de/buchung/bestaetigung",
+  "/de/about-us": "/de/uber-uns",
+  "/de/contact": "/de/kontakt",
+  "/de/cart": "/de/warenkorb",
+  "/de/manage-booking": "/de/buchung-verwalten",
 
   // —— Slugs cortos / alias de excursiones (ES) ——
   "/excursiones/excursion-gran-tour-lanzarote":
@@ -54,40 +69,67 @@ export const LEGACY_PATH_REDIRECTS: Record<string, string> = {
   "/es/excursiones/excursion-gran-tour-lanzarote":
     "/es/excursiones/excursion-gran-tour-lanzarote-jameos-del-agua-cueva-verdes-jardin-de-cactus-timanfaya",
 
-  // —— Excursiones EN → slug canónico ——
+  // —— Excursiones EN → slug canónico (sección en inglés) ——
   "/en/excursions/timanfaya-lanzarote-volcano-tour":
-    "/en/excursiones/tour-parque-nacional-de-timanfaya-montanas-del-fuego",
+    "/en/excursions/tour-parque-nacional-de-timanfaya-montanas-del-fuego",
   "/en/excursions/lanzarote-grand-tour-experience":
-    "/en/excursiones/excursion-gran-tour-lanzarote-jameos-del-agua-cueva-verdes-jardin-de-cactus-timanfaya",
+    "/en/excursions/excursion-gran-tour-lanzarote-jameos-del-agua-cueva-verdes-jardin-de-cactus-timanfaya",
   "/en/excursions/romantic-night-jameos-del-agua":
-    "/en/excursiones/velada-romantica-noche-jameos-del-agua-concierto-cena",
+    "/en/excursions/velada-romantica-noche-jameos-del-agua-concierto-cena",
   "/en/excursions/cesar-manrique-tour":
-    "/en/excursiones/tour-cesar-manrique",
+    "/en/excursions/tour-cesar-manrique",
 
   // —— Excursiones DE → slug canónico ——
+  "/de/ausfluege/suden-ausflug-vulkan-tour":
+    "/de/ausfluege/tour-parque-nacional-de-timanfaya-montanas-del-fuego",
   "/de/ausfluge/suden-ausflug-vulkan-tour":
-    "/de/excursiones/tour-parque-nacional-de-timanfaya-montanas-del-fuego",
+    "/de/ausfluege/tour-parque-nacional-de-timanfaya-montanas-del-fuego",
+  "/de/ausfluege/lanzarote-inselrundfahrt-experience":
+    "/de/ausfluege/excursion-gran-tour-lanzarote-jameos-del-agua-cueva-verdes-jardin-de-cactus-timanfaya",
   "/de/ausfluge/lanzarote-inselrundfahrt-experience":
-    "/de/excursiones/excursion-gran-tour-lanzarote-jameos-del-agua-cueva-verdes-jardin-de-cactus-timanfaya",
+    "/de/ausfluege/excursion-gran-tour-lanzarote-jameos-del-agua-cueva-verdes-jardin-de-cactus-timanfaya",
+  "/de/ausfluege/natch-jameos-del-agua-romantischer-abend":
+    "/de/ausfluege/velada-romantica-noche-jameos-del-agua-concierto-cena",
   "/de/ausfluge/natch-jameos-del-agua-romantischer-abend":
-    "/de/excursiones/velada-romantica-noche-jameos-del-agua-concierto-cena",
+    "/de/ausfluege/velada-romantica-noche-jameos-del-agua-concierto-cena",
 };
 
-/** Prefijos legacy: sustituye el segmento de sección y conserva el resto. */
+/**
+ * Prefijos legacy: conserva el resto del path.
+ * Solo para variantes que aún no están en el mapa exacto.
+ */
 export const LEGACY_PREFIX_REWRITES: Array<{
   fromPrefix: string;
   toPrefix: string;
 }> = [
-  { fromPrefix: "/en/excursions/", toPrefix: "/en/excursiones/" },
-  { fromPrefix: "/de/ausfluge/", toPrefix: "/de/excursiones/" },
+  { fromPrefix: "/en/excursions/", toPrefix: "/en/excursions/" },
+  { fromPrefix: "/de/ausfluge/", toPrefix: "/de/ausfluege/" },
+  { fromPrefix: "/de/ausflüge/", toPrefix: "/de/ausfluege/" },
   {
     fromPrefix: "/en/cruise-excursions/",
-    toPrefix: "/en/excursiones-cruceros/",
+    toPrefix: "/en/shore-excursions/",
   },
   {
     fromPrefix: "/de/kreuzfahrtausfluge/",
-    toPrefix: "/de/excursiones-cruceros/",
+    toPrefix: "/de/kreuzfahrtausfluege/",
   },
+  {
+    fromPrefix: "/de/kreuzfahrtausflüge/",
+    toPrefix: "/de/kreuzfahrtausfluege/",
+  },
+  // Antiguos enlaces con sección en español + locale EN/DE
+  { fromPrefix: "/en/excursiones/", toPrefix: "/en/excursions/" },
+  { fromPrefix: "/de/excursiones/", toPrefix: "/de/ausfluege/" },
+  {
+    fromPrefix: "/en/excursiones-cruceros/",
+    toPrefix: "/en/shore-excursions/",
+  },
+  {
+    fromPrefix: "/de/excursiones-cruceros/",
+    toPrefix: "/de/kreuzfahrtausfluege/",
+  },
+  { fromPrefix: "/en/crucero/", toPrefix: "/en/cruise/" },
+  { fromPrefix: "/de/crucero/", toPrefix: "/de/kreuzfahrt/" },
 ];
 
 export function normalizePathname(pathname: string): string {
@@ -109,11 +151,10 @@ export function resolveLegacyRedirect(pathname: string): string | null {
 
   for (const rule of LEGACY_PREFIX_REWRITES) {
     const from = rule.fromPrefix.toLowerCase();
-    if (lower.startsWith(from)) {
+    if (lower.startsWith(from) && rule.fromPrefix !== rule.toPrefix) {
       const rest = path.slice(rule.fromPrefix.length);
       return `${rule.toPrefix}${rest}`.replace(/\/{2,}/g, "/");
     }
-    // also match without trailing slash already handled by exact map
   }
 
   return null;

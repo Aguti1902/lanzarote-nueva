@@ -22,6 +22,8 @@ import { escapeHtml, formatFromAddress, sendEmail, type SendEmailResult } from "
 import { MAILBOX, resolveBookingMailbox } from "@/lib/mail-routing";
 import { isOnlineCardMethod } from "@/lib/payments";
 import { resolvePublicOrigin } from "@/lib/voucher";
+import { localePath } from "@/i18n/path";
+import type { Locale } from "@/i18n/config";
 
 export type CustomerEmailKind =
   | "confirmation"
@@ -233,13 +235,14 @@ function paymentStatusLabel(
 function bookingLinks(booking: Booking, origin: string, locale: LocaleKey) {
   const id = encodeURIComponent(booking.id);
   const email = encodeURIComponent(booking.customer.email);
+  const loc = locale as Locale;
   return {
-    voucher: `${origin}/${locale}/voucher?id=${id}`,
-    confirmation: `${origin}/${locale}/reserva/confirmacion?id=${id}`,
-    manage: `${origin}/${locale}/gestionar-reserva?id=${id}&email=${email}`,
-    cancel: `${origin}/${locale}/cancelar-reserva?id=${id}&email=${email}`,
+    voucher: `${origin}${localePath(loc, "/voucher")}?id=${id}`,
+    confirmation: `${origin}${localePath(loc, "/reserva/confirmacion")}?id=${id}`,
+    manage: `${origin}${localePath(loc, "/gestionar-reserva")}?id=${id}&email=${email}`,
+    cancel: `${origin}${localePath(loc, "/cancelar-reserva")}?id=${id}&email=${email}`,
     invoice: booking.invoiceId
-      ? `${origin}/${locale}/factura?id=${encodeURIComponent(booking.invoiceId)}`
+      ? `${origin}${localePath(loc, "/factura")}?id=${encodeURIComponent(booking.invoiceId)}`
       : "",
   };
 }

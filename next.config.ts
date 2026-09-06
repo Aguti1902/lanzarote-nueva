@@ -1,19 +1,27 @@
 import type { NextConfig } from "next";
 import { LEGACY_PATH_REDIRECTS } from "./src/lib/legacy-redirects";
 
+/**
+ * Redirects estáticos (301/308) para URLs legacy.
+ * La traducción de slugs públicos (EN/DE) → carpetas ES se hace con
+ * rewrite en middleware (`src/middleware.ts`), no aquí.
+ */
 const legacyRedirects = Object.entries(LEGACY_PATH_REDIRECTS).flatMap(
-  ([source, destination]) => [
-    {
-      source,
-      destination,
-      permanent: true as const,
-    },
-    {
-      source: `${source}/`,
-      destination,
-      permanent: true as const,
-    },
-  ]
+  ([source, destination]) => {
+    if (source === destination) return [];
+    return [
+      {
+        source,
+        destination,
+        permanent: true as const,
+      },
+      {
+        source: `${source}/`,
+        destination,
+        permanent: true as const,
+      },
+    ];
+  }
 );
 
 const nextConfig: NextConfig = {
@@ -42,25 +50,86 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       ...legacyRedirects,
-      // Prefijos EN/DE de secciones (catch-all)
+      // Variantes legacy de prefijo (sin umlaut / nombres antiguos)
       {
-        source: "/en/excursions/:path*",
-        destination: "/en/excursiones/:path*",
+        source: "/de/ausfluge",
+        destination: "/de/ausfluege",
         permanent: true,
       },
       {
         source: "/de/ausfluge/:path*",
-        destination: "/de/excursiones/:path*",
+        destination: "/de/ausfluege/:path*",
+        permanent: true,
+      },
+      {
+        source: "/en/cruise-excursions",
+        destination: "/en/shore-excursions",
         permanent: true,
       },
       {
         source: "/en/cruise-excursions/:path*",
-        destination: "/en/excursiones-cruceros/:path*",
+        destination: "/en/shore-excursions/:path*",
+        permanent: true,
+      },
+      {
+        source: "/de/kreuzfahrtausfluge",
+        destination: "/de/kreuzfahrtausfluege",
         permanent: true,
       },
       {
         source: "/de/kreuzfahrtausfluge/:path*",
-        destination: "/de/excursiones-cruceros/:path*",
+        destination: "/de/kreuzfahrtausfluege/:path*",
+        permanent: true,
+      },
+      // Prefijos ES con locale EN/DE → slugs traducidos
+      {
+        source: "/en/excursiones",
+        destination: "/en/excursions",
+        permanent: true,
+      },
+      {
+        source: "/en/excursiones/:path*",
+        destination: "/en/excursions/:path*",
+        permanent: true,
+      },
+      {
+        source: "/de/excursiones",
+        destination: "/de/ausfluege",
+        permanent: true,
+      },
+      {
+        source: "/de/excursiones/:path*",
+        destination: "/de/ausfluege/:path*",
+        permanent: true,
+      },
+      {
+        source: "/en/excursiones-cruceros",
+        destination: "/en/shore-excursions",
+        permanent: true,
+      },
+      {
+        source: "/en/excursiones-cruceros/:path*",
+        destination: "/en/shore-excursions/:path*",
+        permanent: true,
+      },
+      {
+        source: "/de/excursiones-cruceros",
+        destination: "/de/kreuzfahrtausfluege",
+        permanent: true,
+      },
+      {
+        source: "/de/excursiones-cruceros/:path*",
+        destination: "/de/kreuzfahrtausfluege/:path*",
+        permanent: true,
+      },
+      {
+        source: "/en/crucero/:path*",
+        destination: "/en/cruise/:path*",
+        permanent: true,
+      },
+      {
+        source: "/de/crucero/:path*",
+        destination: "/de/kreuzfahrt/:path*",
         permanent: true,
       },
     ];

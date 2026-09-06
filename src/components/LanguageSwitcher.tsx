@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { locales, localeLabels, type Locale } from "@/i18n/config";
+import { switchLocalePath } from "@/i18n/path";
 import { useLocale } from "@/components/LocaleProvider";
 import { useAppLoadingOptional } from "@/components/AppLoadingProvider";
 
@@ -13,13 +14,9 @@ export function LanguageSwitcher() {
 
   function switchTo(next: Locale) {
     if (next === locale) return;
-    const parts = pathname.split("/");
-    if (parts[1] && locales.includes(parts[1] as Locale)) {
-      parts[1] = next;
-    } else {
-      parts.splice(1, 0, next);
-    }
-    const target = parts.join("/") || `/${next}`;
+    const search =
+      typeof window !== "undefined" ? window.location.search : "";
+    const target = switchLocalePath(pathname, next, search);
     document.cookie = `NEXT_LOCALE=${next}; path=/; max-age=31536000`;
     loading?.startLanguageSwitch(next, locale);
     router.prefetch(target);
