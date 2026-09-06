@@ -3,11 +3,23 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Sparkles } from "lucide-react";
+import type { Locale } from "@/i18n/config";
 import type { BlogPost } from "@/types";
+import {
+  getBlogPostLocale,
+  getBlogTopicTags,
+  withBlogLocaleTag,
+} from "@/lib/blog-locale";
 import { Field, adminInput, adminTextarea } from "@/components/admin/Field";
 
 export function BlogEditor({ initial }: { initial?: BlogPost }) {
   const router = useRouter();
+  const [locale, setLocale] = useState<Locale>(
+    initial ? getBlogPostLocale(initial) : "es"
+  );
+  const [topicTags, setTopicTags] = useState(
+    getBlogTopicTags(initial?.tags).join(", ")
+  );
   const [post, setPost] = useState<Partial<BlogPost>>(
     initial || {
       title: "",
@@ -16,7 +28,7 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
       image: "/images/heroes/blog.jpg",
       date: new Date().toISOString().slice(0, 10),
       author: "Equipo Lanzarote Experience Tours",
-      tags: [],
+      tags: ["es"],
     }
   );
   const [topic, setTopic] = useState(initial?.title || "");
@@ -32,7 +44,7 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
       const res = await fetch("/api/blog/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topic: topic || post.title }),
+        body: JSON.stringify({ topic: topic || post.title, locale }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error al generar");
@@ -41,8 +53,10 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         title: data.title || prev.title,
         excerpt: data.excerpt || prev.excerpt,
         content: data.content || prev.content,
-        tags: data.tags?.length ? data.tags : prev.tags,
       }));
+      if (data.tags?.length) {
+        setTopicTags(getBlogTopicTags(data.tags).join(", "));
+      }
       if (data.title) setTopic(data.title);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error");
@@ -56,10 +70,17 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
     setSaving(true);
     setError("");
     try {
+      const tags = withBlogLocaleTag(
+        topicTags
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean),
+        locale
+      );
       const res = await fetch("/api/blog", {
         method: isEdit ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(post),
+        body: JSON.stringify({ ...post, tags }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error");
@@ -101,6 +122,17 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         </div>
       </div>
 
+      <Field label="Idioma del artículo *">
+        <select
+          className={adminInput}
+          value={locale}
+          onChange={(e) => setLocale(e.target.value as Locale)}
+        >
+          <option value="es">Español (ES)</option>
+          <option value="en">English (EN)</option>
+          <option value="de">Deutsch (DE)</option>
+        </select>
+      </Field>
       <Field label="Título *">
         <input
           className={adminInput}
@@ -149,19 +181,12 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
           onChange={(e) => setPost({ ...post, image: e.target.value })}
         />
       </Field>
-      <Field label="Tags (separados por coma)">
+      <Field label="Tags temáticos (separados por coma, sin idioma)">
         <input
           className={adminInput}
-          value={(post.tags || []).join(", ")}
-          onChange={(e) =>
-            setPost({
-              ...post,
-              tags: e.target.value
-                .split(",")
-                .map((s) => s.trim())
-                .filter(Boolean),
-            })
-          }
+          value={topicTags}
+          onChange={(e) => setTopicTags(e.target.value)}
+          placeholder="Lanzarote, César Manrique…"
         />
       </Field>
       {error && <p className="text-sm text-red-600">{error}</p>}

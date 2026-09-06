@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import type { BlogPost } from "@/types";
+import { getBlogPostLocale } from "@/lib/blog-locale";
 import { formatDate } from "@/lib/format";
 
 export default function AdminBlogPage() {
@@ -53,6 +54,7 @@ export default function AdminBlogPage() {
           <thead className="border-b border-sand-line bg-bg text-ink-muted">
             <tr>
               <th className="px-4 py-3 font-medium">Título</th>
+              <th className="px-4 py-3 font-medium">Idioma</th>
               <th className="px-4 py-3 font-medium">Fecha</th>
               <th className="px-4 py-3 font-medium">Autor</th>
               <th className="px-4 py-3 font-medium">Acciones</th>
@@ -61,7 +63,7 @@ export default function AdminBlogPage() {
           <tbody>
             {loading && (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-ink-muted">
+                <td colSpan={5} className="px-4 py-8 text-center text-ink-muted">
                   Cargando…
                 </td>
               </tr>
@@ -72,6 +74,9 @@ export default function AdminBlogPage() {
                   <td className="px-4 py-3">
                     <p className="font-medium">{p.title}</p>
                     <p className="text-xs text-ink-muted">/blog/{p.slug}</p>
+                  </td>
+                  <td className="px-4 py-3 uppercase text-xs font-semibold text-ocean">
+                    {getBlogPostLocale(p)}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">
                     {formatDate(p.date)}

@@ -7,6 +7,10 @@ import { PageContentBlocks } from "@/components/PageContentBlocks";
 import { PageFaqs } from "@/components/PageFaqs";
 import { PageHero } from "@/components/PageHero";
 import { getBlogPosts, getSettings } from "@/lib/content";
+import {
+  filterBlogPostsByLocale,
+  getBlogTopicTags,
+} from "@/lib/blog-locale";
 import { formatDate } from "@/lib/format";
 import {
   localizeBlogPosts,
@@ -35,7 +39,9 @@ export default async function BlogPage({ params }: Props) {
   const locale = resolveLocale((await params).locale);
   const dict = await getDictionary(locale);
   const [blogPosts, settings] = await Promise.all([
-    getBlogPosts().then((posts) => localizeBlogPosts(posts, locale)),
+    getBlogPosts().then(async (posts) =>
+      localizeBlogPosts(filterBlogPostsByLocale(posts, locale), locale)
+    ),
     getSettings().then((s) => localizeSettings(s, locale)),
   ]);
   const [featured, ...rest] = blogPosts;
@@ -71,7 +77,7 @@ export default async function BlogPage({ params }: Props) {
             </div>
             <div className="flex flex-col justify-center p-6 md:p-10">
               <div className="flex flex-wrap gap-2">
-                {featured.tags.map((tag) => (
+                {getBlogTopicTags(featured.tags).map((tag) => (
                   <span
                     key={tag}
                     className="rounded-full bg-sky-soft px-2.5 py-1 text-xs font-medium text-ocean-deep"
@@ -115,14 +121,16 @@ export default async function BlogPage({ params }: Props) {
               </div>
               <div className="flex flex-1 flex-col p-5">
                 <div className="flex flex-wrap gap-2">
-                  {post.tags.slice(0, 2).map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full bg-sky-soft px-2 py-0.5 text-[11px] font-medium text-ocean-deep"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                  {getBlogTopicTags(post.tags)
+                    .slice(0, 2)
+                    .map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full bg-sky-soft px-2 py-0.5 text-[11px] font-medium text-ocean-deep"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                 </div>
                 <p className="mt-3 text-xs text-ink-muted">
                   {formatDate(post.date, locale)}

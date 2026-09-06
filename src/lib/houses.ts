@@ -1,5 +1,10 @@
 import type { VacationHouse } from "@/types";
-import { readCmsJson, readCmsJsonFresh, writeCmsJson } from "@/lib/supabase/cms-store";
+import {
+  readCmsJson,
+  readCmsJsonFresh,
+  readLocalCmsJson,
+  writeCmsJson,
+} from "@/lib/supabase/cms-store";
 
 function slugify(value: string): string {
   return value
@@ -10,11 +15,31 @@ function slugify(value: string): string {
     .replace(/(^-|-$)/g, "");
 }
 
+function normalizeTranslations(
+  translations: VacationHouse["translations"]
+): VacationHouse["translations"] | undefined {
+  if (!translations || typeof translations !== "object") return undefined;
+  const next: NonNullable<VacationHouse["translations"]> = {};
+  for (const locale of ["en", "de"] as const) {
+    const block = translations[locale];
+    if (!block || typeof block !== "object") continue;
+    const title = String(block.title || "").trim();
+    const summary = String(block.summary || "").trim();
+    if (!title && !summary) continue;
+    next[locale] = {
+      ...(title ? { title } : {}),
+      ...(summary ? { summary } : {}),
+    };
+  }
+  return Object.keys(next).length ? next : undefined;
+}
+
 function normalizeHouse(house: VacationHouse): VacationHouse {
   const gallery = Array.isArray(house.gallery)
     ? house.gallery.filter(Boolean)
     : [];
   const image = house.image || gallery[0] || "";
+  const translations = normalizeTranslations(house.translations);
   return {
     ...house,
     image,
@@ -27,13 +52,42 @@ function normalizeHouse(house: VacationHouse): VacationHouse {
     sizeM2: house.sizeM2 != null ? Number(house.sizeM2) : undefined,
     location: house.location || "",
     summary: house.summary || "",
+    ...(translations ? { translations } : {}),
   };
+}
+
+/**
+ * Si el CMS en vivo aún no tiene EN/DE, completa con el seed del deploy
+ * (src/data/houses.json) sin pisar lo que ya haya guardado el admin.
+ */
+async function mergeTranslationSeeds(
+  houses: VacationHouse[]
+): Promise<VacationHouse[]> {
+  try {
+    const seeds = await readLocalCmsJson<VacationHouse[]>("houses.json");
+    const byId = new Map(seeds.map((h) => [h.id, h]));
+    return houses.map((house) => {
+      const seed = byId.get(house.id);
+      const seedT = normalizeTranslations(seed?.translations);
+      if (!seedT) return house;
+      const current = normalizeTranslations(house.translations);
+      const merged = normalizeTranslations({
+        en: { ...seedT.en, ...current?.en },
+        de: { ...seedT.de, ...current?.de },
+      });
+      if (!merged) return house;
+      return { ...house, translations: merged };
+    });
+  } catch {
+    return houses;
+  }
 }
 
 export async function getHouses(): Promise<VacationHouse[]> {
   try {
     const list = await readCmsJson<VacationHouse[]>("houses.json");
-    return list.map(normalizeHouse).sort((a, b) => a.sortOrder - b.sortOrder);
+    const merged = await mergeTranslationSeeds(list.map(normalizeHouse));
+    return merged.sort((a, b) => a.sortOrder - b.sortOrder);
   } catch {
     return [];
   }
@@ -42,7 +96,8 @@ export async function getHouses(): Promise<VacationHouse[]> {
 async function getHousesFresh(): Promise<VacationHouse[]> {
   try {
     const list = await readCmsJsonFresh<VacationHouse[]>("houses.json");
-    return list.map(normalizeHouse).sort((a, b) => a.sortOrder - b.sortOrder);
+    const merged = await mergeTranslationSeeds(list.map(normalizeHouse));
+    return merged.sort((a, b) => a.sortOrder - b.sortOrder);
   } catch {
     return [];
   }
@@ -95,6 +150,7 @@ export async function upsertHouse(
         : houses.length
           ? Math.max(...houses.map((h) => h.sortOrder)) + 1
           : 1,
+    translations: input.translations,
   });
 
   const idx = houses.findIndex((h) => h.id === house.id);
