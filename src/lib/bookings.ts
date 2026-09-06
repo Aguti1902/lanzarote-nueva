@@ -140,15 +140,18 @@ export async function addBooking(
   const bookings = await getBookings();
   const id = buildBookingId(bookings, booking);
   const split = splitPaymentAmounts(booking.totalPrice, booking.paymentMethod);
+  const forcedUnpaid =
+    booking.paymentStatus === "unpaid" &&
+    booking.paymentMethod !== "pay_on_day";
   const created: Booking = {
     ...booking,
     ...split,
-    // Si el caller fuerza unpaid (solicitud), respetarlo salvo pago el día.
-    paymentStatus:
-      booking.paymentStatus === "unpaid" &&
-      booking.paymentMethod !== "pay_on_day"
-        ? "unpaid"
-        : split.paymentStatus,
+    ...(forcedUnpaid
+      ? {
+          paymentStatus: "unpaid" as const,
+          amountPaidCard: 0,
+        }
+      : {}),
     amountPaidCash: booking.amountPaidCash ?? 0,
     id,
     createdAt: new Date().toISOString(),

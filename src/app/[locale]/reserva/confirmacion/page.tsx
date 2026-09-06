@@ -12,6 +12,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
 import type { PaymentMethod } from "@/types";
+import { ConfirmationPayActions } from "@/components/ConfirmationPayActions";
 
 export const metadata: Metadata = {
   title: "Booking confirmed",
@@ -19,12 +20,12 @@ export const metadata: Metadata = {
 
 type Props = {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ id?: string }>;
+  searchParams: Promise<{ id?: string; paid?: string; cancelled?: string }>;
 };
 
 export default async function ConfirmacionPage({ params, searchParams }: Props) {
   const locale = resolveLocale((await params).locale);
-  const { id } = await searchParams;
+  const { id, paid, cancelled } = await searchParams;
   const [bookings, dict] = await Promise.all([
     getBookings(),
     getDictionary(locale),
@@ -42,6 +43,11 @@ export default async function ConfirmacionPage({ params, searchParams }: Props) 
         {dict.confirmation.title}
       </h1>
       <p className="mt-3 max-w-lg text-ink-muted">{dict.confirmation.body}</p>
+      {cancelled === "1" && (
+        <p className="mt-3 rounded-lg bg-amber-50 px-4 py-2 text-sm text-amber-900">
+          El pago se canceló. Puede reintentarlo desde esta página.
+        </p>
+      )}
 
       {booking ? (
         <div className="mt-8 w-full bg-white p-6 text-left ring-1 ring-sand-line md:p-8">
@@ -122,6 +128,10 @@ export default async function ConfirmacionPage({ params, searchParams }: Props) 
                 </dd>
               </div>
             )}
+            <ConfirmationPayActions
+              booking={booking}
+              paidFlag={paid === "1"}
+            />
             {booking.invoiceId && (
               <div className="flex justify-between gap-4">
                 <dt className="text-ink-muted">{dict.confirmation.invoice}</dt>

@@ -82,13 +82,13 @@ export async function POST(request: Request) {
       payment.customerEmail ||
       "";
 
-    // Prefer Stripe Checkout for 100% card payments
+    // Prefer Stripe Checkout for online card payments
     if (action === "stripe" || (action === "pay" && isStripeConfigured())) {
       let updated = await upsertPaymentLink({
         ...payment,
         customerName,
         customerEmail,
-        chargeFull: true,
+        chargeFull: payment.chargeFull ?? true,
       });
       const checkout = await createStripeCheckoutForPayment(updated, {
         origin,
@@ -114,7 +114,17 @@ export async function POST(request: Request) {
       });
     }
 
-    // Fallback sin Stripe (solo entorno de desarrollo)
+    // Fallback sin Stripe: solo desarrollo local
+    if (process.env.NODE_ENV === "production" || process.env.VERCEL_ENV === "production") {
+      return NextResponse.json(
+        {
+          error:
+            "Stripe no está configurado. Añade STRIPE_SECRET_KEY en Vercel.",
+        },
+        { status: 503 }
+      );
+    }
+
     const method = String(body.paymentMethod || "card");
     const updated = await upsertPaymentLink({
       ...payment,

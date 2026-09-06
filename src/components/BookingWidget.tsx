@@ -8,7 +8,7 @@ import { formatPrice } from "@/lib/format";
 import { isFlatPriceTour } from "@/lib/tour-pricing";
 import { useCart } from "@/components/CartProvider";
 import { useLocale } from "@/components/LocaleProvider";
-import { splitPaymentAmounts } from "@/lib/payments";
+import { expectedOnlineCharge, splitPaymentAmounts } from "@/lib/payments";
 import { TourDatePicker } from "@/components/TourDatePicker";
 import { isServiceDateWithinLeadTime } from "@/lib/booking-lead-time";
 import {
@@ -29,7 +29,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
   const [children, setChildren] = useState(0);
   const [hours, setHours] = useState(4);
   const [paymentMethod, setPaymentMethod] =
-    useState<PaymentMethod>("deposit_20");
+    useState<PaymentMethod>("card");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -85,27 +85,25 @@ export function BookingWidget({ tour }: { tour: Tour }) {
     return adults * priceAdult + children * priceChild;
   }, [adults, children, hours, isMinibus, isPrivate, priceAdult, priceChild]);
 
-  const paymentSplit = useMemo(
-    () => splitPaymentAmounts(total, paymentMethod),
-    [total, paymentMethod]
-  );
+  const paymentSplit = useMemo(() => {
+    const split = splitPaymentAmounts(total, paymentMethod);
+    return {
+      ...split,
+      amountDueOnline: expectedOnlineCharge(total, paymentMethod),
+    };
+  }, [total, paymentMethod]);
 
   const methods = (
     [
-      {
-        id: "deposit_20" as const,
-        label: dict.booking.deposit,
-        show: tour.allowCard,
-      },
       {
         id: "card" as const,
         label: dict.booking.card,
         show: tour.allowCard,
       },
       {
-        id: "bizum" as const,
-        label: dict.booking.bizum,
-        show: tour.allowBizum,
+        id: "deposit_20" as const,
+        label: dict.booking.deposit,
+        show: tour.allowCard,
       },
       {
         id: "pay_on_day" as const,
@@ -187,6 +185,10 @@ export function BookingWidget({ tour }: { tour: Tour }) {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || dict.booking.bookError);
+      if (data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+        return;
+      }
       router.push(`${href("/reserva/confirmacion")}?id=${data.booking.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : dict.booking.bookError);
@@ -461,7 +463,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
                   <div className="flex justify-between text-xs">
                     <span className="text-ink-muted">{dict.booking.payNow}</span>
                     <span className="font-bold text-ocean">
-                      {formatPrice(paymentSplit.amountPaidCard)}
+                      {formatPrice(paymentSplit.amountDueOnline)}
                     </span>
                   </div>
                   <div className="flex justify-between text-xs">
@@ -471,6 +473,15 @@ export function BookingWidget({ tour }: { tour: Tour }) {
                     </span>
                   </div>
                 </>
+              )}
+            {!isOnRequest &&
+              (paymentMethod === "card" || paymentMethod === "bizum") && (
+                <div className="flex justify-between text-xs">
+                  <span className="text-ink-muted">{dict.booking.payNow}</span>
+                  <span className="font-bold text-ocean">
+                    {formatPrice(paymentSplit.amountDueOnline)}
+                  </span>
+                </div>
               )}
           </div>
 

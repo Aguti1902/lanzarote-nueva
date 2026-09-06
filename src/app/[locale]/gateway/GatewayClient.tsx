@@ -60,8 +60,35 @@ export default function GatewayClient() {
         setStripeConfigured(Boolean(data.stripeConfigured));
         setName(data.payment.customerName || "");
         setEmail(data.payment.customerEmail || emailParam);
-        setDone(data.payment.status === "paid" || paidFlag);
+        setDone(data.payment.status === "paid");
         setLoading(false);
+
+        // Tras volver de Stripe (?paid=1), polling breve hasta confirmar webhook
+        if (
+          paidFlag &&
+          data.payment.status !== "paid" &&
+          data.payment.status !== "cancelled"
+        ) {
+          let attempts = 0;
+          const poll = async () => {
+            attempts += 1;
+            try {
+              const r = await fetch(
+                `/api/payments/gateway?h=${encodeURIComponent(hash)}`
+              );
+              const d = await r.json();
+              if (d.payment?.status === "paid") {
+                setPayment(d.payment);
+                setDone(true);
+                return;
+              }
+            } catch {
+              /* ignore */
+            }
+            if (attempts < 8) setTimeout(poll, 1500);
+          };
+          setTimeout(poll, 1200);
+        }
       })
       .catch(() => {
         if (!cancelled) {

@@ -18,7 +18,6 @@ import {
 import { getTransfersData } from "@/lib/content";
 import { getCruiseShoreTourById } from "@/lib/cruise-itineraries";
 import { getTourById } from "@/lib/content";
-import { isTourDateBookable } from "@/lib/tour-availability";
 import { isServiceDateWithinLeadTime } from "@/lib/booking-lead-time";
 import {
   shoreTourBookingTotal,
@@ -29,9 +28,23 @@ import {
   calcTransferTotal,
   type TransferDirection,
 } from "@/lib/transfer-price";
+import { createStripeCheckoutForBookings, clearStripeSessionFields } from "@/lib/booking-checkout";
+import {
+  expectedOnlineCharge,
+  isOnlineCardMethod,
+  splitPaymentAmounts,
+} from "@/lib/payments";
+import { getPaymentLinks, upsertPaymentLink } from "@/lib/admin-extras";
+import {
+  effectiveAdultPrice,
+  effectiveChildPrice,
+  isTourDateBookable,
+} from "@/lib/tour-availability";
+import { isFlatPriceTour } from "@/lib/tour-pricing";
+import { isStripeConfigured } from "@/lib/stripe";
 import type { BookingStatus, PaymentMethod } from "@/types";
 
-/** Solo emitir factura automática cuando ya hay cobro (tarjeta/Bizum/depósito). */
+/** Solo emitir factura automática cuando ya hay cobro real. */
 function shouldAutoIssueInvoice(booking: {
   paymentMethod: PaymentMethod | string;
   paymentStatus?: string;
@@ -42,7 +55,6 @@ function shouldAutoIssueInvoice(booking: {
   const paidCash = Number(booking.amountPaidCash) || 0;
   if (paidCard > 0 || paidCash > 0) return true;
   if (booking.paymentStatus === "paid") return true;
-  if (booking.paymentMethod === "pay_on_day") return false;
   return false;
 }
 
@@ -81,6 +93,7 @@ export async function POST(request: Request) {
       pickupZone,
       bookingMethod,
       source,
+      skipStripeCheckout,
     } = body;
 
     if (!type || !tourTitle || !date || !customer?.name || !customer?.email) {
@@ -137,6 +150,23 @@ export async function POST(request: Request) {
             },
             { status: 400 }
           );
+        }
+        if (tour) {
+          const adult = effectiveAdultPrice(tour);
+          const child = effectiveChildPrice(tour);
+          if (type === "minibus") {
+            const hours =
+              Number(
+                minibus && typeof minibus === "object"
+                  ? (minibus as { hours?: number }).hours
+                  : 4
+              ) || 4;
+            resolvedTotal = adult + Math.max(0, hours - 4) * 60;
+          } else if (isFlatPriceTour(tour)) {
+            resolvedTotal = adult;
+          } else {
+            resolvedTotal = adultsNum * adult + childrenNum * child;
+          }
         }
       }
     }
@@ -235,7 +265,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error:
-            "En excursiones de crucero no está disponible el pago el día del tour. Elija tarjeta, Bizum o depósito 20%.",
+            "En excursiones de crucero no está disponible el pago el día del tour. Elija pago 100% online o depósito 20%.",
         },
         { status: 400 }
       );
@@ -269,6 +299,34 @@ export async function POST(request: Request) {
       booking = assigned.booking;
     }
 
+    let checkoutUrl: string | undefined;
+    let paymentId: string | undefined;
+
+    const wantsOnline =
+      status !== "pending" &&
+      !skipStripeCheckout &&
+      isOnlineCardMethod(method) &&
+      isStripeConfigured();
+
+    if (wantsOnline) {
+      const origin =
+        request.headers.get("x-forwarded-host")
+          ? `${request.headers.get("x-forwarded-proto") || "https"}://${request.headers.get("x-forwarded-host")}`
+          : new URL(request.url).origin;
+      try {
+        const checkout = await createStripeCheckoutForBookings([booking], {
+          origin,
+          locale: localeNorm,
+        });
+        if (checkout) {
+          checkoutUrl = checkout.checkoutUrl;
+          paymentId = checkout.payment.id;
+        }
+      } catch (err) {
+        console.error("[bookings] stripe checkout failed", err);
+      }
+    }
+
     const invoice = shouldAutoIssueInvoice(booking)
       ? await createInvoiceForBooking(booking)
       : null;
@@ -280,7 +338,10 @@ export async function POST(request: Request) {
       console.error("[bookings] notify failed", err);
     });
 
-    return NextResponse.json({ booking, invoice }, { status: 201 });
+    return NextResponse.json(
+      { booking, invoice, checkoutUrl, paymentId, stripeConfigured: isStripeConfigured() },
+      { status: 201 }
+    );
   } catch {
     return NextResponse.json(
       { error: "No se pudo crear la reserva" },
@@ -292,22 +353,25 @@ export async function POST(request: Request) {
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
-    const { id, status, collectCash, cancellationReason, customer } = body as {
-      id: string;
-      status?: BookingStatus;
-      collectCash?: boolean;
-      cancellationReason?: string;
-      customer?: Partial<{
-        name: string;
-        email: string;
-        phone: string;
-        hotel: string;
-        cruiseShip: string;
-        flightNumber: string;
-        notes: string;
-        taxId: string;
-      }>;
-    };
+    const { id, status, collectCash, cancellationReason, customer, amountTotal, totalPrice } =
+      body as {
+        id: string;
+        status?: BookingStatus;
+        collectCash?: boolean;
+        cancellationReason?: string;
+        amountTotal?: number;
+        totalPrice?: number;
+        customer?: Partial<{
+          name: string;
+          email: string;
+          phone: string;
+          hotel: string;
+          cruiseShip: string;
+          flightNumber: string;
+          notes: string;
+          taxId: string;
+        }>;
+      };
     if (!id) {
       return NextResponse.json({ error: "Datos inválidos" }, { status: 400 });
     }
@@ -322,6 +386,83 @@ export async function PATCH(request: Request) {
         invoice = await createInvoiceForBooking(booking);
       }
       return NextResponse.json({ booking, invoice });
+    }
+
+    // Recalcular importes al editar el total en el panel
+    const newTotalRaw = amountTotal ?? totalPrice;
+    if (newTotalRaw != null && Number.isFinite(Number(newTotalRaw))) {
+      const existing = (await getBookings()).find((b) => b.id === id);
+      if (!existing) {
+        return NextResponse.json({ error: "No encontrada" }, { status: 404 });
+      }
+      if (existing.status === "cancelled") {
+        return NextResponse.json(
+          { error: "No se puede editar una reserva cancelada" },
+          { status: 400 }
+        );
+      }
+      const newTotal = Math.round(Number(newTotalRaw) * 100) / 100;
+      if (newTotal < 0) {
+        return NextResponse.json({ error: "Importe inválido" }, { status: 400 });
+      }
+
+      const alreadyPaidCard = Number(existing.amountPaidCard) || 0;
+      const alreadyPaidCash = Number(existing.amountPaidCash) || 0;
+      let patch: Parameters<typeof updateBooking>[1];
+
+      if (alreadyPaidCard > 0 || existing.paymentStatus === "paid") {
+        // Ya cobrado online: ajustar solo total y efectivo pendiente
+        const dueCash = Math.max(0, newTotal - alreadyPaidCard - alreadyPaidCash);
+        patch = {
+          totalPrice: newTotal,
+          amountTotal: newTotal,
+          amountDueCash: dueCash,
+          cashStatus: dueCash > 0 ? "pending" : existing.cashStatus === "collected" ? "collected" : "none",
+          paymentStatus:
+            alreadyPaidCard + alreadyPaidCash >= newTotal
+              ? "paid"
+              : alreadyPaidCard > 0
+                ? "partial"
+                : existing.paymentStatus,
+        };
+      } else {
+        const split = splitPaymentAmounts(newTotal, existing.paymentMethod);
+        patch = {
+          totalPrice: newTotal,
+          ...split,
+          amountPaidCash: alreadyPaidCash,
+        };
+      }
+
+      const booking = await updateBooking(id, patch);
+      if (!booking) {
+        return NextResponse.json({ error: "No encontrada" }, { status: 404 });
+      }
+
+      // Sincronizar PaymentLinks pendientes vinculados
+      const links = await getPaymentLinks();
+      const related = links.filter(
+        (p) =>
+          p.status === "pending" &&
+          (p.bookingId === id || p.bookingIds?.includes(id))
+      );
+      const onlineDue = expectedOnlineCharge(
+        booking.amountTotal ?? booking.totalPrice,
+        booking.paymentMethod
+      );
+      for (const link of related) {
+        const onlyThis =
+          (!link.bookingIds || link.bookingIds.length <= 1) &&
+          (link.bookingId === id || link.bookingIds?.[0] === id);
+        if (!onlyThis) continue;
+        await upsertPaymentLink({
+          ...clearStripeSessionFields(link),
+          amount: onlineDue,
+          concept: `${booking.tourTitle} · ${booking.id}`,
+        });
+      }
+
+      return NextResponse.json({ booking, syncedLinks: related.length });
     }
 
     if (customer && typeof customer === "object") {

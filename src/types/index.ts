@@ -280,7 +280,10 @@ export interface PaymentLink {
   paymentHash?: string;
   /** Optional link to a cruise group (manual payment links). */
   groupId?: string;
+  /** Optional link to one or more bookings. */
   bookingId?: string;
+  /** Varias reservas pagadas en un solo Checkout (p. ej. carrito). */
+  bookingIds?: string[];
   mode?: PaymentLinkMode;
   /** 1-based person index when mode is per_person. */
   personIndex?: number;

@@ -176,6 +176,19 @@ export default function AdminReservasPage() {
     await load();
   }
 
+  async function saveAmount(id: string, amountTotal: number) {
+    const res = await fetch("/api/bookings", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, amountTotal }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.error || "Error al actualizar el importe");
+    }
+    await load();
+  }
+
   const tabCounts = useMemo(() => {
     const counts: Record<ReservasTab, number> = {
       all: bookings.length,
@@ -572,6 +585,7 @@ export default function AdminReservasPage() {
             await setStatus(id, "completed");
           }}
           onSaveCustomer={saveCustomer}
+          onSaveAmount={saveAmount}
         />
       )}
     </div>

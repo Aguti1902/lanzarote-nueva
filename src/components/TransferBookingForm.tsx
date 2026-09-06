@@ -139,6 +139,10 @@ export function TransferBookingForm({
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error");
+      if (data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+        return;
+      }
       router.push(`${href("/reserva/confirmacion")}?id=${data.booking.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error");
@@ -330,7 +334,6 @@ export function TransferBookingForm({
             }
           >
             <option value="card">{dict.booking.card}</option>
-            <option value="bizum">{dict.booking.bizum}</option>
           </select>
         </label>
       </div>
@@ -358,7 +361,7 @@ export function TransferBookingForm({
             </p>
           )}
           <p className="mt-1 text-xs font-medium text-ocean">
-            {dict.booking.card} / {dict.booking.bizum}
+            {dict.booking.card}
           </p>
         </div>
         <button

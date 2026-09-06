@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Copy, Plus, Trash2 } from "lucide-react";
 import type { Booking, PaymentLink, PaymentServiceType, Tour } from "@/types";
 import { formatPrice } from "@/lib/format";
+import { expectedOnlineCharge } from "@/lib/payments";
 import { Field, adminInput, adminTextarea } from "@/components/admin/Field";
 import {
   DateRangeFilter,
@@ -83,21 +84,20 @@ function bookingToOnlineRow(b: Booking): OnlinePaymentRow | null {
   ]);
   if (!onlineMethods.has(method)) return null;
 
-  const amount =
-    method === "card" || method === "bizum"
-      ? Number(b.amountPaidCard || b.amountTotal || b.totalPrice || 0)
-      : Number(b.amountPaidCard || 0);
-  if (amount <= 0 && b.status !== "cancelled" && b.paymentStatus !== "paid") {
-    // still show unpaid card intents if any
-    if (method !== "card" && method !== "bizum") return null;
-  }
+  const expected = expectedOnlineCharge(
+    b.amountTotal ?? b.totalPrice,
+    method
+  );
+  const paid = Number(b.amountPaidCard) || 0;
+  const amount = paid > 0 ? paid : expected;
+  if (amount <= 0) return null;
 
   let status: PaymentLink["status"] = "pending";
   if (b.status === "cancelled") status = "cancelled";
   else if (
     b.paymentStatus === "paid" ||
-    b.paymentStatus === "partial" ||
-    (b.amountPaidCard || 0) > 0
+    (b.paymentStatus === "partial" && paid > 0) ||
+    paid > 0
   ) {
     status = "paid";
   }
@@ -108,7 +108,7 @@ function bookingToOnlineRow(b: Booking): OnlinePaymentRow | null {
     createdAt: b.createdAt || `${b.date}T00:00:00.000Z`,
     locator: b.id,
     concept: b.tourTitle || "Reserva",
-    amount: amount || Number(b.amountTotal || b.totalPrice || 0),
+    amount,
     status,
     customerName: b.customer?.name || "",
     customerEmail: b.customer?.email || "",
@@ -116,7 +116,11 @@ function bookingToOnlineRow(b: Booking): OnlinePaymentRow | null {
     notes: "",
     paidAt: status === "paid" ? b.createdAt : undefined,
     paymentMethod:
-      method === "bizum" ? "Bizum" : method.startsWith("deposit") ? "Depósito tarjeta" : "Tarjeta",
+      method === "bizum"
+        ? "Bizum"
+        : method.startsWith("deposit")
+          ? "Depósito tarjeta"
+          : "Tarjeta",
     paymentHash: undefined,
     bookingId: b.id,
     mode: "standard",
@@ -396,14 +400,27 @@ export default function AdminPagosOnlinePage() {
         customerLocale: editForm.customerLocale,
         customerEmail: editForm.customerEmail.trim(),
         concept: editForm.concept.trim(),
+        // Invalidar Checkout antiguo para que el importe nuevo se cobre bien
+        stripeCheckoutUrl: "",
+        stripeCheckoutSessionId: "",
+        stripePaymentIntentId: "",
       }),
     });
     if (!res.ok) {
       setMessage("No se pudo actualizar el pago");
       return;
     }
-    setMessage("Datos del pago actualizados");
+    setMessage("Datos actualizados. Regenera el enlace Stripe si hace falta.");
     await load();
+    if (stripeConfigured && selected.status === "pending") {
+      await ensureStripeLink({
+        ...selected,
+        amount: Number(editForm.amount) || 0,
+        concept: editForm.concept.trim(),
+        customerEmail: editForm.customerEmail.trim(),
+        customerLocale: editForm.customerLocale,
+      });
+    }
   }
 
   async function ensureStripeLink(item: PaymentLink) {

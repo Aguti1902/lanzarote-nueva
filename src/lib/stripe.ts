@@ -27,10 +27,19 @@ export function absoluteUrl(path: string, origin?: string): string {
   return `${normalized.replace(/\/$/, "")}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
-/** Create (or recreate) a Stripe Checkout Session for 100% card payment. */
+export type StripeCheckoutOptions = {
+  origin?: string;
+  locale?: string;
+  /** Override success URL (absolute or path). */
+  successUrl?: string;
+  /** Override cancel URL (absolute or path). */
+  cancelUrl?: string;
+};
+
+/** Create (or recreate) a Stripe Checkout Session for the payment link amount. */
 export async function createStripeCheckoutForPayment(
   payment: PaymentLink,
-  options?: { origin?: string; locale?: string }
+  options?: StripeCheckoutOptions
 ): Promise<{
   sessionId: string;
   url: string;
@@ -39,24 +48,44 @@ export async function createStripeCheckoutForPayment(
   const stripe = getStripe();
   if (!stripe) return null;
 
+  const amountEuros = Number(payment.amount) || 0;
+  if (amountEuros <= 0) {
+    throw new Error("El importe del pago debe ser mayor que 0");
+  }
+
   const locale = options?.locale || payment.customerLocale || "es";
   const origin = options?.origin;
   const hash = payment.paymentHash || payment.id;
-  const successUrl = absoluteUrl(
-    `/${locale}/gateway/?h=${encodeURIComponent(hash)}&paid=1`,
-    origin
+
+  const resolveUrl = (override: string | undefined, fallbackPath: string) => {
+    if (!override) return absoluteUrl(fallbackPath, origin);
+    if (override.startsWith("http")) return override;
+    return absoluteUrl(override, origin);
+  };
+
+  const successUrl = resolveUrl(
+    options?.successUrl,
+    `/${locale}/gateway/?h=${encodeURIComponent(hash)}&paid=1`
   );
-  const cancelUrl = absoluteUrl(
-    `/${locale}/gateway/?h=${encodeURIComponent(hash)}&cancelled=1`,
-    origin
+  const cancelUrl = resolveUrl(
+    options?.cancelUrl,
+    `/${locale}/gateway/?h=${encodeURIComponent(hash)}&cancelled=1`
   );
 
-  const amountCents = Math.max(1, Math.round(Number(payment.amount) * 100));
+  const amountCents = Math.round(amountEuros * 100);
+  const chargeLabel = payment.chargeFull
+    ? "Pago 100% online"
+    : "Pago online (depósito)";
   const descriptionParts = [
     payment.concept,
     payment.serviceTitle ? `Servicio: ${payment.serviceTitle}` : "",
-    "Pago 100% con tarjeta",
+    chargeLabel,
   ].filter(Boolean);
+
+  const bookingIds = [
+    ...(payment.bookingIds || []),
+    ...(payment.bookingId ? [payment.bookingId] : []),
+  ].filter((id, i, arr) => arr.indexOf(id) === i);
 
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
@@ -82,7 +111,10 @@ export async function createStripeCheckoutForPayment(
       locator: payment.locator,
       serviceType: payment.serviceType || "custom",
       serviceId: payment.serviceId || "",
-      chargeFull: "1",
+      bookingId: payment.bookingId || bookingIds[0] || "",
+      bookingIds: bookingIds.join(","),
+      chargeFull: payment.chargeFull === false ? "0" : "1",
+      expectedAmount: String(amountCents),
     },
     success_url: successUrl,
     cancel_url: cancelUrl,

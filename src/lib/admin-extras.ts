@@ -69,7 +69,20 @@ export async function upsertPaymentLink(
   if (input.id) {
     const idx = data.paymentLinks.findIndex((p) => p.id === input.id);
     if (idx >= 0) {
-      data.paymentLinks[idx] = { ...data.paymentLinks[idx], ...input } as PaymentLink;
+      const merged = {
+        ...data.paymentLinks[idx],
+        ...input,
+      } as PaymentLink;
+      // Vaciar sesión Stripe si se pide explícitamente (importe editado)
+      if (input.stripeCheckoutUrl === "") {
+        delete merged.stripeCheckoutUrl;
+        delete merged.stripeCheckoutSessionId;
+        delete merged.stripePaymentIntentId;
+      }
+      if (input.bookingIds) {
+        merged.bookingIds = [...input.bookingIds];
+      }
+      data.paymentLinks[idx] = merged;
       await writeData(data);
       return data.paymentLinks[idx];
     }
@@ -93,6 +106,11 @@ export async function upsertPaymentLink(
       `${uid("h")}${Math.random().toString(16).slice(2, 10)}`,
     groupId: input.groupId || undefined,
     bookingId: input.bookingId || undefined,
+    bookingIds: input.bookingIds?.length
+      ? [...input.bookingIds]
+      : input.bookingId
+        ? [input.bookingId]
+        : undefined,
     mode: input.mode || "standard",
     personIndex: input.personIndex,
     personLabel: input.personLabel || undefined,

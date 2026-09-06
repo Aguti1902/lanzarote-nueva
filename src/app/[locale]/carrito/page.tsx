@@ -10,7 +10,7 @@ import { useLocale } from "@/components/LocaleProvider";
 import { formatPrice } from "@/lib/format";
 import type { PaymentMethod } from "@/types";
 import { isServiceDateWithinLeadTime } from "@/lib/booking-lead-time";
-import { splitPaymentAmounts } from "@/lib/payments";
+import { expectedOnlineCharge, splitPaymentAmounts } from "@/lib/payments";
 
 const inputClass =
   "w-full rounded border border-sand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20";
@@ -23,7 +23,7 @@ export default function CarritoPage() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [hotel, setHotel] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("deposit_20");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -31,10 +31,13 @@ export default function CarritoPage() {
     () => items.reduce((sum, item) => sum + item.totalPrice, 0),
     [items]
   );
-  const split = useMemo(
-    () => splitPaymentAmounts(total, paymentMethod),
-    [total, paymentMethod]
-  );
+  const split = useMemo(() => {
+    const base = splitPaymentAmounts(total, paymentMethod);
+    return {
+      ...base,
+      amountDueOnline: expectedOnlineCharge(total, paymentMethod),
+    };
+  }, [total, paymentMethod]);
 
   const hasCruiseItem = items.some(
     (item) => item.source === "cruise" || Boolean(item.cruiseShip)
@@ -42,7 +45,7 @@ export default function CarritoPage() {
 
   useEffect(() => {
     if (hasCruiseItem && paymentMethod === "pay_on_day") {
-      setPaymentMethod("deposit_20");
+      setPaymentMethod("card");
     }
   }, [hasCruiseItem, paymentMethod]);
 
@@ -82,6 +85,8 @@ export default function CarritoPage() {
             paymentMethod,
             locale,
             source: item.source || (item.cruiseShip ? "cruise" : undefined),
+            // Evitar N checkouts: el carrito crea un checkout combinado después
+            skipStripeCheckout: true,
             customer: {
               name,
               email,
@@ -96,6 +101,30 @@ export default function CarritoPage() {
         if (!res.ok) throw new Error(data.error || "Error");
         createdIds.push(data.booking.id);
       }
+
+      if (
+        paymentMethod === "card" ||
+        paymentMethod === "bizum" ||
+        paymentMethod === "deposit_20" ||
+        paymentMethod === "deposit_10"
+      ) {
+        const payRes = await fetch("/api/payments/stripe/checkout-bookings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            bookingIds: createdIds,
+            locale,
+            origin: window.location.origin,
+          }),
+        });
+        const payData = await payRes.json().catch(() => ({}));
+        if (payRes.ok && payData.checkoutUrl) {
+          clear();
+          window.location.href = payData.checkoutUrl;
+          return;
+        }
+      }
+
       clear();
       router.push(`${href("/reserva/confirmacion")}?id=${createdIds[0]}`);
     } catch (err) {
@@ -189,7 +218,7 @@ export default function CarritoPage() {
             {(paymentMethod === "deposit_20" ||
               paymentMethod === "deposit_10") && (
               <p className="mt-1 text-xs text-ink-muted">
-                {dict.cart.now} {formatPrice(split.amountPaidCard)} ·{" "}
+                {dict.cart.now} {formatPrice(split.amountDueOnline)} ·{" "}
                 {dict.cart.cashDay} {formatPrice(split.amountDueCash)}
               </p>
             )}
@@ -229,9 +258,8 @@ export default function CarritoPage() {
                   setPaymentMethod(e.target.value as PaymentMethod)
                 }
               >
-                <option value="deposit_20">{dict.booking.deposit}</option>
                 <option value="card">{dict.booking.card}</option>
-                <option value="bizum">{dict.booking.bizum}</option>
+                <option value="deposit_20">{dict.booking.deposit}</option>
                 {!hasCruiseItem && (
                   <option value="pay_on_day">{dict.booking.payOnDay}</option>
                 )}

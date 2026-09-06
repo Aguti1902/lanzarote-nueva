@@ -1,8 +1,105 @@
 import { NextResponse } from "next/server";
 import { getPaymentLinks, upsertPaymentLink } from "@/lib/admin-extras";
+import { updateBooking } from "@/lib/bookings";
+import { createInvoiceForBooking } from "@/lib/invoices";
+import { applyCollectedOnlinePayment, expectedOnlineCharge } from "@/lib/payments";
 import { getStripe, isStripeConfigured } from "@/lib/stripe";
+import type { Booking } from "@/types";
+import { getBookings } from "@/lib/bookings";
 
 export const dynamic = "force-dynamic";
+
+function resolveBookingIds(payment: {
+  bookingId?: string;
+  bookingIds?: string[];
+  notes?: string;
+  metadata?: Record<string, string>;
+}): string[] {
+  const fromMeta = (payment.metadata?.bookingIds || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const fromNotes = (payment.notes || "").startsWith("bookingIds:")
+    ? payment.notes!
+        .slice("bookingIds:".length)
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean)
+    : [];
+  const ids = [
+    ...(payment.bookingIds || []),
+    ...(payment.bookingId ? [payment.bookingId] : []),
+    ...fromMeta,
+    ...fromNotes,
+  ];
+  return [...new Set(ids)];
+}
+
+async function markBookingsPaidFromStripe(
+  bookingIds: string[],
+  paidEuros: number | undefined,
+  stripeMeta: {
+    sessionId?: string;
+    paymentIntentId?: string;
+  }
+) {
+  if (!bookingIds.length) return;
+
+  const bookings = await getBookings();
+  const targets = bookingIds
+    .map((id) => bookings.find((b) => b.id === id))
+    .filter((b): b is Booking => Boolean(b));
+
+  if (!targets.length) return;
+
+  const expectedParts = targets.map((b) =>
+    expectedOnlineCharge(b.amountTotal ?? b.totalPrice, b.paymentMethod)
+  );
+  const expectedSum = expectedParts.reduce((a, b) => a + b, 0) || 1;
+
+  for (let i = 0; i < targets.length; i++) {
+    const booking = targets[i];
+    if (
+      booking.paymentStatus === "paid" ||
+      (booking.paymentStatus === "partial" && (booking.amountPaidCard || 0) > 0)
+    ) {
+      continue;
+    }
+    const share =
+      paidEuros != null && expectedSum > 0
+        ? Math.round(((paidEuros * expectedParts[i]) / expectedSum) * 100) / 100
+        : undefined;
+    const collected = applyCollectedOnlinePayment(
+      booking.amountTotal ?? booking.totalPrice,
+      booking.paymentMethod,
+      share
+    );
+    const updated = await updateBooking(booking.id, {
+      ...collected,
+      customer: {
+        ...booking.customer,
+        notes: [
+          booking.customer.notes,
+          stripeMeta.sessionId
+            ? `Stripe session: ${stripeMeta.sessionId}`
+            : "",
+          stripeMeta.paymentIntentId
+            ? `Stripe PI: ${stripeMeta.paymentIntentId}`
+            : "",
+        ]
+          .filter(Boolean)
+          .join(" · "),
+      },
+    });
+    if (updated && !updated.invoiceId) {
+      try {
+        await createInvoiceForBooking(updated);
+      } catch (err) {
+        console.error("[stripe-webhook] invoice failed", updated.id, err);
+      }
+    }
+  }
+}
 
 export async function POST(request: Request) {
   if (!isStripeConfigured()) {
@@ -24,13 +121,25 @@ export async function POST(request: Request) {
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET?.trim();
   const rawBody = await request.text();
 
+  const isProd =
+    process.env.VERCEL_ENV === "production" ||
+    process.env.NODE_ENV === "production";
+
   let event;
   try {
     if (webhookSecret && signature) {
       event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
-    } else {
-      // Dev fallback when webhook secret is not set (do not use in production)
+    } else if (!isProd) {
+      // Solo en desarrollo local sin secret
       event = JSON.parse(rawBody);
+    } else {
+      return NextResponse.json(
+        {
+          error:
+            "STRIPE_WEBHOOK_SECRET no configurado. Añádelo en Vercel y redeploy.",
+        },
+        { status: 400 }
+      );
     }
   } catch (err) {
     const message =
@@ -48,6 +157,7 @@ export async function POST(request: Request) {
       payment_intent?: string | { id?: string } | null;
       metadata?: Record<string, string>;
       payment_status?: string;
+      amount_total?: number | null;
     };
 
     if (session.payment_status && session.payment_status !== "paid") {
@@ -63,12 +173,31 @@ export async function POST(request: Request) {
       links.find((p) => p.paymentHash === hash) ||
       links.find((p) => p.stripeCheckoutSessionId === session.id);
 
-    if (payment && payment.status !== "paid") {
-      const pi =
-        typeof session.payment_intent === "string"
-          ? session.payment_intent
-          : session.payment_intent?.id;
+    const paidEuros =
+      typeof session.amount_total === "number"
+        ? session.amount_total / 100
+        : undefined;
 
+    // Verificar importe vs enlace (tolerancia 1 céntimo)
+    if (
+      payment &&
+      paidEuros != null &&
+      Math.abs(paidEuros - Number(payment.amount)) > 0.02
+    ) {
+      console.warn(
+        "[stripe-webhook] amount mismatch",
+        payment.id,
+        payment.amount,
+        paidEuros
+      );
+    }
+
+    const pi =
+      typeof session.payment_intent === "string"
+        ? session.payment_intent
+        : session.payment_intent?.id;
+
+    if (payment && payment.status !== "paid") {
       await upsertPaymentLink({
         ...payment,
         status: "paid",
@@ -77,9 +206,25 @@ export async function POST(request: Request) {
         paymentKey: pi || session.id || payment.paymentKey,
         stripeCheckoutSessionId: session.id || payment.stripeCheckoutSessionId,
         stripePaymentIntentId: pi || payment.stripePaymentIntentId,
-        chargeFull: true,
+        chargeFull: payment.chargeFull ?? true,
+        amount:
+          paidEuros != null
+            ? Math.round(paidEuros * 100) / 100
+            : payment.amount,
       });
     }
+
+    const bookingIds = resolveBookingIds({
+      bookingId: payment?.bookingId || session.metadata?.bookingId,
+      bookingIds: payment?.bookingIds,
+      notes: payment?.notes,
+      metadata: session.metadata,
+    });
+
+    await markBookingsPaidFromStripe(bookingIds, paidEuros, {
+      sessionId: session.id,
+      paymentIntentId: pi,
+    });
   }
 
   return NextResponse.json({ received: true });

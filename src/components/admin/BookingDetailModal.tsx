@@ -83,6 +83,7 @@ export function BookingDetailModal({
   onConfirm,
   onComplete,
   onSaveCustomer,
+  onSaveAmount,
   initialView = "details",
 }: {
   booking: Booking;
@@ -93,6 +94,7 @@ export function BookingDetailModal({
   onConfirm?: (id: string) => void;
   onComplete?: (id: string) => void;
   onSaveCustomer?: (id: string, customer: CustomerPatch) => void | Promise<void>;
+  onSaveAmount?: (id: string, amountTotal: number) => void | Promise<void>;
   initialView?: "details" | "cancel";
 }) {
   const [view, setView] = useState<"details" | "cancel">(
@@ -100,6 +102,12 @@ export function BookingDetailModal({
   );
   const [submitting, setSubmitting] = useState(false);
   const [editingCustomer, setEditingCustomer] = useState(false);
+  const [editingAmount, setEditingAmount] = useState(false);
+  const [savingAmount, setSavingAmount] = useState(false);
+  const [amountForm, setAmountForm] = useState(
+    String(booking.amountTotal ?? booking.totalPrice ?? 0)
+  );
+  const [amountError, setAmountError] = useState("");
   const [savingCustomer, setSavingCustomer] = useState(false);
   const [customerForm, setCustomerForm] = useState({
     name: booking.customer.name || "",
@@ -114,6 +122,9 @@ export function BookingDetailModal({
   useEffect(() => {
     setView(booking.status === "cancelled" ? "details" : initialView);
     setEditingCustomer(false);
+    setEditingAmount(false);
+    setAmountError("");
+    setAmountForm(String(booking.amountTotal ?? booking.totalPrice ?? 0));
     setCustomerError("");
     setCustomerForm({
       name: booking.customer.name || "",
@@ -123,13 +134,33 @@ export function BookingDetailModal({
       hotel: booking.customer.hotel || "",
       notes: booking.customer.notes || "",
     });
-  }, [booking.id, booking.status, booking.customer, initialView]);
+  }, [booking.id, booking.status, booking.customer, booking.amountTotal, booking.totalPrice, initialView]);
+
+  async function saveAmount() {
+    if (!onSaveAmount) return;
+    const value = Number(String(amountForm).replace(",", "."));
+    if (!Number.isFinite(value) || value < 0) {
+      setAmountError("Importe inválido");
+      return;
+    }
+    setSavingAmount(true);
+    setAmountError("");
+    try {
+      await onSaveAmount(booking.id, Math.round(value * 100) / 100);
+      setEditingAmount(false);
+    } catch (err) {
+      setAmountError(err instanceof Error ? err.message : "Error al guardar");
+    } finally {
+      setSavingAmount(false);
+    }
+  }
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
         if (view === "cancel") setView("details");
         else if (editingCustomer) setEditingCustomer(false);
+        else if (editingAmount) setEditingAmount(false);
         else onClose();
       }
     }
@@ -344,7 +375,65 @@ export function BookingDetailModal({
                       <BookingStatusBadge status={booking.status} />
                     </dd>
                   </div>
-                  <Row label="Total de la reserva" value={money(total)} strong />
+                  <div className="flex gap-3">
+                    <dt className="w-44 shrink-0 text-ink-muted">
+                      Total de la reserva
+                    </dt>
+                    <dd className="flex-1">
+                      {editingAmount ? (
+                        <div className="space-y-2">
+                          <input
+                            type="number"
+                            min={0}
+                            step="0.01"
+                            className="w-full max-w-[160px] rounded border border-sand-line px-2 py-1.5 text-sm"
+                            value={amountForm}
+                            onChange={(e) => setAmountForm(e.target.value)}
+                          />
+                          {amountError && (
+                            <p className="text-xs text-red-600">{amountError}</p>
+                          )}
+                          <div className="flex gap-2">
+                            <button
+                              type="button"
+                              disabled={savingAmount}
+                              onClick={saveAmount}
+                              className="rounded bg-ocean px-2.5 py-1 text-xs font-bold text-white disabled:opacity-60"
+                            >
+                              {savingAmount ? "Guardando…" : "Guardar"}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setEditingAmount(false);
+                                setAmountForm(
+                                  String(
+                                    booking.amountTotal ?? booking.totalPrice ?? 0
+                                  )
+                                );
+                              }}
+                              className="rounded px-2.5 py-1 text-xs text-ink-muted"
+                            >
+                              Cancelar
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold">{money(total)}</span>
+                          {onSaveAmount && booking.status !== "cancelled" && (
+                            <button
+                              type="button"
+                              onClick={() => setEditingAmount(true)}
+                              className="text-xs font-bold text-ocean hover:underline"
+                            >
+                              Editar
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </dd>
+                  </div>
                   <Row
                     label="Forma de pago"
                     value={paymentLabel(booking.paymentMethod)}
