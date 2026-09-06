@@ -149,9 +149,6 @@ export function Footer() {
             >
               {dict.footer.terms}
             </a>
-            <Link href="/admin" className="hover:text-white/70">
-              Admin
-            </Link>
           </div>
         </div>
       </div>
