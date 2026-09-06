@@ -7,7 +7,6 @@ import {
   Bus,
   Globe2,
   Info,
-  ShieldBan,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -48,21 +47,11 @@ const awards = [
 ];
 
 const advantageIcons: LucideIcon[] = [
-  ShieldBan,
   Bus,
   Users,
   Globe2,
   Building2,
 ];
-
-function AdvantageLabel({
-  text,
-}: {
-  text: string;
-  bold?: string;
-}) {
-  return <>{text}</>;
-}
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -165,7 +154,7 @@ export default async function HomePage({ params }: Props) {
 
       <section className="bg-[#f7f7f7] py-12 md:py-14">
         <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
+          <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
             {dict.home.advantages.map((item, index) => {
               const Icon = advantageIcons[index] || Users;
               return (
@@ -177,7 +166,7 @@ export default async function HomePage({ params }: Props) {
                     <Icon className="h-8 w-8" strokeWidth={1.6} />
                   </span>
                   <p className="max-w-[12rem] text-sm leading-snug text-ink">
-                    <AdvantageLabel text={item.text} bold={item.bold} />
+                    {item.text}
                   </p>
                 </li>
               );
