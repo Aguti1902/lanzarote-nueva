@@ -502,7 +502,7 @@ const es: Dictionary = {
   },
   footer: {
     blurb:
-      "Empresa familiar local. Excursiones en grupos reducidos, solo en español, con nuestros propios minibuses.",
+      "Empresa familiar local. Grupos pequeños con nuestros propios minibuses.",
     explore: "Explorar",
     contact247: "Contacto 24/7",
     privacy: "Privacidad",
@@ -1078,7 +1078,7 @@ const en: Dictionary = {
   },
   footer: {
     blurb:
-      "Local family business. Small-group excursions in Spanish only, with our own minibuses.",
+      "Local family business. Small groups with our own minibuses.",
     explore: "Explore",
     contact247: "Contact 24/7",
     privacy: "Privacy",
@@ -1605,7 +1605,7 @@ const de: Dictionary = {
   },
   footer: {
     blurb:
-      "Lokales Familienunternehmen. Ausflüge in kleinen Gruppen, nur auf Spanisch, mit eigenen Minibussen.",
+      "Lokales Familienunternehmen. Kleine Gruppen mit eigenen Minibussen.",
     explore: "Entdecken",
     contact247: "Kontakt 24/7",
     privacy: "Datenschutz",
