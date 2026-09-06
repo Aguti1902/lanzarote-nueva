@@ -126,6 +126,7 @@ export async function addBooking(
     | "amountDueCash"
     | "amountPaidCash"
     | "cashStatus"
+    | "paymentStatus"
   > & {
     status?: BookingStatus;
     amountTotal?: number;
@@ -133,6 +134,7 @@ export async function addBooking(
     amountDueCash?: number;
     amountPaidCash?: number;
     cashStatus?: CashStatus;
+    paymentStatus?: Booking["paymentStatus"];
   }
 ): Promise<Booking> {
   const bookings = await getBookings();
@@ -141,6 +143,12 @@ export async function addBooking(
   const created: Booking = {
     ...booking,
     ...split,
+    // Si el caller fuerza unpaid (solicitud), respetarlo salvo pago el día.
+    paymentStatus:
+      booking.paymentStatus === "unpaid" &&
+      booking.paymentMethod !== "pay_on_day"
+        ? "unpaid"
+        : split.paymentStatus,
     amountPaidCash: booking.amountPaidCash ?? 0,
     id,
     createdAt: new Date().toISOString(),

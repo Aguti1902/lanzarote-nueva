@@ -92,6 +92,26 @@ export async function createInvoiceForBooking(
 
   const amountTotal = booking.amountTotal ?? booking.totalPrice;
   const { subtotal, taxAmount, total } = splitIgic(amountTotal, taxRate);
+  const paidCard = Number(booking.amountPaidCard) || 0;
+  const paidCash = Number(booking.amountPaidCash) || 0;
+  const dueCash = Number(booking.amountDueCash) || 0;
+  const paidTotal = Math.round((paidCard + paidCash) * 100) / 100;
+
+  let paymentNotes = notes;
+  if (!paymentNotes) {
+    if (
+      booking.paymentMethod === "deposit_20" ||
+      booking.paymentMethod === "deposit_10"
+    ) {
+      paymentNotes = `Depósito ${booking.paymentMethod === "deposit_20" ? "20" : "10"}% tarjeta: ${paidCard.toFixed(2)}€. Pendiente efectivo: ${dueCash.toFixed(2)}€.`;
+    } else if (booking.paymentMethod === "pay_on_day") {
+      paymentNotes = `Pago el día del servicio. Cobrado: ${paidTotal.toFixed(2)}€. Pendiente: ${dueCash.toFixed(2)}€.`;
+    } else if (paidTotal < amountTotal) {
+      paymentNotes = `Cobrado: ${paidTotal.toFixed(2)}€. Pendiente: ${(Math.round((amountTotal - paidTotal) * 100) / 100).toFixed(2)}€.`;
+    } else {
+      paymentNotes = `Pagado: ${paidTotal.toFixed(2)}€.`;
+    }
+  }
 
   const invoice: Invoice = {
     id,
@@ -117,12 +137,7 @@ export async function createInvoiceForBooking(
     taxRate,
     taxAmount,
     total,
-    notes:
-      notes ||
-      (booking.paymentMethod === "deposit_20" ||
-      booking.paymentMethod === "deposit_10"
-        ? `Depósito ${booking.paymentMethod === "deposit_20" ? "20" : "10"}% tarjeta: ${booking.amountPaidCard}€. Pendiente efectivo: ${booking.amountDueCash}€.`
-        : undefined),
+    notes: paymentNotes,
     status: "issued",
   };
 

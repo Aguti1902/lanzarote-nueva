@@ -211,7 +211,7 @@ export function ShoreToursPanel() {
       currency: "EUR",
       allowCard: true,
       allowBizum: true,
-      allowPayOnDay: true,
+      allowPayOnDay: false,
       cancellationPolicy: "Cancelación gratuita hasta 48 horas antes.",
       youtubeUrl: "",
       mapUrl: "",
@@ -787,7 +787,7 @@ export function ShoreToursPanel() {
                 [
                   ["allowCard", "Pago con tarjeta"],
                   ["allowBizum", "Pago con Bizum"],
-                  ["allowPayOnDay", "Pago el día del tour"],
+                  ["allowPayOnDay", "Pago el día (desactivado en web cruceros)"],
                 ] as const
               ).map(([key, label]) => (
                 <label key={key} className="flex items-center gap-2 text-sm">

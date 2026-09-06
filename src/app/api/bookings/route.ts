@@ -31,6 +31,21 @@ import {
 } from "@/lib/transfer-price";
 import type { BookingStatus, PaymentMethod } from "@/types";
 
+/** Solo emitir factura automática cuando ya hay cobro (tarjeta/Bizum/depósito). */
+function shouldAutoIssueInvoice(booking: {
+  paymentMethod: PaymentMethod | string;
+  paymentStatus?: string;
+  amountPaidCard?: number;
+  amountPaidCash?: number;
+}): boolean {
+  const paidCard = Number(booking.amountPaidCard) || 0;
+  const paidCash = Number(booking.amountPaidCash) || 0;
+  if (paidCard > 0 || paidCash > 0) return true;
+  if (booking.paymentStatus === "paid") return true;
+  if (booking.paymentMethod === "pay_on_day") return false;
+  return false;
+}
+
 function isDateBlocked(
   blockedDates: Array<{ date: string; seats?: number }> | undefined,
   date: string
@@ -210,6 +225,22 @@ export async function POST(request: Request) {
       }
     }
 
+    const method = (paymentMethod as PaymentMethod) || "card";
+    if (
+      (source === "cruise" ||
+        (typeof customer?.cruiseShip === "string" &&
+          customer.cruiseShip.trim())) &&
+      method === "pay_on_day"
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "En excursiones de crucero no está disponible el pago el día del tour. Elija tarjeta, Bizum o depósito 20%.",
+        },
+        { status: 400 }
+      );
+    }
+
     let booking = await addBooking({
       type,
       tourId,
@@ -219,8 +250,8 @@ export async function POST(request: Request) {
       adults: adultsNum,
       children: childrenNum,
       totalPrice: resolvedTotal,
-      paymentMethod: (paymentMethod as PaymentMethod) || "card",
-      paymentStatus: status === "pending" ? "unpaid" : "paid",
+      paymentMethod: method,
+      paymentStatus: status === "pending" ? "unpaid" : undefined,
       customer,
       transfer: transferPayload,
       minibus,
@@ -238,7 +269,9 @@ export async function POST(request: Request) {
       booking = assigned.booking;
     }
 
-    const invoice = await createInvoiceForBooking(booking);
+    const invoice = shouldAutoIssueInvoice(booking)
+      ? await createInvoiceForBooking(booking)
+      : null;
 
     void notifyNewBooking(booking, {
       bookingMethod: methodNorm,
@@ -284,7 +317,11 @@ export async function PATCH(request: Request) {
       if (!booking) {
         return NextResponse.json({ error: "No encontrada" }, { status: 404 });
       }
-      return NextResponse.json({ booking });
+      let invoice = null;
+      if (!booking.invoiceId) {
+        invoice = await createInvoiceForBooking(booking);
+      }
+      return NextResponse.json({ booking, invoice });
     }
 
     if (customer && typeof customer === "object") {

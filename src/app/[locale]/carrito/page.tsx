@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ShoppingCart, Trash2 } from "lucide-react";
 import { useCart } from "@/components/CartProvider";
@@ -36,10 +36,26 @@ export default function CarritoPage() {
     [total, paymentMethod]
   );
 
+  const hasCruiseItem = items.some(
+    (item) => item.source === "cruise" || Boolean(item.cruiseShip)
+  );
+
+  useEffect(() => {
+    if (hasCruiseItem && paymentMethod === "pay_on_day") {
+      setPaymentMethod("deposit_20");
+    }
+  }, [hasCruiseItem, paymentMethod]);
+
   async function handleCheckout(e: FormEvent) {
     e.preventDefault();
     if (!items.length) return;
     setError("");
+    if (hasCruiseItem && paymentMethod === "pay_on_day") {
+      setError(
+        "En excursiones de crucero no está disponible el pago el día del tour."
+      );
+      return;
+    }
     const tooSoon = items.find(
       (item) => !isServiceDateWithinLeadTime(item.date, item.time)
     );
@@ -216,7 +232,9 @@ export default function CarritoPage() {
                 <option value="deposit_20">{dict.booking.deposit}</option>
                 <option value="card">{dict.booking.card}</option>
                 <option value="bizum">{dict.booking.bizum}</option>
-                <option value="pay_on_day">{dict.booking.payOnDay}</option>
+                {!hasCruiseItem && (
+                  <option value="pay_on_day">{dict.booking.payOnDay}</option>
+                )}
               </select>
               {error && <p className="text-sm text-red-600">{error}</p>}
               <button

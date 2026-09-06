@@ -3,7 +3,6 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  Banknote,
   CreditCard,
   Percent,
   ShoppingCart,
@@ -99,12 +98,7 @@ export function CruiseTourBooking({
         icon: <Smartphone className="h-4 w-4" />,
         show: tour.allowBizum !== false,
       },
-      {
-        id: "pay_on_day" as const,
-        label: dict.booking.payOnDay,
-        icon: <Banknote className="h-4 w-4" />,
-        show: tour.allowPayOnDay !== false,
-      },
+      // Cruceros: no "pago el día" — evita facturas sin cobro real.
     ] as const
   ).filter((m) => m.show);
 

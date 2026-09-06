@@ -277,7 +277,7 @@ export async function POST(request: Request) {
         currency: "EUR",
         allowCard: body.allowCard !== false,
         allowBizum: body.allowBizum !== false,
-        allowPayOnDay: body.allowPayOnDay !== false,
+        allowPayOnDay: body.allowPayOnDay === true,
         cancellationPolicy:
           body.cancellationPolicy ||
           "Cancelación gratuita hasta 48 horas antes.",
