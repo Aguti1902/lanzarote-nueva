@@ -86,6 +86,7 @@ export function BookingDetailModal({
   onComplete,
   onSaveCustomer,
   onSaveAmount,
+  onResendEmail,
   initialView = "details",
 }: {
   booking: Booking;
@@ -97,6 +98,7 @@ export function BookingDetailModal({
   onComplete?: (id: string) => void;
   onSaveCustomer?: (id: string, customer: CustomerPatch) => void | Promise<void>;
   onSaveAmount?: (id: string, amountTotal: number) => void | Promise<void>;
+  onResendEmail?: (id: string, kind: "confirmation" | "cancellation" | "request") => void | Promise<void>;
   initialView?: "details" | "cancel";
 }) {
   const [view, setView] = useState<"details" | "cancel">(
@@ -336,6 +338,33 @@ export function BookingDetailModal({
               >
                 Descargar voucher
               </button>
+              {onResendEmail && booking.customer?.email && (
+                <button
+                  type="button"
+                  disabled={submitting}
+                  onClick={async () => {
+                    const kind =
+                      booking.status === "cancelled"
+                        ? "cancellation"
+                        : booking.status === "pending"
+                          ? "request"
+                          : "confirmation";
+                    setSubmitting(true);
+                    try {
+                      await onResendEmail(booking.id, kind);
+                    } finally {
+                      setSubmitting(false);
+                    }
+                  }}
+                  className="rounded border border-ocean/40 px-4 py-2 text-sm font-bold text-ocean hover:bg-sky-soft disabled:opacity-60"
+                >
+                  {submitting
+                    ? "Enviando…"
+                    : booking.status === "cancelled"
+                      ? "Reenviar cancelación"
+                      : "Reenviar email al cliente"}
+                </button>
+              )}
             </div>
 
             <div className="grid gap-8 px-5 py-6 md:grid-cols-2 md:px-8">

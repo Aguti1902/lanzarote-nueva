@@ -4,6 +4,7 @@ import { updateBooking } from "@/lib/bookings";
 import { createInvoiceForBooking } from "@/lib/invoices";
 import { applyCollectedOnlinePayment, expectedOnlineCharge } from "@/lib/payments";
 import { customerFacingNotes } from "@/lib/customer-notes";
+import { sendCustomerBookingEmail } from "@/lib/customer-emails";
 import { getStripe, isStripeConfigured } from "@/lib/stripe";
 import type { Booking } from "@/types";
 import { getBookings } from "@/lib/bookings";
@@ -110,10 +111,17 @@ async function markBookingsPaidFromStripe(
 
     if (updated && !updated.invoiceId && (updated.amountPaidCard || 0) > 0) {
       try {
-        await createInvoiceForBooking(updated);
+        const invoice = await createInvoiceForBooking(updated);
+        updated = { ...updated, invoiceId: invoice.id };
       } catch (err) {
         console.error("[stripe-webhook] invoice failed", updated.id, err);
       }
+    }
+
+    if (!alreadyCollected && updated.status !== "cancelled") {
+      void sendCustomerBookingEmail(updated, "confirmation").catch((err) => {
+        console.error("[stripe-webhook] customer email failed", updated.id, err);
+      });
     }
   }
 }

@@ -5,6 +5,10 @@ import {
   assessCancellation,
   isValidCancelReason,
 } from "@/lib/cancellation";
+import {
+  notifyOpsCancellation,
+  sendCustomerBookingEmail,
+} from "@/lib/customer-emails";
 
 export async function POST(request: Request) {
   try {
@@ -89,6 +93,16 @@ export async function POST(request: Request) {
         refundAmount: assessment.refundAmount,
       });
     }
+
+    void notifyOpsCancellation(updated, assessment).catch((err) => {
+      console.error("[cancel] ops notify failed", err);
+    });
+    void sendCustomerBookingEmail(updated, "cancellation", {
+      assessment,
+      reason,
+    }).catch((err) => {
+      console.error("[cancel] customer email failed", err);
+    });
 
     return NextResponse.json({
       booking: updated,

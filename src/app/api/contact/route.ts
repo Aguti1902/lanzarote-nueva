@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
 import { notifyContactMessage } from "@/lib/notify";
+import { sendContactAutoReply } from "@/lib/customer-emails";
 
 type ContactMessage = {
   id: string;
@@ -49,6 +50,13 @@ export async function POST(request: Request) {
     // No bloqueamos la respuesta si el correo falla
     void notifyContactMessage(entry).catch((err) => {
       console.error("[contact] notify failed", err);
+    });
+    void sendContactAutoReply({
+      name: entry.name,
+      email: entry.email,
+      locale: typeof body.locale === "string" ? body.locale : undefined,
+    }).catch((err) => {
+      console.error("[contact] auto-reply failed", err);
     });
 
     return NextResponse.json({ ok: true, message: entry }, { status: 201 });

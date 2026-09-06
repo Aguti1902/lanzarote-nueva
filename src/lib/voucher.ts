@@ -9,7 +9,7 @@ import {
 import { bookingLocaleLabel } from "@/lib/booking-display";
 import { customerFacingNotes } from "@/lib/customer-notes";
 
-function resolvePublicOrigin(origin?: string): string {
+export function resolvePublicOrigin(origin?: string): string {
   const raw =
     (origin && origin.trim()) ||
     process.env.NEXT_PUBLIC_SITE_URL ||

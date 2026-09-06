@@ -25,6 +25,11 @@ import {
 } from "@/lib/shore-tour-display";
 import { notifyNewBooking } from "@/lib/notify";
 import {
+  notifyOpsCancellation,
+  sendCustomerBookingEmail,
+  shouldSendCustomerEmailOnCreate,
+} from "@/lib/customer-emails";
+import {
   calcTransferTotal,
   type TransferDirection,
 } from "@/lib/transfer-price";
@@ -338,6 +343,16 @@ export async function POST(request: Request) {
       console.error("[bookings] notify failed", err);
     });
 
+    const customerMailKind = shouldSendCustomerEmailOnCreate(
+      booking,
+      checkoutUrl
+    );
+    if (customerMailKind) {
+      void sendCustomerBookingEmail(booking, customerMailKind).catch((err) => {
+        console.error("[bookings] customer email failed", err);
+      });
+    }
+
     return NextResponse.json(
       { booking, invoice, checkoutUrl, paymentId, stripeConfigured: isStripeConfigured() },
       { status: 201 }
@@ -534,12 +549,27 @@ export async function PATCH(request: Request) {
           refundAmount: assessment.refundAmount,
         });
       }
+      void notifyOpsCancellation(booking, assessment).catch((err) => {
+        console.error("[bookings] ops cancel notify failed", err);
+      });
+      void sendCustomerBookingEmail(booking, "cancellation", {
+        assessment,
+        reason: booking.cancellationReason,
+      }).catch((err) => {
+        console.error("[bookings] customer cancel email failed", err);
+      });
       return NextResponse.json({ booking, creditNote, assessment });
     }
 
     const booking = await updateBookingStatus(id, status);
     if (!booking) {
       return NextResponse.json({ error: "No encontrada" }, { status: 404 });
+    }
+
+    if (status === "confirmed") {
+      void sendCustomerBookingEmail(booking, "confirmation").catch((err) => {
+        console.error("[bookings] confirm email failed", err);
+      });
     }
 
     return NextResponse.json({ booking });

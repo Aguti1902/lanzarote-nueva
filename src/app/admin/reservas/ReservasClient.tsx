@@ -586,6 +586,25 @@ export default function AdminReservasPage() {
           }}
           onSaveCustomer={saveCustomer}
           onSaveAmount={saveAmount}
+          onResendEmail={async (id, kind) => {
+            const res = await fetch("/api/bookings/resend-email", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id, kind }),
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+              window.alert(data.error || "No se pudo reenviar el email");
+              return;
+            }
+            if (data.skipped) {
+              window.alert(
+                "RESEND_API_KEY no está configurada en este entorno; el envío se ha omitido."
+              );
+              return;
+            }
+            window.alert(`Email enviado a ${data.to || "el cliente"}`);
+          }}
         />
       )}
     </div>
