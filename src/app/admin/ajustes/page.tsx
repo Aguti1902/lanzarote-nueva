@@ -390,7 +390,7 @@ export default function AdminAjustesPage() {
     if (locale === "es") {
       return "Editando textos en español (base). Las imágenes son comunes a todos los idiomas.";
     }
-    return `Editando textos en ${locale === "en" ? "inglés" : "alemán"}. Vaciar un campo hace que la web use el español. Las imágenes no cambian por idioma.`;
+    return `Editando textos en ${locale === "en" ? "inglés" : "alemán"}. Aquí se traducen: textos, apartados («Lanzarote, una isla…»), FAQs y títulos. Si un campo está vacío, no se muestra el español en la web. Use «Generar esta sección» o «Generar traducciones EN + DE», revise y pulse Guardar.`;
   }, [locale]);
 
   if (loading) return <p className="text-ink-muted">Cargando…</p>;
@@ -656,6 +656,15 @@ export default function AdminAjustesPage() {
               </button>
             )}
           </div>
+          {locale !== "es" && (
+            <p className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-950 ring-1 ring-amber-200">
+              Para cambiar «Lanzarote, una isla para descubrir» y los apartados
+              con fotos: baje a <strong>Apartados de contenido</strong> en este
+              mismo bloque (idioma {locale === "en" ? "Inglés" : "Alemán"}).
+              Las <strong>preguntas frecuentes</strong> también se editan aquí
+              abajo en este idioma.
+            </p>
+          )}
           <Field label="Título">
             <input
               className={adminInput}

@@ -1,4 +1,8 @@
 import type { Tour } from "@/types";
+import {
+  isServiceDateWithinLeadTime,
+  minBookableDateIso,
+} from "@/lib/booking-lead-time";
 
 /** JS getDay() Sunday=0 → Monday-first index 0..6 used in tour.schedule. */
 export function weekdayIndexMon0(isoDate: string): number {
@@ -46,20 +50,19 @@ export function isTourOperatingDay(tour: Tour, isoDate: string): boolean {
 
 export function isTourDateBookable(tour: Tour, isoDate: string): boolean {
   const date = isoDate.slice(0, 10);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const target = new Date(`${date}T12:00:00`);
-  if (target < today) return false;
+  if (!isServiceDateWithinLeadTime(date)) return false;
   return isTourOperatingDay(tour, date);
 }
 
-/** Next N bookable ISO dates from today (inclusive). */
+/** Next N bookable ISO dates from the minimum lead-time date. */
 export function nextBookableDates(tour: Tour, count = 12): string[] {
   const out: string[] = [];
-  const cursor = new Date();
-  cursor.setHours(12, 0, 0, 0);
+  const cursor = new Date(`${minBookableDateIso()}T12:00:00`);
   for (let i = 0; i < 120 && out.length < count; i++) {
-    const iso = cursor.toISOString().slice(0, 10);
+    const y = cursor.getFullYear();
+    const m = String(cursor.getMonth() + 1).padStart(2, "0");
+    const d = String(cursor.getDate()).padStart(2, "0");
+    const iso = `${y}-${m}-${d}`;
     if (isTourDateBookable(tour, iso)) out.push(iso);
     cursor.setDate(cursor.getDate() + 1);
   }

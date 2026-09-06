@@ -19,6 +19,7 @@ import { getTransfersData } from "@/lib/content";
 import { getCruiseShoreTourById } from "@/lib/cruise-itineraries";
 import { getTourById } from "@/lib/content";
 import { isTourDateBookable } from "@/lib/tour-availability";
+import { isServiceDateWithinLeadTime } from "@/lib/booking-lead-time";
 import {
   shoreTourBookingTotal,
   shoreTourMaxPassengers,
@@ -70,6 +71,24 @@ export async function POST(request: Request) {
     if (!type || !tourTitle || !date || !customer?.name || !customer?.email) {
       return NextResponse.json(
         { error: "Faltan datos obligatorios" },
+        { status: 400 }
+      );
+    }
+
+    const serviceTime =
+      (typeof time === "string" && time.trim()) ||
+      (transfer &&
+        typeof transfer === "object" &&
+        typeof transfer.time === "string" &&
+        transfer.time.trim()) ||
+      undefined;
+
+    if (!isServiceDateWithinLeadTime(String(date).slice(0, 10), serviceTime)) {
+      return NextResponse.json(
+        {
+          error:
+            "Debe reservar con al menos 48 horas de antelación para evitar overbooking.",
+        },
         { status: 400 }
       );
     }

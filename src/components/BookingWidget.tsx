@@ -10,6 +10,7 @@ import { useCart } from "@/components/CartProvider";
 import { useLocale } from "@/components/LocaleProvider";
 import { splitPaymentAmounts } from "@/lib/payments";
 import { TourDatePicker } from "@/components/TourDatePicker";
+import { isServiceDateWithinLeadTime } from "@/lib/booking-lead-time";
 import {
   effectiveAdultPrice,
   effectiveChildPrice,
@@ -123,6 +124,10 @@ export function BookingWidget({ tour }: { tour: Tour }) {
     }
     if (!date) {
       setError(dict.booking.selectDate);
+      return false;
+    }
+    if (!isServiceDateWithinLeadTime(date)) {
+      setError(dict.booking.minLeadTime);
       return false;
     }
     if (!isTourDateBookable(tour, date)) {

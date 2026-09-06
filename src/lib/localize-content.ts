@@ -11,7 +11,9 @@ import { isSupabaseConfigured } from "@/lib/supabase/client";
 import {
   mergeSettingsOverlay,
   pickSettingsTranslations,
+  SETTINGS_BLOCKS_LIST_KEYS,
   SETTINGS_FAQ_LIST_KEYS,
+  SETTINGS_STRING_KEYS,
   SETTINGS_TRANSLATABLE_KEYS,
 } from "@/lib/settings-i18n";
 
@@ -281,8 +283,15 @@ export async function localizeSettings(
   const overlay = pickSettingsTranslations(translations.settings);
   const merged = mergeSettingsOverlay(settings, overlay);
 
-  // Si no hay FAQs traducidas en el overlay, vaciar las de ES para que
-  // las páginas usen el diccionario (EN/DE) en lugar del español del CMS.
+  // Sin traducción en el overlay: no mostrar el español del CMS.
+  // Las páginas caen al diccionario (FAQs) o ocultan el bloque (apartados).
+  for (const key of SETTINGS_STRING_KEYS) {
+    const fromOverlay = overlay[key];
+    if (typeof fromOverlay !== "string" || !fromOverlay.trim()) {
+      merged[key] = "" as never;
+    }
+  }
+
   for (const key of SETTINGS_FAQ_LIST_KEYS) {
     const fromOverlay = overlay[key];
     if (!Array.isArray(fromOverlay) || fromOverlay.length === 0) {
@@ -290,19 +299,10 @@ export async function localizeSettings(
     }
   }
 
-  const faqTitleKeys = [
-    "aboutFaqTitle",
-    "excursionsFaqTitle",
-    "blogFaqTitle",
-    "cruiseFaqTitle",
-    "transferFaqTitle",
-    "housesFaqTitle",
-    "contactFaqTitle",
-  ] as const;
-  for (const key of faqTitleKeys) {
+  for (const key of SETTINGS_BLOCKS_LIST_KEYS) {
     const fromOverlay = overlay[key];
-    if (typeof fromOverlay !== "string" || !fromOverlay.trim()) {
-      merged[key] = "";
+    if (!Array.isArray(fromOverlay) || fromOverlay.length === 0) {
+      merged[key] = [];
     }
   }
 

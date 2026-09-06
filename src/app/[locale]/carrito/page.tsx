@@ -9,6 +9,7 @@ import { useCart } from "@/components/CartProvider";
 import { useLocale } from "@/components/LocaleProvider";
 import { formatPrice } from "@/lib/format";
 import type { PaymentMethod } from "@/types";
+import { isServiceDateWithinLeadTime } from "@/lib/booking-lead-time";
 import { splitPaymentAmounts } from "@/lib/payments";
 
 const inputClass =
@@ -39,6 +40,13 @@ export default function CarritoPage() {
     e.preventDefault();
     if (!items.length) return;
     setError("");
+    const tooSoon = items.find(
+      (item) => !isServiceDateWithinLeadTime(item.date, item.time)
+    );
+    if (tooSoon) {
+      setError(dict.booking.minLeadTime);
+      return;
+    }
     setLoading(true);
     try {
       const createdIds: string[] = [];

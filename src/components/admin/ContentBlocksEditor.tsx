@@ -45,7 +45,7 @@ export function ContentBlocksEditor({
     <div className="space-y-3 rounded-lg bg-sky-soft/60 p-4 ring-1 ring-sand-line">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h3 className="text-sm font-bold text-ink">
-          Apartados extra (se suman al texto, no lo sustituyen)
+          Apartados de contenido (título + textos + fotos)
         </h3>
         <div className="flex flex-wrap gap-2">
           {onCopyFromBase ? (

@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale } from "@/components/LocaleProvider";
 import { formatPrice } from "@/lib/format";
+import { minBookableDateIso, isServiceDateWithinLeadTime } from "@/lib/booking-lead-time";
 import {
   calcTransferTotal,
   TRANSFER_INCLUDED_PAX,
@@ -42,6 +43,7 @@ export function TransferBookingForm({
 
   const dest =
     destinations.find((d) => d.id === destination) || destinations[0];
+  const minDate = minBookableDateIso();
   const total = useMemo(() => {
     if (!dest) return 0;
     return calcTransferTotal({
@@ -68,8 +70,20 @@ export function TransferBookingForm({
       setError(dict.booking.fillRequired);
       return;
     }
+    if (!isServiceDateWithinLeadTime(date, time)) {
+      setError(dict.booking.minLeadTime);
+      return;
+    }
     if (direction === "return" && (!returnDate || !returnTime)) {
       setError(dict.booking.fillRequired);
+      return;
+    }
+    if (
+      direction === "return" &&
+      returnDate &&
+      !isServiceDateWithinLeadTime(returnDate, returnTime)
+    ) {
+      setError(dict.booking.minLeadTime);
       return;
     }
     setLoading(true);
@@ -170,7 +184,7 @@ export function TransferBookingForm({
             type="date"
             className={inputClass}
             value={date}
-            min={new Date().toISOString().slice(0, 10)}
+            min={minDate}
             onChange={(e) => setDate(e.target.value)}
             required
           />
@@ -197,7 +211,7 @@ export function TransferBookingForm({
                 type="date"
                 className={inputClass}
                 value={returnDate}
-                min={date || new Date().toISOString().slice(0, 10)}
+                min={date && date > minDate ? date : minDate}
                 onChange={(e) => setReturnDate(e.target.value)}
                 required
               />

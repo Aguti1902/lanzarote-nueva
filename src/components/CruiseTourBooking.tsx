@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import type { CruiseSailing, CruiseShoreTour, PaymentMethod } from "@/types";
 import { formatPrice } from "@/lib/format";
+import { isServiceDateWithinLeadTime } from "@/lib/booking-lead-time";
 import { splitPaymentAmounts } from "@/lib/payments";
 import {
   shoreTourBookingTotal,
@@ -53,6 +54,11 @@ export function CruiseTourBooking({
       ),
     [callDate, tour.blockedDates]
   );
+  const tooSoon = useMemo(
+    () => Boolean(callDate) && !isServiceDateWithinLeadTime(callDate),
+    [callDate]
+  );
+  const cannotBook = dateBlocked || tooSoon;
 
   const [passengers, setPassengers] = useState(Math.min(2, max));
   const [name, setName] = useState("");
@@ -117,6 +123,10 @@ export function CruiseTourBooking({
   function handleAddToCart() {
     setError("");
     setCartMsg("");
+    if (tooSoon) {
+      setError(dict.booking.minLeadTime);
+      return;
+    }
     if (dateBlocked) {
       setError(dict.booking.dateUnavailable);
       return;
@@ -153,6 +163,10 @@ export function CruiseTourBooking({
   async function handleBookNow(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    if (tooSoon) {
+      setError(dict.booking.minLeadTime);
+      return;
+    }
     if (dateBlocked) {
       setError(dict.booking.dateUnavailable);
       return;
@@ -217,11 +231,15 @@ export function CruiseTourBooking({
         )}
       </div>
 
-      {dateBlocked && (
+      {tooSoon ? (
+        <p className="mt-4 rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-800 ring-1 ring-rose-200">
+          {dict.booking.minLeadTime}
+        </p>
+      ) : dateBlocked ? (
         <p className="mt-4 rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-800 ring-1 ring-rose-200">
           Esta fecha no está disponible para la excursión.
         </p>
-      )}
+      ) : null}
 
       <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
         <label className="text-sm">
@@ -260,7 +278,7 @@ export function CruiseTourBooking({
         <button
           type="button"
           onClick={handleAddToCart}
-          disabled={dateBlocked}
+          disabled={cannotBook}
           className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-ink/15 bg-white px-4 py-3 text-sm font-bold uppercase tracking-wide transition hover:border-ocean hover:text-ocean disabled:opacity-50"
         >
           <ShoppingCart className="h-4 w-4" />
@@ -269,16 +287,18 @@ export function CruiseTourBooking({
         <button
           type="button"
           onClick={() => setMode(mode === "checkout" ? "quick" : "checkout")}
-          disabled={dateBlocked}
+          disabled={cannotBook}
           className="btn-primary flex-1 justify-center rounded-full px-4 py-3 text-sm uppercase tracking-wide disabled:opacity-50"
         >
           {dict.booking.bookNow}
         </button>
       </div>
 
-      {dateBlocked && (
+      {cannotBook && (
         <p className="mt-3 text-sm font-semibold text-rose-700">
-          Esta fecha no está disponible para reservar.
+          {tooSoon
+            ? dict.booking.minLeadTime
+            : "Esta fecha no está disponible para reservar."}
         </p>
       )}
 
