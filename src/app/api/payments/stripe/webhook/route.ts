@@ -3,6 +3,7 @@ import { getPaymentLinks, upsertPaymentLink } from "@/lib/admin-extras";
 import { updateBooking } from "@/lib/bookings";
 import { createInvoiceForBooking } from "@/lib/invoices";
 import { applyCollectedOnlinePayment, expectedOnlineCharge } from "@/lib/payments";
+import { customerFacingNotes } from "@/lib/customer-notes";
 import { getStripe, isStripeConfigured } from "@/lib/stripe";
 import type { Booking } from "@/types";
 import { getBookings } from "@/lib/bookings";
@@ -59,39 +60,55 @@ async function markBookingsPaidFromStripe(
 
   for (let i = 0; i < targets.length; i++) {
     const booking = targets[i];
-    if (
+    const alreadyCollected =
       booking.paymentStatus === "paid" ||
-      (booking.paymentStatus === "partial" && (booking.amountPaidCard || 0) > 0)
+      (booking.paymentStatus === "partial" && (booking.amountPaidCard || 0) > 0);
+
+    let updated = booking;
+    if (!alreadyCollected) {
+      const share =
+        paidEuros != null && expectedSum > 0
+          ? Math.round(((paidEuros * expectedParts[i]) / expectedSum) * 100) /
+            100
+          : undefined;
+      const collected = applyCollectedOnlinePayment(
+        booking.amountTotal ?? booking.totalPrice,
+        booking.paymentMethod,
+        share
+      );
+      const next = await updateBooking(booking.id, {
+        ...collected,
+        ...(stripeMeta.sessionId
+          ? { stripeCheckoutSessionId: stripeMeta.sessionId }
+          : {}),
+        ...(stripeMeta.paymentIntentId
+          ? { stripePaymentIntentId: stripeMeta.paymentIntentId }
+          : {}),
+      });
+      if (next) updated = next;
+    } else if (
+      stripeMeta.sessionId ||
+      stripeMeta.paymentIntentId ||
+      /Stripe\s+(session|PI):/i.test(booking.customer.notes || "")
     ) {
-      continue;
+      // Limpia notas contaminadas con Stripe y guarda refs aparte
+      const cleaned = customerFacingNotes(booking.customer.notes);
+      const next = await updateBooking(booking.id, {
+        ...(stripeMeta.sessionId
+          ? { stripeCheckoutSessionId: stripeMeta.sessionId }
+          : {}),
+        ...(stripeMeta.paymentIntentId
+          ? { stripePaymentIntentId: stripeMeta.paymentIntentId }
+          : {}),
+        customer: {
+          ...booking.customer,
+          notes: cleaned,
+        },
+      });
+      if (next) updated = next;
     }
-    const share =
-      paidEuros != null && expectedSum > 0
-        ? Math.round(((paidEuros * expectedParts[i]) / expectedSum) * 100) / 100
-        : undefined;
-    const collected = applyCollectedOnlinePayment(
-      booking.amountTotal ?? booking.totalPrice,
-      booking.paymentMethod,
-      share
-    );
-    const updated = await updateBooking(booking.id, {
-      ...collected,
-      customer: {
-        ...booking.customer,
-        notes: [
-          booking.customer.notes,
-          stripeMeta.sessionId
-            ? `Stripe session: ${stripeMeta.sessionId}`
-            : "",
-          stripeMeta.paymentIntentId
-            ? `Stripe PI: ${stripeMeta.paymentIntentId}`
-            : "",
-        ]
-          .filter(Boolean)
-          .join(" · "),
-      },
-    });
-    if (updated && !updated.invoiceId) {
+
+    if (updated && !updated.invoiceId && (updated.amountPaidCard || 0) > 0) {
       try {
         await createInvoiceForBooking(updated);
       } catch (err) {

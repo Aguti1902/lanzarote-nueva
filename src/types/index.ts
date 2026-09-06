@@ -524,6 +524,9 @@ export interface Booking {
   cashStatus: CashStatus;
   status: BookingStatus;
   invoiceId?: string;
+  /** Refs Stripe (no van en notas del cliente). */
+  stripeCheckoutSessionId?: string;
+  stripePaymentIntentId?: string;
   cancellationReason?: string;
   cancelledAt?: string;
   cancellationFee?: number;

@@ -25,6 +25,7 @@ import {
   BookingStatusBadge,
   PaymentStatusBadge,
 } from "@/components/admin/BookingStatusBadge";
+import { customerFacingNotes } from "@/lib/customer-notes";
 
 type CustomerPatch = Partial<Booking["customer"]>;
 
@@ -668,7 +669,7 @@ export function BookingDetailModal({
                 <div>
                   <dt className="text-ink-muted">Sugerencias del cliente</dt>
                   <dd className="mt-1 whitespace-pre-wrap rounded-lg bg-sky-soft/60 px-3 py-2 text-ink">
-                    {booking.customer.notes?.trim() || "—"}
+                    {customerFacingNotes(booking.customer.notes) || "—"}
                   </dd>
                 </div>
               </dl>

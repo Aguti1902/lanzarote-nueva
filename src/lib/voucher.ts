@@ -7,6 +7,7 @@ import {
   bookingServiceTime,
 } from "@/lib/booking-time";
 import { bookingLocaleLabel } from "@/lib/booking-display";
+import { customerFacingNotes } from "@/lib/customer-notes";
 
 export type VoucherCompany = {
   brandName: string;
@@ -197,8 +198,9 @@ export function buildVoucherHtml(
   if (booking.customer.cruiseShip) {
     rows.push([labels.cruise, esc(booking.customer.cruiseShip)]);
   }
-  if (booking.customer.notes?.trim()) {
-    rows.push([labels.notes, esc(booking.customer.notes.trim())]);
+  const notes = customerFacingNotes(booking.customer.notes);
+  if (notes) {
+    rows.push([labels.notes, esc(notes)]);
   }
 
   return `<!DOCTYPE html>

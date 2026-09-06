@@ -131,23 +131,9 @@ export default async function ConfirmacionPage({ params, searchParams }: Props) 
             <ConfirmationPayActions
               booking={booking}
               paidFlag={paid === "1"}
+              locale={locale}
+              invoiceLabel={dict.confirmation.invoice}
             />
-            {booking.invoiceId && (
-              <div className="flex justify-between gap-4">
-                <dt className="text-ink-muted">{dict.confirmation.invoice}</dt>
-                <dd className="font-medium">
-                  <Link
-                    href={localePath(
-                      locale,
-                      `/factura?id=${encodeURIComponent(booking.invoiceId)}`
-                    )}
-                    className="text-ocean hover:underline"
-                  >
-                    {booking.invoiceId} · Ver / PDF
-                  </Link>
-                </dd>
-              </div>
-            )}
             <div className="flex justify-between gap-4 border-t border-sand-line pt-2">
               <dt className="text-ink-muted">{dict.common.total}</dt>
               <dd className="text-lg font-bold">
