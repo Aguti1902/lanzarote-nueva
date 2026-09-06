@@ -124,6 +124,11 @@ export interface BlogPost {
   tags: string[];
 }
 
+export interface VacationHouseTranslation {
+  title?: string;
+  summary?: string;
+}
+
 /** Casa vacacional: ficha pública + redirección externa (reservas fuera del panel). */
 export interface VacationHouse {
   id: string;
@@ -139,6 +144,10 @@ export interface VacationHouse {
   redirectUrl: string;
   active: boolean;
   sortOrder: number;
+  translations?: {
+    en?: VacationHouseTranslation;
+    de?: VacationHouseTranslation;
+  };
 }
 
 /** FAQ editable por página desde Ajustes. */

@@ -4,6 +4,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { getBlogPosts, getPostBySlug } from "@/lib/content";
+import {
+  filterBlogPostsByLocale,
+  getBlogPostLocale,
+  getBlogTopicTags,
+} from "@/lib/blog-locale";
 import { formatDate } from "@/lib/format";
 import {
   localizeBlogPost,
@@ -23,7 +28,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = resolveLocale(raw);
   const dict = await getDictionary(locale);
   const base = await getPostBySlug(slug);
-  if (!base) return { title: dict.blog.eyebrow };
+  if (!base || getBlogPostLocale(base) !== locale) {
+    return { title: dict.blog.eyebrow };
+  }
   const post = await localizeBlogPost(base, locale);
   return { title: post.title, description: post.excerpt };
 }
@@ -34,14 +41,16 @@ export default async function BlogPostPage({ params }: Props) {
   const dict = await getDictionary(locale);
   const base = await getPostBySlug(slug);
   if (!base) notFound();
+  if (getBlogPostLocale(base) !== locale) notFound();
 
   const post = await localizeBlogPost(base, locale);
-  const all = await getBlogPosts().then((posts) =>
-    localizeBlogPosts(posts, locale)
+  const all = await getBlogPosts().then(async (posts) =>
+    localizeBlogPosts(filterBlogPostsByLocale(posts, locale), locale)
   );
   const related = all.filter((p) => p.slug !== post.slug).slice(0, 2);
   const paragraphs = post.content.split("\n\n");
   const lp = (path: string) => localePath(locale, path);
+  const topicTags = getBlogTopicTags(post.tags);
 
   return (
     <article>
@@ -57,7 +66,7 @@ export default async function BlogPostPage({ params }: Props) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/15 to-black/5" />
         <div className="absolute inset-x-0 bottom-0 mx-auto max-w-3xl px-4 pb-10 md:px-6">
           <div className="flex flex-wrap gap-2">
-            {post.tags.map((tag) => (
+            {topicTags.map((tag) => (
               <span
                 key={tag}
                 className="rounded-full bg-white/15 px-2.5 py-1 text-xs font-medium text-white backdrop-blur"

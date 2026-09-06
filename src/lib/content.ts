@@ -20,6 +20,7 @@ import {
   DEFAULT_TRANSFER_FAQS,
 } from "@/lib/page-content-defaults";
 import { readCmsJson, readCmsJsonFresh, writeCmsJson } from "@/lib/supabase/cms-store";
+import { getBlogPostLocale, withBlogLocaleTag } from "@/lib/blog-locale";
 
 async function readJson<T>(file: string): Promise<T> {
   return readCmsJson<T>(file);
@@ -279,11 +280,15 @@ export async function saveBlogPosts(posts: BlogPost[]): Promise<void> {
 
 export async function upsertBlogPost(post: BlogPost): Promise<BlogPost> {
   const posts = await readJsonFresh<BlogPost[]>("blog.json");
-  const idx = posts.findIndex((p) => p.slug === post.slug);
-  if (idx === -1) posts.unshift(post);
-  else posts[idx] = post;
+  const normalized: BlogPost = {
+    ...post,
+    tags: withBlogLocaleTag(post.tags, getBlogPostLocale(post)),
+  };
+  const idx = posts.findIndex((p) => p.slug === normalized.slug);
+  if (idx === -1) posts.unshift(normalized);
+  else posts[idx] = normalized;
   await saveBlogPosts(posts);
-  return post;
+  return normalized;
 }
 
 export async function createBlogPost(
@@ -296,6 +301,7 @@ export async function createBlogPost(
   while (posts.some((p) => p.slug === slug)) {
     slug = `${baseSlug}-${n++}`;
   }
+  const locale = getBlogPostLocale({ tags: input.tags || [] });
   const post: BlogPost = {
     slug,
     title: input.title,
@@ -304,7 +310,7 @@ export async function createBlogPost(
     image: input.image || "/images/blog/cruise.jpg",
     date: input.date || new Date().toISOString().slice(0, 10),
     author: input.author || "Equipo Lanzarote Experience Tours",
-    tags: input.tags || [],
+    tags: withBlogLocaleTag(input.tags || [], locale),
   };
   posts.unshift(post);
   await saveBlogPosts(posts);

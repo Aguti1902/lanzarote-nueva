@@ -17,6 +17,10 @@ type HouseForm = {
   id?: string;
   title: string;
   summary: string;
+  titleEn: string;
+  summaryEn: string;
+  titleDe: string;
+  summaryDe: string;
   location: string;
   guests: string;
   bedrooms: string;
@@ -31,6 +35,10 @@ type HouseForm = {
 const emptyForm = (): HouseForm => ({
   title: "",
   summary: "",
+  titleEn: "",
+  summaryEn: "",
+  titleDe: "",
+  summaryDe: "",
   location: "",
   guests: "",
   bedrooms: "",
@@ -47,6 +55,10 @@ function toForm(house: VacationHouse): HouseForm {
     id: house.id,
     title: house.title,
     summary: house.summary || "",
+    titleEn: house.translations?.en?.title || "",
+    summaryEn: house.translations?.en?.summary || "",
+    titleDe: house.translations?.de?.title || "",
+    summaryDe: house.translations?.de?.summary || "",
     location: house.location || "",
     guests: house.guests != null ? String(house.guests) : "",
     bedrooms: house.bedrooms != null ? String(house.bedrooms) : "",
@@ -159,6 +171,16 @@ export default function AdminCasasPage() {
       redirectUrl: form.redirectUrl.trim(),
       active: form.active,
       sortOrder: form.sortOrder ? Number(form.sortOrder) : undefined,
+      translations: {
+        en: {
+          title: form.titleEn.trim() || undefined,
+          summary: form.summaryEn.trim() || undefined,
+        },
+        de: {
+          title: form.titleDe.trim() || undefined,
+          summary: form.summaryDe.trim() || undefined,
+        },
+      },
     };
     const res = await fetch("/api/houses", {
       method: form.id ? "PUT" : "POST",
@@ -220,7 +242,7 @@ export default function AdminCasasPage() {
           <h2 className="flex items-center gap-2 font-bold md:col-span-2">
             {form.id ? "Editar casa" : "Nueva casa"}
           </h2>
-          <Field label="Título">
+          <Field label="Título (ES)">
             <input
               required
               className={adminInput}
@@ -240,6 +262,54 @@ export default function AdminCasasPage() {
               }
             />
           </Field>
+          <div className="md:col-span-2">
+            <Field label="Resumen (ES)">
+              <textarea
+                rows={4}
+                className={adminTextarea}
+                value={form.summary}
+                onChange={(e) => setForm({ ...form, summary: e.target.value })}
+              />
+            </Field>
+          </div>
+          <Field label="Título (EN)">
+            <input
+              className={adminInput}
+              value={form.titleEn}
+              onChange={(e) => setForm({ ...form, titleEn: e.target.value })}
+            />
+          </Field>
+          <Field label="Título (DE)">
+            <input
+              className={adminInput}
+              value={form.titleDe}
+              onChange={(e) => setForm({ ...form, titleDe: e.target.value })}
+            />
+          </Field>
+          <div className="md:col-span-2">
+            <Field label="Resumen (EN)">
+              <textarea
+                rows={3}
+                className={adminTextarea}
+                value={form.summaryEn}
+                onChange={(e) =>
+                  setForm({ ...form, summaryEn: e.target.value })
+                }
+              />
+            </Field>
+          </div>
+          <div className="md:col-span-2">
+            <Field label="Resumen (DE)">
+              <textarea
+                rows={3}
+                className={adminTextarea}
+                value={form.summaryDe}
+                onChange={(e) =>
+                  setForm({ ...form, summaryDe: e.target.value })
+                }
+              />
+            </Field>
+          </div>
           <Field label="Ubicación">
             <input
               className={adminInput}
@@ -294,16 +364,6 @@ export default function AdminCasasPage() {
               Visible en /casas
             </label>
           </Field>
-          <div className="md:col-span-2">
-            <Field label="Resumen">
-              <textarea
-                rows={4}
-                className={adminTextarea}
-                value={form.summary}
-                onChange={(e) => setForm({ ...form, summary: e.target.value })}
-              />
-            </Field>
-          </div>
 
           <div className="space-y-3 md:col-span-2">
             <div className="flex flex-wrap items-center justify-between gap-2">

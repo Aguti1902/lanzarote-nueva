@@ -5,6 +5,13 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const topic = String(body.topic || body.title || "").trim();
+    const localeRaw = String(body.locale || "es").toLowerCase();
+    const locale =
+      localeRaw === "en" || localeRaw === "de" || localeRaw === "es"
+        ? localeRaw
+        : "es";
+    const languageLabel =
+      locale === "en" ? "inglés" : locale === "de" ? "alemán" : "español";
     if (!topic) {
       return NextResponse.json(
         { error: "Indique un tema o título" },
@@ -33,7 +40,7 @@ export async function POST(request: Request) {
           messages: [
             {
               role: "system",
-              content: `Eres redactor de ${settings.brandName}, empresa de excursiones en Lanzarote. Responde SOLO JSON válido con keys: title, excerpt, content, tags (array de strings). content en párrafos separados por línea en blanco, puedes usar **negrita**. Idioma español. Tours disponibles: ${tourNames}.`,
+              content: `Eres redactor de ${settings.brandName}, empresa de excursiones en Lanzarote. Responde SOLO JSON válido con keys: title, excerpt, content, tags (array de strings temáticos, sin códigos de idioma). content en párrafos separados por línea en blanco, puedes usar **negrita**. Idioma ${languageLabel}. Tours disponibles: ${tourNames}.`,
             },
             {
               role: "user",

@@ -5,6 +5,7 @@ import type {
   SiteSettings,
   Tour,
   TransfersData,
+  VacationHouse,
 } from "@/types";
 import { readCmsJson, readCmsJsonFresh, writeCmsJson } from "@/lib/supabase/cms-store";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
@@ -459,4 +460,26 @@ export async function getSeaDayLabel(locale: Locale): Promise<string> {
   if (locale === "es") return "Navegando";
   const translations = await loadTranslations(locale);
   return translations.cruise.seaDayLabel;
+}
+
+export function localizeHouse(
+  house: VacationHouse,
+  locale: Locale
+): VacationHouse {
+  if (locale === "es") return house;
+  const t = house.translations?.[locale as "en" | "de"];
+  if (!t) return house;
+  return {
+    ...house,
+    title: t.title?.trim() || house.title,
+    summary: t.summary?.trim() || house.summary,
+  };
+}
+
+export function localizeHouses(
+  houses: VacationHouse[],
+  locale: Locale
+): VacationHouse[] {
+  if (locale === "es") return houses;
+  return houses.map((house) => localizeHouse(house, locale));
 }

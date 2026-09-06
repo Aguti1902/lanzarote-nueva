@@ -18,7 +18,17 @@
     ],
     "redirectUrl": "https://angela-maria-tejera-bonilla.vacation-bookings.com/?apartmentId=57418864",
     "active": true,
-    "sortOrder": 1
+    "sortOrder": 1,
+    "translations": {
+      "en": {
+        "title": "Holiday Apartment 'Playa Honda Holiday Home'",
+        "summary": "Cozy 60 m² apartment in Playa Honda for 2 guests, with 1 bedroom, private balcony, shared garden and Wi-Fi. A 2-minute walk from Guacimeta beach and about 1 km from the airport."
+      },
+      "de": {
+        "title": "Ferienwohnung 'Playa Honda Holiday Home'",
+        "summary": "Gemütliche 60-m²-Wohnung in Playa Honda für 2 Gäste, mit 1 Schlafzimmer, privatem Balkon, Gemeinschaftsgarten und WLAN. Nur 2 Gehminuten vom Strand Guacimeta und ca. 1 km vom Flughafen entfernt."
+      }
+    }
   },
   {
     "id": "casa-cordel",
@@ -39,6 +49,16 @@
     ],
     "redirectUrl": "https://angela-maria-tejera-bonilla.vacation-bookings.com/?apartmentId=53106819",
     "active": true,
-    "sortOrder": 2
+    "sortOrder": 2,
+    "translations": {
+      "en": {
+        "title": "Holiday Home \"Casa Cordel\"",
+        "summary": "Two-storey house in Playa Honda (90 m²) with a private covered terrace and Wi-Fi. 4 bedrooms, 2 bathrooms and space for 7 guests. An ideal, comfortable base for exploring Lanzarote."
+      },
+      "de": {
+        "title": "Ferienhaus \"Casa Cordel\"",
+        "summary": "Zweigeschossiges Haus in Playa Honda (90 m²) mit privater überdachter Terrasse und WLAN. 4 Schlafzimmer, 2 Bäder und Platz für 7 Personen. Ideale, komfortable Basis zum Erkunden von Lanzarote."
+      }
+    }
   }
 ]
