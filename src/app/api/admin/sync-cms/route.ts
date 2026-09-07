@@ -3,37 +3,12 @@ import { promises as fs } from "fs";
 import path from "path";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import { writeCmsJson } from "@/lib/supabase/cms-store";
+import { PROTECTED_LIVE_CMS_SET } from "@/lib/cms-files";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 120;
 
 const dataDir = path.join(process.cwd(), "src/data");
-
-/**
- * Ficheros que el panel edita en vivo. Un sync masivo deploy → Storage
- * los sobrescribiría con datos antiguos del bundle.
- *
- * NUNCA se suben desde este endpoint (ni con force). El panel / APIs de
- * admin son la única vía de escritura para estos ficheros.
- */
-const PROTECTED_LIVE_CMS = new Set([
-  "bookings.json",
-  "invoices.json",
-  "messages.json",
-  "tours.json",
-  "settings.json",
-  "transfers.json",
-  "blog.json",
-  "houses.json",
-  "cruises.json",
-  "cruiseItineraries.json",
-  "cruiseCompanies.json",
-  "cruisePortIndex.json",
-  "adminExtras.json",
-  "uiTranslations.json",
-  "i18n/en.json",
-  "i18n/de.json",
-]);
 
 async function listCmsJsonFiles(): Promise<string[]> {
   const out: string[] = [];
@@ -76,7 +51,7 @@ export async function GET() {
       file,
       bytes: raw.length,
       count,
-      protected: PROTECTED_LIVE_CMS.has(file),
+      protected: PROTECTED_LIVE_CMS_SET.has(file),
     });
   }
   return NextResponse.json({
@@ -103,7 +78,7 @@ export async function POST(request: Request) {
     const uploaded: { file: string; bytes: number }[] = [];
     const skipped: string[] = [];
     for (const file of files) {
-      if (PROTECTED_LIVE_CMS.has(file)) {
+      if (PROTECTED_LIVE_CMS_SET.has(file)) {
         skipped.push(file);
         continue;
       }

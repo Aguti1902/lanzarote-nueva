@@ -131,9 +131,25 @@ export function ShoreToursPanel() {
   const [blockSeats, setBlockSeats] = useState(14);
 
   async function load() {
-    const res = await fetch("/api/admin/cruise-catalog?kind=shore-tours");
-    const data = await res.json();
-    setItems(data.items || []);
+    try {
+      const res = await fetch("/api/admin/cruise-catalog?kind=shore-tours");
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setMessage(
+          data.error || "No se pudo cargar el catálogo. No se está mostrando el seed del código."
+        );
+        setItems([]);
+        return;
+      }
+      setItems(data.items || []);
+    } catch (err) {
+      setMessage(
+        err instanceof Error
+          ? `No se pudo cargar: ${err.message}`
+          : "No se pudo cargar el catálogo shore"
+      );
+      setItems([]);
+    }
   }
 
   useEffect(() => {
@@ -302,50 +318,59 @@ export function ShoreToursPanel() {
       }),
       id: savedId,
     };
-    const res = await fetch("/api/admin/cruise-catalog", {
-      method: isNew ? "POST" : "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      setMessage(data.error || "No se pudo guardar");
+    try {
+      const res = await fetch("/api/admin/cruise-catalog", {
+        method: isNew ? "POST" : "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setMessage(data.error || "No se pudo guardar. Revisa la conexión y vuelve a pulsar Actualizar datos.");
+        return false;
+      }
+      const saved = (data.item || payload) as CruiseShoreTour;
+      setCreating(false);
+      setItems((prev) => {
+        const idx = prev.findIndex((t) => t.id === saved.id);
+        if (idx < 0) return [...prev, saved];
+        const next = [...prev];
+        next[idx] = saved;
+        return next;
+      });
+      setSelectedId(saved.id);
+      setDraft({
+        ...saved,
+        image: saved.image || "",
+        gallery: saved.gallery?.length
+          ? [...saved.gallery]
+          : saved.image
+            ? [saved.image]
+            : [],
+        meetingPointImages: [...(saved.meetingPointImages || [])],
+        schedule: normalizeSchedule(saved.schedule),
+        blockedDates: saved.blockedDates || [],
+        seo: {
+          title: "",
+          description: "",
+          keywords: "",
+          ...(saved.seo || {}),
+        },
+        translations: {
+          en: { ...emptyTranslation(), ...(saved.translations?.en || {}) },
+          de: { ...emptyTranslation(), ...(saved.translations?.de || {}) },
+        },
+      });
+      setMessage("Excursión guardada");
+      return true;
+    } catch (err) {
+      setMessage(
+        err instanceof Error
+          ? `No se pudo guardar: ${err.message}`
+          : "No se pudo guardar. El servidor no respondió."
+      );
       return false;
     }
-    const saved = (data.item || payload) as CruiseShoreTour;
-    setCreating(false);
-    setItems((prev) => {
-      const idx = prev.findIndex((t) => t.id === saved.id);
-      if (idx < 0) return [...prev, saved];
-      const next = [...prev];
-      next[idx] = saved;
-      return next;
-    });
-    setSelectedId(saved.id);
-    setDraft({
-      ...saved,
-      image: saved.image || "",
-      gallery: saved.gallery?.length
-        ? [...saved.gallery]
-        : saved.image
-          ? [saved.image]
-          : [],
-      meetingPointImages: [...(saved.meetingPointImages || [])],
-      schedule: normalizeSchedule(saved.schedule),
-      blockedDates: saved.blockedDates || [],
-      seo: {
-        title: "",
-        description: "",
-        keywords: "",
-        ...(saved.seo || {}),
-      },
-      translations: {
-        en: { ...emptyTranslation(), ...(saved.translations?.en || {}) },
-        de: { ...emptyTranslation(), ...(saved.translations?.de || {}) },
-      },
-    });
-    setMessage("Excursión guardada");
-    return true;
   }
 
   async function remove(id: string) {

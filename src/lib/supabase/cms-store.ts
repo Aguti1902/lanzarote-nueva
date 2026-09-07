@@ -6,6 +6,7 @@ import {
   isSupabaseConfigured,
   warnSupabaseFallback,
 } from "@/lib/supabase/client";
+import { isProtectedLiveCmsFile } from "@/lib/cms-files";
 
 const dataDir = path.join(process.cwd(), "src/data");
 const CMS_BUCKET = "cms";
@@ -68,32 +69,66 @@ export function cmsCacheTag(file: string): string {
   return `cms:${file}`;
 }
 
-async function readCmsJsonUncached<T>(file: string): Promise<T> {
+function isMissingStorageObject(status: number, message: string): boolean {
+  if (status === 404) return true;
+  return /not found|object not found|no such file/i.test(message);
+}
+
+async function fetchStorageJson<T>(
+  file: string,
+  options?: { allowMissing?: boolean }
+): Promise<T | null> {
+  const sb = getSupabaseAdmin();
+  const { data: signed, error: signError } = await sb.storage
+    .from(CMS_BUCKET)
+    .createSignedUrl(file, 120, { download: true });
+  if (signError || !signed?.signedUrl) {
+    const message = signError?.message || "No hay URL firmada";
+    if (options?.allowMissing && isMissingStorageObject(0, message)) {
+      return null;
+    }
+    throw signError || new Error(`No hay URL firmada para ${file}`);
+  }
+  const url = new URL(signed.signedUrl);
+  url.searchParams.set("cb", String(Date.now()));
+  const res = await fetch(url.toString(), {
+    cache: "no-store",
+    headers: {
+      "Cache-Control": "no-cache",
+      Pragma: "no-cache",
+    },
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    if (options?.allowMissing && isMissingStorageObject(res.status, body)) {
+      return null;
+    }
+    throw new Error(`HTTP ${res.status} al leer ${file}`);
+  }
+  return JSON.parse(await res.text()) as T;
+}
+
+async function readCmsJsonUncached<T>(
+  file: string,
+  options?: { allowLocalFallback?: boolean }
+): Promise<T> {
+  const allowLocalFallback = options?.allowLocalFallback !== false;
   if (!isSupabaseConfigured()) {
     return readLocalJson<T>(file);
   }
 
   try {
-    const sb = getSupabaseAdmin();
-    // Evitar listBuckets en el hot path: firmar URL directamente.
-    const { data: signed, error: signError } = await sb.storage
-      .from(CMS_BUCKET)
-      .createSignedUrl(file, 120);
-    if (signError || !signed?.signedUrl) {
-      warnSupabaseFallback(`cms-read:${file}`, signError);
-      return readLocalJson<T>(file);
+    const data = await fetchStorageJson<T>(file);
+    if (data == null) {
+      throw new Error(`${file} vacío en Storage`);
     }
-    const res = await fetch(signed.signedUrl, { cache: "no-store" });
-    if (!res.ok) {
-      warnSupabaseFallback(
-        `cms-read:${file}`,
-        `HTTP ${res.status} ${res.statusText}`
-      );
-      return readLocalJson<T>(file);
-    }
-    const text = await res.text();
-    return JSON.parse(text) as T;
+    return data;
   } catch (error) {
+    if (!allowLocalFallback || isProtectedLiveCmsFile(file)) {
+      throw error instanceof Error
+        ? error
+        : new Error(`No se pudo leer ${file} en Storage`);
+    }
     warnSupabaseFallback(`cms-read:${file}`, error as Error);
     return readLocalJson<T>(file);
   }
@@ -139,9 +174,23 @@ export async function readCmsJson<T>(file: string): Promise<T> {
   return getCachedReader(file)() as Promise<T>;
 }
 
-/** Lectura sin caché (panel admin / mutaciones). Prefiere Storage si hay Supabase. */
+/** Lectura opcional: null solo si el fichero no existe. Otros errores se lanzan. */
+export async function readCmsJsonIfExists<T>(file: string): Promise<T | null> {
+  if (!isSupabaseConfigured()) {
+    try {
+      return await readLocalJson<T>(file);
+    } catch (error) {
+      const code = (error as NodeJS.ErrnoException).code;
+      if (code === "ENOENT") return null;
+      throw error;
+    }
+  }
+  return fetchStorageJson<T>(file, { allowMissing: true });
+}
+
+/** Lectura sin caché (panel admin / mutaciones). Prefiere Storage si está configurado. */
 export async function readCmsJsonFresh<T>(file: string): Promise<T> {
-  return readCmsJsonUncached<T>(file);
+  return readCmsJsonUncached<T>(file, { allowLocalFallback: false });
 }
 
 function invalidateCmsCache(file: string) {
@@ -176,21 +225,22 @@ export async function writeCmsJson(file: string, data: unknown): Promise<void> {
 
     // Backup del contenido actual (si existe) para poder recuperar ediciones del panel.
     try {
-      const { data: existing, error: dlErr } = await sb.storage
-        .from(CMS_BUCKET)
-        .download(file);
-      if (!dlErr && existing) {
-        const stamp = new Date().toISOString().replace(/[:.]/g, "-");
-        const bakPath = `backups/${file.replace(/\//g, "__")}.${stamp}.json`;
-        const bakBuf = Buffer.from(await existing.arrayBuffer());
-        const { error: bakErr } = await sb.storage.from(CMS_BUCKET).upload(bakPath, bakBuf, {
-          upsert: false,
-          contentType: "application/json",
-          cacheControl: "0",
-        });
-        if (bakErr) {
-          console.warn(`[cms] backup puntual falló (${file}): ${bakErr.message}`);
-        }
+      const existing = await fetchStorageJson<unknown>(file, {
+        allowMissing: true,
+      });
+      if (existing == null) {
+        throw new Error("missing");
+      }
+      const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+      const bakPath = `backups/${file.replace(/\//g, "__")}.${stamp}.json`;
+      const bakBuf = Buffer.from(JSON.stringify(existing, null, 2) + "\n", "utf-8");
+      const { error: bakErr } = await sb.storage.from(CMS_BUCKET).upload(bakPath, bakBuf, {
+        upsert: false,
+        contentType: "application/json",
+        cacheControl: "0",
+      });
+      if (bakErr) {
+        console.warn(`[cms] backup puntual falló (${file}): ${bakErr.message}`);
       }
     } catch (bakCatch) {
       console.warn(

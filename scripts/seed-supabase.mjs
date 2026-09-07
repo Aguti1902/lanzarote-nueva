@@ -17,6 +17,28 @@ if (process.env.ALLOW_CMS_SEED !== "1") {
   process.exit(1);
 }
 
+/** Misma lista que src/lib/cms-files.ts: no pisar datos vivos del panel. */
+const PROTECTED_LIVE_CMS = new Set([
+  "bookings.json",
+  "invoices.json",
+  "messages.json",
+  "tours.json",
+  "settings.json",
+  "transfers.json",
+  "blog.json",
+  "houses.json",
+  "cruises.json",
+  "cruiseItineraries.json",
+  "cruiseCompanies.json",
+  "cruisePortIndex.json",
+  "shoreTours.json",
+  "adminExtras.json",
+  "uiTranslations.json",
+  "i18n/en.json",
+  "i18n/de.json",
+]);
+const overwriteProtected = process.env.ALLOW_CMS_SEED_PROTECTED === "1";
+
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
@@ -81,6 +103,10 @@ async function uploadAllCmsJson() {
   const files = await readdir(dataDir);
   for (const name of files) {
     if (name.endsWith(".json")) {
+      if (!overwriteProtected && PROTECTED_LIVE_CMS.has(name)) {
+        console.log(`cms/${name} omitido (protegido; ALLOW_CMS_SEED_PROTECTED=1 para forzar)`);
+        continue;
+      }
       await uploadCmsFile(name);
     }
   }
@@ -90,7 +116,12 @@ async function uploadAllCmsJson() {
     const locales = await readdir(i18nDir);
     for (const name of locales) {
       if (name.endsWith(".json")) {
-        await uploadCmsFile(path.join("i18n", name));
+        const relative = path.join("i18n", name);
+        if (!overwriteProtected && PROTECTED_LIVE_CMS.has(relative.replaceAll("\\", "/"))) {
+          console.log(`cms/${relative} omitido (protegido; ALLOW_CMS_SEED_PROTECTED=1 para forzar)`);
+          continue;
+        }
+        await uploadCmsFile(relative);
       }
     }
   } catch {

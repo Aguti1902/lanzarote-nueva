@@ -16,6 +16,7 @@ export const CMS_BACKUP_FILES = [
   "cruiseItineraries.json",
   "cruiseCompanies.json",
   "cruisePortIndex.json",
+  "shoreTours.json",
   "adminExtras.json",
   "uiTranslations.json",
   "reviews.json",

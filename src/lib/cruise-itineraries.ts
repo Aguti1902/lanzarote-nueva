@@ -5,7 +5,7 @@ import type {
   CruiseSailing,
   CruiseShoreTour,
 } from "@/types";
-import { readCmsJson, readCmsJsonFresh, writeCmsJson } from "@/lib/supabase/cms-store";
+import { readCmsJson, readCmsJsonFresh, readCmsJsonIfExists, writeCmsJson } from "@/lib/supabase/cms-store";
 import { applyShoreTourPaymentPolicy } from "@/lib/shore-tour-display";
 
 const emptyData: CruiseItinerariesData = {
@@ -14,6 +14,14 @@ const emptyData: CruiseItinerariesData = {
   companies: [],
   shoreTours: [],
   sailings: [],
+};
+
+const SHORE_TOURS_FILE = "shoreTours.json";
+
+type ShoreToursFile = {
+  updatedAt: string;
+  savedAt?: string;
+  shoreTours: CruiseShoreTour[];
 };
 
 function withShorePaymentPolicy(
@@ -27,13 +35,40 @@ function withShorePaymentPolicy(
   };
 }
 
+async function readCanonicalShoreTours(): Promise<CruiseShoreTour[] | null> {
+  const file = await readCmsJsonIfExists<ShoreToursFile>(SHORE_TOURS_FILE);
+  if (!file) return null;
+  if (!Array.isArray(file.shoreTours)) {
+    throw new Error("shoreTours.json inválido: falta el array shoreTours");
+  }
+  return file.shoreTours;
+}
+
+async function attachCanonicalShore(
+  data: CruiseItinerariesData
+): Promise<CruiseItinerariesData> {
+  try {
+    const dedicated = await readCanonicalShoreTours();
+    if (dedicated !== null) {
+      return withShorePaymentPolicy({ ...data, shoreTours: dedicated });
+    }
+  } catch (error) {
+    console.warn(
+      "[cms] no se pudo leer shoreTours.json; se usa el array embebido",
+      error instanceof Error ? error.message : error
+    );
+  }
+  return withShorePaymentPolicy(data);
+}
+
 /** Una lectura por request; la frescura entre requests la marca `readCmsJson`. */
 export const getCruiseItinerariesData = cache(
   async (): Promise<CruiseItinerariesData> => {
     try {
-      return withShorePaymentPolicy(
-        await readCmsJson<CruiseItinerariesData>("cruiseItineraries.json")
+      const data = await readCmsJson<CruiseItinerariesData>(
+        "cruiseItineraries.json"
       );
+      return await attachCanonicalShore(data);
     } catch {
       return emptyData;
     }
@@ -42,26 +77,46 @@ export const getCruiseItinerariesData = cache(
 
 /** Lectura fresca (admin / API de escritura): siempre Storage si está configurado. */
 export async function getCruiseItinerariesDataFresh(): Promise<CruiseItinerariesData> {
-  try {
-    return withShorePaymentPolicy(
-      await readCmsJsonFresh<CruiseItinerariesData>("cruiseItineraries.json")
-    );
-  } catch {
-    return emptyData;
+  const data = await readCmsJsonFresh<CruiseItinerariesData>(
+    "cruiseItineraries.json"
+  );
+  const dedicated = await readCanonicalShoreTours();
+  if (dedicated !== null) {
+    return withShorePaymentPolicy({ ...data, shoreTours: dedicated });
   }
+  // Solo migrar si el fichero canónico aún no existe. Si existe y falla la
+  // lectura, readCanonicalShoreTours lanza: nunca se pisa con el JSON embebido.
+  if ((data.shoreTours || []).length) {
+    await saveShoreToursData(data.shoreTours);
+  }
+  return withShorePaymentPolicy(data);
 }
 
 export function clearCruiseItinerariesCache() {
   // Compat: la invalidación real va por revalidateTag en writeCmsJson.
 }
 
+export async function saveShoreToursData(
+  tours: CruiseShoreTour[]
+): Promise<void> {
+  const now = new Date();
+  const payload: ShoreToursFile = {
+    updatedAt: now.toISOString().slice(0, 10),
+    savedAt: now.toISOString(),
+    shoreTours: tours.map((tour) => applyShoreTourPaymentPolicy(tour)),
+  };
+  await writeCmsJson(SHORE_TOURS_FILE, payload);
+  clearCruiseItinerariesCache();
+}
+
 export async function saveCruiseItinerariesData(
   data: CruiseItinerariesData
 ): Promise<void> {
   data.updatedAt = new Date().toISOString().slice(0, 10);
-  data.shoreTours = (data.shoreTours || []).map((tour) =>
-    applyShoreTourPaymentPolicy(tour)
-  );
+  const dedicated = await readCanonicalShoreTours();
+  data.shoreTours = (
+    dedicated !== null ? dedicated : data.shoreTours || []
+  ).map((tour) => applyShoreTourPaymentPolicy(tour));
   await writeCmsJson("cruiseItineraries.json", data);
   await writeCruiseSlimIndexes(data);
   clearCruiseItinerariesCache();

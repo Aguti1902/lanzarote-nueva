@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import {
   getCruiseItinerariesDataFresh,
   saveCruiseItinerariesData,
+  saveShoreToursData,
 } from "@/lib/cruise-itineraries";
 import type {
   CruiseCompany,
@@ -14,9 +15,14 @@ import type {
 import { syncShoreTourStructuredFields, applyShoreTourPaymentPolicy } from "@/lib/shore-tour-display";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 async function save(data: CruiseItinerariesData) {
   await saveCruiseItinerariesData(data);
+}
+
+async function saveShore(data: CruiseItinerariesData) {
+  await saveShoreToursData(data.shoreTours || []);
 }
 
 function slugify(value: string): string {
@@ -86,47 +92,58 @@ function buildStopsFromDates(
 }
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const kind = searchParams.get("kind") || "companies";
-  const companySlug = searchParams.get("company");
-  const shipSlug = searchParams.get("ship");
-  const sailingId = searchParams.get("sailing");
+  try {
+    const { searchParams } = new URL(request.url);
+    const kind = searchParams.get("kind") || "companies";
+    const companySlug = searchParams.get("company");
+    const shipSlug = searchParams.get("ship");
+    const sailingId = searchParams.get("sailing");
 
-  if (kind === "shore-tours") {
-    const data = await getCruiseItinerariesDataFresh();
-    return NextResponse.json({ items: data.shoreTours || [] });
-  }
+    if (kind === "shore-tours") {
+      const data = await getCruiseItinerariesDataFresh();
+      return NextResponse.json({ items: data.shoreTours || [] });
+    }
 
-  if (kind === "sailings") {
+    if (kind === "sailings") {
+      const data = await getCruiseItinerariesDataFresh();
+      let items = data.sailings;
+      if (companySlug) {
+        items = items.filter((s) => s.companySlug === companySlug);
+      }
+      if (shipSlug) {
+        items = items.filter((s) => s.shipSlug === shipSlug);
+      }
+      if (sailingId) {
+        items = items.filter((s) => s.id === sailingId);
+      }
+      items = [...items].sort((a, b) =>
+        a.departureDate.localeCompare(b.departureDate)
+      );
+      return NextResponse.json({ items });
+    }
+
+    if (kind === "company" && companySlug) {
+      const data = await getCruiseItinerariesDataFresh();
+      const company = (data.companies || []).find((c) => c.slug === companySlug);
+      if (!company) {
+        return NextResponse.json({ error: "No encontrada" }, { status: 404 });
+      }
+      const sailings = data.sailings.filter((s) => s.companySlug === companySlug);
+      return NextResponse.json({ item: company, sailings });
+    }
+
     const data = await getCruiseItinerariesDataFresh();
-    let items = data.sailings;
-    if (companySlug) {
-      items = items.filter((s) => s.companySlug === companySlug);
-    }
-    if (shipSlug) {
-      items = items.filter((s) => s.shipSlug === shipSlug);
-    }
-    if (sailingId) {
-      items = items.filter((s) => s.id === sailingId);
-    }
-    items = [...items].sort((a, b) =>
-      a.departureDate.localeCompare(b.departureDate)
+    return NextResponse.json({ items: data.companies || [] });
+  } catch (e) {
+    console.error("[cruise-catalog] get", e);
+    return NextResponse.json(
+      {
+        error:
+          e instanceof Error ? e.message : "No se pudo cargar el catálogo",
+      },
+      { status: 500 }
     );
-    return NextResponse.json({ items });
   }
-
-  if (kind === "company" && companySlug) {
-    const data = await getCruiseItinerariesDataFresh();
-    const company = (data.companies || []).find((c) => c.slug === companySlug);
-    if (!company) {
-      return NextResponse.json({ error: "No encontrada" }, { status: 404 });
-    }
-    const sailings = data.sailings.filter((s) => s.companySlug === companySlug);
-    return NextResponse.json({ item: company, sailings });
-  }
-
-  const data = await getCruiseItinerariesDataFresh();
-  return NextResponse.json({ items: data.companies || [] });
 }
 
 export async function POST(request: Request) {
@@ -296,13 +313,20 @@ export async function POST(request: Request) {
           syncShoreTourStructuredFields(tour) as CruiseShoreTour
         )
       );
-      await save(data);
+      await saveShore(data);
       return NextResponse.json({ item: tour }, { status: 201 });
     }
 
     return NextResponse.json({ error: "Tipo inválido" }, { status: 400 });
-  } catch {
-    return NextResponse.json({ error: "No se pudo crear" }, { status: 500 });
+  } catch (e) {
+    console.error("[cruise-catalog] create", e);
+    return NextResponse.json(
+      {
+        error:
+          e instanceof Error ? e.message : "No se pudo crear",
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -452,7 +476,7 @@ export async function PUT(request: Request) {
           meetingPointImages,
         }) as CruiseShoreTour
       );
-      await save(data);
+      await saveShore(data);
       return NextResponse.json({ item: data.shoreTours[idx] });
     }
 
@@ -476,8 +500,15 @@ export async function PUT(request: Request) {
     }
 
     return NextResponse.json({ error: "Tipo inválido" }, { status: 400 });
-  } catch {
-    return NextResponse.json({ error: "No se pudo guardar" }, { status: 500 });
+  } catch (e) {
+    console.error("[cruise-catalog] save", e);
+    return NextResponse.json(
+      {
+        error:
+          e instanceof Error ? e.message : "No se pudo guardar",
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -544,12 +575,19 @@ export async function DELETE(request: Request) {
         return NextResponse.json({ error: "No encontrado" }, { status: 404 });
       }
       data.shoreTours = next;
-      await save(data);
+      await saveShore(data);
       return NextResponse.json({ ok: true });
     }
 
     return NextResponse.json({ error: "Tipo inválido" }, { status: 400 });
-  } catch {
-    return NextResponse.json({ error: "No se pudo eliminar" }, { status: 500 });
+  } catch (e) {
+    console.error("[cruise-catalog] delete", e);
+    return NextResponse.json(
+      {
+        error:
+          e instanceof Error ? e.message : "No se pudo eliminar",
+      },
+      { status: 500 }
+    );
   }
 }
