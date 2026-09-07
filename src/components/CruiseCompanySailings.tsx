@@ -149,7 +149,7 @@ export function CruiseCompanySailings({
         </p>
       ) : (
         <section className="space-y-5">
-          <div className="sticky top-16 z-20 space-y-3 rounded-2xl border border-sand-line bg-white/95 p-4 shadow-sm backdrop-blur md:top-20">
+          <div className="space-y-3 rounded-2xl border border-sand-line bg-white p-4 shadow-sm">
             <div>
               <p className="mb-2 text-xs font-bold tracking-wide text-ink-muted uppercase">
                 {dict.cruises.shipPlural}
