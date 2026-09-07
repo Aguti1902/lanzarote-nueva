@@ -49,7 +49,14 @@ export function getAdminSessionSecret(): string {
 }
 
 export function getAdminPassword(): string {
-  return process.env.ADMIN_PASSWORD?.trim() || "";
+  const raw = process.env.ADMIN_PASSWORD?.trim() || "";
+  if (
+    (raw.startsWith('"') && raw.endsWith('"')) ||
+    (raw.startsWith("'") && raw.endsWith("'"))
+  ) {
+    return raw.slice(1, -1);
+  }
+  return raw;
 }
 
 async function hmacSign(secret: string, message: string): Promise<string> {
