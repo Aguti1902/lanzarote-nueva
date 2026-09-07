@@ -33,6 +33,8 @@ export interface TourTranslation {
   notIncluded?: string[];
   recommendations?: string[];
   seo?: TourSeo;
+  /** Slug público de la ficha en este idioma. */
+  slug?: string;
 }
 
 export type TourScheduleSlot = "morning" | "afternoon" | "evening";

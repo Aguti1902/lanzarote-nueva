@@ -1,7 +1,7 @@
 [
   {
     "id": "timanfaya-experience",
-    "slug": "tour-parque-nacional-de-timanfaya-montanas-del-fuego",
+    "slug": "excursion-timanfaya-sur-lanzarote-tour",
     "title": "Excursión a Timanfaya y las Montañas del Fuego Experience",
     "shortTitle": "Timanfaya y Montañas del Fuego",
     "category": "excursion",
@@ -138,7 +138,8 @@
           "The Fire Mountains can be very windy, therefore a jumper is recommended",
           "It is important to know that the tour takes aprox 5 hours, occasionally we can reach up to 20 people and go in two languages."
         ],
-        "shortTitle": "Lanzarote Volcano Tour and Timanfaya National…"
+        "shortTitle": "Lanzarote Volcano Tour and Timanfaya National…",
+        "slug": "timanfaya-national-park-south-lanzarote-tour"
       },
       "de": {
         "title": "Timanfaya und die Feuerberge Experience",
@@ -161,7 +162,8 @@
           "Eine Jacke",
           "Es ist wichtig zu wissen, dass wir gelegentlich bis zu 20 Personen erreichen und in zwei Sprachen gehen können."
         ],
-        "shortTitle": "Timanfaya und die Feuerberge Experience"
+        "shortTitle": "Timanfaya und die Feuerberge Experience",
+        "slug": "timanfaya-nationalpark-sued-lanzarote-ausflug"
       }
     },
     "legacyTourId": 1
@@ -371,7 +373,7 @@
   },
   {
     "id": "grand-tour-experience",
-    "slug": "excursion-gran-tour-lanzarote-jameos-del-agua-cueva-verdes-jardin-de-cactus-timanfaya",
+    "slug": "excursion-completa-lanzarote",
     "title": "Grand Tour Experience: la huella del paisaje",
     "shortTitle": "Grand Tour Experience",
     "category": "excursion",
@@ -506,7 +508,8 @@
           "Do not forget to bring your camera",
           "Lanzarote is a windy island and it can be chilly, so a jacket is recommended even in summer. Occasionally we join the clients of the south and grand tours in the same bus. In this case, clients who book the Grand Tour will have two more stops on their itinerary: photo stop at Los Hervideros cliffs and stop at the Camel Park in case there is someone interested in doing the Camel Ride. It is important to know that occasionally we can reach up to 20 people and go in two languages."
         ],
-        "shortTitle": "Grand Tour Experience: The footprint of the l…"
+        "shortTitle": "Grand Tour Experience: The footprint of the l…",
+        "slug": "lanzarote-grand-tour"
       },
       "de": {
         "title": "Inselrundfahrt Experience: Der Fußabdruck der Landschaft",
@@ -528,14 +531,15 @@
           "Eine Jacke.",
           "Gelegentlich fahren wir mit den Kunden der Südtour und der Grand Tour im selben Bus. In diesem Fall haben Kunden, die die Grand Tour gebucht haben, zwei weitere Haltestellen auf ihrem Reiseplan: einen Fotostopp an den Klippen von Los Hervideros und einen Halt an der Kamelstation, falls jemand Interesse an einem Kamelritt hat. Es ist wichtig zu wissen, dass wir gelegentlich bis zu 20 Personen erreichen und in zwei Sprachen gehen können."
         ],
-        "shortTitle": "Inselrundfahrt Experience: Der Fußabdruck der…"
+        "shortTitle": "Inselrundfahrt Experience: Der Fußabdruck der…",
+        "slug": "lanzarote-inselrundfahrt-grand-tour"
       }
     },
     "legacyTourId": 2
   },
   {
     "id": "cesar-manrique",
-    "slug": "tour-cesar-manrique",
+    "slug": "excursion-cesar-manrique-lanzarote",
     "title": "Excursión César Manrique Experience: El talento de un hombre y el amor por su tierra",
     "shortTitle": "César Manrique Experience",
     "category": "excursion",
@@ -672,7 +676,8 @@
           "Lanzarote is a windy island, therefore we do recommend to bring a jacket",
           "This excursion goes in 3 languages (English, Spanish and German)"
         ],
-        "shortTitle": "César Manrique Experience: The talent of a ma…"
+        "shortTitle": "César Manrique Experience: The talent of a ma…",
+        "slug": "cesar-manrique-lanzarote-tour"
       },
       "de": {
         "title": "César Manrique Experience",
@@ -698,14 +703,15 @@
           "Eine Jacke",
           "Diese Exkursion findet in 3 Sprachen statt (Englisch, Spanisch und Deutsch)"
         ],
-        "shortTitle": "César Manrique Experience"
+        "shortTitle": "César Manrique Experience",
+        "slug": "cesar-manrique-lanzarote-tour"
       }
     },
     "legacyTourId": 3
   },
   {
     "id": "tour-privado",
-    "slug": "excursion-privada-lanzarote-tours-privados-senderismo-excursiones-para-cruceros",
+    "slug": "excursion-privada-lanzarote",
     "title": "Excursión privada en Lanzarote: minibús + guía oficial",
     "shortTitle": "Excursión privada",
     "category": "private",
@@ -860,7 +866,8 @@
           "Timanfaya (optional)",
           "César Manrique sites (optional)",
           "North or south of the island (optional)"
-        ]
+        ],
+        "slug": "private-tour-lanzarote"
       },
       "de": {
         "title": "Private Tour auf Lanzarote: Minibus + offizieller Guide",
@@ -883,7 +890,8 @@
           "Eigener Minibus (auch für Timanfaya autorisiert)",
           "Abholung an Ihrer Unterkunft",
           "Ticket-Organisation gegen Warteschlangen"
-        ]
+        ],
+        "slug": "individueller-ausflug-lanzarote-private-tour"
       }
     },
     "legacyTourId": 15
@@ -5278,7 +5286,8 @@
         "recommendations": [
           "Comfortable shoes"
         ],
-        "shortTitle": "Teguise Market"
+        "shortTitle": "Teguise Market",
+        "slug": "teguise-market-lanzarote"
       },
       "de": {
         "title": "Teguise Markt",
@@ -5289,7 +5298,8 @@
         ],
         "notIncluded": [],
         "recommendations": [],
-        "shortTitle": "Teguise Markt"
+        "shortTitle": "Teguise Markt",
+        "slug": "teguise-markt-lanzarote"
       }
     },
     "legacyTourId": 28
@@ -5831,7 +5841,7 @@
   },
   {
     "id": "visitar-el-parque-nacional-de-timanfaya-sin-hacer-colas-de-coches",
-    "slug": "visitar-el-parque-nacional-de-timanfaya-sin-hacer-colas-de-coches",
+    "slug": "timanfaya-express",
     "title": "Parque nacional de Timanfaya + Ruta de los Volcanes",
     "shortTitle": "Parque nacional de Timanfaya + Ruta de los Volca",
     "category": "excursion",
@@ -5936,7 +5946,8 @@
         "description": "",
         "included": [],
         "notIncluded": [],
-        "recommendations": []
+        "recommendations": [],
+        "slug": "timanfaya-express"
       },
       "de": {
         "title": "",
@@ -5944,7 +5955,8 @@
         "description": "",
         "included": [],
         "notIncluded": [],
-        "recommendations": []
+        "recommendations": [],
+        "slug": "timanfaya-express"
       }
     },
     "legacyTourId": 35

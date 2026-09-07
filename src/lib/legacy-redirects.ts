@@ -1,3 +1,5 @@
+import { buildTourSlugRedirects } from "../i18n/tour-slugs";
+
 /**
  * Redirecciones permanentes desde URLs de la web antigua
  * (lanzaroteexperiencetours.com) hacia las rutas de la nueva.
@@ -63,35 +65,15 @@ export const LEGACY_PATH_REDIRECTS: Record<string, string> = {
   "/de/cart": "/de/warenkorb",
   "/de/manage-booking": "/de/buchung-verwalten",
 
-  // —— Slugs cortos / alias de excursiones (ES) ——
-  "/excursiones/excursion-gran-tour-lanzarote":
-    "/es/excursiones/excursion-gran-tour-lanzarote-jameos-del-agua-cueva-verdes-jardin-de-cactus-timanfaya",
-  "/es/excursiones/excursion-gran-tour-lanzarote":
-    "/es/excursiones/excursion-gran-tour-lanzarote-jameos-del-agua-cueva-verdes-jardin-de-cactus-timanfaya",
-
-  // —— Excursiones EN → slug canónico (sección en inglés) ——
-  "/en/excursions/timanfaya-lanzarote-volcano-tour":
-    "/en/excursions/tour-parque-nacional-de-timanfaya-montanas-del-fuego",
-  "/en/excursions/lanzarote-grand-tour-experience":
-    "/en/excursions/excursion-gran-tour-lanzarote-jameos-del-agua-cueva-verdes-jardin-de-cactus-timanfaya",
+  // —— Jameos (no incluidas en el mapa de slugs SEO) ——
   "/en/excursions/romantic-night-jameos-del-agua":
     "/en/excursions/velada-romantica-noche-jameos-del-agua-concierto-cena",
-  "/en/excursions/cesar-manrique-tour":
-    "/en/excursions/tour-cesar-manrique",
-
-  // —— Excursiones DE → slug canónico ——
-  "/de/ausfluege/suden-ausflug-vulkan-tour":
-    "/de/ausfluege/tour-parque-nacional-de-timanfaya-montanas-del-fuego",
-  "/de/ausfluge/suden-ausflug-vulkan-tour":
-    "/de/ausfluege/tour-parque-nacional-de-timanfaya-montanas-del-fuego",
-  "/de/ausfluege/lanzarote-inselrundfahrt-experience":
-    "/de/ausfluege/excursion-gran-tour-lanzarote-jameos-del-agua-cueva-verdes-jardin-de-cactus-timanfaya",
-  "/de/ausfluge/lanzarote-inselrundfahrt-experience":
-    "/de/ausfluege/excursion-gran-tour-lanzarote-jameos-del-agua-cueva-verdes-jardin-de-cactus-timanfaya",
   "/de/ausfluege/natch-jameos-del-agua-romantischer-abend":
     "/de/ausfluege/velada-romantica-noche-jameos-del-agua-concierto-cena",
   "/de/ausfluge/natch-jameos-del-agua-romantischer-abend":
     "/de/ausfluege/velada-romantica-noche-jameos-del-agua-concierto-cena",
+
+  ...buildTourSlugRedirects(),
 };
 
 /**

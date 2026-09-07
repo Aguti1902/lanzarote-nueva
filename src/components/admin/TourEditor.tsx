@@ -62,6 +62,7 @@ function emptyTranslation(): TourTranslation {
     notIncluded: [],
     recommendations: [],
     seo: { title: "", description: "", keywords: "" },
+    slug: "",
   };
 }
 
@@ -314,6 +315,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
         if (raw.notIncluded?.length) next.notIncluded = raw.notIncluded;
         if (raw.recommendations?.length)
           next.recommendations = raw.recommendations;
+        if (raw.slug?.trim()) next.slug = raw.slug.trim().toLowerCase();
         const seoTitle = raw.seo?.title?.trim() || "";
         const seoDescription = raw.seo?.description?.trim() || "";
         const seoKeywords = raw.seo?.keywords?.trim() || "";
@@ -730,7 +732,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
                 onChange={(e) => set("reviewCount", Number(e.target.value))}
               />
             </Field>
-            <Field label="Slug (URL)">
+            <Field label="Slug (URL en español)">
               <input
                 className={adminInput}
                 value={tour.slug || ""}
@@ -841,6 +843,18 @@ export function TourEditor({ initial }: { initial?: Tour }) {
                 }}
               />
             </Field>
+            {lang !== "es" && (
+              <Field label="Slug (URL en este idioma)">
+                <input
+                  className={adminInput}
+                  value={tour.translations?.[lang]?.slug || ""}
+                  onChange={(e) =>
+                    updateTranslation(lang, { slug: e.target.value })
+                  }
+                  placeholder="se usa el slug en español si está vacío"
+                />
+              </Field>
+            )}
             <Field label="Descripción corta del tour">
               <textarea
                 className={`${adminTextarea} min-h-[120px]`}

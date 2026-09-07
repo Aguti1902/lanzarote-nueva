@@ -27,6 +27,7 @@ import {
   writeCmsJson,
 } from "@/lib/supabase/cms-store";
 import { getBlogPostLocale, withBlogLocaleTag } from "@/lib/blog-locale";
+import { tourMatchesSlug } from "@/i18n/tour-slugs";
 
 async function readJson<T>(file: string): Promise<T> {
   return readCmsJson<T>(file);
@@ -68,7 +69,7 @@ export async function getPublicTours(): Promise<Tour[]> {
 
 export async function getTourBySlug(slug: string): Promise<Tour | undefined> {
   const tours = await getPublicTours();
-  return tours.find((t) => t.slug === slug);
+  return tours.find((t) => tourMatchesSlug(t, slug));
 }
 
 export async function getTourById(id: string): Promise<Tour | undefined> {

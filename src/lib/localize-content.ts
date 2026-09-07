@@ -22,6 +22,7 @@ import {
   SETTINGS_STRING_KEYS,
   SETTINGS_TRANSLATABLE_KEYS,
 } from "@/lib/settings-i18n";
+import { tourSlugForLocale } from "@/i18n/tour-slugs";
 
 export {
   mergeSettingsOverlay,
@@ -319,7 +320,8 @@ export async function localizeTour(
   tour: Tour,
   locale: Locale
 ): Promise<Tour> {
-  if (locale === "es") return tour;
+  const slug = tourSlugForLocale(tour, locale);
+  if (locale === "es") return { ...tour, slug };
 
   const fileOverlay = (await loadTranslations(locale)).tours[tour.id] as
     | Record<string, unknown>
@@ -331,7 +333,7 @@ export async function localizeTour(
     ? embeddedRaw
     : undefined;
 
-  if (!embedded && !fileOverlay) return tour;
+  if (!embedded && !fileOverlay) return { ...tour, slug };
 
   const strings = mergeStringFields(embedded, fileOverlay, tour as unknown as Record<string, unknown>, [
     "title",
@@ -363,6 +365,7 @@ export async function localizeTour(
     ...strings,
     ...arrays,
     shortTitle,
+    slug,
     seo: resolveLocalizedSeo(tour.seo, embedded, fileOverlay),
   } as Tour;
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import {
   Check,
   Clock,
@@ -34,6 +34,9 @@ import {
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
+import { locales } from "@/i18n/config";
+import { tourSlugForLocale } from "@/i18n/tour-slugs";
+import { resolvePublicOrigin } from "@/lib/voucher";
 
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
 export const revalidate = 300;
@@ -47,10 +50,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const base = await getTourBySlug(slug);
   if (!base) return { title: dict.nav.excursions };
   const tour = await localizeTour(base, locale);
+  const origin = resolvePublicOrigin();
+  const languages: Record<string, string> = {};
+  for (const loc of locales) {
+    languages[loc] = `${origin}${localePath(loc, `/excursiones/${tourSlugForLocale(base, loc)}`)}`;
+  }
+  languages["x-default"] = languages.es;
   return {
     title: tour.seo?.title || tour.shortTitle,
     description: tour.seo?.description || tour.summary,
     keywords: tour.seo?.keywords || undefined,
+    alternates: {
+      canonical: languages[locale],
+      languages,
+    },
   };
 }
 
@@ -60,6 +73,11 @@ export default async function TourDetailPage({ params }: Props) {
   const dict = await getDictionary(locale);
   const base = await getTourBySlug(slug);
   if (!base) notFound();
+
+  const canonicalSlug = tourSlugForLocale(base, locale);
+  if (slug !== canonicalSlug) {
+    redirect(localePath(locale, `/excursiones/${canonicalSlug}`));
+  }
 
   const [tour, tours, tourReviews, tripadvisor] = await Promise.all([
     localizeTour(base, locale),

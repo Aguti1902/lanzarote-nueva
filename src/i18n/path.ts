@@ -1,4 +1,5 @@
 import { isLocale, type Locale } from "./config";
+import { remapExcursionPath } from "./tour-slugs";
 
 /**
  * Rutas canónicas internas = carpetas bajo `app/[locale]/…` (siempre en español).
@@ -159,7 +160,7 @@ export function localePath(locale: Locale, path = "/"): string {
   const clean = normalizePathname(pathname);
   if (clean === "/") return `/${locale}${search}`;
 
-  const internal = toInternalPath(clean);
+  const internal = remapExcursionPath(toInternalPath(clean), locale);
   const localized = toLocalizedPath(locale, internal);
   if (localized === "/") return `/${locale}${search}`;
   return `/${locale}${localized}${search}`;
@@ -197,7 +198,7 @@ export function switchLocalePath(
 ): string {
   const { path } = stripLocaleFromPathname(pathname);
   const internal = toInternalPath(path);
-  return localePath(nextLocale, internal) + search;
+  return localePath(nextLocale, remapExcursionPath(internal, nextLocale)) + search;
 }
 
 /**
@@ -211,7 +212,7 @@ export function canonicalLocalizedPathname(fullPathname: string): string | null 
   const slugLocale = detectSlugLocale(path);
   if (!slugLocale) return null;
 
-  const internal = toInternalPath(path);
+  const internal = remapExcursionPath(toInternalPath(path), locale);
   const canonical = toLocalizedPath(locale, internal);
   const current = applyAlias(normalizePathname(path));
 
