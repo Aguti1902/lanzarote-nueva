@@ -129,7 +129,8 @@ export async function runDailyCmsBackup(): Promise<DailyBackupResult> {
     // La retención no debe tumbar el backup
   }
 
-  // Limpiar backups puntuales por escritura (backups/<file>.<stamp>.json) > 7 días
+  // Limpiar backups puntuales por escritura (backups/<file>.<stamp>.json) > 7 días.
+  // Nunca tocar backups/protected/ (snapshots de shore que el panel no debe perder).
   try {
     const { data: punctual } = await sb.storage.from(CMS_BUCKET).list("backups", {
       limit: 200,
@@ -138,7 +139,7 @@ export async function runDailyCmsBackup(): Promise<DailyBackupResult> {
     const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
     const stale: string[] = [];
     for (const f of punctual || []) {
-      if (!f.name || f.name === "daily" || !f.id) continue;
+      if (!f.name || f.name === "daily" || f.name === "protected" || !f.id) continue;
       const created = f.created_at ? Date.parse(f.created_at) : 0;
       if (created && created < weekAgo) stale.push(`backups/${f.name}`);
     }

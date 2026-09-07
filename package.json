@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed:supabase": "node --env-file=.env.local scripts/seed-supabase.mjs"
+    "seed:supabase": "node --env-file=.env.local scripts/seed-supabase.mjs",
+    "shore:protect": "node --env-file=.env.local scripts/protect-shore-snapshot.mjs",
+    "shore:restore-protected": "node --env-file=.env.local scripts/restore-shore-from-protected.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.4",

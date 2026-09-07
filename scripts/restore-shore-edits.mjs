@@ -6,6 +6,11 @@
  *   node --env-file=.env.local scripts/restore-shore-edits.mjs
  *   node --env-file=.env.local scripts/restore-shore-edits.mjs --cms
  *   node --env-file=.env.local scripts/restore-shore-edits.mjs --local-itineraries --cms
+ *
+ * --cms está bloqueado: pisa el catálogo vivo. Para recuperar las shore
+ * editadas en el panel usa scripts/restore-shore-from-protected.mjs.
+ * Solo si de verdad quieres este parche antiguo:
+ *   FORCE_SHORE_RESTORE=1 node --env-file=.env.local scripts/restore-shore-edits.mjs --cms
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
@@ -133,6 +138,17 @@ for (const locale of ["en", "de"]) {
 if (!writeCms) {
   console.log("Pasa --cms para actualizar Supabase Storage.");
   process.exit(0);
+}
+
+if (process.env.FORCE_SHORE_RESTORE !== "1") {
+  console.error(
+    "Refusado: --cms pisa el catálogo vivo de cruceros/shore.\n" +
+      "Las ediciones actuales están en cms/shoreTours.json y en\n" +
+      "cms/backups/protected/shoreTours.latest.json.\n" +
+      "Para recuperar esa copia: node --env-file=.env.local scripts/restore-shore-from-protected.mjs\n" +
+      "Para forzar este parche antiguo: FORCE_SHORE_RESTORE=1 … --cms"
+  );
+  process.exit(1);
 }
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

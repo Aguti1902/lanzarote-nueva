@@ -748,7 +748,7 @@ const es: Dictionary = {
     welcome: "¡Bienvenidos a Lanzarote!",
     mission: "Misión",
     missionText:
-      "Ofrecer visitas guiadas de calidad en Lanzarote, en grupos reducidos y solo en español.",
+      "Ofrecer visitas guiadas de calidad en Lanzarote, en grupos reducidos",
     vision: "Visión",
     visionText:
       "Ser la referencia local en experiencias auténticas de Lanzarote.",
@@ -1295,7 +1295,7 @@ const en: Dictionary = {
     welcome: "Welcome to Lanzarote!",
     mission: "Mission",
     missionText:
-      "Deliver quality guided visits in Lanzarote, in small groups and Spanish only.",
+      "Deliver quality guided visits in Lanzarote, in small groups",
     vision: "Vision",
     visionText: "Be the local reference for authentic Lanzarote experiences.",
     values: "Our values",
@@ -1840,7 +1840,7 @@ const de: Dictionary = {
     welcome: "Willkommen auf Lanzarote!",
     mission: "Mission",
     missionText:
-      "Hochwertige Führungen auf Lanzarote in kleinen Gruppen und nur auf Spanisch anbieten.",
+      "Hochwertige Führungen auf Lanzarote in kleinen Gruppen",
     vision: "Vision",
     visionText:
       "Die lokale Referenz für authentische Lanzarote-Erlebnisse sein.",

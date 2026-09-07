@@ -256,6 +256,34 @@ export async function writeCmsJson(file: string, data: unknown): Promise<void> {
         .upload(file, payload, options);
       if (uploaded.error) throw uploaded.error;
     }
+
+    // Copia permanente de shore: no la borra la retención diaria.
+    if (file === "shoreTours.json") {
+      const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+      const protectedLatest = "backups/protected/shoreTours.latest.json";
+      const protectedStamp = `backups/protected/shoreTours.${stamp}.json`;
+      const latestUp = await sb.storage
+        .from(CMS_BUCKET)
+        .update(protectedLatest, payload, options);
+      if (latestUp.error) {
+        const uploaded = await sb.storage
+          .from(CMS_BUCKET)
+          .upload(protectedLatest, payload, options);
+        if (uploaded.error) {
+          console.warn(`[cms] snapshot protegido latest: ${uploaded.error.message}`);
+        }
+      }
+      const { error: stampErr } = await sb.storage
+        .from(CMS_BUCKET)
+        .upload(protectedStamp, payload, {
+          upsert: false,
+          contentType: "application/json",
+          cacheControl: "0",
+        });
+      if (stampErr) {
+        console.warn(`[cms] snapshot protegido ${stamp}: ${stampErr.message}`);
+      }
+    }
   } catch (error) {
     warnSupabaseFallback(`cms-write:${file}`, error as Error);
     try {
