@@ -10,7 +10,7 @@ import { buildTourSlugRedirects } from "../i18n/tour-slugs";
 export const LEGACY_PATH_REDIRECTS: Record<string, string> = {
   // —— Secciones ES (sin locale en la antigua / sitelinks Google) ——
   "/casas-vacacionales": "/es/casas",
-  "/traslados-aeropuerto": "/es/traslados",
+  "/traslados-aeropuerto": "/es/traslados-aeropuerto-lanzarote",
 
   // —— ES con locale (aliases EN → ES canónico) ——
   "/es/about-us": "/es/sobre-nosotros",
@@ -18,7 +18,8 @@ export const LEGACY_PATH_REDIRECTS: Record<string, string> = {
   "/es/cart": "/es/carrito",
   "/es/manage-booking": "/es/gestionar-reserva",
   "/es/casas-vacacionales": "/es/casas",
-  "/es/traslados-aeropuerto": "/es/traslados",
+  "/es/traslados": "/es/traslados-aeropuerto-lanzarote",
+  "/es/traslados-aeropuerto": "/es/traslados-aeropuerto-lanzarote",
   "/es/holiday-homes": "/es/casas",
   "/es/vacation-homes": "/es/casas",
 

@@ -31,9 +31,11 @@ export const ROUTE_LOCALES = [
   { es: "/sobre-nosotros", en: "/about-us", de: "/uber-uns" },
   { es: "/excursiones", en: "/excursions", de: "/ausfluege" },
   {
-    es: "/traslados",
+    es: "/traslados-aeropuerto-lanzarote",
     en: "/airport-transfers",
     de: "/flughafen-transfer",
+    /** Carpeta real en `app/[locale]/…` (la URL pública ES es más larga). */
+    folder: "/traslados",
   },
   {
     es: "/cruceristas",
@@ -63,7 +65,7 @@ const ALIASES: Record<string, string> = {
   "/cruise-excursions": "/shore-excursions",
   "/vacation-homes": "/holiday-homes",
   "/casas-vacacionales": "/casas",
-  "/traslados-aeropuerto": "/traslados",
+  "/traslados-aeropuerto": "/traslados-aeropuerto-lanzarote",
 };
 
 function splitPathAndQuery(path: string): { pathname: string; search: string } {
@@ -91,16 +93,32 @@ function applyAlias(pathname: string): string {
 
 type RouteDef = (typeof ROUTE_LOCALES)[number];
 
+function routeFolder(route: RouteDef): string {
+  return "folder" in route && route.folder ? route.folder : route.es;
+}
+
+function prefixesForLocale(route: RouteDef, localeKey: Locale): string[] {
+  const publicPrefix = route[localeKey];
+  if (localeKey !== "es") return [publicPrefix];
+  const folder = routeFolder(route);
+  if (folder === publicPrefix) return [publicPrefix];
+  // Prefijo público más largo primero para no recortar mal.
+  return publicPrefix.length >= folder.length
+    ? [publicPrefix, folder]
+    : [folder, publicPrefix];
+}
+
 function matchRoute(
   pathname: string,
   localeKey: Locale
 ): { route: RouteDef; rest: string } | null {
   const path = applyAlias(normalizePathname(pathname));
   for (const route of ROUTE_LOCALES) {
-    const prefix = route[localeKey];
-    if (path === prefix) return { route, rest: "" };
-    if (path.startsWith(`${prefix}/`)) {
-      return { route, rest: path.slice(prefix.length) };
+    for (const prefix of prefixesForLocale(route, localeKey)) {
+      if (path === prefix) return { route, rest: "" };
+      if (path.startsWith(`${prefix}/`)) {
+        return { route, rest: path.slice(prefix.length) };
+      }
     }
   }
   return null;
@@ -127,7 +145,7 @@ export function toInternalPath(path: string): string {
   for (const locale of ["es", "en", "de"] as Locale[]) {
     const matched = matchRoute(clean, locale);
     if (matched) {
-      return `${matched.route.es}${matched.rest}${search}`;
+      return `${routeFolder(matched.route)}${matched.rest}${search}`;
     }
   }
   return `${clean}${search}`;

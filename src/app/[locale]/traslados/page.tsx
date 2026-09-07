@@ -14,6 +14,9 @@ import {
 } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
+import { locales } from "@/i18n/config";
+import { localePath } from "@/i18n/path";
+import { resolvePublicOrigin } from "@/lib/voucher";
 import type { TransferDirection } from "@/lib/transfer-price";
 
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
@@ -25,7 +28,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = resolveLocale((await params).locale);
   const dict = await getDictionary(locale);
   const settings = await localizeSettings(await getSettings(), locale);
-  return { title: settings.transferTitle || dict.transfers.title };
+  const origin = resolvePublicOrigin();
+  const languages: Record<string, string> = {};
+  for (const loc of locales) {
+    languages[loc] = `${origin}${localePath(loc, "/traslados")}`;
+  }
+  languages["x-default"] = languages.es;
+  return {
+    title: settings.transferTitle || dict.transfers.title,
+    alternates: {
+      canonical: languages[locale],
+      languages,
+    },
+  };
 }
 
 export default async function TrasladosPage({ params }: Props) {
