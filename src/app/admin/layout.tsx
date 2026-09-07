@@ -24,12 +24,14 @@ import {
   MapPinned,
   MessageSquareHeart,
   Link2,
+  Menu,
   Megaphone,
   Settings,
   Ship,
   Upload,
   Users,
   Home,
+  X,
 } from "lucide-react";
 
 type NavItem = {
@@ -85,41 +87,16 @@ function pathMatches(pathname: string, target: string) {
 function NavLinks({
   pathname,
   onLogout,
-  mobile,
+  onNavigate,
 }: {
   pathname: string;
   onLogout: () => void;
-  mobile?: boolean;
+  onNavigate?: () => void;
 }) {
   function isActive(href: string) {
     const target = href.split("?")[0].split("#")[0];
     if (target === "/admin") return pathname === "/admin";
     return pathMatches(pathname, target);
-  }
-
-  if (mobile) {
-    return (
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-        {nav.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`text-xs font-bold ${
-              isActive(item.href) ? "text-ocean" : "text-ink-muted"
-            }`}
-          >
-            {item.label}
-          </Link>
-        ))}
-        <button
-          type="button"
-          onClick={onLogout}
-          className="ml-auto text-xs text-ink-muted"
-        >
-          Salir
-        </button>
-      </div>
-    );
   }
 
   return (
@@ -130,6 +107,7 @@ function NavLinks({
           <Link
             key={item.href}
             href={item.href}
+            onClick={onNavigate}
             className={`flex items-center gap-2 rounded px-3 py-2 text-sm ${
               active
                 ? "bg-ocean text-white"
@@ -165,7 +143,26 @@ function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [ready, setReady] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const isLogin = pathname === "/admin/login";
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setMenuOpen(false);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
 
   useEffect(() => {
     if (isLogin) {
@@ -239,10 +236,59 @@ function AdminShell({ children }: { children: React.ReactNode }) {
         <NavLinks pathname={pathname} onLogout={logout} />
       </aside>
 
+      {menuOpen ? (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <button
+            type="button"
+            aria-label="Cerrar menú"
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setMenuOpen(false)}
+          />
+          <aside className="relative flex h-full w-[min(18rem,86vw)] flex-col bg-header text-white shadow-2xl">
+            <div className="flex shrink-0 items-center justify-between border-b border-white/10 px-4 py-4">
+              <div>
+                <div className="relative h-9 w-[130px]">
+                  <Image
+                    src="/images/brand/logo.png"
+                    alt="LET"
+                    fill
+                    className="object-contain object-left"
+                    sizes="130px"
+                  />
+                </div>
+                <p className="mt-1 text-xs text-white/55">Panel de administración</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setMenuOpen(false)}
+                className="rounded-md p-2 text-white/80 hover:bg-white/10"
+                aria-label="Cerrar menú"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <NavLinks
+              pathname={pathname}
+              onLogout={logout}
+              onNavigate={() => setMenuOpen(false)}
+            />
+          </aside>
+        </div>
+      ) : null}
+
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-20 border-b border-sand-line bg-white/95 px-4 py-3 backdrop-blur md:px-6">
-          <div className="md:hidden">
-            <NavLinks pathname={pathname} onLogout={logout} mobile />
+          <div className="flex items-center gap-3 md:hidden">
+            <button
+              type="button"
+              onClick={() => setMenuOpen(true)}
+              className="rounded-md p-2 text-ink hover:bg-black/5"
+              aria-label="Abrir menú"
+              aria-expanded={menuOpen}
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+            <p className="text-sm font-bold text-ink">Panel admin</p>
           </div>
           <p className="hidden text-sm text-ink-muted md:block">
             LET · Panel de administración

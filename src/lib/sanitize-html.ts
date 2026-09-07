@@ -116,3 +116,7 @@ export function stripHtml(raw: string): string {
 /** Clases Tailwind comunes para HTML tipográfico sanitizado. */
 export const RICH_CONTENT_CLASS =
   "rich-content space-y-3 leading-relaxed text-ink-muted [&_b]:font-bold [&_b]:text-ink [&_strong]:font-bold [&_strong]:text-ink [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-ink [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-ink";
+
+/** Mismo bloque sobre fondos oscuros (p. ej. «Nuestra promesa»). */
+export const RICH_CONTENT_ON_DARK_CLASS =
+  "rich-content rich-content-on-dark space-y-3 leading-relaxed text-white [&_p]:text-white [&_li]:text-white [&_span]:text-white [&_div]:text-white [&_b]:font-bold [&_b]:text-white [&_strong]:font-bold [&_strong]:text-white [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-white [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-white";

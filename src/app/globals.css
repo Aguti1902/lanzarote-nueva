@@ -151,6 +151,17 @@ h3,
   }
 }
 
+.rich-content-on-dark,
+.rich-content-on-dark p,
+.rich-content-on-dark li,
+.rich-content-on-dark span,
+.rich-content-on-dark div,
+.rich-content-on-dark b,
+.rich-content-on-dark strong,
+.rich-content-on-dark a {
+  color: #ffffff !important;
+}
+
 .prose-blog p {
   margin-bottom: 1.1rem;
   line-height: 1.8;

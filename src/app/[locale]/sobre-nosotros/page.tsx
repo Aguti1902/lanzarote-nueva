@@ -109,9 +109,9 @@ export default async function SobreNosotrosPage({ params }: Props) {
               />
             </div>
             <div className="flex flex-col justify-center p-8 md:p-10">
-              <h2 className="text-3xl font-bold">{dict.about.promise}</h2>
-              <div className="mt-4 text-sm leading-relaxed text-white/90 md:text-base [&_.rich-content]:text-white/90 [&_b]:text-white [&_strong]:text-white">
-                <RichContent text={settings.aboutPromise} />
+              <h2 className="text-3xl font-bold text-white">{dict.about.promise}</h2>
+              <div className="mt-4 text-sm leading-relaxed text-white md:text-base">
+                <RichContent text={settings.aboutPromise} tone="on-dark" />
               </div>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link href={lp("/excursiones")} className="btn-primary">
