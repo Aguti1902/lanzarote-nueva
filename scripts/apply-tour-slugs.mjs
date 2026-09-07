@@ -20,7 +20,7 @@ const TOUR_LOCALE_SLUGS = {
     de: "timanfaya-nationalpark-sued-lanzarote-ausflug",
   },
   "grand-tour-experience": {
-    es: "excursion-completa-lanzarote",
+    es: "excursion-grand-tour-lanzarote",
     en: "lanzarote-grand-tour",
     de: "lanzarote-inselrundfahrt-grand-tour",
   },

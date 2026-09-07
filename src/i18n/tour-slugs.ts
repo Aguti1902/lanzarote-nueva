@@ -36,10 +36,11 @@ export const TOUR_LOCALE_SLUGS: Record<string, TourLocaleSlugs> = {
     ],
   },
   "grand-tour-experience": {
-    es: "excursion-completa-lanzarote",
+    es: "excursion-grand-tour-lanzarote",
     en: "lanzarote-grand-tour",
     de: "lanzarote-inselrundfahrt-grand-tour",
     aliases: [
+      "excursion-completa-lanzarote",
       "excursion-gran-tour-lanzarote-jameos-del-agua-cueva-verdes-jardin-de-cactus-timanfaya",
       "excursion-gran-tour-lanzarote",
       "grand-tour-lanzarote",
