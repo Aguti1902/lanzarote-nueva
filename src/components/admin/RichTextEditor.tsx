@@ -205,6 +205,18 @@ export function RichTextEditor({
           style={{ minHeight }}
           onInput={emit}
           onBlur={emit}
+          onPaste={(e) => {
+            const html = e.clipboardData.getData("text/html") || "";
+            if (
+              !/jscontroller|data-sfc-|data-hveid|data-copy-service/i.test(html)
+            ) {
+              return;
+            }
+            e.preventDefault();
+            const text = e.clipboardData.getData("text/plain") || "";
+            document.execCommand("insertText", false, text);
+            emit();
+          }}
         />
       </div>
       <p className="text-xs text-ink-muted">

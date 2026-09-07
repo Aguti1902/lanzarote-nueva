@@ -28,6 +28,11 @@ import {
 } from "@/lib/supabase/cms-store";
 import { getBlogPostLocale, withBlogLocaleTag } from "@/lib/blog-locale";
 import { tourMatchesSlug } from "@/i18n/tour-slugs";
+import { SETTINGS_STRING_KEYS } from "@/lib/settings-i18n";
+import {
+  looksLikePastedWebHtml,
+  pastedWebHtmlToCleanHtml,
+} from "@/lib/sanitize-html";
 
 async function readJson<T>(file: string): Promise<T> {
   return readCmsJson<T>(file);
@@ -581,9 +586,20 @@ function coalesceBlocks(
   return stored === undefined ? fallback : stored;
 }
 
+function scrubSettingsHtml(settings: SiteSettings): SiteSettings {
+  const next = { ...settings };
+  for (const key of SETTINGS_STRING_KEYS) {
+    const value = next[key];
+    if (typeof value === "string" && looksLikePastedWebHtml(value)) {
+      (next as Record<string, unknown>)[key] = pastedWebHtmlToCleanHtml(value);
+    }
+  }
+  return next;
+}
+
 export const getSettings = cache(async (): Promise<SiteSettings> => {
   const stored = await readJson<Partial<SiteSettings>>("settings.json");
-  return {
+  return scrubSettingsHtml({
     ...defaultSettings,
     ...stored,
     // Si el CMS aún no tiene estos campos, usar el contenido de producción.
@@ -618,9 +634,9 @@ export const getSettings = cache(async (): Promise<SiteSettings> => {
     housesBlocks: coalesceBlocks(stored.housesBlocks, []),
     contactFaqs: coalesceFaqs(stored.contactFaqs, []),
     contactBlocks: coalesceBlocks(stored.contactBlocks, []),
-  };
+  });
 });
 
 export async function saveSettings(settings: SiteSettings): Promise<void> {
-  await writeJson("settings.json", settings);
+  await writeJson("settings.json", scrubSettingsHtml(settings));
 }

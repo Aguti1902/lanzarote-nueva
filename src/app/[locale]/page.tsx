@@ -23,6 +23,7 @@ import {
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
+import { RichContent } from "@/components/RichContent";
 
 const ReviewsSection = dynamic(() =>
   import("@/components/ReviewsSection").then((m) => m.ReviewsSection)
@@ -262,12 +263,15 @@ export default async function HomePage({ params }: Props) {
           <div>
             <p className="section-kicker">{dict.home.agencyKicker}</p>
             <h2 className="section-title mt-3">{dict.home.agencyTitle}</h2>
-            <p className="mt-5 text-base leading-relaxed text-ink-muted">
-              {settings.aboutLead}
-            </p>
-            <p className="mt-4 text-base leading-relaxed text-ink-muted">
-              {dict.home.agencyBody}
-            </p>
+            <RichContent
+              text={settings.aboutLead}
+              className="mt-5 max-w-none !space-y-4"
+            />
+            {dict.home.agencyBody ? (
+              <p className="mt-4 text-base leading-relaxed text-ink-muted">
+                {dict.home.agencyBody}
+              </p>
+            ) : null}
             <Link href={lp("/sobre-nosotros")} className="btn-primary mt-8">
               {dict.home.agencyCta}
               <ArrowRight className="h-4 w-4" />

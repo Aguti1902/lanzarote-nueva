@@ -1,4 +1,8 @@
 import type { PageContentBlock, PageFaqItem, SiteSettings } from "@/types";
+import {
+  looksLikePastedWebHtml,
+  pastedWebHtmlToCleanHtml,
+} from "@/lib/sanitize-html";
 
 /** Text string fields of SiteSettings that can be translated (EN/DE overlays). */
 export const SETTINGS_STRING_KEYS = [
@@ -113,7 +117,9 @@ export function pickSettingsTranslations(
   for (const key of SETTINGS_STRING_KEYS) {
     const value = source[key];
     if (typeof value === "string") {
-      out[key] = value;
+      out[key] = looksLikePastedWebHtml(value)
+        ? pastedWebHtmlToCleanHtml(value)
+        : value;
     }
   }
 
@@ -156,7 +162,11 @@ export function mergeSettingsOverlay(
   for (const key of SETTINGS_STRING_KEYS) {
     const value = overlay[key];
     if (typeof value === "string" && value.trim()) {
-      merged[key] = value as never;
+      merged[key] = (
+        looksLikePastedWebHtml(value)
+          ? pastedWebHtmlToCleanHtml(value)
+          : value
+      ) as never;
     }
   }
 

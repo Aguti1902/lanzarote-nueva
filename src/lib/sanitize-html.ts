@@ -1,3 +1,55 @@
+/** Pegado desde Google (resultados, Docs, traductor): metadatos que no son contenido. */
+const PASTED_WEB_MARKERS =
+  /jscontroller|data-sfc-|data-hveid|jsaction=|jsuid=|data-copy-service|docs-internal-guid/i;
+
+export function looksLikePastedWebHtml(text: string): boolean {
+  return PASTED_WEB_MARKERS.test(text || "");
+}
+
+function escapeHtmlText(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function decodeBasicEntities(value: string): string {
+  return value
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&#160;/g, " ")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&#(\d+);/g, (_, n) => {
+      const code = Number(n);
+      return Number.isFinite(code) ? String.fromCharCode(code) : _;
+    })
+    .replace(/&amp;/g, "&");
+}
+
+/** Convierte HTML copiado de la web en párrafos limpios. */
+export function pastedWebHtmlToCleanHtml(raw: string): string {
+  let s = raw
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/(p|div|h[1-6]|li|tr|blockquote)>/gi, "\n");
+  s = s.replace(/<[^>]+>/g, (match, offset: number) => {
+    const before = s[offset - 1] || "";
+    const after = s[offset + match.length] || "";
+    if (/\S/.test(before) && /\S/.test(after) && !/[.,;:!?)\]}»"]/.test(after)) {
+      return " ";
+    }
+    return "";
+  });
+  s = decodeBasicEntities(s).replace(/\u00a0/g, " ");
+  s = s.replace(/ +([,.;:!?])/g, "$1");
+  const paragraphs = s
+    .split(/\n+/)
+    .map((p) => p.replace(/[ \t]+/g, " ").trim())
+    .filter(Boolean);
+  if (!paragraphs.length) return "";
+  return paragraphs.map((p) => `<p>${escapeHtmlText(p)}</p>`).join("");
+}
+
 /** Detecta si el texto parece HTML de contenido. */
 export function looksLikeHtml(text: string): boolean {
   return /<\/?[a-z][\s\S]*>/i.test(text || "");
@@ -20,6 +72,9 @@ function filterSafeStyle(raw: string): string {
  */
 export function sanitizeContentHtml(raw: string): string {
   if (!raw) return "";
+  if (looksLikePastedWebHtml(raw)) {
+    return pastedWebHtmlToCleanHtml(raw);
+  }
   let html = raw
     .replace(
       /<\s*(script|style|iframe|object|embed|link|meta)[\s\S]*?>[\s\S]*?<\s*\/\s*\1\s*>/gi,
