@@ -20,7 +20,7 @@ export function RichContent({
   const onDark = tone === "on-dark";
   const htmlClass = onDark ? RICH_CONTENT_ON_DARK_CLASS : RICH_CONTENT_CLASS;
   const plainClass = onDark
-    ? "space-y-4 leading-relaxed text-white"
+    ? "space-y-4 leading-relaxed !text-white [&_p]:!text-white"
     : "space-y-4 leading-relaxed text-ink-muted";
 
   if (looksLikeHtml(raw)) {
