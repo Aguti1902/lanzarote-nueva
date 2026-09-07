@@ -1,7 +1,21 @@
+/**
+ * PELIGRO EN PRODUCCIÓN: este script sube src/data/*.json a Supabase Storage
+ * con upsert y PUEDE PISAR datos del panel (excursiones, shore, settings…).
+ * Úsalo solo en entornos vacíos / migración inicial consciente.
+ */
 import { createClient } from "@supabase/supabase-js";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+if (process.env.ALLOW_CMS_SEED !== "1") {
+  console.error(
+    "Refusado: seed del CMS desactivado por seguridad.\n" +
+      "Si realmente quieres sobrescribir Storage con src/data, ejecuta:\n" +
+      "  ALLOW_CMS_SEED=1 node --env-file=.env.local scripts/seed-supabase.mjs"
+  );
+  process.exit(1);
+}
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;

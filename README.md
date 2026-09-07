@@ -42,7 +42,14 @@ Si faltan las variables de Supabase, la app sigue funcionando con `src/data/*.js
 ## Panel admin
 
 - URL: `/admin`
-- Contraseña: la de `ADMIN_PASSWORD` (por defecto `admin123`)
+- Contraseña: la de `ADMIN_PASSWORD` en el servidor (cookie httpOnly; no uses `admin123` en producción)
+- En Vercel configura también `ADMIN_SESSION_SECRET` y `CRON_SECRET`
+
+### Seguridad del CMS
+
+- Los datos editables del panel viven en **Supabase Storage** y **no se pisan** con sync desde el deploy.
+- Backup automático en cada guardado (`backups/…`) y **backup diario** a las 03:00 UTC (`/api/cron/cms-backup`, retención 14 días).
+- No ejecutes `npm run seed:supabase` en producción salvo que sepas que vas a sobrescribir el CMS.
 
 Desde el panel puedes:
 

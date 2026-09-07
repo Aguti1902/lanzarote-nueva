@@ -120,7 +120,8 @@ export async function POST(request: Request) {
       force: false,
       uploaded,
       skipped,
-      message: `Subidos ${uploaded.length} ficheros auxiliares; omitidos ${skipped.length} editables del panel (protegidos).`,
+      protected: true,
+      message: `Subidos ${uploaded.length} ficheros auxiliares; omitidos ${skipped.length} editables del panel (protegidos, nunca se pisan).`,
     });
   } catch (e) {
     return NextResponse.json(

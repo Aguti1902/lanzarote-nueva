@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSettings, saveSettings } from "@/lib/content";
 import type { SiteSettings } from "@/types";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +11,9 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const body = (await request.json()) as SiteSettings;
     if (!body.brandName || !body.phone || !body.email) {

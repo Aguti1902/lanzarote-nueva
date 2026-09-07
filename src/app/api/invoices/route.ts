@@ -6,8 +6,12 @@ import {
   getInvoices,
   invoiceStats,
 } from "@/lib/invoices";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export async function GET(request: Request) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
   if (id) {
@@ -22,6 +26,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const body = await request.json();
     const bookingId = String(body.bookingId || "");

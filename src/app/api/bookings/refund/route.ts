@@ -8,6 +8,7 @@ import {
   isStripeConfigured,
   resolvePaymentIntentId,
 } from "@/lib/stripe";
+import { requireAdmin } from "@/lib/admin-auth";
 
 function roundMoney(n: number) {
   return Math.round(Number(n) * 100) / 100;
@@ -37,6 +38,9 @@ function cardRefundAmount(booking: {
 }
 
 export async function POST(request: Request) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     if (!isStripeConfigured()) {
       return NextResponse.json(

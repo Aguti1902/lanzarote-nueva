@@ -83,6 +83,10 @@ export async function saveBookings(bookings: Booking[]): Promise<void> {
 }
 
 /** Fuerza subir el bookings.json del deploy a Supabase Storage. */
+/**
+ * @deprecated Peligroso: pisaba bookings.json del panel con el bundle del deploy.
+ * Desactivado a propósito. Conservado solo por compatibilidad de imports.
+ */
 export async function syncBookingsFromDeploy(): Promise<{
   local: number;
   legacy: number;
@@ -90,10 +94,6 @@ export async function syncBookingsFromDeploy(): Promise<{
 }> {
   const local = await readLocalCmsJson<Booking[]>("bookings.json");
   const legacy = countLegacy(local);
-  if (isSupabaseConfigured()) {
-    await writeCmsJson("bookings.json", local);
-    return { local: local.length, legacy, synced: true };
-  }
   return { local: local.length, legacy, synced: false };
 }
 

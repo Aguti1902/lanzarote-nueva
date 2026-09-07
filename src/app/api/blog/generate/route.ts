@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import { getSettings, getPublicTours } from "@/lib/content";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export async function POST(request: Request) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const body = await request.json();
     const topic = String(body.topic || body.title || "").trim();

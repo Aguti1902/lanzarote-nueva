@@ -7,14 +7,35 @@ export default function AdminLoginPage() {
   const router = useRouter();
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (password === "admin123") {
-      localStorage.setItem("lt_admin", "1");
-      router.push("/admin");
-    } else {
-      setError("Contraseña incorrecta");
+    setError("");
+    setLoading(true);
+    try {
+      const res = await fetch("/api/admin/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(data.error || "Contraseña incorrecta");
+        return;
+      }
+      // Limpiar flag legacy inseguro
+      try {
+        localStorage.removeItem("lt_admin");
+      } catch {
+        /* ignore */
+      }
+      router.replace("/admin");
+      router.refresh();
+    } catch {
+      setError("No se pudo conectar con el servidor");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -35,18 +56,18 @@ export default function AdminLoginPage() {
             className="w-full rounded-lg border border-sand-line px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20"
             placeholder="••••••••"
             autoFocus
+            autoComplete="current-password"
+            disabled={loading}
           />
         </label>
         {error && <p className="mt-2 text-sm text-coral">{error}</p>}
         <button
           type="submit"
-          className="mt-5 w-full rounded-md bg-ocean py-2.5 font-semibold text-white hover:bg-ocean-deep"
+          disabled={loading}
+          className="mt-5 w-full rounded-md bg-ocean py-2.5 font-semibold text-white hover:bg-ocean-deep disabled:opacity-60"
         >
-          Entrar
+          {loading ? "Entrando…" : "Entrar"}
         </button>
-        <p className="mt-4 text-center text-xs text-ink-muted">
-          Demo: usa la contraseña <code>admin123</code>
-        </p>
       </form>
     </div>
   );

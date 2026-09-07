@@ -6,6 +6,7 @@ import {
   upsertCruiseCall,
 } from "@/lib/content";
 import type { CruiseCall } from "@/types";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +28,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const body = await request.json();
     if (!body.date || !body.shipName || !body.company) {
@@ -43,6 +47,9 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const body = (await request.json()) as CruiseCall;
     if (!body.id || !body.date || !body.shipName || !body.company) {
@@ -56,6 +63,9 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");

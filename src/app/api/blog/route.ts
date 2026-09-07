@@ -6,6 +6,7 @@ import {
   upsertBlogPost,
 } from "@/lib/content";
 import type { BlogPost } from "@/types";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,9 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const body = await request.json();
     if (!body.title || !body.excerpt || !body.content) {
@@ -31,6 +35,9 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const body = (await request.json()) as BlogPost;
     if (!body.slug || !body.title) {
@@ -44,6 +51,9 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const { searchParams } = new URL(request.url);
     const slug = searchParams.get("slug");

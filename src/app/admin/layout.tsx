@@ -168,17 +168,48 @@ function AdminShell({ children }: { children: React.ReactNode }) {
   const isLogin = pathname === "/admin/login";
 
   useEffect(() => {
-    const ok = localStorage.getItem("lt_admin") === "1";
-    if (!ok && !isLogin) {
-      router.replace("/admin/login");
-    } else {
+    if (isLogin) {
       setReady(true);
+      return;
     }
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/admin/session", { cache: "no-store" });
+        const data = await res.json().catch(() => ({}));
+        if (cancelled) return;
+        if (!data.authenticated) {
+          router.replace("/admin/login");
+          return;
+        }
+        try {
+          localStorage.removeItem("lt_admin");
+        } catch {
+          /* ignore */
+        }
+        setReady(true);
+      } catch {
+        if (!cancelled) router.replace("/admin/login");
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [isLogin, router, pathname]);
 
-  function logout() {
-    localStorage.removeItem("lt_admin");
+  async function logout() {
+    try {
+      await fetch("/api/admin/session", { method: "DELETE" });
+    } catch {
+      /* ignore */
+    }
+    try {
+      localStorage.removeItem("lt_admin");
+    } catch {
+      /* ignore */
+    }
     router.push("/admin/login");
+    router.refresh();
   }
 
   if (isLogin) return <>{children}</>;

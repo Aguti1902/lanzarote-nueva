@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getBookings, syncBookingsFromDeploy } from "@/lib/bookings";
+import { getBookings } from "@/lib/bookings";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 
 export const dynamic = "force-dynamic";
@@ -14,27 +14,23 @@ export async function GET() {
     total: bookings.length,
     legacy,
     supabase: isSupabaseConfigured(),
+    syncFromDeployDisabled: true,
   });
 }
 
+/**
+ * DESACTIVADO: subir bookings del bundle del deploy a Storage
+ * pisaría las reservas reales del panel.
+ * Las reservas solo se escriben vía API de reservas / Stripe / import admin.
+ */
 export async function POST() {
-  try {
-    const result = await syncBookingsFromDeploy();
-    return NextResponse.json({
-      ok: true,
-      ...result,
-      supabase: isSupabaseConfigured(),
-      message: result.synced
-        ? `Subidas ${result.local} reservas a Supabase Storage`
-        : `Supabase no configurado; hay ${result.local} reservas en el deploy (${result.legacy} legacy)`,
-    });
-  } catch (e) {
-    return NextResponse.json(
-      {
-        error:
-          e instanceof Error ? e.message : "No se pudo sincronizar bookings",
-      },
-      { status: 500 }
-    );
-  }
+  return NextResponse.json(
+    {
+      ok: false,
+      error:
+        "Sincronizar reservas desde el deploy está desactivado para no borrar datos del panel. Usa Importar reservas si necesitas cargar datos.",
+      syncFromDeployDisabled: true,
+    },
+    { status: 403 }
+  );
 }

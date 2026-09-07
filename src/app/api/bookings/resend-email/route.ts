@@ -5,8 +5,12 @@ import {
   sendCustomerBookingEmail,
   type CustomerEmailKind,
 } from "@/lib/customer-emails";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export async function POST(request: Request) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const body = await request.json();
     const id = String(body.id || body.booking_id || "").trim();

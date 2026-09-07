@@ -48,6 +48,7 @@ import {
 import { isFlatPriceTour } from "@/lib/tour-pricing";
 import { isStripeConfigured } from "@/lib/stripe";
 import type { BookingStatus, PaymentMethod } from "@/types";
+import { requireAdmin } from "@/lib/admin-auth";
 
 /** Solo emitir factura automática cuando ya hay cobro real. */
 function shouldAutoIssueInvoice(booking: {
@@ -71,7 +72,10 @@ function isDateBlocked(
   return blockedDates.some((b) => b.date === date);
 }
 
-export async function GET() {
+export async function GET(request: Request) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   const bookings = await getBookings();
   return NextResponse.json({ bookings });
 }
@@ -366,6 +370,9 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const body = await request.json();
     const { id, status, collectCash, cancellationReason, customer, amountTotal, totalPrice } =
