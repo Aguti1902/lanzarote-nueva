@@ -5,10 +5,16 @@ import { LEGACY_PATH_REDIRECTS } from "./src/lib/legacy-redirects";
  * Redirects estáticos (301/308) para URLs legacy.
  * La traducción de slugs públicos (EN/DE) → carpetas ES se hace con
  * rewrite en middleware (`src/middleware.ts`), no aquí.
+ *
+ * No volcar fuentes que sean prefijo de una carpeta interna
+ * (`/en/traslados` pisa `/en/traslados-aeropuerto-lanzarote` tras el rewrite).
  */
+const NEXT_STATIC_REDIRECT_SKIP = new Set(["/en/traslados", "/de/traslados"]);
+
 const legacyRedirects = Object.entries(LEGACY_PATH_REDIRECTS).flatMap(
   ([source, destination]) => {
     if (source === destination) return [];
+    if (NEXT_STATIC_REDIRECT_SKIP.has(source)) return [];
     return [
       {
         source,

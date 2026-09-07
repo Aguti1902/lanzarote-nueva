@@ -21,7 +21,7 @@ export function Header() {
   const links = [
     { href: href("/sobre-nosotros"), path: "/sobre-nosotros", label: dict.nav.about },
     { href: href("/excursiones"), path: "/excursiones", label: dict.nav.excursions },
-    { href: href("/traslados"), path: "/traslados", label: dict.nav.transfers },
+    { href: href("/traslados"), path: "/traslados-aeropuerto-lanzarote", label: dict.nav.transfers },
     {
       href: href("/excursiones-cruceros"),
       path: "/excursiones-cruceros",
