@@ -1077,6 +1077,110 @@
         "Agulo",
         "Viewpoint"
       ]
+    },
+    "shore-1": {
+      "title": "South Lanzarote Excursion — Timanfaya National Park",
+      "shortTitle": "South Lanzarote · Timanfaya",
+      "summary": "Timanfaya National Park, El Golfo, Los Hervideros and La Geria. Ideal for cruise calls (~5 h), with guaranteed return to the ship.",
+      "description": "Small-group shore excursion across southern Lanzarote: geothermal landscapes of Timanfaya, the green lagoon at El Golfo, Los Hervideros and La Geria wine country. Return to the ship on time guaranteed.",
+      "duration": "5 hours",
+      "highlights": [
+        "Small groups, max. 25 people",
+        "One language per tour",
+        "Guaranteed return to the ship on time",
+        "Money-back if delayed back to the ship"
+      ],
+      "places": [
+        "Timanfaya",
+        "Islote de Hilario",
+        "El Golfo",
+        "Los Hervideros",
+        "La Geria",
+        "Janubio Salt Pans"
+      ]
+    },
+    "shore-2": {
+      "title": "Lanzarote Experience Tour: our most complete shore excursion",
+      "shortTitle": "Lanzarote Experience Tour",
+      "summary": "The most complete cruise excursion: Timanfaya, Jameos del Agua and the Cactus Garden in one day (~8 h), with admissions included.",
+      "description": "Full-day shore excursion combining Timanfaya National Park with César Manrique highlights in the north. Designed around your all-aboard time with pickup at the pier.",
+      "duration": "8 hours",
+      "highlights": [
+        "Small groups, max. 25 people",
+        "One language per tour",
+        "Guaranteed return to the ship on time",
+        "Key admissions included"
+      ],
+      "places": [
+        "Timanfaya National Park",
+        "Jameos del Agua",
+        "Cactus Garden",
+        "La Geria"
+      ]
+    },
+    "shore-3": {
+      "title": "Jameos del Agua and Cactus Garden",
+      "shortTitle": "Jameos & Cactus Garden",
+      "summary": "Two César Manrique masterpieces in northern Lanzarote, in small groups.",
+      "description": "Visit Jameos del Agua and the Cactus Garden with time to enjoy Manrique’s vision of art and nature.",
+      "duration": "5 hours",
+      "highlights": [
+        "César Manrique works",
+        "Small groups"
+      ],
+      "places": [
+        "Jameos del Agua",
+        "Cactus Garden",
+        "Arrieta"
+      ]
+    },
+    "shore-4": {
+      "title": "Garajonay National Park — La Gomera",
+      "shortTitle": "Garajonay National Park",
+      "summary": "UNESCO laurel forest and viewpoints on La Gomera, timed for your cruise call.",
+      "description": "Explore Garajonay National Park’s unique laurel forest and scenic viewpoints, with guaranteed return to the ship.",
+      "duration": "4 hours",
+      "highlights": [
+        "UNESCO laurel forest",
+        "Guaranteed return to the ship"
+      ],
+      "places": [
+        "Garajonay",
+        "Valle Gran Rey",
+        "Viewpoint"
+      ]
+    },
+    "shore-5": {
+      "title": "Corralejo Natural Dunes Park",
+      "shortTitle": "Corralejo Dunes",
+      "summary": "White sand dunes and northern Fuerteventura villages — ideal for shorter port calls.",
+      "description": "Visit the Corralejo Natural Park dunes and nearby coastal towns on a shore excursion tailored to your ship’s schedule.",
+      "duration": "4 hours",
+      "highlights": [
+        "Dunes and northern villages",
+        "Ideal for short calls"
+      ],
+      "places": [
+        "Corralejo Natural Dunes Park",
+        "Corralejo",
+        "El Cotillo"
+      ]
+    },
+    "shore-7": {
+      "title": "Teide and North Tenerife",
+      "shortTitle": "Teide & North Tenerife",
+      "summary": "Teide National Park and charming northern towns of Tenerife.",
+      "description": "From the volcanic landscapes of Teide to La Orotava and Puerto de la Cruz, a classic shore excursion for Tenerife calls.",
+      "duration": "7 hours",
+      "highlights": [
+        "Teide National Park",
+        "Northern villages"
+      ],
+      "places": [
+        "Teide",
+        "La Orotava",
+        "Puerto de la Cruz"
+      ]
     }
   },
   "cruise": {

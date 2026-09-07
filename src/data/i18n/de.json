@@ -1045,6 +1045,110 @@
         "Agulo",
         "Aussichtspunkt"
       ]
+    },
+    "shore-1": {
+      "title": "Süd-Lanzarote-Ausflug — Nationalpark Timanfaya",
+      "shortTitle": "Süd-Lanzarote · Timanfaya",
+      "summary": "Nationalpark Timanfaya, El Golfo, Los Hervideros und La Geria. Ideal für Kreuzfahrtstops (~5 Std.), mit garantierter Rückkehr zum Schiff.",
+      "description": "Landausflug in kleinen Gruppen durch Süd-Lanzarote: geothermische Landschaften Timanfayas, die grüne Lagune von El Golfo, Los Hervideros und das Weinland La Geria. Pünktliche Rückkehr zum Schiff garantiert.",
+      "duration": "5 Stunden",
+      "highlights": [
+        "Kleine Gruppen, max. 25 Personen",
+        "Nur eine Sprache pro Tour",
+        "Garantierte pünktliche Rückkehr zum Schiff",
+        "Geld zurück bei Verspätung zum Schiff"
+      ],
+      "places": [
+        "Timanfaya",
+        "Islote de Hilario",
+        "El Golfo",
+        "Los Hervideros",
+        "La Geria",
+        "Salinas de Janubio"
+      ]
+    },
+    "shore-2": {
+      "title": "Lanzarote Experience Tour: unser komplettester Landausflug",
+      "shortTitle": "Lanzarote Experience Tour",
+      "summary": "Der kompletteste Kreuzfahrtausflug: Timanfaya, Jameos del Agua und Kakteengarten an einem Tag (~8 Std.), inkl. Eintritte.",
+      "description": "Ganztägiger Landausflug mit Timanfaya und César-Manrique-Highlights im Norden. Abgestimmt auf Ihre All-aboard-Zeit mit Abholung am Pier.",
+      "duration": "8 Stunden",
+      "highlights": [
+        "Kleine Gruppen, max. 25 Personen",
+        "Nur eine Sprache pro Tour",
+        "Garantierte pünktliche Rückkehr zum Schiff",
+        "Wichtige Eintritte inklusive"
+      ],
+      "places": [
+        "Nationalpark Timanfaya",
+        "Jameos del Agua",
+        "Kakteengarten",
+        "La Geria"
+      ]
+    },
+    "shore-3": {
+      "title": "Jameos del Agua und Kakteengarten",
+      "shortTitle": "Jameos & Kakteengarten",
+      "summary": "Zwei Meisterwerke César Manriques im Norden Lanzarotes, in kleinen Gruppen.",
+      "description": "Besuch der Jameos del Agua und des Kakteengartens mit Zeit für Manriques Verbindung von Kunst und Natur.",
+      "duration": "5 Stunden",
+      "highlights": [
+        "Werke von César Manrique",
+        "Kleine Gruppen"
+      ],
+      "places": [
+        "Jameos del Agua",
+        "Kakteengarten",
+        "Arrieta"
+      ]
+    },
+    "shore-4": {
+      "title": "Nationalpark Garajonay — La Gomera",
+      "shortTitle": "Nationalpark Garajonay",
+      "summary": "UNESCO-Lorbeerwald und Aussichtspunkte auf La Gomera, abgestimmt auf Ihren Hafenstopp.",
+      "description": "Erkunden Sie den einzigartigen Lorbeerwald des Nationalparks Garajonay mit garantierter Rückkehr zum Schiff.",
+      "duration": "4 Stunden",
+      "highlights": [
+        "UNESCO-Lorbeerwald",
+        "Garantierte Rückkehr zum Schiff"
+      ],
+      "places": [
+        "Garajonay",
+        "Valle Gran Rey",
+        "Aussichtspunkt"
+      ]
+    },
+    "shore-5": {
+      "title": "Naturpark Dünen von Corralejo",
+      "shortTitle": "Dünen von Corralejo",
+      "summary": "Weiße Sanddünen und Dörfer im Norden Fuerteventuras — ideal für kürzere Hafenstops.",
+      "description": "Besuch der Dünen von Corralejo und benachbarter Küstenorte, abgestimmt auf Ihren Schiffplan.",
+      "duration": "4 Stunden",
+      "highlights": [
+        "Dünen und Norddörfer",
+        "Ideal für kurze Stops"
+      ],
+      "places": [
+        "Naturpark Dünen von Corralejo",
+        "Corralejo",
+        "El Cotillo"
+      ]
+    },
+    "shore-7": {
+      "title": "Teide und Norden Teneriffas",
+      "shortTitle": "Teide & Norden Teneriffa",
+      "summary": "Nationalpark Teide und charmante Orte im Norden Teneriffas.",
+      "description": "Von den Vulkanlandschaften des Teide nach La Orotava und Puerto de la Cruz — ein klassischer Landausflug.",
+      "duration": "7 Stunden",
+      "highlights": [
+        "Nationalpark Teide",
+        "Dörfer im Norden"
+      ],
+      "places": [
+        "Teide",
+        "La Orotava",
+        "Puerto de la Cruz"
+      ]
     }
   },
   "cruise": {

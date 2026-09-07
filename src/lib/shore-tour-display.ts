@@ -4,6 +4,18 @@ import type { CruiseShoreTour } from "@/types";
 const STALE_HIGHLIGHT =
   /(m[aá]ximo\s+\d+\s+personas)|(maximum\s+\d+\s+(people|persons))|(max\.?\s*\d+\s+personen)|(grupos?\s+peque[nñ]os)|(small\s+groups?)|(bis\s+zu\s+\d+\s+personen)|(hasta\s+\d+\s+personas)|(^duraci[oó]n\b)|(^tour\s+duration\b)|(^tourdauer\b)/i;
 
+/** Cruceros: solo tarjeta (100% o depósito). Sin Bizum ni pago el día. */
+export function applyShoreTourPaymentPolicy<T extends Partial<CruiseShoreTour>>(
+  tour: T
+): T {
+  return {
+    ...tour,
+    allowCard: tour.allowCard !== false,
+    allowBizum: false,
+    allowPayOnDay: false,
+  };
+}
+
 /** Precio cerrado de grupo (p. ej. privada 700 € hasta 8 pax). */
 export function shoreTourIsFlatPrice(
   tour: Pick<CruiseShoreTour, "privatePrice">

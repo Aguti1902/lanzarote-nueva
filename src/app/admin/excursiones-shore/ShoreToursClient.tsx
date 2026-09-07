@@ -210,7 +210,7 @@ export function ShoreToursPanel() {
       privateMaxPax: 0,
       currency: "EUR",
       allowCard: true,
-      allowBizum: true,
+      allowBizum: false,
       allowPayOnDay: false,
       cancellationPolicy: "Cancelación gratuita hasta 48 horas antes.",
       youtubeUrl: "",
@@ -290,6 +290,8 @@ export function ShoreToursPanel() {
         image,
         gallery: orderedGallery,
         meetingPointImages: (source.meetingPointImages || []).filter(Boolean),
+        allowBizum: false,
+        allowPayOnDay: false,
         schedule: normalizeSchedule(source.schedule),
         blockedDates: source.blockedDates || [],
         seo: source.seo || { title: "", description: "", keywords: "" },
@@ -783,25 +785,17 @@ export function ShoreToursPanel() {
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3">
-              {(
-                [
-                  ["allowCard", "Pago con tarjeta"],
-                  ["allowBizum", "Pago con Bizum"],
-                  ["allowPayOnDay", "Pago el día (desactivado en web cruceros)"],
-                ] as const
-              ).map(([key, label]) => (
-                <label key={key} className="flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    checked={Boolean(draft[key])}
-                    onChange={(e) =>
-                      setDraft({ ...draft, [key]: e.target.checked })
-                    }
-                    className="accent-[var(--ocean)]"
-                  />
-                  {label}
-                </label>
-              ))}
+              <label className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={draft.allowCard !== false}
+                  onChange={(e) =>
+                    setDraft({ ...draft, allowCard: e.target.checked })
+                  }
+                  className="accent-[var(--ocean)]"
+                />
+                Pago con tarjeta
+              </label>
             </div>
 
             <button type="button" onClick={() => void save()} className="btn-primary">

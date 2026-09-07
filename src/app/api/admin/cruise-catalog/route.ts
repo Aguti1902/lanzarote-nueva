@@ -11,7 +11,7 @@ import type {
   CruiseSailing,
   CruiseShoreTour,
 } from "@/types";
-import { syncShoreTourStructuredFields } from "@/lib/shore-tour-display";
+import { syncShoreTourStructuredFields, applyShoreTourPaymentPolicy } from "@/lib/shore-tour-display";
 
 export const dynamic = "force-dynamic";
 
@@ -276,8 +276,8 @@ export async function POST(request: Request) {
         active: body.active !== false,
         currency: "EUR",
         allowCard: body.allowCard !== false,
-        allowBizum: body.allowBizum !== false,
-        allowPayOnDay: body.allowPayOnDay === true,
+        allowBizum: false,
+        allowPayOnDay: false,
         cancellationPolicy:
           body.cancellationPolicy ||
           "Cancelación gratuita hasta 48 horas antes.",
@@ -292,7 +292,9 @@ export async function POST(request: Request) {
         translations: body.translations || {},
       };
       data.shoreTours.push(
-        syncShoreTourStructuredFields(tour) as CruiseShoreTour
+        applyShoreTourPaymentPolicy(
+          syncShoreTourStructuredFields(tour) as CruiseShoreTour
+        )
       );
       await save(data);
       return NextResponse.json({ item: tour }, { status: 201 });
@@ -441,13 +443,15 @@ export async function PUT(request: Request) {
       const meetingPointImages = Array.isArray(rest.meetingPointImages)
         ? (rest.meetingPointImages as string[]).filter(Boolean)
         : prev.meetingPointImages || [];
-      data.shoreTours[idx] = syncShoreTourStructuredFields({
-        ...prev,
-        ...rest,
-        image,
-        gallery: orderedGallery,
-        meetingPointImages,
-      }) as CruiseShoreTour;
+      data.shoreTours[idx] = applyShoreTourPaymentPolicy(
+        syncShoreTourStructuredFields({
+          ...prev,
+          ...rest,
+          image,
+          gallery: orderedGallery,
+          meetingPointImages,
+        }) as CruiseShoreTour
+      );
       await save(data);
       return NextResponse.json({ item: data.shoreTours[idx] });
     }

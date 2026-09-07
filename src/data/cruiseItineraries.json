@@ -363,7 +363,20 @@
       "gallery": [
         "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/legacy/cruise/tours/1/11-1-lanzarote-timanfaya.jpg",
         "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/legacy/cruise/tours/1/13-1-el-golfo-charco-clicos.jpg",
-        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/legacy/excursions/gallery/1/camel-ride.jpg"
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/legacy/excursions/gallery/1/camel-ride.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtmw5mwy-6ymfz0.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtmw66kc-7xw9ue.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtmw6gng-fkf3v1.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtmw6se1-az86j8.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtmw747g-8nlop8.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtoy6x18-smdkrc.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtoyp7go-vt2qn8.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtoyyoz7-u21sr8.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtoz22jn-ojb6tl.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtoz5itd-ask1t2.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtozd2dw-nwvm0y.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtq7sfcw-sgnw7j.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtq7tudu-xz07br.jpg"
       ],
       "duration": "5 horas",
       "durationHours": 5,
@@ -387,8 +400,8 @@
       "active": true,
       "currency": "EUR",
       "allowCard": true,
-      "allowBizum": true,
-      "allowPayOnDay": true,
+      "allowBizum": false,
+      "allowPayOnDay": false,
       "translations": {
         "en": {
           "title": "Lanzarote South tour.",
@@ -412,7 +425,13 @@
       "gallery": [
         "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/legacy/excursions/gallery/2/timanfaya.jpg",
         "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/legacy/excursions/gallery/2/cueva-de-los-verdes.jpg",
-        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/legacy/excursions/gallery/2/jameos-del-agua.jpg"
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/legacy/excursions/gallery/2/jameos-del-agua.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtmnzlyp-dfnos0.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtmo89ly-2pmuah.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtmo8zua-uyu9b2.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtmofpyk-ysidvh.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtmofzpf-m0tjty.jpg",
+        "https://wdnviethdarcmneghhqv.supabase.co/storage/v1/object/public/uploads/shore-tours/mtmogqaf-x9s0qd.jpg"
       ],
       "duration": "8 horas",
       "durationHours": 8,
@@ -432,8 +451,8 @@
       "active": true,
       "currency": "EUR",
       "allowCard": true,
-      "allowBizum": true,
-      "allowPayOnDay": true,
+      "allowBizum": false,
+      "allowPayOnDay": false,
       "translations": {
         "en": {
           "title": "Lanzarote Experience Grand Tour: Our Best Excursion for Cruise Passengers",
@@ -471,8 +490,8 @@
       "active": true,
       "currency": "EUR",
       "allowCard": true,
-      "allowBizum": true,
-      "allowPayOnDay": true,
+      "allowBizum": false,
+      "allowPayOnDay": false,
       "translations": {
         "en": {
           "title": "North Lanzarote Tour",
@@ -508,8 +527,8 @@
       "active": true,
       "currency": "EUR",
       "allowCard": true,
-      "allowBizum": true,
-      "allowPayOnDay": true,
+      "allowBizum": false,
+      "allowPayOnDay": false,
       "translations": {
         "en": {
           "title": "Garajonay National Park",
@@ -551,8 +570,8 @@
       "active": true,
       "currency": "EUR",
       "allowCard": true,
-      "allowBizum": true,
-      "allowPayOnDay": true,
+      "allowBizum": false,
+      "allowPayOnDay": false,
       "translations": {
         "en": {
           "title": "Golden Sands beaches in the north of Fuerteventura",
@@ -594,8 +613,8 @@
       "active": true,
       "currency": "EUR",
       "allowCard": true,
-      "allowBizum": true,
-      "allowPayOnDay": true,
+      "allowBizum": false,
+      "allowPayOnDay": false,
       "translations": {
         "en": {
           "title": "Taburiente National Park",
@@ -633,8 +652,8 @@
       "active": true,
       "currency": "EUR",
       "allowCard": true,
-      "allowBizum": true,
-      "allowPayOnDay": true,
+      "allowBizum": false,
+      "allowPayOnDay": false,
       "translations": {
         "en": {
           "title": "Teide Mountain National Park.",
@@ -672,8 +691,8 @@
       "active": true,
       "currency": "EUR",
       "allowCard": true,
-      "allowBizum": true,
-      "allowPayOnDay": true,
+      "allowBizum": false,
+      "allowPayOnDay": false,
       "translations": {
         "en": {
           "title": "The historic quarter of La Laguna and La Orotava",
@@ -725,8 +744,8 @@
       "active": true,
       "currency": "EUR",
       "allowCard": true,
-      "allowBizum": true,
-      "allowPayOnDay": true,
+      "allowBizum": false,
+      "allowPayOnDay": false,
       "translations": {
         "en": {
           "title": "Gran Canaria North",
@@ -768,8 +787,8 @@
       "active": true,
       "currency": "EUR",
       "allowCard": true,
-      "allowBizum": true,
-      "allowPayOnDay": true,
+      "allowBizum": false,
+      "allowPayOnDay": false,
       "translations": {
         "en": {
           "title": "Private shore excursions for cruise passengers in Lanzarote",
@@ -956,8 +975,8 @@
       "active": true,
       "currency": "EUR",
       "allowCard": true,
-      "allowBizum": true,
-      "allowPayOnDay": true,
+      "allowBizum": false,
+      "allowPayOnDay": false,
       "translations": {
         "en": {
           "title": "Nuns Valley Tour Madeira",
@@ -1008,8 +1027,8 @@
       "active": true,
       "currency": "EUR",
       "allowCard": true,
-      "allowBizum": true,
-      "allowPayOnDay": true,
+      "allowBizum": false,
+      "allowPayOnDay": false,
       "translations": {
         "en": {
           "title": "Western island tour",

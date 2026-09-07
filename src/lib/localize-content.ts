@@ -23,6 +23,7 @@ import {
   SETTINGS_TRANSLATABLE_KEYS,
 } from "@/lib/settings-i18n";
 import { tourSlugForLocale } from "@/i18n/tour-slugs";
+import { SHORE_TOUR_I18N_ALIASES } from "@/lib/cruise-shore-match";
 
 export {
   mergeSettingsOverlay,
@@ -440,9 +441,11 @@ export async function localizeShoreTour(
 ): Promise<CruiseShoreTour> {
   if (locale === "es") return tour;
 
-  const fileOverlay = (await loadTranslations(locale)).shoreTours[
-    tour.id
-  ] as Record<string, unknown> | undefined;
+  const overlayMap = (await loadTranslations(locale)).shoreTours || {};
+  const fileOverlay = (overlayMap[tour.id] ||
+    overlayMap[SHORE_TOUR_I18N_ALIASES[tour.id] || ""]) as
+    | Record<string, unknown>
+    | undefined;
   const embeddedRaw = tour.translations?.[locale as "en" | "de"] as
     | Record<string, unknown>
     | undefined;

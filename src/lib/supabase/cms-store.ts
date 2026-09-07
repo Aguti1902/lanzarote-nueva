@@ -181,16 +181,22 @@ export async function writeCmsJson(file: string, data: unknown): Promise<void> {
         .download(file);
       if (!dlErr && existing) {
         const stamp = new Date().toISOString().replace(/[:.]/g, "-");
-        const bakPath = `backups/${file}.${stamp}.json`;
+        const bakPath = `backups/${file.replace(/\//g, "__")}.${stamp}.json`;
         const bakBuf = Buffer.from(await existing.arrayBuffer());
-        await sb.storage.from(CMS_BUCKET).upload(bakPath, bakBuf, {
+        const { error: bakErr } = await sb.storage.from(CMS_BUCKET).upload(bakPath, bakBuf, {
           upsert: false,
           contentType: "application/json",
           cacheControl: "0",
         });
+        if (bakErr) {
+          console.warn(`[cms] backup puntual falló (${file}): ${bakErr.message}`);
+        }
       }
-    } catch {
-      // No bloquear el guardado si el backup falla.
+    } catch (bakCatch) {
+      console.warn(
+        `[cms] backup puntual falló (${file}):`,
+        bakCatch instanceof Error ? bakCatch.message : bakCatch
+      );
     }
 
     const updated = await sb.storage.from(CMS_BUCKET).update(file, payload, options);

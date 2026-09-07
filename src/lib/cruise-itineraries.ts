@@ -6,6 +6,7 @@ import type {
   CruiseShoreTour,
 } from "@/types";
 import { readCmsJson, readCmsJsonFresh, writeCmsJson } from "@/lib/supabase/cms-store";
+import { applyShoreTourPaymentPolicy } from "@/lib/shore-tour-display";
 
 const emptyData: CruiseItinerariesData = {
   updatedAt: "",
@@ -15,12 +16,23 @@ const emptyData: CruiseItinerariesData = {
   sailings: [],
 };
 
+function withShorePaymentPolicy(
+  data: CruiseItinerariesData
+): CruiseItinerariesData {
+  return {
+    ...data,
+    shoreTours: (data.shoreTours || []).map((tour) =>
+      applyShoreTourPaymentPolicy(tour)
+    ),
+  };
+}
+
 /** Una lectura por request; la frescura entre requests la marca `readCmsJson`. */
 export const getCruiseItinerariesData = cache(
   async (): Promise<CruiseItinerariesData> => {
     try {
-      return await readCmsJson<CruiseItinerariesData>(
-        "cruiseItineraries.json"
+      return withShorePaymentPolicy(
+        await readCmsJson<CruiseItinerariesData>("cruiseItineraries.json")
       );
     } catch {
       return emptyData;
@@ -31,8 +43,8 @@ export const getCruiseItinerariesData = cache(
 /** Lectura fresca (admin / API de escritura): siempre Storage si está configurado. */
 export async function getCruiseItinerariesDataFresh(): Promise<CruiseItinerariesData> {
   try {
-    return await readCmsJsonFresh<CruiseItinerariesData>(
-      "cruiseItineraries.json"
+    return withShorePaymentPolicy(
+      await readCmsJsonFresh<CruiseItinerariesData>("cruiseItineraries.json")
     );
   } catch {
     return emptyData;
@@ -47,6 +59,9 @@ export async function saveCruiseItinerariesData(
   data: CruiseItinerariesData
 ): Promise<void> {
   data.updatedAt = new Date().toISOString().slice(0, 10);
+  data.shoreTours = (data.shoreTours || []).map((tour) =>
+    applyShoreTourPaymentPolicy(tour)
+  );
   await writeCmsJson("cruiseItineraries.json", data);
   await writeCruiseSlimIndexes(data);
   clearCruiseItinerariesCache();

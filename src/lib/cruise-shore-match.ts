@@ -43,7 +43,16 @@ export const LEGACY_SHORE_TOUR_ALIASES: Record<string, string> = {
   "excursion-sur-de-lanzarote-parque-nacional-de-timanfaya": "shore-1",
   "lanzarote-experience-tour-nuestra-excursion-mas-completa-para-cruceristas":
     "shore-2",
+  "jameos-y-cactus-lanzarote": "shore-3",
+  "parque-nacional-de-garajonay-la-gomera": "shore-4",
+  "dunas-de-corralejo-fuerteventura": "shore-5",
+  "teide-y-norte-tenerife": "shore-7",
 };
+
+/** shore-* id → clave i18n legacy (overlays EN/DE del CMS). */
+export const SHORE_TOUR_I18N_ALIASES: Record<string, string> = Object.fromEntries(
+  Object.entries(LEGACY_SHORE_TOUR_ALIASES).map(([legacy, id]) => [id, legacy])
+);
 
 /**
  * Excursiones de una escala:
