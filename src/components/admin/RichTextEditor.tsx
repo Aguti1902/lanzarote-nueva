@@ -140,18 +140,23 @@ export function RichTextEditor({
       return;
     }
     ref.current?.focus();
+    const safe = href
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/</g, "&lt;");
     if (!selected) {
-      const safe = href
-        .replace(/&/g, "&amp;")
-        .replace(/"/g, "&quot;")
-        .replace(/</g, "&lt;");
       document.execCommand(
         "insertHTML",
         false,
         `<a href="${safe}">${safe}</a>`
       );
     } else {
-      document.execCommand("createLink", false, href);
+      // createLink a veces reescribe rutas /internas; usamos un marcador y lo sustituimos.
+      const marker = `https://let-link.invalid/${Date.now()}`;
+      document.execCommand("createLink", false, marker);
+      ref.current?.querySelectorAll(`a[href="${marker}"]`).forEach((anchor) => {
+        anchor.setAttribute("href", href);
+      });
     }
     emit();
   }

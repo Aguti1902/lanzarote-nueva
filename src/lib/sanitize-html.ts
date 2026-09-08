@@ -20,6 +20,10 @@ function decodeBasicEntities(value: string): string {
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
     .replace(/&apos;/g, "'")
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => {
+      const code = parseInt(h, 16);
+      return Number.isFinite(code) ? String.fromCharCode(code) : _;
+    })
     .replace(/&#(\d+);/g, (_, n) => {
       const code = Number(n);
       return Number.isFinite(code) ? String.fromCharCode(code) : _;
@@ -65,14 +69,26 @@ function escapeAttr(value: string): string {
     .replace(/</g, "&lt;");
 }
 
+function looksLikeDangerousProtocol(href: string): boolean {
+  const compact = href.replace(/[\u0000-\u001f\u007f\s]/g, "");
+  if (/^(javascript|data|vbscript|file):/i.test(compact)) return true;
+  try {
+    const decoded = decodeURIComponent(compact);
+    if (/^(javascript|data|vbscript|file):/i.test(decoded)) return true;
+  } catch {
+    /* ignore malformed percent-encoding */
+  }
+  return false;
+}
+
 /** href seguro para enlaces del editor (http(s), mailto, rutas internas, anclas). */
 export function sanitizeHref(raw: string): string {
-  const href = String(raw || "")
+  const href = decodeBasicEntities(decodeBasicEntities(String(raw || "")))
     .trim()
     .replace(/[\u0000-\u001f\u007f]/g, "")
     .replace(/"/g, "");
   if (!href) return "";
-  if (/^(javascript|data|vbscript|file):/i.test(href)) return "";
+  if (looksLikeDangerousProtocol(href)) return "";
   if (/^https?:\/\//i.test(href)) return href;
   if (/^mailto:[^\s<>]+@[^\s<>]+$/i.test(href)) return href;
   if (href.startsWith("/") && !href.startsWith("//")) return href;
@@ -121,6 +137,7 @@ export function sanitizeContentHtml(raw: string): string {
     .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
     .replace(/javascript:/gi, "");
 
+  let droppedAnchors = 0;
   html = html.replace(
     /<\/?([a-z0-9]+)(\s[^>]*)?>/gi,
     (match, tag: string, attrs = "") => {
@@ -170,7 +187,13 @@ export function sanitizeContentHtml(raw: string): string {
         return `<img src="${safeSrc}" alt="${alt}" />`;
       }
       if (t === "a") {
-        if (match.startsWith("</")) return "</a>";
+        if (match.startsWith("</")) {
+          if (droppedAnchors > 0) {
+            droppedAnchors -= 1;
+            return "";
+          }
+          return "</a>";
+        }
         const hrefMatch = attrs.match(
           /\shref\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/i
         );
@@ -181,7 +204,10 @@ export function sanitizeContentHtml(raw: string): string {
           ""
         ).trim();
         const safeHref = sanitizeHref(href);
-        if (!safeHref) return "";
+        if (!safeHref) {
+          droppedAnchors += 1;
+          return "";
+        }
         const isExternal = /^https?:\/\//i.test(safeHref);
         const extra = isExternal
           ? ` target="_blank" rel="noopener noreferrer"`
