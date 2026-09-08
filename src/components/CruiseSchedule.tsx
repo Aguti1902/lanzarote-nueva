@@ -181,7 +181,17 @@ export function CruiseSchedule({
                             {dict.cruises.seeExcursionsForShip}
                             <ArrowRight className="h-3.5 w-3.5" />
                           </Link>
-                        ) : null}
+                        ) : (
+                          <Link
+                            href={href(
+                              `/excursiones-cruceros/escala/${call.id}`
+                            )}
+                            className="inline-flex items-center gap-1 text-sm font-bold text-ocean hover:underline"
+                          >
+                            {dict.cruises.seeExcursionsForShip}
+                            <ArrowRight className="h-3.5 w-3.5" />
+                          </Link>
+                        )}
                       </div>
                     </li>
                   );

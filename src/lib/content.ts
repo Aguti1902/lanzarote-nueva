@@ -420,6 +420,13 @@ export async function getCruiseCalls(options?: {
   return calls;
 }
 
+export async function getCruiseCallById(
+  id: string
+): Promise<CruiseCall | undefined> {
+  const data = await getCruisesData();
+  return data.calls.find((c) => c.id === id);
+}
+
 export async function saveCruisesData(data: CruisesData): Promise<void> {
   await writeJson("cruises.json", {
     ...data,
