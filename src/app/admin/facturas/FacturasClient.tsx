@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { FileSpreadsheet } from "lucide-react";
 import type { Invoice, SiteSettings } from "@/types";
 import { formatPrice } from "@/lib/format";
 import {
@@ -44,7 +45,7 @@ export function FacturasClient() {
   });
   const [selected, setSelected] = useState<Invoice | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [busy, setBusy] = useState<"pdf" | "print" | null>(null);
+  const [busy, setBusy] = useState<"pdf" | "print" | "excel" | null>(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -152,13 +153,47 @@ export function FacturasClient() {
     }
   }
 
+  async function handleExcel() {
+    setBusy("excel");
+    setMessage("");
+    try {
+      const params = new URLSearchParams();
+      if (range.from) params.set("from", range.from);
+      if (range.to) params.set("to", range.to);
+      const qs = params.toString();
+      const res = await fetch(`/api/invoices/export${qs ? `?${qs}` : ""}`);
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "No se pudo generar el Excel");
+      }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const cd = res.headers.get("Content-Disposition") || "";
+      const match = cd.match(/filename="([^"]+)"/);
+      a.href = url;
+      a.download = match?.[1] || "Facturacion.xlsx";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      setMessage(`Excel descargado: ${a.download}`);
+    } catch (err) {
+      setMessage(
+        err instanceof Error ? err.message : "No se pudo descargar el Excel"
+      );
+    } finally {
+      setBusy(null);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-ink">Facturas</h1>
         <p className="mt-1 text-sm text-ink-muted">
           Facturas emitidas y abonos (facturas negativas) por cancelación ·{" "}
-          {invoices.length} en total · Previsualizar, imprimir o descargar PDF
+          {invoices.length} en total · Previsualizar, imprimir, PDF o Excel por fechas
         </p>
       </div>
 
@@ -190,6 +225,20 @@ export function FacturasClient() {
           placeholder="Buscar nº, cliente, reserva…"
           className="min-w-[240px] rounded border border-sand-line bg-white px-3 py-2 text-sm"
         />
+        <button
+          type="button"
+          disabled={
+            busy !== null ||
+            loading ||
+            !invoices.some((inv) => inDateRange(inv.createdAt, range))
+          }
+          onClick={handleExcel}
+          className="inline-flex items-center gap-2 rounded-md bg-ocean px-4 py-2 text-sm font-bold text-white hover:bg-ocean-deep disabled:opacity-50"
+          title="Descarga un Excel con las facturas del rango de fechas, con los mismos campos que Facturación 2024 (hojas por mes y canceladas)."
+        >
+          <FileSpreadsheet className="h-4 w-4" />
+          {busy === "excel" ? "Generando Excel…" : "Descargar Excel"}
+        </button>
       </div>
 
       <DateRangeFilter

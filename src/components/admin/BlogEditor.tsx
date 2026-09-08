@@ -11,6 +11,7 @@ import {
   withBlogLocaleTag,
 } from "@/lib/blog-locale";
 import { Field, adminInput } from "@/components/admin/Field";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 
 export function BlogEditor({ initial }: { initial?: BlogPost }) {
@@ -154,6 +155,7 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
           value={post.content || ""}
           onChange={(html) => setPost({ ...post, content: html })}
           minHeight={280}
+          imagesFolder="blog"
         />
       </Field>
       <div className="grid gap-4 md:grid-cols-2">
@@ -173,13 +175,13 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
           />
         </Field>
       </div>
-      <Field label="URL imagen">
-        <input
-          className={adminInput}
-          value={post.image || ""}
-          onChange={(e) => setPost({ ...post, image: e.target.value })}
-        />
-      </Field>
+      <ImageUploadField
+        label="Imagen del artículo"
+        value={post.image || ""}
+        folder="blog"
+        hint="Suba una foto desde el ordenador. Se usará como portada del artículo."
+        onChange={(url) => setPost({ ...post, image: url })}
+      />
       <Field label="Tags temáticos (separados por coma, sin idioma)">
         <input
           className={adminInput}

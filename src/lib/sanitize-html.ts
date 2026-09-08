@@ -105,9 +105,32 @@ export function sanitizeContentHtml(raw: string): string {
         "h2",
         "h3",
         "h4",
+        "img",
+        "figure",
+        "figcaption",
       ]);
       if (!allowed.has(t)) return "";
       if (t === "br") return "<br />";
+      if (t === "img") {
+        if (match.startsWith("</")) return "";
+        const srcMatch = attrs.match(
+          /\ssrc\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/i
+        );
+        const src = (srcMatch?.[2] || srcMatch?.[3] || srcMatch?.[4] || "").trim();
+        const safeSrc =
+          /^(https:\/\/|\/images\/|\/uploads\/)/i.test(src) &&
+          !/javascript:/i.test(src)
+            ? src
+            : "";
+        if (!safeSrc) return "";
+        const altMatch = attrs.match(
+          /\salt\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/i
+        );
+        const alt = (altMatch?.[2] || altMatch?.[3] || altMatch?.[4] || "")
+          .replace(/"/g, "")
+          .slice(0, 200);
+        return `<img src="${safeSrc}" alt="${alt}" />`;
+      }
       const closing = match.startsWith("</");
       if (closing) return `</${t}>`;
 
@@ -170,7 +193,7 @@ export function stripHtml(raw: string): string {
 
 /** Clases Tailwind comunes para HTML tipográfico sanitizado. */
 export const RICH_CONTENT_CLASS =
-  "rich-content space-y-3 leading-relaxed text-ink-muted [&_b]:font-bold [&_b]:text-ink [&_strong]:font-bold [&_strong]:text-ink [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-ink [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-ink";
+  "rich-content space-y-3 leading-relaxed text-ink-muted [&_b]:font-bold [&_b]:text-ink [&_strong]:font-bold [&_strong]:text-ink [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-ink [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-ink [&_img]:my-4 [&_img]:h-auto [&_img]:max-w-full [&_img]:rounded-lg";
 
 /** Mismo bloque sobre fondos oscuros (p. ej. «Nuestra promesa»). */
 export const RICH_CONTENT_ON_DARK_CLASS =

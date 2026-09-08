@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/client";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -43,6 +44,9 @@ async function ensureUploadsBucket(): Promise<void> {
 }
 
 export async function POST(request: Request) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const form = await request.formData();
     const file = form.get("file");
