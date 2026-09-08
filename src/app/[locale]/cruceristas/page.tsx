@@ -8,7 +8,7 @@ import { PageFaqs } from "@/components/PageFaqs";
 import { PageHero } from "@/components/PageHero";
 import { TourCard } from "@/components/TourCard";
 import { getCruiseCalls, getCruisesData, getCruiseTours, getSettings } from "@/lib/content";
-import { buildPortCallSailingLinks } from "@/lib/cruise-itineraries";
+import { buildPortCallSailingLinks, dedupePortCalls } from "@/lib/cruise-itineraries";
 import {
   localizeSettings,
   localizeTours,
@@ -42,6 +42,7 @@ export default async function CruceristasPage({ params }: Props) {
   const privateTours = allCruise.filter((t) => t.category === "private");
 
   const sailingLinks = await buildPortCallSailingLinks(cruiseCalls);
+  const scheduleCalls = dedupePortCalls(cruiseCalls);
 
   const pillars = [
     {
@@ -104,7 +105,7 @@ export default async function CruceristasPage({ params }: Props) {
       <section className="border-y border-sand-line bg-sky-soft py-16">
         <div className="mx-auto max-w-6xl px-4 md:px-6">
           <CruiseSchedule
-            calls={cruiseCalls}
+            calls={scheduleCalls}
             season={cruiseData.season}
             port={cruiseData.port}
             sailingLinks={sailingLinks}

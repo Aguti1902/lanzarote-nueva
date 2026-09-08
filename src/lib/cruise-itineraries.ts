@@ -1,10 +1,12 @@
 import { cache } from "react";
 import type {
+  CruiseCall,
   CruiseCompany,
   CruiseItinerariesData,
   CruiseSailing,
   CruiseShoreTour,
 } from "@/types";
+import { cruiseCompanyDisplayName } from "@/lib/cruise-company-display";
 import { readCmsJson, readCmsJsonFresh, readCmsJsonIfExists, writeCmsJson } from "@/lib/supabase/cms-store";
 import { applyShoreTourPaymentPolicy } from "@/lib/shore-tour-display";
 
@@ -368,9 +370,121 @@ export async function buildPortCallSailingLinks(
     if (match) {
       links[call.id] =
         `/crucero/${match.companySlug}/${match.shipSlug}/${match.sailingId}`;
+    } else {
+      links[call.id] = lanzaroteCallExcursionPath(call.id);
     }
   }
   return links;
+}
+
+export function lanzaroteCallExcursionPath(callId: string): string {
+  return `/excursiones-cruceros/escala/${encodeURIComponent(callId)}`;
+}
+
+function slugify(text: string): string {
+  return String(text || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u00AD\u200B-\u200D\uFEFF]/g, "")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+function matchCompanyForCall(
+  companyName: string,
+  companies: CruiseCompany[]
+): CruiseCompany | undefined {
+  const n = normalizeShip(companyName);
+  if (!n) return undefined;
+  return companies.find((company) => {
+    const byName = normalizeShip(company.name);
+    const bySlug = normalizeShip(company.slug.replace(/-/g, " "));
+    const byDisplay = normalizeShip(
+      cruiseCompanyDisplayName(company)
+    );
+    return (
+      n === byName ||
+      n === bySlug ||
+      n === byDisplay ||
+      n.includes(byName) ||
+      byName.includes(n) ||
+      n.includes(bySlug) ||
+      bySlug.includes(n) ||
+      n.includes(byDisplay) ||
+      byDisplay.includes(n)
+    );
+  });
+}
+
+export async function sailingFromLanzaroteCall(
+  call: CruiseCall
+): Promise<CruiseSailing> {
+  const companies = await getCruiseCompanies();
+  const company = matchCompanyForCall(call.company, companies);
+  const arrival = call.arrivalTime || "";
+  const departure = call.departureTime || "";
+  const time =
+    arrival || departure ? `${arrival} – ${departure}`.trim() : "";
+  return {
+    id: `lz-call-${call.id}`,
+    companySlug: company?.slug || slugify(call.company),
+    companyName: company
+      ? cruiseCompanyDisplayName(company)
+      : call.company,
+    shipSlug: slugify(call.shipName),
+    shipName: call.shipName,
+    departureDate: call.date,
+    endDate: call.date,
+    nights: 0,
+    active: true,
+    stops: [
+      {
+        day: 1,
+        date: call.date,
+        port: "Arrecife, Lanzarote",
+        portKey: "arrecife-lanzarote",
+        time,
+        arrivalTime: arrival,
+        departureTime: departure,
+        isSeaDay: false,
+        hasTours: true,
+        tourIds: [],
+      },
+    ],
+  };
+}
+
+/** Una ficha por barco y horario el mismo día (quita duplicados del CMS). */
+export function dedupePortCalls<
+  T extends {
+    id: string;
+    date: string;
+    shipName: string;
+    arrivalTime: string;
+    departureTime: string;
+    sailingHref?: string;
+  },
+>(calls: T[]): T[] {
+  const groups = new Map<string, T[]>();
+  for (const call of calls) {
+    const key = `${call.date}|${normalizeShip(call.shipName)}|${call.arrivalTime}|${call.departureTime}`;
+    const list = groups.get(key) || [];
+    list.push(call);
+    groups.set(key, list);
+  }
+  const next: T[] = [];
+  for (const list of groups.values()) {
+    const preferred =
+      list.find((call) => call.sailingHref?.startsWith("/crucero/")) ||
+      list[0];
+    next.push(preferred);
+  }
+  return next.sort((a, b) => {
+    const byDate = a.date.localeCompare(b.date);
+    if (byDate !== 0) return byDate;
+    return a.arrivalTime.localeCompare(b.arrivalTime);
+  });
 }
 
 export { sailingPath } from "@/lib/cruise-paths";

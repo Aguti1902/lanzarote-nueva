@@ -6,7 +6,7 @@ import {
   CruisePortCalendar,
   type CalendarCall,
 } from "@/components/CruisePortCalendar";
-import { getCruiseCompanies, buildPortCallSailingLinks } from "@/lib/cruise-itineraries";
+import { getCruiseCompanies, buildPortCallSailingLinks, dedupePortCalls } from "@/lib/cruise-itineraries";
 import { getCruiseCalls, getCruisesData, getSettings } from "@/lib/content";
 import { localizeSettings } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -35,20 +35,22 @@ export default async function ExcursionesCrucerosPage({ params }: Props) {
   ]);
 
   const sailingLinks = await buildPortCallSailingLinks(cruiseCalls);
-  const calendarCalls: CalendarCall[] = cruiseCalls.map((call) => ({
-    id: call.id,
-    date: call.date,
-    port: call.port,
-    company: call.company,
-    shipCode: call.shipCode,
-    shipName: call.shipName,
-    arrivalTime: call.arrivalTime,
-    departureTime: call.departureTime,
-    season: call.season,
-    published: call.published,
-    notes: call.notes,
-    sailingHref: sailingLinks[call.id],
-  }));
+  const calendarCalls: CalendarCall[] = dedupePortCalls(
+    cruiseCalls.map((call) => ({
+      id: call.id,
+      date: call.date,
+      port: call.port,
+      company: call.company,
+      shipCode: call.shipCode,
+      shipName: call.shipName,
+      arrivalTime: call.arrivalTime,
+      departureTime: call.departureTime,
+      season: call.season,
+      published: call.published,
+      notes: call.notes,
+      sailingHref: sailingLinks[call.id],
+    }))
+  );
 
   return (
     <>

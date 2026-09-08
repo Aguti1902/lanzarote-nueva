@@ -253,19 +253,16 @@ export function CruisePortCalendar({ calls, season, port }: Props) {
                             <Clock className="h-3.5 w-3.5 text-ocean" />
                             {call.arrivalTime} – {call.departureTime}
                           </p>
-                          {call.sailingHref ? (
-                            <Link
-                              href={href(call.sailingHref)}
-                              className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-ocean hover:underline"
-                            >
-                              {dict.cruises.seeExcursionsForShip}
-                              <ArrowRight className="h-3.5 w-3.5" />
-                            </Link>
-                          ) : (
-                            <p className="mt-3 text-xs text-ink-muted">
-                              {dict.cruises.dateCalendarNoItinerary}
-                            </p>
-                          )}
+                          <Link
+                            href={href(
+                              call.sailingHref ||
+                                `/excursiones-cruceros/escala/${call.id}`
+                            )}
+                            className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-ocean hover:underline"
+                          >
+                            {dict.cruises.seeExcursionsForShip}
+                            <ArrowRight className="h-3.5 w-3.5" />
+                          </Link>
                         </div>
                       </div>
                     </li>
