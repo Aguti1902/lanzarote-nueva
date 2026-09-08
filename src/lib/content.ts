@@ -62,9 +62,18 @@ function isTourActive(tour: Tour): boolean {
   return tour.active !== false;
 }
 
+/** Menor `priority` = primero en la web y en el panel. Empate: orden original. */
+export function compareTourOrder(a: Tour, b: Tour): number {
+  return (a.priority ?? 999) - (b.priority ?? 999);
+}
+
+function sortToursByPriority(tours: Tour[]): Tour[] {
+  return [...tours].sort(compareTourOrder);
+}
+
 /** Todas las excursiones (incluye inactivas). Uso admin / API. */
 export const getTours = cache(async (): Promise<Tour[]> => {
-  return readJson<Tour[]>("tours.json");
+  return sortToursByPriority(await readJson<Tour[]>("tours.json"));
 });
 
 /** Solo excursiones activas para la web pública. */
@@ -91,7 +100,7 @@ export async function getCruiseTours(): Promise<Tour[]> {
 }
 
 export async function saveTours(tours: Tour[]): Promise<void> {
-  await writeJson("tours.json", tours);
+  await writeJson("tours.json", sortToursByPriority(tours));
 }
 
 export async function upsertTour(tour: Tour): Promise<Tour> {

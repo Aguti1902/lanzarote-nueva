@@ -55,6 +55,7 @@ export default function AdminExcursionesPage() {
         <table className="w-full min-w-[920px] text-left text-sm">
           <thead className="border-b border-sand-line bg-bg text-ink-muted">
             <tr>
+              <th className="px-4 py-3 font-medium">Orden</th>
               <th className="px-4 py-3 font-medium">Estado</th>
               <th className="px-4 py-3 font-medium">Nombre del tour</th>
               <th className="px-4 py-3 font-medium">Isla</th>
@@ -66,23 +67,28 @@ export default function AdminExcursionesPage() {
           <tbody>
             {loading && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-ink-muted">
+                <td colSpan={7} className="px-4 py-8 text-center text-ink-muted">
                   Cargando…
                 </td>
               </tr>
             )}
             {!loading && tours.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-ink-muted">
+                <td colSpan={7} className="px-4 py-8 text-center text-ink-muted">
                   No hay excursiones todavía.
                 </td>
               </tr>
             )}
             {!loading &&
-              tours.map((t) => {
+              [...tours]
+                .sort((a, b) => (a.priority ?? 999) - (b.priority ?? 999))
+                .map((t) => {
                 const active = isActive(t);
                 return (
                   <tr key={t.id} className="border-b border-sand-line/70">
+                    <td className="px-4 py-3 tabular-nums text-ink-muted">
+                      {t.priority ?? "—"}
+                    </td>
                     <td className="px-4 py-3">
                       <span className="inline-flex items-center gap-2 text-xs font-semibold">
                         <span
