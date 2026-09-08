@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   AlignCenter,
   AlignJustify,
   AlignLeft,
   AlignRight,
   Bold,
+  ImagePlus,
   Indent,
   List,
   ListOrdered,
@@ -73,15 +74,20 @@ export function RichTextEditor({
   value,
   onChange,
   minHeight = 180,
+  imagesFolder,
 }: {
   label?: string;
   value: string;
   onChange: (html: string) => void;
   minHeight?: number;
+  /** Si se indica, permite insertar fotos subidas (sin pegar URL). */
+  imagesFolder?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
   const lastExternal = useRef(value);
   const ready = useRef(false);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -110,6 +116,29 @@ export function RichTextEditor({
     ref.current?.focus();
     document.execCommand(command, false, arg);
     emit();
+  }
+
+  async function insertUploadedImage(file: File) {
+    if (!imagesFolder) return;
+    setUploading(true);
+    try {
+      const body = new FormData();
+      body.append("file", file);
+      body.append("folder", imagesFolder);
+      const res = await fetch("/api/admin/upload", { method: "POST", body });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Error al subir");
+      ref.current?.focus();
+      document.execCommand("insertImage", false, data.url);
+      emit();
+    } catch (err) {
+      window.alert(
+        err instanceof Error ? err.message : "No se pudo subir la imagen"
+      );
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
   }
 
   return (
@@ -194,6 +223,29 @@ export function RichTextEditor({
               ))}
             </select>
           </label>
+          {imagesFolder ? (
+            <>
+              <span className="mx-1 h-4 w-px bg-sand-line" />
+              <ToolbarBtn
+                title={uploading ? "Subiendo imagen…" : "Insertar imagen"}
+                onClick={() => {
+                  if (!uploading) fileRef.current?.click();
+                }}
+              >
+                <ImagePlus className="h-4 w-4" />
+              </ToolbarBtn>
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) void insertUploadedImage(file);
+                }}
+              />
+            </>
+          ) : null}
         </div>
         <div
           ref={ref}
@@ -201,7 +253,7 @@ export function RichTextEditor({
           aria-multiline="true"
           contentEditable
           suppressContentEditableWarning
-          className="rich-editor max-w-none px-3 py-2.5 text-sm leading-relaxed text-ink outline-none [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5"
+          className="rich-editor max-w-none px-3 py-2.5 text-sm leading-relaxed text-ink outline-none [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5 [&_img]:my-2 [&_img]:max-h-80 [&_img]:max-w-full [&_img]:rounded-md"
           style={{ minHeight }}
           onInput={emit}
           onBlur={emit}
@@ -220,7 +272,8 @@ export function RichTextEditor({
         />
       </div>
       <p className="text-xs text-ink-muted">
-        Formato: negrita, listas, sangría, alineación, tamaño y color.
+        Formato: negrita, listas, sangría, alineación, tamaño y color
+        {imagesFolder ? ", e imágenes subidas desde el ordenador" : ""}.
       </p>
     </div>
   );
