@@ -319,7 +319,8 @@ export async function buildInvoicesWorkbook(
   }
 
   for (const key of months) {
-    const label = monthLabel(key);
+    const year = key.slice(0, 4);
+    const label = `${monthLabel(key)} ${year}`;
     const list = byMonth.get(key) || [];
     const issued = list.filter((i) => !isCreditInvoice(i));
     const credits = list.filter((i) => isCreditInvoice(i));

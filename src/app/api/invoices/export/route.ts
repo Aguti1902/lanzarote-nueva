@@ -43,17 +43,28 @@ export async function GET(request: Request) {
     );
   }
 
-  const buffer = await buildInvoicesWorkbook(filtered, bookings);
-  const filename = invoicesExcelFilename(from, to);
-  const bytes = Buffer.from(buffer);
+  try {
+    const buffer = await buildInvoicesWorkbook(filtered, bookings);
+    const filename = invoicesExcelFilename(from, to);
 
-  return new NextResponse(bytes, {
-    status: 200,
-    headers: {
-      "Content-Type":
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      "Content-Disposition": `attachment; filename="${filename}"`,
-      "Cache-Control": "no-store",
-    },
-  });
+    return new NextResponse(new Uint8Array(buffer), {
+      status: 200,
+      headers: {
+        "Content-Type":
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "Content-Disposition": `attachment; filename="${filename}"`,
+        "Cache-Control": "no-store",
+      },
+    });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "No se pudo generar el Excel",
+      },
+      { status: 500 }
+    );
+  }
 }
