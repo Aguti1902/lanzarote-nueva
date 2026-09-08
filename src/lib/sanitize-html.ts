@@ -58,6 +58,43 @@ export function looksLikeHtml(text: string): boolean {
 const STYLE_ALLOWED =
   /^(color|font-size|font-weight|text-decoration|text-align|margin-left|padding-left)\s*:/i;
 
+function escapeAttr(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;");
+}
+
+/** href seguro para enlaces del editor (http(s), mailto, rutas internas, anclas). */
+export function sanitizeHref(raw: string): string {
+  const href = String(raw || "")
+    .trim()
+    .replace(/[\u0000-\u001f\u007f]/g, "")
+    .replace(/"/g, "");
+  if (!href) return "";
+  if (/^(javascript|data|vbscript|file):/i.test(href)) return "";
+  if (/^https?:\/\//i.test(href)) return href;
+  if (/^mailto:[^\s<>]+@[^\s<>]+$/i.test(href)) return href;
+  if (href.startsWith("/") && !href.startsWith("//")) return href;
+  if (/^#[\w\-./?=]+$/.test(href)) return href;
+  return "";
+}
+
+/** Normaliza lo que escribe el editor: www… → https, «excursiones» → /excursiones. */
+export function normalizeEditorHref(raw: string): string {
+  const href = String(raw || "").trim();
+  if (!href) return "";
+  const direct = sanitizeHref(href);
+  if (direct) return direct;
+  if (/^[\w.-]+\.[a-z]{2,}([/:?#].*)?$/i.test(href)) {
+    return sanitizeHref(`https://${href}`);
+  }
+  if (!/\s/.test(href) && !href.includes(":")) {
+    return sanitizeHref(`/${href.replace(/^\/+/, "")}`);
+  }
+  return "";
+}
+
 function filterSafeStyle(raw: string): string {
   return raw
     .split(";")
@@ -108,6 +145,7 @@ export function sanitizeContentHtml(raw: string): string {
         "img",
         "figure",
         "figcaption",
+        "a",
       ]);
       if (!allowed.has(t)) return "";
       if (t === "br") return "<br />";
@@ -130,6 +168,25 @@ export function sanitizeContentHtml(raw: string): string {
           .replace(/"/g, "")
           .slice(0, 200);
         return `<img src="${safeSrc}" alt="${alt}" />`;
+      }
+      if (t === "a") {
+        if (match.startsWith("</")) return "</a>";
+        const hrefMatch = attrs.match(
+          /\shref\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/i
+        );
+        const href = (
+          hrefMatch?.[2] ||
+          hrefMatch?.[3] ||
+          hrefMatch?.[4] ||
+          ""
+        ).trim();
+        const safeHref = sanitizeHref(href);
+        if (!safeHref) return "";
+        const isExternal = /^https?:\/\//i.test(safeHref);
+        const extra = isExternal
+          ? ` target="_blank" rel="noopener noreferrer"`
+          : "";
+        return `<a href="${escapeAttr(safeHref)}"${extra}>`;
       }
       const closing = match.startsWith("</");
       if (closing) return `</${t}>`;
@@ -193,8 +250,8 @@ export function stripHtml(raw: string): string {
 
 /** Clases Tailwind comunes para HTML tipográfico sanitizado. */
 export const RICH_CONTENT_CLASS =
-  "rich-content space-y-3 leading-relaxed text-ink-muted [&_b]:font-bold [&_b]:text-ink [&_strong]:font-bold [&_strong]:text-ink [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-ink [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-ink [&_img]:my-4 [&_img]:h-auto [&_img]:max-w-full [&_img]:rounded-lg";
+  "rich-content space-y-3 leading-relaxed text-ink-muted [&_a]:font-semibold [&_a]:text-ocean [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:text-ocean-deep [&_b]:font-bold [&_b]:text-ink [&_strong]:font-bold [&_strong]:text-ink [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-ink [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-ink [&_img]:my-4 [&_img]:h-auto [&_img]:max-w-full [&_img]:rounded-lg";
 
 /** Mismo bloque sobre fondos oscuros (p. ej. «Nuestra promesa»). */
 export const RICH_CONTENT_ON_DARK_CLASS =
-  "rich-content rich-content-on-dark space-y-3 leading-relaxed text-white [&_p]:text-white [&_li]:text-white [&_span]:text-white [&_div]:text-white [&_b]:font-bold [&_b]:text-white [&_strong]:font-bold [&_strong]:text-white [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-white [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-white";
+  "rich-content rich-content-on-dark space-y-3 leading-relaxed text-white [&_p]:text-white [&_li]:text-white [&_span]:text-white [&_div]:text-white [&_a]:font-semibold [&_a]:text-white [&_a]:underline [&_b]:font-bold [&_b]:text-white [&_strong]:font-bold [&_strong]:text-white [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-white [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-white";

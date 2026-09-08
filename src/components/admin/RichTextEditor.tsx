@@ -9,14 +9,17 @@ import {
   Bold,
   ImagePlus,
   Indent,
+  Link2,
   List,
   ListOrdered,
   Outdent,
   Palette,
   Type,
   Underline,
+  Unlink,
 } from "lucide-react";
 import type { ReactNode } from "react";
+import { normalizeEditorHref } from "@/lib/sanitize-html";
 
 const SIZES = [
   { label: "Normal", value: "3" },
@@ -68,7 +71,7 @@ function ToolbarBtn({
   );
 }
 
-/** Editor tipográfico: negrita, listas, sangría, alineación, tamaño y color. */
+/** Editor tipográfico: negrita, listas, enlaces, sangría, alineación, tamaño y color. */
 export function RichTextEditor({
   label,
   value,
@@ -118,6 +121,41 @@ export function RichTextEditor({
     emit();
   }
 
+  function insertLink() {
+    const selected = window.getSelection()?.toString().trim() || "";
+    const raw = window.prompt(
+      selected
+        ? "URL o ruta de la página (ej. /excursiones o https://…)"
+        : "URL o ruta. Si no hay texto seleccionado, se inserta el propio enlace.",
+      selected.startsWith("http") || selected.startsWith("/")
+        ? selected
+        : "https://"
+    );
+    if (raw == null) return;
+    const href = normalizeEditorHref(raw);
+    if (!href) {
+      window.alert(
+        "Use una URL http(s), un correo mailto: o una ruta de esta web que empiece por /."
+      );
+      return;
+    }
+    ref.current?.focus();
+    if (!selected) {
+      const safe = href
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;");
+      document.execCommand(
+        "insertHTML",
+        false,
+        `<a href="${safe}">${safe}</a>`
+      );
+    } else {
+      document.execCommand("createLink", false, href);
+    }
+    emit();
+  }
+
   async function insertUploadedImage(file: File) {
     if (!imagesFolder) return;
     setUploading(true);
@@ -153,6 +191,12 @@ export function RichTextEditor({
           </ToolbarBtn>
           <ToolbarBtn title="Subrayado" onClick={() => run("underline")}>
             <Underline className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn title="Insertar enlace" onClick={insertLink}>
+            <Link2 className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn title="Quitar enlace" onClick={() => run("unlink")}>
+            <Unlink className="h-4 w-4" />
           </ToolbarBtn>
           <span className="mx-1 h-4 w-px bg-sand-line" />
           <ToolbarBtn
@@ -253,7 +297,7 @@ export function RichTextEditor({
           aria-multiline="true"
           contentEditable
           suppressContentEditableWarning
-          className="rich-editor max-w-none px-3 py-2.5 text-sm leading-relaxed text-ink outline-none [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5 [&_img]:my-2 [&_img]:max-h-80 [&_img]:max-w-full [&_img]:rounded-md"
+          className="rich-editor max-w-none px-3 py-2.5 text-sm leading-relaxed text-ink outline-none [&_a]:font-semibold [&_a]:text-ocean [&_a]:underline [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5 [&_img]:my-2 [&_img]:max-h-80 [&_img]:max-w-full [&_img]:rounded-md"
           style={{ minHeight }}
           onInput={emit}
           onBlur={emit}
@@ -272,8 +316,10 @@ export function RichTextEditor({
         />
       </div>
       <p className="text-xs text-ink-muted">
-        Formato: negrita, listas, sangría, alineación, tamaño y color
+        Formato: negrita, enlace, listas, sangría, alineación, tamaño y color
         {imagesFolder ? ", e imágenes subidas desde el ordenador" : ""}.
+        Seleccione un texto y pulse el icono de eslabón para vincularlo a otra
+        página.
       </p>
     </div>
   );
