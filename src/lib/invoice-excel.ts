@@ -249,9 +249,7 @@ function addIssuedRow(
 ) {
   const code = paymentCode(inv, booking);
   const cells = stripePaypalCells(inv, code);
-  // exceljs ignora el índice 0 de row.values
   ws.getRow(row).values = [
-    undefined,
     invoiceNumber(inv),
     inv.bookingId || DASH,
     inv.customer?.name || "",
@@ -281,7 +279,6 @@ function addCreditRow(
 ) {
   const code = paymentCode(inv, booking);
   ws.getRow(row).values = [
-    undefined,
     invoiceNumber(inv),
     inv.bookingId || DASH,
     relatedInvoiceNumber(inv),
