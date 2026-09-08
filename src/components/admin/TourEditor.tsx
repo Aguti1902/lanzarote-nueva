@@ -539,13 +539,17 @@ export function TourEditor({ initial }: { initial?: Tour }) {
                 <option value="yes">Sí</option>
               </select>
             </Field>
-            <Field label="Prioridad del tour">
+            <Field label="Orden en la web">
               <input
                 type="number"
+                min={1}
                 className={adminInput}
                 value={tour.priority ?? 1}
                 onChange={(e) => set("priority", Number(e.target.value))}
               />
+              <span className="mt-1 block text-xs text-ink-muted">
+                El número más bajo aparece primero en Excursiones (1, 2, 3…).
+              </span>
             </Field>
             <Field label="Isla">
               <select
