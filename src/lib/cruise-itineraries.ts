@@ -232,9 +232,20 @@ function normalizeShip(name: string): string {
   return name
     .toLowerCase()
     .normalize("NFD")
+    .replace(/[\u00AD\u200B-\u200D\uFEFF]/g, "")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\bii\b/g, "2")
+    .replace(/\biii\b/g, "3")
     .replace(/[^a-z0-9]+/g, " ")
     .trim();
+}
+
+function shipsLooselyMatch(a: string, b: string): boolean {
+  const na = normalizeShip(a);
+  const nb = normalizeShip(b);
+  if (!na || !nb) return false;
+  if (na === nb) return true;
+  return na.endsWith(` ${nb}`) || nb.endsWith(` ${na}`);
 }
 
 /** Match a Lanzarote port-call calendar row to a full sailing itinerary. */
@@ -327,10 +338,23 @@ export async function buildPortCallSailingLinks(
     }
   }
 
+  const byDate = new Map<string, IndexEntry[]>();
+  for (const entry of entries) {
+    const list = byDate.get(entry.date) || [];
+    list.push(entry);
+    byDate.set(entry.date, list);
+  }
+
   const links: Record<string, string> = {};
   for (const call of calls) {
     const key = `${call.date}|${normalizeShip(call.shipName)}`;
-    const candidates = index.get(key) || [];
+    let candidates = index.get(key) || [];
+    if (!candidates.length) {
+      candidates = (byDate.get(call.date) || []).filter((entry) =>
+        shipsLooselyMatch(entry.shipName, call.shipName) ||
+        shipsLooselyMatch(entry.shipSlug.replace(/-/g, " "), call.shipName)
+      );
+    }
     const company = normalizeShip(call.company);
     const match =
       candidates.find((entry) => {

@@ -9,6 +9,7 @@ import { formatDateShort, intlLocale } from "@/lib/format";
 import { sailingPath } from "@/lib/cruise-paths";
 import {
   cruiseCompanyDisplayName,
+  cruiseCompanyHasLogo,
   cruiseCompanyLogoSrc,
 } from "@/lib/cruise-company-display";
 import { useLocale } from "@/components/LocaleProvider";
@@ -108,14 +109,20 @@ export function CruiseCompanySailings({
 
         <div className="flex flex-col gap-6 md:flex-row md:items-start">
           <div className="flex h-28 w-44 shrink-0 items-center justify-center rounded-xl bg-white p-4 ring-1 ring-sand-line">
-            <Image
-              src={logoSrc}
-              alt={companyName}
-              width={180}
-              height={90}
-              className="max-h-20 w-auto object-contain"
-              priority
-            />
+            {cruiseCompanyHasLogo(company.slug) ? (
+              <Image
+                src={logoSrc}
+                alt={companyName}
+                width={180}
+                height={90}
+                className="max-h-20 w-auto object-contain"
+                priority
+              />
+            ) : (
+              <span className="text-center text-sm font-bold text-ocean">
+                {companyName}
+              </span>
+            )}
           </div>
           <div className="min-w-0 space-y-3">
             <h1 className="font-display text-3xl font-extrabold md:text-4xl">

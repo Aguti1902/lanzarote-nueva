@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { CruiseCompany } from "@/types";
 import {
   cruiseCompanyDisplayName,
+  cruiseCompanyHasLogo,
   cruiseCompanyLogoSrc,
 } from "@/lib/cruise-company-display";
 import { useLocale } from "@/components/LocaleProvider";
@@ -28,13 +29,17 @@ export function CruiseCompanyBrowser({
             title={name}
           >
             <span className="relative flex h-16 w-full items-center justify-center">
-              <Image
-                src={cruiseCompanyLogoSrc(company.slug)}
-                alt={name}
-                width={160}
-                height={64}
-                className="max-h-14 w-auto object-contain"
-              />
+              {cruiseCompanyHasLogo(company.slug) ? (
+                <Image
+                  src={cruiseCompanyLogoSrc(company.slug)}
+                  alt={name}
+                  width={160}
+                  height={64}
+                  className="max-h-14 w-auto object-contain"
+                />
+              ) : (
+                <span className="px-2 text-sm font-bold text-ocean">{name}</span>
+              )}
             </span>
             <span className="text-xs font-semibold text-ink-muted group-hover:text-ocean">
               {name}
