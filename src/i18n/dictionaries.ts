@@ -20,6 +20,8 @@ export type Dictionary = {
     loading: string;
     send: string;
     phone: string;
+    phonePrefix: string;
+    phonePlaceholder: string;
     email: string;
     continue: string;
     backHome: string;
@@ -457,6 +459,8 @@ const es: Dictionary = {
     loading: "Cargando…",
     send: "Enviar",
     phone: "Teléfono",
+    phonePrefix: "Prefijo",
+    phonePlaceholder: "612 345 678",
     email: "Email",
     continue: "Continuar",
     backHome: "Volver al inicio",
@@ -1051,6 +1055,8 @@ const en: Dictionary = {
     loading: "Loading…",
     send: "Send",
     phone: "Phone",
+    phonePrefix: "Prefix",
+    phonePlaceholder: "612 345 678",
     email: "Email",
     continue: "Continue",
     backHome: "Back to home",
@@ -1596,6 +1602,8 @@ const de: Dictionary = {
     loading: "Laden…",
     send: "Senden",
     phone: "Telefon",
+    phonePrefix: "Vorwahl",
+    phonePlaceholder: "612 345 678",
     email: "E-Mail",
     continue: "Weiter",
     backHome: "Zur Startseite",

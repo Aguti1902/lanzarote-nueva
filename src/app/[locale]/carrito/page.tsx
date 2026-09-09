@@ -11,6 +11,8 @@ import { formatPrice } from "@/lib/format";
 import type { PaymentMethod } from "@/types";
 import { isServiceDateWithinLeadTime } from "@/lib/booking-lead-time";
 import { expectedOnlineCharge, splitPaymentAmounts } from "@/lib/payments";
+import { PhoneWithPrefix } from "@/components/PhoneWithPrefix";
+import { isValidBookingPhone } from "@/lib/phone";
 
 const inputClass =
   "w-full rounded border border-sand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20";
@@ -64,6 +66,10 @@ export default function CarritoPage() {
     );
     if (tooSoon) {
       setError(dict.booking.minLeadTime);
+      return;
+    }
+    if (!name || !email || !isValidBookingPhone(phone)) {
+      setError(dict.booking.fillRequired);
       return;
     }
     setLoading(true);
@@ -251,13 +257,20 @@ export default function CarritoPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-              <input
-                className={inputClass}
-                placeholder={dict.common.phone}
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required
-              />
+              <div>
+                <p className="mb-1 text-sm font-medium text-ink">
+                  {dict.common.phone} *
+                </p>
+                <PhoneWithPrefix
+                  locale={locale}
+                  value={phone}
+                  onChange={setPhone}
+                  inputClassName={inputClass}
+                  required
+                  prefixLabel={dict.common.phonePrefix}
+                  placeholder={dict.common.phonePlaceholder}
+                />
+              </div>
               <input
                 className={inputClass}
                 placeholder={dict.cart.hotel}

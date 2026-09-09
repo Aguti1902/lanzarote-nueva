@@ -11,6 +11,7 @@ import { escapeHtml, formatFromAddress, sendEmail } from "@/lib/mail";
 import { MAILBOX, resolveBookingMailbox } from "@/lib/mail-routing";
 import { resolvePublicOrigin } from "@/lib/voucher";
 import { bookingLanguageLabel } from "@/lib/booking-display";
+import { formatInternationalPhone } from "@/lib/phone";
 
 const ADMIN_FOOTER = "Notificación interna · Lanzarote Experience Tours.";
 
@@ -122,7 +123,9 @@ export async function notifyNewBooking(
     "Cliente:",
     `  Nombre: ${booking.customer.name}`,
     `  Email: ${booking.customer.email}`,
-    `  Teléfono: ${booking.customer.phone || "—"}`,
+    booking.customer.phone
+      ? `  Teléfono: ${formatInternationalPhone(booking.customer.phone) || booking.customer.phone}`
+      : `  Teléfono: —`,
     booking.customer.hotel ? `  Hotel: ${booking.customer.hotel}` : "",
     booking.customer.cruiseShip
       ? `  Crucero: ${booking.customer.cruiseShip}`
@@ -168,7 +171,14 @@ export async function notifyNewBooking(
       "Email",
       `<a href="mailto:${escapeHtml(booking.customer.email)}" style="color:#eb4823;text-decoration:none">${escapeHtml(booking.customer.email)}</a>`
     ),
-    emailRow("Teléfono", escapeHtml(booking.customer.phone || "—")),
+    emailRow(
+      "Teléfono",
+      escapeHtml(
+        formatInternationalPhone(booking.customer.phone) ||
+          booking.customer.phone ||
+          "—"
+      )
+    ),
     booking.customer.hotel
       ? emailRow("Hotel", escapeHtml(booking.customer.hotel))
       : "",

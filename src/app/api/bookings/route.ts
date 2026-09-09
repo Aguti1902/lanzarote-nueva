@@ -58,6 +58,7 @@ import {
   normalizeBookingLocale,
   resolveCreateBookingLocale,
 } from "@/lib/booking-locale";
+import { normalizeBookingPhone } from "@/lib/phone";
 
 /** Solo emitir factura automática cuando ya hay cobro real. */
 function shouldAutoIssueInvoice(booking: {
@@ -232,6 +233,28 @@ export async function POST(request: Request) {
       typeof tourTitle === "string" ? tourTitle : undefined
     );
 
+    const customerNorm =
+      customer && typeof customer === "object"
+        ? (() => {
+            const { phonePrefix: rawPrefix, ...rest } = customer as {
+              phonePrefix?: string;
+              name?: string;
+              email?: string;
+              phone?: string;
+            } & Record<string, unknown>;
+            return {
+              ...rest,
+              name: String(rest.name || "").trim(),
+              email: String(rest.email || "").trim(),
+              phone: normalizeBookingPhone(
+                rest.phone,
+                rawPrefix,
+                localeNorm
+              ),
+            };
+          })()
+        : customer;
+
     if (shoreTourForPricing) {
       const pax = adultsNum + childrenNum;
       const maxPax = shoreTourMaxPassengers(shoreTourForPricing);
@@ -326,7 +349,7 @@ export async function POST(request: Request) {
       totalPrice: resolvedTotal,
       paymentMethod: method,
       paymentStatus: status === "pending" ? "unpaid" : undefined,
-      customer,
+      customer: customerNorm,
       transfer: transferPayload,
       minibus,
       status,
@@ -582,12 +605,19 @@ export async function PATCH(request: Request) {
         customer: {
           ...existing.customer,
           ...Object.fromEntries(
-            Object.entries(customer).map(([key, value]) => [
-              key,
-              value == null ? "" : String(value).trim(),
-            ])
+            Object.entries(customer)
+              .filter(([key]) => key !== "phonePrefix")
+              .map(([key, value]) => [
+                key,
+                value == null ? "" : String(value).trim(),
+              ])
           ),
           name,
+          phone: normalizeBookingPhone(
+            customer.phone != null ? String(customer.phone) : existing.customer.phone,
+            (customer as { phonePrefix?: string }).phonePrefix,
+            existing.locale
+          ),
         },
       });
       if (!booking) {

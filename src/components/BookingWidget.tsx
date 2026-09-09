@@ -10,6 +10,8 @@ import { useCart } from "@/components/CartProvider";
 import { useLocale } from "@/components/LocaleProvider";
 import { expectedOnlineCharge, splitPaymentAmounts } from "@/lib/payments";
 import { TourDatePicker } from "@/components/TourDatePicker";
+import { PhoneWithPrefix } from "@/components/PhoneWithPrefix";
+import { isValidBookingPhone } from "@/lib/phone";
 import { isServiceDateWithinLeadTime } from "@/lib/booking-lead-time";
 import {
   effectiveAdultPrice,
@@ -135,7 +137,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
       setError(dict.booking.dateUnavailable);
       return false;
     }
-    if (requireContact && (!name || !email || !phone)) {
+    if (requireContact && (!name || !email || !isValidBookingPhone(phone))) {
       setError(dict.booking.fillRequired);
       return false;
     }
@@ -336,16 +338,19 @@ export function BookingWidget({ tour }: { tour: Tour }) {
               autoComplete="email"
             />
           </Field>
-          <Field label={`${dict.common.phone} *`}>
-            <input
-              type="tel"
-              className={inputClass}
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
-              autoComplete="tel"
-            />
-          </Field>
+          <div className="col-span-2">
+            <Field label={`${dict.common.phone} *`}>
+              <PhoneWithPrefix
+                locale={locale}
+                value={phone}
+                onChange={setPhone}
+                inputClassName={inputClass}
+                required
+                prefixLabel={dict.common.phonePrefix}
+                placeholder={dict.common.phonePlaceholder}
+              />
+            </Field>
+          </div>
         </div>
 
         <button

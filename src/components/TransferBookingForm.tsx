@@ -13,6 +13,8 @@ import {
   type TransferDirection,
 } from "@/lib/transfer-price";
 import type { PaymentMethod, TransferDestination } from "@/types";
+import { PhoneWithPrefix } from "@/components/PhoneWithPrefix";
+import { isValidBookingPhone } from "@/lib/phone";
 
 const inputClass =
   "w-full rounded-lg border border-sand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20";
@@ -84,7 +86,7 @@ export function TransferBookingForm({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    if (!date || !time || !name || !email || !phone || !hotel) {
+    if (!date || !time || !name || !email || !isValidBookingPhone(phone) || !hotel) {
       setError(dict.booking.fillRequired);
       return;
     }
@@ -293,12 +295,14 @@ export function TransferBookingForm({
           <span className="mb-1 block text-sm font-medium">
             {dict.common.phone} *
           </span>
-          <input
-            type="tel"
-            className={inputClass}
+          <PhoneWithPrefix
+            locale={locale}
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={setPhone}
+            inputClassName={inputClass}
             required
+            prefixLabel={dict.common.phonePrefix}
+            placeholder={dict.common.phonePlaceholder}
           />
         </label>
         <label className="block">

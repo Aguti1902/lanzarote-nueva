@@ -15,6 +15,7 @@ import {
 } from "@/lib/booking-time";
 import { bookingLanguageLabel } from "@/lib/booking-display";
 import { resolveCustomerEmailLocale } from "@/lib/booking-locale";
+import { formatInternationalPhone } from "@/lib/phone";
 import type { CancelReasonId } from "@/lib/cancellation";
 import {
   buildVoucherHtml,
@@ -736,7 +737,9 @@ export function BookingDetailModal({
                     <Row label="Email" value={booking.customer.email} />
                     <Row
                       label="Teléfono"
-                      value={booking.customer.phone || "—"}
+                      value={
+                        formatInternationalPhone(booking.customer.phone) || "—"
+                      }
                     />
                     <Row
                       label="Idioma de la excursión"

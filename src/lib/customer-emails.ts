@@ -23,6 +23,7 @@ import { MAILBOX, resolveBookingMailbox } from "@/lib/mail-routing";
 import { isOnlineCardMethod } from "@/lib/payments";
 import { resolvePublicOrigin } from "@/lib/voucher";
 import { localePath } from "@/i18n/path";
+import { formatInternationalPhone } from "@/lib/phone";
 import type { Locale } from "@/i18n/config";
 import {
   resolveCustomerEmailLocale,
@@ -497,7 +498,7 @@ export async function notifyOpsCancellation(
     `Servicio: ${booking.tourTitle}`,
     `Fecha: ${booking.date}`,
     `Cliente: ${booking.customer.name} <${booking.customer.email}>`,
-    `Teléfono: ${booking.customer.phone || "—"}`,
+    `Teléfono: ${formatInternationalPhone(booking.customer.phone) || booking.customer.phone || "—"}`,
     assessment
       ? `Cargo: ${assessment.fee} € · Devolución: ${assessment.refundAmount} €`
       : "",
@@ -521,7 +522,14 @@ export async function notifyOpsCancellation(
       "Cliente",
       escapeHtml(`${booking.customer.name} <${booking.customer.email}>`)
     ),
-    emailRow("Teléfono", escapeHtml(booking.customer.phone || "—")),
+    emailRow(
+      "Teléfono",
+      escapeHtml(
+        formatInternationalPhone(booking.customer.phone) ||
+          booking.customer.phone ||
+          "—"
+      )
+    ),
     assessment
       ? emailRow(
           "Cargo / devolución",
