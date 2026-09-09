@@ -57,7 +57,7 @@ export function PhoneWithPrefix({
   }, [locale]);
 
   return (
-    <div className="flex gap-2">
+    <div className="flex min-w-0 flex-wrap gap-2">
       <select
         aria-label={prefixLabel}
         className={`${inputClassName} w-[9.75rem] shrink-0`}
@@ -81,7 +81,7 @@ export function PhoneWithPrefix({
         type="tel"
         inputMode="tel"
         autoComplete="tel-national"
-        className={inputClassName}
+        className={`${inputClassName} min-w-[10rem] flex-1`}
         value={national}
         placeholder={placeholder}
         required={required}

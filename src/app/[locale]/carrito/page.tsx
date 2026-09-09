@@ -257,15 +257,20 @@ export default function CarritoPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-              <PhoneWithPrefix
-                locale={locale}
-                value={phone}
-                onChange={setPhone}
-                inputClassName={inputClass}
-                required
-                prefixLabel={dict.common.phonePrefix}
-                placeholder={dict.common.phonePlaceholder}
-              />
+              <div>
+                <p className="mb-1 text-sm font-medium text-ink">
+                  {dict.common.phone} *
+                </p>
+                <PhoneWithPrefix
+                  locale={locale}
+                  value={phone}
+                  onChange={setPhone}
+                  inputClassName={inputClass}
+                  required
+                  prefixLabel={dict.common.phonePrefix}
+                  placeholder={dict.common.phonePlaceholder}
+                />
+              </div>
               <input
                 className={inputClass}
                 placeholder={dict.cart.hotel}

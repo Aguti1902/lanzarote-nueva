@@ -340,6 +340,9 @@ export function CruiseTourBooking({
             required
           />
           <div>
+            <p className="mb-1 text-sm text-ink-muted">
+              {dict.common.phone} *
+            </p>
             <PhoneWithPrefix
               locale={locale}
               value={phone}
