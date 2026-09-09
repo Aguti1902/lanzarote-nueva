@@ -6,6 +6,8 @@
  * - Cruceristas → cruise@
  */
 
+import { isCruiseBooking } from "@/lib/booking-ids";
+
 export const MAILBOX = {
   info: "info@lanzaroteexperiencetours.com",
   booking: "booking@lanzaroteexperiencetours.com",
@@ -25,6 +27,7 @@ export function resolveBookingMailbox(input: {
   tourId?: string;
   groupId?: string;
   cruiseShip?: string;
+  notes?: string;
   source?: string;
   /** Prefijo de id (CR-…) por si no hay tourId de shore */
   bookingId?: string;
@@ -44,11 +47,13 @@ export function resolveBookingMailbox(input: {
   // Cruceristas / shore / grupo de crucero
   if (
     source === "cruise" ||
-    cruiseShip ||
+    source === "shore" ||
     groupId ||
-    tourId.startsWith("shore-") ||
-    /^CR/i.test(tourId) ||
-    /^CR[-_]?\d/i.test(bookingId)
+    isCruiseBooking({
+      tourId,
+      id: bookingId,
+      customer: { cruiseShip, notes: input.notes },
+    })
   ) {
     return MAILBOX.cruise;
   }

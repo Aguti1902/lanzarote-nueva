@@ -324,6 +324,12 @@ export async function POST(request: Request) {
           ? pickupZone.trim()
           : undefined,
       groupId: groupId ? String(groupId) : undefined,
+      source:
+        typeof source === "string" && source.trim()
+          ? source.trim()
+          : customer?.cruiseShip
+            ? "cruise"
+            : undefined,
     });
 
     const awaitingStripe = onlineCheckout && status === "pending";
@@ -373,12 +379,14 @@ export async function POST(request: Request) {
       : null;
 
     if (!awaitingStripe) {
-      void notifyNewBooking(booking, {
-        bookingMethod: methodNorm,
-        source: typeof source === "string" ? source : undefined,
-      }).catch((err) => {
+      try {
+        await notifyNewBooking(booking, {
+          bookingMethod: methodNorm,
+          source: typeof source === "string" ? source : booking.source,
+        });
+      } catch (err) {
         console.error("[bookings] notify failed", err);
-      });
+      }
     }
 
     const customerMailKind = shouldSendCustomerEmailOnCreate(
@@ -386,9 +394,11 @@ export async function POST(request: Request) {
       checkoutUrl
     );
     if (customerMailKind) {
-      void sendCustomerBookingEmail(booking, customerMailKind).catch((err) => {
+      try {
+        await sendCustomerBookingEmail(booking, customerMailKind);
+      } catch (err) {
         console.error("[bookings] customer email failed", err);
-      });
+      }
     }
 
     return NextResponse.json(

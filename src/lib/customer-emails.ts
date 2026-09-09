@@ -352,6 +352,8 @@ export async function sendCustomerBookingEmail(
     tourId: booking.tourId,
     groupId: booking.groupId,
     cruiseShip: booking.customer?.cruiseShip,
+    notes: booking.customer?.notes,
+    source: booking.source,
     bookingId: booking.id,
   });
   const from = formatFromAddress(mailbox);
@@ -477,6 +479,8 @@ export async function notifyOpsCancellation(
     tourId: booking.tourId,
     groupId: booking.groupId,
     cruiseShip: booking.customer?.cruiseShip,
+    notes: booking.customer?.notes,
+    source: booking.source,
     bookingId: booking.id,
   });
   const origin = resolvePublicOrigin();

@@ -538,6 +538,8 @@ export interface Booking {
   cancellationFee?: number;
   /** Optional link to a cruise group (admin / grupos cruceros). */
   groupId?: string;
+  /** Origen de la reserva (crucero vs web). */
+  source?: "cruise" | "web" | string;
   /** Idioma de la web al reservar (es/en/de). */
   locale?: string;
   /** Zona de recogida (legacy zone). */

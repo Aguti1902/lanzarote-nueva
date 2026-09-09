@@ -5,6 +5,7 @@ import {
   sendCustomerBookingEmail,
   type CustomerEmailKind,
 } from "@/lib/customer-emails";
+import { notifyNewBooking } from "@/lib/notify";
 import { requireAdmin } from "@/lib/admin-auth";
 
 export async function POST(request: Request) {
@@ -15,13 +16,6 @@ export async function POST(request: Request) {
     const body = await request.json();
     const id = String(body.id || body.booking_id || "").trim();
     const kindRaw = String(body.kind || "confirmation").trim();
-    const kind = (
-      kindRaw === "request" ||
-      kindRaw === "cancellation" ||
-      kindRaw === "confirmation"
-        ? kindRaw
-        : "confirmation"
-    ) as CustomerEmailKind;
 
     if (!id) {
       return NextResponse.json(
@@ -37,12 +31,38 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Reserva no encontrada" }, { status: 404 });
     }
 
+    if (kindRaw === "ops" || kindRaw === "admin") {
+      const result = await notifyNewBooking(booking, {
+        source: booking.source,
+      });
+      if (!result.ok) {
+        return NextResponse.json(
+          { error: result.error || "No se pudo avisar al equipo" },
+          { status: 502 }
+        );
+      }
+      return NextResponse.json({
+        ok: true,
+        skipped: "skipped" in result ? result.skipped : false,
+        id: "id" in result ? result.id : undefined,
+        kind: "ops",
+      });
+    }
+
     if (!booking.customer?.email) {
       return NextResponse.json(
         { error: "La reserva no tiene email de cliente" },
         { status: 400 }
       );
     }
+
+    const kind = (
+      kindRaw === "request" ||
+      kindRaw === "cancellation" ||
+      kindRaw === "confirmation"
+        ? kindRaw
+        : "confirmation"
+    ) as CustomerEmailKind;
 
     const assessment =
       kind === "cancellation" ? assessCancellation(booking) : undefined;
