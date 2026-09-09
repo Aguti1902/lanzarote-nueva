@@ -107,18 +107,26 @@ export async function middleware(request: NextRequest) {
 
   const segment = pathname.split("/")[1];
   if (segment && isLocale(segment)) {
-    const canonical = canonicalLocalizedPathname(pathname);
-    if (canonical && canonical !== pathname) {
-      const url = request.nextUrl.clone();
-      url.pathname = canonical;
-      return securityHeaders(NextResponse.redirect(url, 301));
-    }
+    const alreadyRewritten = request.headers.get("x-let-rewritten") === "1";
 
-    const rewriteTarget = rewriteToInternalPathname(pathname);
-    if (rewriteTarget && rewriteTarget !== pathname) {
-      const url = request.nextUrl.clone();
-      url.pathname = rewriteTarget;
-      return securityHeaders(NextResponse.rewrite(url));
+    if (!alreadyRewritten) {
+      const canonical = canonicalLocalizedPathname(pathname);
+      if (canonical && canonical !== pathname) {
+        const url = request.nextUrl.clone();
+        url.pathname = canonical;
+        return securityHeaders(NextResponse.redirect(url, 301));
+      }
+
+      const rewriteTarget = rewriteToInternalPathname(pathname);
+      if (rewriteTarget && rewriteTarget !== pathname) {
+        const url = request.nextUrl.clone();
+        url.pathname = rewriteTarget;
+        const headers = new Headers(request.headers);
+        headers.set("x-let-rewritten", "1");
+        return securityHeaders(
+          NextResponse.rewrite(url, { request: { headers } })
+        );
+      }
     }
 
     return securityHeaders(NextResponse.next());
