@@ -618,6 +618,14 @@ export async function PATCH(request: Request) {
       if (!booking) {
         return NextResponse.json({ error: "No encontrada" }, { status: 404 });
       }
+      if (booking.customer?.cruiseShip && !booking.groupId) {
+        try {
+          const assigned = await assignBookingToCruiseGroup(booking);
+          return NextResponse.json({ booking: assigned.booking });
+        } catch (err) {
+          console.error("[bookings] cruise group assign failed", booking.id, err);
+        }
+      }
       return NextResponse.json({ booking });
     }
 
