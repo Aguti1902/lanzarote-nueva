@@ -24,18 +24,21 @@ import { isOnlineCardMethod } from "@/lib/payments";
 import { resolvePublicOrigin } from "@/lib/voucher";
 import { localePath } from "@/i18n/path";
 import type { Locale } from "@/i18n/config";
+import {
+  resolveCustomerEmailLocale,
+  normalizeBookingLocale,
+  type BookingLocale,
+} from "@/lib/booking-locale";
 
 export type CustomerEmailKind =
   | "confirmation"
   | "request"
   | "cancellation";
 
-type LocaleKey = "es" | "en" | "de";
+type LocaleKey = BookingLocale;
 
 function localeOf(booking: Booking): LocaleKey {
-  return booking.locale === "en" || booking.locale === "de"
-    ? booking.locale
-    : "es";
+  return resolveCustomerEmailLocale(booking);
 }
 
 const COPY = {
@@ -557,8 +560,7 @@ export async function sendContactAutoReply(input: {
   email: string;
   locale?: string;
 }): Promise<SendEmailResult> {
-  const locale: LocaleKey =
-    input.locale === "en" || input.locale === "de" ? input.locale : "es";
+  const locale: LocaleKey = normalizeBookingLocale(input.locale) || "es";
   const subjects = {
     es: "Hemos recibido su mensaje · Lanzarote Experience Tours",
     en: "We have received your message · Lanzarote Experience Tours",

@@ -53,6 +53,7 @@ import { isFlatPriceTour } from "@/lib/tour-pricing";
 import { isStripeConfigured } from "@/lib/stripe";
 import type { BookingStatus, PaymentMethod } from "@/types";
 import { requireAdmin } from "@/lib/admin-auth";
+import { resolveCreateBookingLocale } from "@/lib/booking-locale";
 
 /** Solo emitir factura automática cuando ya hay cobro real. */
 function shouldAutoIssueInvoice(booking: {
@@ -215,10 +216,11 @@ export async function POST(request: Request) {
         ? bookingMethod.trim().toLowerCase()
         : undefined;
 
-    const localeNorm =
-      typeof locale === "string" && locale.trim()
-        ? locale.trim().toLowerCase().slice(0, 5)
-        : undefined;
+    const localeNorm = resolveCreateBookingLocale(
+      locale,
+      request,
+      typeof tourTitle === "string" ? tourTitle : undefined
+    );
 
     if (shoreTourForPricing) {
       const pax = adultsNum + childrenNum;
