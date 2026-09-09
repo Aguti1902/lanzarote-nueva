@@ -6,7 +6,8 @@ import {
   bookingReturnTime,
   bookingServiceTime,
 } from "@/lib/booking-time";
-import { bookingLocaleLabel } from "@/lib/booking-display";
+import { bookingLanguageLabel } from "@/lib/booking-display";
+import { resolveCustomerEmailLocale } from "@/lib/booking-locale";
 import { customerFacingNotes } from "@/lib/customer-notes";
 import type { Locale } from "@/i18n/config";
 import { localePath } from "@/i18n/path";
@@ -152,11 +153,9 @@ export function buildVoucherHtml(
 
   const origin = resolvePublicOrigin(options?.origin);
   const locale =
-    options?.locale === "en" || options?.locale === "de"
+    options?.locale === "en" || options?.locale === "de" || options?.locale === "es"
       ? options.locale
-      : booking.locale === "en" || booking.locale === "de"
-        ? booking.locale
-        : "es";
+      : resolveCustomerEmailLocale(booking);
   // Always embed logo as data URI so print/download/blob windows never break,
   // and it stays visible on the voucher (logo is white → needs dark plate).
   const logoUrl = options?.logoUrl || BRAND_LOGO_DATA_URI;
@@ -210,8 +209,8 @@ export function buildVoucherHtml(
   if (booking.pickupZone) {
     rows.push([labels.pickupZone, esc(booking.pickupZone)]);
   }
-  if (bookingLocaleLabel(booking.locale)) {
-    rows.push([labels.language, esc(bookingLocaleLabel(booking.locale))]);
+  if (bookingLanguageLabel(booking)) {
+    rows.push([labels.language, esc(bookingLanguageLabel(booking))]);
   }
   if (booking.customer.flightNumber) {
     rows.push([labels.flight, esc(booking.customer.flightNumber)]);

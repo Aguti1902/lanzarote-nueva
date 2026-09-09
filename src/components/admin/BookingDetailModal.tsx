@@ -13,7 +13,8 @@ import {
   bookingReturnTime,
   bookingServiceTime,
 } from "@/lib/booking-time";
-import { bookingLocaleLabel } from "@/lib/booking-display";
+import { bookingLanguageLabel } from "@/lib/booking-display";
+import { resolveCustomerEmailLocale } from "@/lib/booking-locale";
 import type { CancelReasonId } from "@/lib/cancellation";
 import {
   buildVoucherHtml,
@@ -68,7 +69,7 @@ function serviceKind(b: Booking) {
 function voucherHtml(b: Booking) {
   return buildVoucherHtml(b, {
     origin: typeof window !== "undefined" ? window.location.origin : "",
-    locale: b.locale === "en" || b.locale === "de" ? b.locale : "es",
+    locale: resolveCustomerEmailLocale(b),
   });
 }
 
@@ -739,9 +740,7 @@ export function BookingDetailModal({
                     />
                     <Row
                       label="Idioma de la excursión"
-                      value={
-                        bookingLocaleLabel(booking.locale) || "—"
-                      }
+                      value={bookingLanguageLabel(booking) || "—"}
                     />
                     {booking.customer.taxId && (
                       <Row label="NIF / CIF" value={booking.customer.taxId} />
@@ -812,9 +811,9 @@ export function BookingDetailModal({
                   {booking.pickupZone && (
                     <li>Zona de recogida: {booking.pickupZone}</li>
                   )}
-                  {bookingLocaleLabel(booking.locale) && (
+                  {bookingLanguageLabel(booking) && (
                     <li>
-                      Idioma del tour: {bookingLocaleLabel(booking.locale)}
+                      Idioma del tour: {bookingLanguageLabel(booking)}
                     </li>
                   )}
                   {bookingReturnDate(booking) && (

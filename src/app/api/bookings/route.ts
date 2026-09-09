@@ -3,6 +3,7 @@ import {
   addBooking,
   getBookings,
   markCashCollected,
+  persistInferredBookingLocales,
   updateBooking,
   updateBookingStatus,
 } from "@/lib/bookings";
@@ -53,7 +54,10 @@ import { isFlatPriceTour } from "@/lib/tour-pricing";
 import { isStripeConfigured } from "@/lib/stripe";
 import type { BookingStatus, PaymentMethod } from "@/types";
 import { requireAdmin } from "@/lib/admin-auth";
-import { resolveCreateBookingLocale } from "@/lib/booking-locale";
+import {
+  normalizeBookingLocale,
+  resolveCreateBookingLocale,
+} from "@/lib/booking-locale";
 
 /** Solo emitir factura automática cuando ya hay cobro real. */
 function shouldAutoIssueInvoice(booking: {
@@ -87,8 +91,14 @@ export async function GET(request: Request) {
     console.error("[bookings] repair unpaid checkouts failed", err);
   }
 
-  const bookings = await getBookings();
-  return NextResponse.json({ bookings });
+  try {
+    const { bookings } = await persistInferredBookingLocales();
+    return NextResponse.json({ bookings });
+  } catch (err) {
+    console.error("[bookings] persist inferred locales failed", err);
+    const bookings = await getBookings();
+    return NextResponse.json({ bookings });
+  }
 }
 
 export async function POST(request: Request) {
@@ -421,7 +431,16 @@ export async function PATCH(request: Request) {
 
   try {
     const body = await request.json();
-    const { id, status, collectCash, cancellationReason, customer, amountTotal, totalPrice } =
+    const {
+      id,
+      status,
+      collectCash,
+      cancellationReason,
+      customer,
+      amountTotal,
+      totalPrice,
+      locale,
+    } =
       body as {
         id: string;
         status?: BookingStatus;
@@ -429,6 +448,7 @@ export async function PATCH(request: Request) {
         cancellationReason?: string;
         amountTotal?: number;
         totalPrice?: number;
+        locale?: string;
         customer?: Partial<{
           name: string;
           email: string;
@@ -454,6 +474,18 @@ export async function PATCH(request: Request) {
         invoice = await createInvoiceForBooking(booking);
       }
       return NextResponse.json({ booking, invoice });
+    }
+
+    if (locale !== undefined) {
+      const loc = normalizeBookingLocale(locale);
+      if (!loc) {
+        return NextResponse.json({ error: "Idioma inválido" }, { status: 400 });
+      }
+      const booking = await updateBooking(id, { locale: loc });
+      if (!booking) {
+        return NextResponse.json({ error: "No encontrada" }, { status: 404 });
+      }
+      return NextResponse.json({ booking });
     }
 
     // Recalcular importes al editar el total en el panel

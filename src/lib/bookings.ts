@@ -7,6 +7,10 @@ import {
   writeCmsJson,
 } from "@/lib/supabase/cms-store";
 import { isSupabaseConfigured, warnSupabaseFallback } from "@/lib/supabase/client";
+import {
+  inferredStoredLocale,
+  normalizeBookingLocale,
+} from "@/lib/booking-locale";
 
 function normalizeBooking(b: Booking): Booking {
   const total = b.amountTotal ?? b.totalPrice ?? 0;
@@ -195,6 +199,39 @@ export async function updateBooking(
   bookings[idx] = { ...bookings[idx], ...patch };
   await saveBookings(bookings);
   return bookings[idx];
+}
+
+/**
+ * Rellena `locale` en reservas antiguas si se puede inferir del título.
+ * No asigna español por defecto: solo persiste cuando hay señal clara.
+ */
+export async function persistInferredBookingLocales(): Promise<{
+  filled: number;
+  bookings: Booking[];
+}> {
+  const bookings = await getBookings();
+  let filled = 0;
+  const next = bookings.map((booking) => {
+    if (normalizeBookingLocale(booking.locale)) return booking;
+    const inferred = inferredStoredLocale(booking);
+    if (!inferred) return booking;
+    filled += 1;
+    return { ...booking, locale: inferred };
+  });
+  if (filled > 0) {
+    await saveBookings(next);
+  }
+  return { filled, bookings: next };
+}
+
+export async function persistBookingLocaleIfMissing(
+  booking: Booking
+): Promise<Booking> {
+  if (normalizeBookingLocale(booking.locale)) return booking;
+  const inferred = inferredStoredLocale(booking);
+  if (!inferred) return booking;
+  const next = await updateBooking(booking.id, { locale: inferred });
+  return next || { ...booking, locale: inferred };
 }
 
 export async function markCashCollected(id: string): Promise<Booking | null> {

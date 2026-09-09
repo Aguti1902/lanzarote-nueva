@@ -29,6 +29,7 @@ import {
   normalizeBookingLocale,
   type BookingLocale,
 } from "@/lib/booking-locale";
+import { persistBookingLocaleIfMissing } from "@/lib/bookings";
 
 export type CustomerEmailKind =
   | "confirmation"
@@ -346,18 +347,19 @@ export async function sendCustomerBookingEmail(
     return { ok: false, error: "La reserva no tiene email de cliente" };
   }
 
-  const locale = localeOf(booking);
+  const withLocale = await persistBookingLocaleIfMissing(booking);
+  const locale = localeOf(withLocale);
   const c = COPY[locale];
   const origin = resolvePublicOrigin(options?.origin);
-  const links = bookingLinks(booking, origin, locale);
+  const links = bookingLinks(withLocale, origin, locale);
   const mailbox = resolveBookingMailbox({
-    type: booking.type,
-    tourId: booking.tourId,
-    groupId: booking.groupId,
-    cruiseShip: booking.customer?.cruiseShip,
-    notes: booking.customer?.notes,
-    source: booking.source,
-    bookingId: booking.id,
+    type: withLocale.type,
+    tourId: withLocale.tourId,
+    groupId: withLocale.groupId,
+    cruiseShip: withLocale.customer?.cruiseShip,
+    notes: withLocale.customer?.notes,
+    source: withLocale.source,
+    bookingId: withLocale.id,
   });
   const from = formatFromAddress(mailbox);
 

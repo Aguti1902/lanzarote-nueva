@@ -10,6 +10,7 @@ import {
 import { escapeHtml, formatFromAddress, sendEmail } from "@/lib/mail";
 import { MAILBOX, resolveBookingMailbox } from "@/lib/mail-routing";
 import { resolvePublicOrigin } from "@/lib/voucher";
+import { bookingLanguageLabel } from "@/lib/booking-display";
 
 const ADMIN_FOOTER = "Notificación interna · Lanzarote Experience Tours.";
 
@@ -114,7 +115,9 @@ export async function notifyNewBooking(
     `Niños: ${booking.children}`,
     `Total: ${booking.amountTotal ?? booking.totalPrice} €`,
     `Pago: ${booking.paymentMethod} / ${booking.paymentStatus}`,
-    booking.locale ? `Idioma: ${booking.locale}` : "",
+    bookingLanguageLabel(booking)
+      ? `Idioma: ${bookingLanguageLabel(booking)}`
+      : "",
     "",
     "Cliente:",
     `  Nombre: ${booking.customer.name}`,
@@ -157,7 +160,9 @@ export async function notifyNewBooking(
       "Pago",
       escapeHtml(`${booking.paymentMethod} / ${booking.paymentStatus}`)
     ),
-    booking.locale ? emailRow("Idioma", escapeHtml(booking.locale)) : "",
+    bookingLanguageLabel(booking)
+      ? emailRow("Idioma", escapeHtml(bookingLanguageLabel(booking)))
+      : "",
     emailRow("Cliente", escapeHtml(booking.customer.name)),
     emailRow(
       "Email",

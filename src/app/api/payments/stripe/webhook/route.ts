@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getPaymentLinks, upsertPaymentLink } from "@/lib/admin-extras";
-import { updateBooking } from "@/lib/bookings";
+import { persistBookingLocaleIfMissing, updateBooking } from "@/lib/bookings";
 import { createInvoiceForBooking } from "@/lib/invoices";
 import { applyCollectedOnlinePayment, expectedOnlineCharge } from "@/lib/payments";
 import { customerFacingNotes } from "@/lib/customer-notes";
@@ -124,6 +124,11 @@ async function markBookingsPaidFromStripe(
     }
 
     if (!alreadyCollected && updated.status !== "cancelled") {
+      try {
+        updated = await persistBookingLocaleIfMissing(updated);
+      } catch (err) {
+        console.error("[stripe-webhook] locale persist failed", updated.id, err);
+      }
       const cruise = isCruiseBooking(updated) || updated.source === "cruise";
       if (cruise || updated.customer?.cruiseShip || updated.groupId) {
         try {

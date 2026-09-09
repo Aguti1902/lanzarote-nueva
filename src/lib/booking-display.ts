@@ -1,4 +1,8 @@
 import type { Booking } from "@/types";
+import {
+  inferredStoredLocale,
+  normalizeBookingLocale,
+} from "@/lib/booking-locale";
 
 const LOCALE_LABELS: Record<string, string> = {
   es: "Español",
@@ -14,8 +18,18 @@ const LOCALE_LABELS: Record<string, string> = {
 
 export function bookingLocaleLabel(locale?: string | null): string {
   if (!locale) return "";
-  const key = locale.trim().toLowerCase();
-  return LOCALE_LABELS[key] || locale.toUpperCase();
+  const key = normalizeBookingLocale(locale) || locale.trim().toLowerCase();
+  if (!key) return "";
+  return LOCALE_LABELS[key] || key.toUpperCase();
+}
+
+/** Etiqueta visible en el panel: idioma guardado o inferido del título. */
+export function bookingLanguageLabel(
+  booking: Pick<Booking, "locale" | "tourTitle"> & {
+    customer?: { notes?: string };
+  }
+): string {
+  return bookingLocaleLabel(inferredStoredLocale(booking));
 }
 
 function bookingServiceTime(b: Booking): string {

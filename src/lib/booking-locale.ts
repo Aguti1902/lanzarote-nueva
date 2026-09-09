@@ -99,6 +99,18 @@ export function inferLocaleFromText(text?: string | null): BookingLocale | undef
   return undefined;
 }
 
+export function inferredStoredLocale(booking: {
+  locale?: string;
+  tourTitle?: string;
+  customer?: { notes?: string };
+}): BookingLocale | undefined {
+  return (
+    normalizeBookingLocale(booking.locale) ||
+    inferLocaleFromText(booking.tourTitle) ||
+    inferLocaleFromText(booking.customer?.notes)
+  );
+}
+
 /**
  * Idioma del correo al cliente: el de la web al reservar.
  * Si falta en reservas antiguas, se infiere del título.
@@ -108,12 +120,7 @@ export function resolveCustomerEmailLocale(booking: {
   tourTitle?: string;
   customer?: { notes?: string };
 }): BookingLocale {
-  return (
-    normalizeBookingLocale(booking.locale) ||
-    inferLocaleFromText(booking.tourTitle) ||
-    inferLocaleFromText(booking.customer?.notes) ||
-    "es"
-  );
+  return inferredStoredLocale(booking) || "es";
 }
 
 export function resolveCreateBookingLocale(
