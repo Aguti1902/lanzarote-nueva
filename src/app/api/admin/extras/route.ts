@@ -19,6 +19,7 @@ import {
   upsertPaymentLink,
   upsertRedirect,
 } from "@/lib/admin-extras";
+import { backfillUnassignedCruiseGroups } from "@/lib/cruise-groups";
 
 export const dynamic = "force-dynamic";
 
@@ -61,6 +62,11 @@ export async function GET(request: Request) {
     case "ports":
       return NextResponse.json({ items: await getCruisePorts() });
     case "groups":
+      try {
+        await backfillUnassignedCruiseGroups();
+      } catch (err) {
+        console.error("[cruise-groups] backfill failed", err);
+      }
       return NextResponse.json({ items: await getCruiseGroups() });
     case "redirects":
       return NextResponse.json({ items: await getRedirects() });

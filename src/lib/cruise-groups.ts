@@ -1,10 +1,38 @@
-import type { Booking, CruiseGroup } from "@/types";
+import type { Booking, CruiseGroup, CruiseShoreTour } from "@/types";
 import {
   ensureGroupPaymentLinks,
   getCruiseGroups,
   upsertCruiseGroup,
 } from "@/lib/admin-extras";
 import { getBookings, updateBooking } from "@/lib/bookings";
+import { isCruiseBooking } from "@/lib/booking-ids";
+import {
+  findSailingForPortCall,
+  getCruiseShoreTourById,
+} from "@/lib/cruise-itineraries";
+import { isAwaitingOnlinePayment } from "@/lib/payments";
+import { shoreTourIsFlatPrice, shoreTourUnitPrice } from "@/lib/shore-tour-display";
+
+/** Mismos valores por defecto que el alta manual en Grupos de cruceros. */
+export const DEFAULT_CRUISE_GROUP_MIN_PAX = 8;
+export const DEFAULT_CRUISE_GROUP_MAX_PAX = 14;
+
+export function cruiseGroupCapacityFromTour(
+  tour?: Pick<CruiseShoreTour, "minPax" | "maxGroup"> | null
+): { minPax: number; maxPax: number } {
+  const min = Number(tour?.minPax);
+  const max = Number(tour?.maxGroup);
+  return {
+    minPax:
+      Number.isFinite(min) && min > 0 ? min : DEFAULT_CRUISE_GROUP_MIN_PAX,
+    maxPax:
+      Number.isFinite(max) && max > 0 ? max : DEFAULT_CRUISE_GROUP_MAX_PAX,
+  };
+}
+
+export function bookingServiceDate(booking: Pick<Booking, "date">): string {
+  return (booking.date || "").slice(0, 10);
+}
 
 export function normalizeCruiseKey(value: string): string {
   return value
@@ -20,7 +48,7 @@ export function sameCruiseGroupSeries(
   b: Pick<CruiseGroup, "shipName" | "date" | "excursionTitle">
 ): boolean {
   return (
-    a.date === b.date &&
+    (a.date || "").slice(0, 10) === (b.date || "").slice(0, 10) &&
     normalizeCruiseKey(a.shipName) === normalizeCruiseKey(b.shipName) &&
     normalizeCruiseKey(a.excursionTitle) ===
       normalizeCruiseKey(b.excursionTitle)
@@ -67,7 +95,7 @@ export function bookingsForGroup(
 
   return bookings.filter((b) => {
     if (b.groupId) return b.groupId === group.id;
-    if (!shipMatchesBooking(b, group) || b.date !== group.date) return false;
+    if (!shipMatchesBooking(b, group) || bookingServiceDate(b) !== (group.date || "").slice(0, 10)) return false;
     // Optional: also require excursion title match when present on booking
     const title = b.tourTitle || "";
     if (
@@ -191,20 +219,100 @@ export async function syncCruiseGroupCapacity(
   return { group: updated, spawned };
 }
 
+async function createOpenCruiseGroupForBooking(
+  booking: Booking
+): Promise<CruiseGroup | null> {
+  const ship = booking.customer?.cruiseShip?.trim();
+  const date = bookingServiceDate(booking);
+  const excursionTitle = (booking.tourTitle || "").trim();
+  if (!ship || !date || !excursionTitle) return null;
+
+  const tour = booking.tourId
+    ? await getCruiseShoreTourById(booking.tourId)
+    : undefined;
+  const { minPax, maxPax } = cruiseGroupCapacityFromTour(tour);
+  const pax = Math.max(1, bookingPax(booking));
+  const fromTour =
+    tour && !shoreTourIsFlatPrice(tour) && Number(shoreTourUnitPrice(tour)) > 0
+      ? shoreTourUnitPrice(tour)
+      : 0;
+  const fromBooking =
+    Number(booking.amountTotal ?? booking.totalPrice) > 0
+      ? Math.round(
+          ((Number(booking.amountTotal ?? booking.totalPrice) || 0) / pax) *
+            100
+        ) / 100
+      : 0;
+
+  let company = "";
+  let sailingId: string | undefined;
+  try {
+    const sailing = await findSailingForPortCall({
+      shipName: ship,
+      date,
+    });
+    if (sailing) {
+      company = sailing.companyName || "";
+      sailingId = sailing.id;
+    }
+  } catch {
+    // El grupo se puede crear igual sin itinerario enlazado
+  }
+
+  const created = await upsertCruiseGroup({
+    shipName: ship,
+    company,
+    date,
+    port: (tour?.port || "").trim() || "Lanzarote",
+    excursionTitle,
+    complete: false,
+    minPax,
+    maxPax,
+    pax: 0,
+    pricePerPerson: fromTour || fromBooking || undefined,
+    sailingId,
+    status: "open",
+    seriesIndex: 1,
+    notes: `Creado automáticamente desde ${booking.id}`,
+  });
+
+  try {
+    await ensureGroupPaymentLinks(created);
+  } catch {
+    // Se pueden regenerar en el panel
+  }
+
+  return created;
+}
+
 /**
- * Assign a cruise booking to an open group with capacity (or spawn one if
- * siblings are full). No-op when the booking has no cruise ship.
+ * Assign a cruise booking to an open group with capacity. If none exists for
+ * that ship + date + excursion, create one (shore checkout). Spawn a sibling
+ * when the matching groups are already full.
  */
 export async function assignBookingToCruiseGroup(
   booking: Booking
 ): Promise<{ booking: Booking; group?: CruiseGroup; spawned?: CruiseGroup }> {
+  if (booking.status === "cancelled") {
+    if (booking.groupId) {
+      const synced = await syncCruiseGroupCapacity(booking.groupId);
+      return { booking, group: synced.group, spawned: synced.spawned };
+    }
+    return { booking };
+  }
+
   if (booking.groupId) {
     const synced = await syncCruiseGroupCapacity(booking.groupId);
     return { booking, group: synced.group, spawned: synced.spawned };
   }
 
+  if (isAwaitingOnlinePayment(booking)) {
+    return { booking };
+  }
+
   const ship = booking.customer?.cruiseShip?.trim();
-  if (!ship || !booking.date) {
+  const date = bookingServiceDate(booking);
+  if (!ship || !date) {
     return { booking };
   }
 
@@ -215,7 +323,7 @@ export async function assignBookingToCruiseGroup(
   const candidates = groups
     .filter((g) => {
       if (g.status === "done" || g.status === "private") return false;
-      if (g.date !== booking.date) return false;
+      if ((g.date || "").slice(0, 10) !== date) return false;
       if (!shipMatchesBooking(booking, g)) return false;
       if (
         title &&
@@ -239,7 +347,17 @@ export async function assignBookingToCruiseGroup(
     });
 
   if (candidates.length === 0) {
-    return { booking };
+    const created = await createOpenCruiseGroupForBooking(booking);
+    if (!created) return { booking };
+    const updatedBooking = await updateBooking(booking.id, {
+      groupId: created.id,
+    });
+    const synced = await syncCruiseGroupCapacity(created.id);
+    return {
+      booking: updatedBooking || { ...booking, groupId: created.id },
+      group: synced.group,
+      spawned: synced.spawned,
+    };
   }
 
   const bookings = await getBookings();
@@ -285,4 +403,56 @@ export async function assignBookingToCruiseGroup(
     group: synced.group,
     spawned: spawned || synced.spawned,
   };
+}
+
+let backfillInFlight: Promise<{ assigned: number; ids: string[] }> | null =
+  null;
+
+function todayIsoDate(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+/**
+ * Crea y asigna grupos a reservas de crucero pagadas/confirmadas que se
+ * quedaron sin groupId (p. ej. shore checkout antes de este arreglo).
+ * Solo fechas de hoy o futuras, para no reabrir grupos históricos.
+ */
+export async function backfillUnassignedCruiseGroups(): Promise<{
+  assigned: number;
+  ids: string[];
+}> {
+  if (backfillInFlight) return backfillInFlight;
+
+  backfillInFlight = (async () => {
+    const today = todayIsoDate();
+    const bookings = await getBookings();
+    const ids: string[] = [];
+
+    for (const booking of bookings) {
+      if (booking.groupId) continue;
+      if (booking.status === "cancelled") continue;
+      if (isAwaitingOnlinePayment(booking)) continue;
+      if (!isCruiseBooking(booking)) continue;
+      if (!booking.customer?.cruiseShip?.trim()) continue;
+      const date = bookingServiceDate(booking);
+      if (!date || date < today) continue;
+
+      try {
+        const result = await assignBookingToCruiseGroup(booking);
+        if (result.booking.groupId) ids.push(booking.id);
+      } catch (err) {
+        console.error(
+          "[cruise-groups] backfill assign failed",
+          booking.id,
+          err
+        );
+      }
+    }
+
+    return { assigned: ids.length, ids };
+  })().finally(() => {
+    backfillInFlight = null;
+  });
+
+  return backfillInFlight;
 }

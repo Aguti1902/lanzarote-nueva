@@ -10,6 +10,7 @@ import {
 import {
   bookingsForGroup,
   livePaxForGroup,
+  backfillUnassignedCruiseGroups,
 } from "@/lib/cruise-groups";
 import { getBookings } from "@/lib/bookings";
 import { findSailingForPortCall } from "@/lib/cruise-itineraries";
@@ -73,8 +74,14 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const groupId = String(body.groupId || "");
     const action = String(body.action || "ensure-links");
+
+    if (action === "backfill-unassigned") {
+      const result = await backfillUnassignedCruiseGroups();
+      return NextResponse.json(result);
+    }
+
+    const groupId = String(body.groupId || "");
     if (!groupId) {
       return NextResponse.json({ error: "Falta groupId" }, { status: 400 });
     }
