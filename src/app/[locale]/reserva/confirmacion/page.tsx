@@ -16,11 +16,22 @@ import { ConfirmationPayActions } from "@/components/ConfirmationPayActions";
 import { isAwaitingOnlinePayment } from "@/lib/payments";
 import { discardUnpaidCheckoutByBookingId } from "@/lib/checkout-abandon";
 
-export const metadata: Metadata = {
-  title: "Booking confirmed",
-};
-
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}: Props): Promise<Metadata> {
+  const locale = resolveLocale((await params).locale);
+  const { cancelled } = await searchParams;
+  const dict = await getDictionary(locale);
+  return {
+    title:
+      cancelled === "1"
+        ? dict.confirmation.payCancelledTitle
+        : dict.confirmation.title,
+  };
+}
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -207,11 +218,11 @@ export default async function ConfirmacionPage({ params, searchParams }: Props) 
             )}
           </div>
         </div>
-      ) : (
+      ) : !showAsCancelled ? (
         <p className="mt-6 text-sm text-ink-muted">
           {dict.confirmation.locator}: {id || "—"}
         </p>
-      )}
+      ) : null}
 
       <Link href={localePath(locale)} className="btn-primary mt-8">
         {dict.common.backHome}
