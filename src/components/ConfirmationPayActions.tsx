@@ -44,7 +44,7 @@ export function ConfirmationPayActions({
       setInvoiceId(fresh.invoiceId);
       return fresh.invoiceId;
     }
-    if ((fresh.amountPaidCard || 0) <= 0 && fresh.paymentStatus !== "paid") {
+    if ((fresh.amountPaidCard || 0) <= 0) {
       return "";
     }
     try {

@@ -6,6 +6,7 @@ import {
   getInvoices,
   invoiceStats,
 } from "@/lib/invoices";
+import { invoiceableCardAmount } from "@/lib/payments";
 import { requireAdmin } from "@/lib/admin-auth";
 
 export async function GET(request: Request) {
@@ -40,25 +41,22 @@ export async function POST(request: Request) {
     if (!booking) {
       return NextResponse.json({ error: "Reserva no encontrada" }, { status: 404 });
     }
-    const paidCard = Number(booking.amountPaidCard) || 0;
-    const paidCash = Number(booking.amountPaidCash) || 0;
-    const isPaid =
-      paidCard > 0 ||
-      paidCash > 0 ||
-      booking.paymentStatus === "paid" ||
-      booking.paymentStatus === "partial";
-    if (!isPaid && !body.force) {
+    const billed = invoiceableCardAmount(booking);
+    if (billed <= 0) {
       return NextResponse.json(
-        { error: "La reserva aún no tiene cobro; no se emite factura" },
+        {
+          error:
+            "El efectivo no se factura. Solo se emite factura por el cobro con tarjeta.",
+        },
         { status: 400 }
       );
     }
     const invoice = await createInvoiceForBooking(booking, body.notes);
     return NextResponse.json({ invoice }, { status: 201 });
-  } catch {
-    return NextResponse.json(
-      { error: "No se pudo emitir la factura" },
-      { status: 500 }
-    );
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "No se pudo emitir la factura";
+    const status = /efectivo no se factura/i.test(message) ? 400 : 500;
+    return NextResponse.json({ error: message }, { status });
   }
 }

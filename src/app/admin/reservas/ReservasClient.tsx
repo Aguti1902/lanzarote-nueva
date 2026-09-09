@@ -487,7 +487,9 @@ export default function AdminReservasPage() {
                             Cobrar efectivo
                           </button>
                         )}
-                      {!b.invoiceId && b.status !== "cancelled" && (
+                      {!b.invoiceId &&
+                        b.status !== "cancelled" &&
+                        (b.amountPaidCard || 0) > 0 && (
                         <button
                           type="button"
                           onClick={() => issueInvoice(b.id)}
