@@ -307,7 +307,8 @@ export function BookingDetailModal({
                 </Link>
               ) : (
                 onIssueInvoice &&
-                booking.status !== "cancelled" && (
+                booking.status !== "cancelled" &&
+                (booking.amountPaidCard || 0) > 0 && (
                   <button
                     type="button"
                     onClick={() => onIssueInvoice(booking.id)}

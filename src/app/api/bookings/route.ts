@@ -42,6 +42,7 @@ import {
 import {
   expectedOnlineCharge,
   isOnlineCardMethod,
+  invoiceableCardAmount,
   splitPaymentAmounts,
 } from "@/lib/payments";
 import { getPaymentLinks, upsertPaymentLink } from "@/lib/admin-extras";
@@ -60,18 +61,11 @@ import {
 } from "@/lib/booking-locale";
 import { normalizeBookingPhone } from "@/lib/phone";
 
-/** Solo emitir factura automática cuando ya hay cobro real. */
+/** Solo factura automática si hay cobro con tarjeta. El efectivo no se factura. */
 function shouldAutoIssueInvoice(booking: {
-  paymentMethod: PaymentMethod | string;
-  paymentStatus?: string;
   amountPaidCard?: number;
-  amountPaidCash?: number;
 }): boolean {
-  const paidCard = Number(booking.amountPaidCard) || 0;
-  const paidCash = Number(booking.amountPaidCash) || 0;
-  if (paidCard > 0 || paidCash > 0) return true;
-  if (booking.paymentStatus === "paid") return true;
-  return false;
+  return invoiceableCardAmount(booking) > 0;
 }
 
 function isDateBlocked(
@@ -409,9 +403,14 @@ export async function POST(request: Request) {
       }
     }
 
-    const invoice = shouldAutoIssueInvoice(booking)
-      ? await createInvoiceForBooking(booking)
-      : null;
+    let invoice = null;
+    if (shouldAutoIssueInvoice(booking)) {
+      try {
+        invoice = await createInvoiceForBooking(booking);
+      } catch (err) {
+        console.error("[bookings] invoice failed", booking.id, err);
+      }
+    }
 
     if (!awaitingStripe) {
       try {
@@ -492,11 +491,7 @@ export async function PATCH(request: Request) {
       if (!booking) {
         return NextResponse.json({ error: "No encontrada" }, { status: 404 });
       }
-      let invoice = null;
-      if (!booking.invoiceId) {
-        invoice = await createInvoiceForBooking(booking);
-      }
-      return NextResponse.json({ booking, invoice });
+      return NextResponse.json({ booking });
     }
 
     if (locale !== undefined) {

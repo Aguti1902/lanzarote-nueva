@@ -25,6 +25,23 @@ function roundMoney(n: number): number {
   return Math.round(Number(n) * 100) / 100;
 }
 
+/** Importe facturable: solo lo cobrado con tarjeta. El efectivo no se factura. */
+export function invoiceableCardAmount(booking: {
+  amountPaidCard?: number;
+}): number {
+  return roundMoney(Number(booking.amountPaidCard) || 0);
+}
+
+export function canIssueCardInvoice(booking: {
+  amountPaidCard?: number;
+  invoiceId?: string;
+  status?: string;
+}): boolean {
+  if (booking.status === "cancelled") return false;
+  if (booking.invoiceId) return false;
+  return invoiceableCardAmount(booking) > 0;
+}
+
 /** Importe que debe cobrarse online (Stripe) según el método. */
 export function expectedOnlineCharge(
   total: number,

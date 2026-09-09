@@ -1,6 +1,10 @@
 import type { Booking, Invoice } from "@/types";
 import { updateBooking } from "@/lib/bookings";
 import { readCmsJson, writeCmsJson } from "@/lib/supabase/cms-store";
+import {
+  depositPercentForMethod,
+  invoiceableCardAmount,
+} from "@/lib/payments";
 
 /** IGIC Canarias — fijo al 7% en facturas y abonos. */
 export const IGIC_RATE = 7;
@@ -85,33 +89,39 @@ export async function createInvoiceForBooking(
   );
   if (already) return already;
 
+  const billed = invoiceableCardAmount(booking);
+  if (billed <= 0) {
+    throw new Error(
+      "El efectivo no se factura. Solo se emite factura por el cobro con tarjeta."
+    );
+  }
+
   const taxRate = IGIC_RATE;
   const invoices = await getInvoices();
   const number = nextInvoiceNumber(invoices);
   const id = formatInvoiceId("invoice", number);
 
   const amountTotal = booking.amountTotal ?? booking.totalPrice;
-  const { subtotal, taxAmount, total } = splitIgic(amountTotal, taxRate);
-  const paidCard = Number(booking.amountPaidCard) || 0;
-  const paidCash = Number(booking.amountPaidCash) || 0;
+  const { subtotal, taxAmount, total } = splitIgic(billed, taxRate);
+  const paidCard = billed;
   const dueCash = Number(booking.amountDueCash) || 0;
-  const paidTotal = Math.round((paidCard + paidCash) * 100) / 100;
+  const depositPct = depositPercentForMethod(booking.paymentMethod);
 
   let paymentNotes = notes;
   if (!paymentNotes) {
-    if (
-      booking.paymentMethod === "deposit_20" ||
-      booking.paymentMethod === "deposit_10"
-    ) {
-      paymentNotes = `Depósito ${booking.paymentMethod === "deposit_20" ? "20" : "10"}% tarjeta: ${paidCard.toFixed(2)}€. Pendiente efectivo: ${dueCash.toFixed(2)}€.`;
-    } else if (booking.paymentMethod === "pay_on_day") {
-      paymentNotes = `Pago el día del servicio. Cobrado: ${paidTotal.toFixed(2)}€. Pendiente: ${dueCash.toFixed(2)}€.`;
-    } else if (paidTotal < amountTotal) {
-      paymentNotes = `Cobrado: ${paidTotal.toFixed(2)}€. Pendiente: ${(Math.round((amountTotal - paidTotal) * 100) / 100).toFixed(2)}€.`;
+    if (depositPct > 0) {
+      paymentNotes = `Factura del depósito ${depositPct}% cobrado con tarjeta: ${paidCard.toFixed(2)}€. El resto en efectivo (${dueCash.toFixed(2)}€) no se factura.`;
+    } else if (paidCard < amountTotal) {
+      paymentNotes = `Factura del cobro con tarjeta: ${paidCard.toFixed(2)}€. El efectivo no se factura.`;
     } else {
-      paymentNotes = `Pagado: ${paidTotal.toFixed(2)}€.`;
+      paymentNotes = `Pagado con tarjeta: ${paidCard.toFixed(2)}€.`;
     }
   }
+
+  const lineDescription =
+    depositPct > 0
+      ? `Depósito ${depositPct}% (tarjeta) — ${booking.tourTitle}`
+      : booking.tourTitle;
 
   const invoice: Invoice = {
     id,
@@ -127,7 +137,7 @@ export async function createInvoiceForBooking(
     },
     lines: [
       {
-        description: booking.tourTitle,
+        description: lineDescription,
         qty: 1,
         unitPrice: subtotal,
         total: subtotal,
@@ -139,6 +149,7 @@ export async function createInvoiceForBooking(
     total,
     notes: paymentNotes,
     status: "issued",
+    paymentMethod: booking.paymentMethod,
   };
 
   invoices.unshift(invoice);
