@@ -16,6 +16,8 @@ import {
 import { useCart } from "@/components/CartProvider";
 import { useLocale } from "@/components/LocaleProvider";
 import { ShoreMeetingPointButton } from "@/components/ShoreMeetingPointButton";
+import { PhoneWithPrefix } from "@/components/PhoneWithPrefix";
+import { isValidBookingPhone } from "@/lib/phone";
 
 const inputClass =
   "w-full rounded border border-sand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20";
@@ -158,7 +160,7 @@ export function CruiseTourBooking({
       setError(dict.booking.dateUnavailable);
       return;
     }
-    if (!name || !email || !phone) {
+    if (!name || !email || !isValidBookingPhone(phone)) {
       setError(dict.booking.fillRequired);
       return;
     }
@@ -337,14 +339,17 @@ export function CruiseTourBooking({
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <input
-            type="tel"
-            className={inputClass}
-            placeholder={dict.common.phone}
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            required
-          />
+          <div>
+            <PhoneWithPrefix
+              locale={locale}
+              value={phone}
+              onChange={setPhone}
+              inputClassName={inputClass}
+              required
+              prefixLabel={dict.common.phonePrefix}
+              placeholder={dict.common.phonePlaceholder}
+            />
+          </div>
           <div className="grid gap-2 sm:grid-cols-2">
             {methods.map((method) => (
               <label

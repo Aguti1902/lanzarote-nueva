@@ -7,6 +7,7 @@ import {
   bookingServiceTime,
 } from "@/lib/booking-time";
 import { bookingLocaleLabel } from "@/lib/booking-display";
+import { formatInternationalPhone } from "@/lib/phone";
 import { customerFacingNotes } from "@/lib/customer-notes";
 import type { Locale } from "@/i18n/config";
 import { localePath } from "@/i18n/path";
@@ -176,7 +177,7 @@ export function buildVoucherHtml(
   const rows: [string, string][] = [
     [labels.customer, esc(booking.customer.name)],
     [labels.email, esc(booking.customer.email)],
-    [labels.phone, esc(booking.customer.phone || "—")],
+    [labels.phone, esc(formatInternationalPhone(booking.customer.phone) || "—")],
     [labels.service, esc(`${serviceKind(booking)}: ${booking.tourTitle}`)],
     [labels.bookingDate, formatDateShort(booking.createdAt)],
     [labels.date, formatDateShort(booking.date)],
