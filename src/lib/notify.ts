@@ -83,7 +83,8 @@ export async function notifyNewBooking(
     tourId: booking.tourId,
     groupId: booking.groupId,
     cruiseShip: booking.customer?.cruiseShip,
-    source: meta?.source,
+    notes: booking.customer?.notes,
+    source: meta?.source || booking.source,
     bookingId: booking.id,
   });
 
@@ -187,7 +188,7 @@ export async function notifyNewBooking(
     .filter(Boolean)
     .join("");
 
-  return sendEmail({
+  const result = await sendEmail({
     to,
     from: formatFromAddress(to),
     subject: `[${kindLabel}] ${booking.id} · ${booking.tourTitle}`,
@@ -207,4 +208,8 @@ export async function notifyNewBooking(
     }),
     replyTo: booking.customer.email,
   });
+  if (!result.ok) {
+    console.error("[notify] falló el aviso interno", booking.id, to, result.error);
+  }
+  return result;
 }

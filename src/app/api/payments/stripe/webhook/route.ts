@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getPaymentLinks, upsertPaymentLink } from "@/lib/admin-extras";
 import { updateBooking } from "@/lib/bookings";
 import { createInvoiceForBooking } from "@/lib/invoices";
-import { applyCollectedOnlinePayment, expectedOnlineCharge, isAwaitingOnlinePayment } from "@/lib/payments";
+import { applyCollectedOnlinePayment, expectedOnlineCharge } from "@/lib/payments";
 import { customerFacingNotes } from "@/lib/customer-notes";
 import { sendCustomerBookingEmail } from "@/lib/customer-emails";
 import { getStripe, isStripeConfigured } from "@/lib/stripe";
@@ -10,6 +10,7 @@ import type { Booking } from "@/types";
 import { getBookings } from "@/lib/bookings";
 import { assignBookingToCruiseGroup } from "@/lib/cruise-groups";
 import { notifyNewBooking } from "@/lib/notify";
+import { isCruiseBooking } from "@/lib/booking-ids";
 import { discardUnpaidCheckoutByPayment } from "@/lib/checkout-abandon";
 
 export const dynamic = "force-dynamic";
@@ -69,7 +70,6 @@ async function markBookingsPaidFromStripe(
       (booking.paymentStatus === "partial" && (booking.amountPaidCard || 0) > 0);
 
     let updated = booking;
-    const awaiting = isAwaitingOnlinePayment(booking);
     if (!alreadyCollected) {
       const share =
         paidEuros != null && expectedSum > 0
@@ -124,26 +124,36 @@ async function markBookingsPaidFromStripe(
     }
 
     if (!alreadyCollected && updated.status !== "cancelled") {
-      if (awaiting) {
-        if (updated.customer?.cruiseShip || updated.groupId) {
-          try {
-            const assigned = await assignBookingToCruiseGroup(updated);
-            if (assigned.booking) updated = assigned.booking;
-          } catch (err) {
-            console.error(
-              "[stripe-webhook] cruise group failed",
-              updated.id,
-              err
-            );
-          }
+      const cruise = isCruiseBooking(updated) || updated.source === "cruise";
+      if (cruise || updated.customer?.cruiseShip || updated.groupId) {
+        try {
+          const assigned = await assignBookingToCruiseGroup(updated);
+          if (assigned.booking) updated = assigned.booking;
+        } catch (err) {
+          console.error(
+            "[stripe-webhook] cruise group failed",
+            updated.id,
+            err
+          );
         }
-        void notifyNewBooking(updated).catch((err) => {
-          console.error("[stripe-webhook] notify failed", updated.id, err);
-        });
       }
-      void sendCustomerBookingEmail(updated, "confirmation").catch((err) => {
-        console.error("[stripe-webhook] customer email failed", updated.id, err);
-      });
+      // Hay que await: si se lanza con void, Vercel corta el envío al devolver 200.
+      try {
+        await notifyNewBooking(updated, {
+          source: cruise ? "cruise" : updated.source,
+        });
+      } catch (err) {
+        console.error("[stripe-webhook] notify failed", updated.id, err);
+      }
+      try {
+        await sendCustomerBookingEmail(updated, "confirmation");
+      } catch (err) {
+        console.error(
+          "[stripe-webhook] customer email failed",
+          updated.id,
+          err
+        );
+      }
     }
   }
 }
