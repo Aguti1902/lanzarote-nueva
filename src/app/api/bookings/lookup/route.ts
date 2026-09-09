@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getBookings } from "@/lib/bookings";
+import { isAwaitingOnlinePayment } from "@/lib/payments";
 
 export async function POST(request: Request) {
   try {
@@ -26,6 +27,13 @@ export async function POST(request: Request) {
     );
 
     if (!booking) {
+      return NextResponse.json(
+        { error: "No encontramos una reserva con esos datos" },
+        { status: 404 }
+      );
+    }
+
+    if (isAwaitingOnlinePayment(booking)) {
       return NextResponse.json(
         { error: "No encontramos una reserva con esos datos" },
         { status: 404 }

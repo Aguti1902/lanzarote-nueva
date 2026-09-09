@@ -92,6 +92,8 @@ export async function createStripeCheckoutForPayment(
     payment_method_types: ["card"],
     customer_email: payment.customerEmail || undefined,
     client_reference_id: payment.id,
+    // 30 min: si no pagan, Stripe emite checkout.session.expired y se borra el intento.
+    expires_at: Math.floor(Date.now() / 1000) + 31 * 60,
     line_items: [
       {
         quantity: 1,

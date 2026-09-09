@@ -6,6 +6,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import type { Booking, BookingStatus } from "@/types";
 import { formatDate, formatPrice, paymentLabel } from "@/lib/format";
 import { compareBookingsByServiceNearest } from "@/lib/booking-display";
+import { isAwaitingOnlinePayment } from "@/lib/payments";
 import {
   DateRangeFilter,
   emptyDateRange,
@@ -52,6 +53,7 @@ function parseTab(value: string | null): ReservasTab {
 }
 
 function matchesTab(booking: Booking, tab: ReservasTab): boolean {
+  if (isAwaitingOnlinePayment(booking)) return false;
   switch (tab) {
     case "all":
       return true;

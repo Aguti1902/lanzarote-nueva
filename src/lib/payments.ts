@@ -122,3 +122,28 @@ export function applyCollectedOnlinePayment(
     cashStatus: "none",
   };
 }
+
+/**
+ * Intento de pago online todavía no cobrado: no es una reserva real.
+ * (Checkout Stripe abierto, cancelado o abandonado.)
+ */
+export function isAwaitingOnlinePayment(booking: {
+  status?: string;
+  paymentMethod?: string;
+  paymentStatus?: string;
+  amountPaidCard?: number;
+}): boolean {
+  if (booking.status === "cancelled" || booking.status === "completed") {
+    return false;
+  }
+  if (!isOnlineCardMethod(booking.paymentMethod || "")) return false;
+  if ((booking.amountPaidCard || 0) > 0) return false;
+  if (
+    booking.paymentStatus === "paid" ||
+    booking.paymentStatus === "partial" ||
+    booking.paymentStatus === "refunded"
+  ) {
+    return false;
+  }
+  return booking.status === "pending";
+}

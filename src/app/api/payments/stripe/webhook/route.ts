@@ -2,12 +2,15 @@ import { NextResponse } from "next/server";
 import { getPaymentLinks, upsertPaymentLink } from "@/lib/admin-extras";
 import { updateBooking } from "@/lib/bookings";
 import { createInvoiceForBooking } from "@/lib/invoices";
-import { applyCollectedOnlinePayment, expectedOnlineCharge } from "@/lib/payments";
+import { applyCollectedOnlinePayment, expectedOnlineCharge, isAwaitingOnlinePayment } from "@/lib/payments";
 import { customerFacingNotes } from "@/lib/customer-notes";
 import { sendCustomerBookingEmail } from "@/lib/customer-emails";
 import { getStripe, isStripeConfigured } from "@/lib/stripe";
 import type { Booking } from "@/types";
 import { getBookings } from "@/lib/bookings";
+import { assignBookingToCruiseGroup } from "@/lib/cruise-groups";
+import { notifyNewBooking } from "@/lib/notify";
+import { discardUnpaidCheckoutByPayment } from "@/lib/checkout-abandon";
 
 export const dynamic = "force-dynamic";
 
@@ -66,6 +69,7 @@ async function markBookingsPaidFromStripe(
       (booking.paymentStatus === "partial" && (booking.amountPaidCard || 0) > 0);
 
     let updated = booking;
+    const awaiting = isAwaitingOnlinePayment(booking);
     if (!alreadyCollected) {
       const share =
         paidEuros != null && expectedSum > 0
@@ -79,6 +83,7 @@ async function markBookingsPaidFromStripe(
       );
       const next = await updateBooking(booking.id, {
         ...collected,
+        status: booking.status === "cancelled" ? "cancelled" : "confirmed",
         ...(stripeMeta.sessionId
           ? { stripeCheckoutSessionId: stripeMeta.sessionId }
           : {}),
@@ -119,6 +124,23 @@ async function markBookingsPaidFromStripe(
     }
 
     if (!alreadyCollected && updated.status !== "cancelled") {
+      if (awaiting) {
+        if (updated.customer?.cruiseShip || updated.groupId) {
+          try {
+            const assigned = await assignBookingToCruiseGroup(updated);
+            if (assigned.booking) updated = assigned.booking;
+          } catch (err) {
+            console.error(
+              "[stripe-webhook] cruise group failed",
+              updated.id,
+              err
+            );
+          }
+        }
+        void notifyNewBooking(updated).catch((err) => {
+          console.error("[stripe-webhook] notify failed", updated.id, err);
+        });
+      }
       void sendCustomerBookingEmail(updated, "confirmation").catch((err) => {
         console.error("[stripe-webhook] customer email failed", updated.id, err);
       });
@@ -250,6 +272,26 @@ export async function POST(request: Request) {
       sessionId: session.id,
       paymentIntentId: pi,
     });
+  }
+
+  if (
+    event.type === "checkout.session.expired" ||
+    event.type === "checkout.session.async_payment_failed"
+  ) {
+    const session = event.data.object as {
+      id?: string;
+      metadata?: Record<string, string>;
+      client_reference_id?: string | null;
+    };
+    const paymentId =
+      session.metadata?.paymentId || session.client_reference_id || "";
+    const links = await getPaymentLinks();
+    const payment =
+      links.find((p) => p.id === paymentId) ||
+      links.find((p) => p.stripeCheckoutSessionId === session.id);
+    if (payment) {
+      await discardUnpaidCheckoutByPayment(payment);
+    }
   }
 
   return NextResponse.json({ received: true });

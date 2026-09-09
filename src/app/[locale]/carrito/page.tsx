@@ -67,8 +67,13 @@ export default function CarritoPage() {
       return;
     }
     setLoading(true);
+    const createdIds: string[] = [];
+    const onlinePay =
+      paymentMethod === "card" ||
+      paymentMethod === "bizum" ||
+      paymentMethod === "deposit_20" ||
+      paymentMethod === "deposit_10";
     try {
-      const createdIds: string[] = [];
       for (const item of items) {
         const res = await fetch("/api/bookings", {
           method: "POST",
@@ -102,12 +107,7 @@ export default function CarritoPage() {
         createdIds.push(data.booking.id);
       }
 
-      if (
-        paymentMethod === "card" ||
-        paymentMethod === "bizum" ||
-        paymentMethod === "deposit_20" ||
-        paymentMethod === "deposit_10"
-      ) {
+      if (onlinePay) {
         const payRes = await fetch("/api/payments/stripe/checkout-bookings", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -123,11 +123,24 @@ export default function CarritoPage() {
           window.location.href = payData.checkoutUrl;
           return;
         }
+        await fetch("/api/bookings/abandon-checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ids: createdIds }),
+        }).catch(() => {});
+        throw new Error(payData.error || "No se pudo iniciar el pago");
       }
 
       clear();
       router.push(`${href("/reserva/confirmacion")}?id=${createdIds[0]}`);
     } catch (err) {
+      if (onlinePay && createdIds.length) {
+        await fetch("/api/bookings/abandon-checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ids: createdIds }),
+        }).catch(() => {});
+      }
       setError(err instanceof Error ? err.message : "Error");
     } finally {
       setLoading(false);

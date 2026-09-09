@@ -176,7 +176,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
           children: isMinibus ? 0 : showChildren ? children : 0,
           totalPrice: total,
           paymentMethod: isOnRequest ? "pay_on_day" : paymentMethod,
-          status: isOnRequest ? "pending" : "confirmed",
+          status: isOnRequest || paymentMethod !== "pay_on_day" ? "pending" : "confirmed",
           bookingMethod: isOnRequest
             ? tour.bookingMethod || "request"
             : "online",
