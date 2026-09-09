@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Mail, Phone } from "lucide-react";
 import { useLocale } from "@/components/LocaleProvider";
+import { CookieSettingsButton } from "@/components/CookieSettingsButton";
+import { LEGAL_PATHS } from "@/lib/legal";
 
 export function Footer() {
   const pathname = usePathname();
@@ -132,23 +134,38 @@ export function Footer() {
             Lanzarote Experience Tours S.L.U. · 2009/{new Date().getFullYear()} ·{" "}
             {dict.footer.rights}
           </p>
-          <div className="flex gap-4">
-            <a
-              href="https://www.lanzaroteexperiencetours.com/dist/legal/privacy-policy-es.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+          <div className="flex flex-wrap gap-x-4 gap-y-2">
+            <Link href={href(LEGAL_PATHS.aviso)} className="hover:text-white/70">
+              {dict.footer.legalNotice}
+            </Link>
+            <Link
+              href={href(LEGAL_PATHS.privacidad)}
               className="hover:text-white/70"
             >
               {dict.footer.privacy}
-            </a>
-            <a
-              href="https://www.lanzaroteexperiencetours.com/dist/legal/sales-cancellation-policy-es.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+            </Link>
+            <Link
+              href={href(LEGAL_PATHS.cookies)}
+              className="hover:text-white/70"
+            >
+              {dict.footer.cookies}
+            </Link>
+            <Link
+              href={href(LEGAL_PATHS.condiciones)}
               className="hover:text-white/70"
             >
               {dict.footer.terms}
-            </a>
+            </Link>
+            <Link
+              href={href(LEGAL_PATHS.cancelacion)}
+              className="hover:text-white/70"
+            >
+              {dict.footer.cancellation}
+            </Link>
+            <CookieSettingsButton
+              label={dict.footer.cookieSettings}
+              className="hover:text-white/70"
+            />
           </div>
         </div>
       </div>

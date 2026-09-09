@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { CookieBanner } from "@/components/CookieBanner";
+import { CookieScripts } from "@/components/CookieScripts";
 import { FloatingHelpLazy } from "@/components/FloatingHelpLazy";
 import { TripadvisorBadge } from "@/components/TripadvisorBadge";
 import { LocaleProvider } from "@/components/LocaleProvider";
@@ -43,6 +45,8 @@ export default async function LocaleLayout({
           reviewsLabel={dict.tripadvisorBadge.reviews}
         />
         <FloatingHelpLazy />
+        <CookieBanner />
+        <CookieScripts />
       </div>
     </LocaleProvider>
   );

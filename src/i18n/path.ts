@@ -49,6 +49,27 @@ export const ROUTE_LOCALES = [
   { es: "/voucher", en: "/voucher", de: "/voucher" },
   { es: "/blog", en: "/blog", de: "/blog" },
   { es: "/gateway", en: "/gateway", de: "/gateway" },
+  { es: "/aviso-legal", en: "/legal-notice", de: "/impressum" },
+  {
+    es: "/politica-privacidad",
+    en: "/privacy-policy",
+    de: "/datenschutz",
+  },
+  {
+    es: "/politica-cookies",
+    en: "/cookie-policy",
+    de: "/cookie-richtlinie",
+  },
+  {
+    es: "/condiciones-contratacion",
+    en: "/terms-and-conditions",
+    de: "/agb",
+  },
+  {
+    es: "/politica-cancelacion",
+    en: "/cancellation-policy",
+    de: "/stornobedingungen",
+  },
 ] as const;
 
 /** Alias → segmento canónico del mismo idioma (umlauts, sinónimos legacy). */

@@ -73,9 +73,31 @@ export type Dictionary = {
     contact247: string;
     privacy: string;
     terms: string;
+    legalNotice: string;
+    cookies: string;
+    cancellation: string;
+    cookieSettings: string;
     rights: string;
     tagline: string;
     agencyLicense: string;
+  };
+  cookies: {
+    title: string;
+    body: string;
+    acceptAll: string;
+    reject: string;
+    configure: string;
+    save: string;
+    necessary: string;
+    necessaryHelp: string;
+    analytics: string;
+    analyticsHelp: string;
+    marketing: string;
+    marketingHelp: string;
+    moreInfo: string;
+  };
+  legal: {
+    indexTitle: string;
   };
   excursions: {
     title: string;
@@ -522,9 +544,31 @@ const es: Dictionary = {
     contact247: "Contacto 24/7",
     privacy: "Privacidad",
     terms: "Condiciones",
+    legalNotice: "Aviso legal",
+    cookies: "Cookies",
+    cancellation: "Cancelación",
+    cookieSettings: "Configurar cookies",
     rights: "Todos los derechos reservados",
     tagline: "LET us guide you",
     agencyLicense: "Agencia Nº: I-AV-0002407.1",
+  },
+  cookies: {
+    title: "Cookies",
+    body: "Usamos cookies necesarias para el idioma, el consentimiento y el pago. Las de analítica y marketing solo se activan si usted lo acepta.",
+    acceptAll: "Aceptar todas",
+    reject: "Solo necesarias",
+    configure: "Configurar",
+    save: "Guardar elección",
+    necessary: "Necesarias",
+    necessaryHelp: "Idioma, consentimiento y pago seguro. Siempre activas.",
+    analytics: "Analítica",
+    analyticsHelp: "Nos ayudan a mejorar la web de forma anónima y agregada.",
+    marketing: "Marketing",
+    marketingHelp: "Para campañas o píxeles publicitarios, si los hubiera.",
+    moreInfo: "Política de cookies",
+  },
+  legal: {
+    indexTitle: "Políticas",
   },
   excursions: {
     title: "Actividades y excursiones guiadas en Lanzarote",
@@ -1118,9 +1162,31 @@ const en: Dictionary = {
     contact247: "Contact 24/7",
     privacy: "Privacy",
     terms: "Terms",
+    legalNotice: "Legal notice",
+    cookies: "Cookies",
+    cancellation: "Cancellation",
+    cookieSettings: "Cookie settings",
     rights: "All rights reserved",
     tagline: "LET us guide you",
     agencyLicense: "Agency No: I-AV-0002407.1",
+  },
+  cookies: {
+    title: "Cookies",
+    body: "We use necessary cookies for language, consent and checkout. Analytics and marketing cookies run only if you accept them.",
+    acceptAll: "Accept all",
+    reject: "Necessary only",
+    configure: "Settings",
+    save: "Save choices",
+    necessary: "Necessary",
+    necessaryHelp: "Language, consent and secure payment. Always on.",
+    analytics: "Analytics",
+    analyticsHelp: "Help us improve the site in aggregate, anonymised form.",
+    marketing: "Marketing",
+    marketingHelp: "For campaigns or ad pixels, if we use any.",
+    moreInfo: "Cookie policy",
+  },
+  legal: {
+    indexTitle: "Policies",
   },
   excursions: {
     title: "Guided activities and excursions in Lanzarote",
@@ -1664,10 +1730,32 @@ const de: Dictionary = {
     explore: "Entdecken",
     contact247: "Kontakt 24/7",
     privacy: "Datenschutz",
-    terms: "Bedingungen",
+    terms: "AGB",
+    legalNotice: "Impressum",
+    cookies: "Cookies",
+    cancellation: "Storno",
+    cookieSettings: "Cookie-Einstellungen",
     rights: "Alle Rechte vorbehalten",
     tagline: "LET us guide you",
     agencyLicense: "Agentur-Nr.: I-AV-0002407.1",
+  },
+  cookies: {
+    title: "Cookies",
+    body: "Wir nutzen notwendige Cookies für Sprache, Einwilligung und Zahlung. Analyse- und Marketing-Cookies nur mit Ihrer Zustimmung.",
+    acceptAll: "Alle akzeptieren",
+    reject: "Nur notwendige",
+    configure: "Einstellungen",
+    save: "Auswahl speichern",
+    necessary: "Notwendig",
+    necessaryHelp: "Sprache, Einwilligung und sichere Zahlung. Immer aktiv.",
+    analytics: "Analyse",
+    analyticsHelp: "Helfen uns, die Website anonym und aggregiert zu verbessern.",
+    marketing: "Marketing",
+    marketingHelp: "Für Kampagnen oder Werbe-Pixel, falls vorhanden.",
+    moreInfo: "Cookie-Richtlinie",
+  },
+  legal: {
+    indexTitle: "Richtlinien",
   },
   excursions: {
     title: "Geführte Aktivitäten und Ausflüge auf Lanzarote",
