@@ -9,6 +9,7 @@ import {
   createStripeCheckoutForPayment,
   isStripeConfigured,
 } from "@/lib/stripe";
+import { stampCheckoutSessionOnBookings } from "@/lib/checkout-abandon";
 import { type Locale } from "@/i18n/config";
 import { localePath } from "@/i18n/path";
 
@@ -103,6 +104,12 @@ export async function createStripeCheckoutForBookings(
     stripeCheckoutSessionId: checkout.sessionId,
     stripeCheckoutUrl: checkout.url,
     stripePaymentIntentId: checkout.paymentIntentId,
+  });
+
+  await stampCheckoutSessionOnBookings(payable, {
+    sessionId: checkout.sessionId,
+    url: checkout.url,
+    paymentIntentId: checkout.paymentIntentId,
   });
 
   return {

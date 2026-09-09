@@ -377,6 +377,8 @@ export type Dictionary = {
     manage: string;
     cancel: string;
     print: string;
+    payCancelledTitle: string;
+    payCancelledBody: string;
   };
   payments: {
     card: string;
@@ -961,6 +963,9 @@ const es: Dictionary = {
     manage: "Gestionar reserva",
     cancel: "Cancelar reserva",
     print: "Imprimir confirmación",
+    payCancelledTitle: "Pago no completado",
+    payCancelledBody:
+      "No se ha creado ninguna reserva porque el pago no se realizó. Puede volver a reservar cuando quiera.",
   },
   payments: {
     card: "Pago 100% online",
@@ -1503,6 +1508,9 @@ const en: Dictionary = {
     manage: "Manage booking",
     cancel: "Cancel booking",
     print: "Print confirmation",
+    payCancelledTitle: "Payment not completed",
+    payCancelledBody:
+      "No booking was created because the payment was not completed. You can book again whenever you like.",
   },
   payments: {
     card: "100% online payment",
@@ -2054,6 +2062,9 @@ const de: Dictionary = {
     manage: "Buchung verwalten",
     cancel: "Buchung stornieren",
     print: "Bestätigung drucken",
+    payCancelledTitle: "Zahlung nicht abgeschlossen",
+    payCancelledBody:
+      "Es wurde keine Buchung erstellt, weil die Zahlung nicht erfolgt ist. Sie können jederzeit erneut buchen.",
   },
   payments: {
     card: "100% Online-Zahlung",

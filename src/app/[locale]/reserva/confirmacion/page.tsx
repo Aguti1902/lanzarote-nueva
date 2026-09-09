@@ -13,10 +13,25 @@ import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
 import type { PaymentMethod } from "@/types";
 import { ConfirmationPayActions } from "@/components/ConfirmationPayActions";
+import { isAwaitingOnlinePayment } from "@/lib/payments";
+import { discardUnpaidCheckoutByBookingId } from "@/lib/checkout-abandon";
 
-export const metadata: Metadata = {
-  title: "Booking confirmed",
-};
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}: Props): Promise<Metadata> {
+  const locale = resolveLocale((await params).locale);
+  const { cancelled } = await searchParams;
+  const dict = await getDictionary(locale);
+  return {
+    title:
+      cancelled === "1"
+        ? dict.confirmation.payCancelledTitle
+        : dict.confirmation.title,
+  };
+}
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -30,26 +45,57 @@ export default async function ConfirmacionPage({ params, searchParams }: Props) 
     getBookings(),
     getDictionary(locale),
   ]);
-  const booking = bookings.find((b) => b.id === id);
+  let booking = bookings.find((b) => b.id === id);
+  const payCancelled = cancelled === "1";
+
+  if (payCancelled && booking && isAwaitingOnlinePayment(booking)) {
+    await discardUnpaidCheckoutByBookingId(booking.id);
+    booking = undefined;
+  }
+
+  const awaiting = Boolean(booking && isAwaitingOnlinePayment(booking));
+  const showAsCancelled = payCancelled || (awaiting && paid !== "1");
 
   function payLabel(method: PaymentMethod) {
     return dict.payments[method] ?? method;
   }
 
+  if (showAsCancelled && !booking) {
+    return (
+      <div className="mx-auto flex max-w-2xl flex-col items-center px-4 py-16 text-center md:px-6 md:py-20">
+        <XCircle className="h-14 w-14 text-red-600" />
+        <h1 className="mt-5 font-display text-3xl text-ink md:text-4xl">
+          {dict.confirmation.payCancelledTitle}
+        </h1>
+        <p className="mt-3 max-w-lg text-ink-muted">
+          {dict.confirmation.payCancelledBody}
+        </p>
+        <Link href={localePath(locale)} className="btn-primary mt-8">
+          {dict.common.backHome}
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto flex max-w-2xl flex-col items-center px-4 py-16 text-center md:px-6 md:py-20">
-      <CheckCircle2 className="h-14 w-14 text-success" />
-      <h1 className="mt-5 font-display text-3xl text-ink md:text-4xl">
-        {dict.confirmation.title}
-      </h1>
-      <p className="mt-3 max-w-lg text-ink-muted">{dict.confirmation.body}</p>
-      {cancelled === "1" && (
-        <p className="mt-3 rounded-lg bg-amber-50 px-4 py-2 text-sm text-amber-900">
-          El pago se canceló. Puede reintentarlo desde esta página.
-        </p>
+      {showAsCancelled ? (
+        <XCircle className="h-14 w-14 text-red-600" />
+      ) : (
+        <CheckCircle2 className="h-14 w-14 text-success" />
       )}
+      <h1 className="mt-5 font-display text-3xl text-ink md:text-4xl">
+        {showAsCancelled
+          ? dict.confirmation.payCancelledTitle
+          : dict.confirmation.title}
+      </h1>
+      <p className="mt-3 max-w-lg text-ink-muted">
+        {showAsCancelled
+          ? dict.confirmation.payCancelledBody
+          : dict.confirmation.body}
+      </p>
 
-      {booking ? (
+      {booking && !showAsCancelled ? (
         <div className="mt-8 w-full bg-white p-6 text-left ring-1 ring-sand-line md:p-8">
           <div className="flex flex-wrap items-end justify-between gap-3 border-b border-sand-line pb-4">
             <div>
@@ -172,11 +218,11 @@ export default async function ConfirmacionPage({ params, searchParams }: Props) 
             )}
           </div>
         </div>
-      ) : (
+      ) : !showAsCancelled ? (
         <p className="mt-6 text-sm text-ink-muted">
           {dict.confirmation.locator}: {id || "—"}
         </p>
-      )}
+      ) : null}
 
       <Link href={localePath(locale)} className="btn-primary mt-8">
         {dict.common.backHome}

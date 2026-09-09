@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Booking, BookingStatus } from "@/types";
 import { formatDate, formatPrice, paymentLabel } from "@/lib/format";
 import { compareBookingsByServiceNearest } from "@/lib/booking-display";
+import { isAwaitingOnlinePayment } from "@/lib/payments";
 import {
   DateRangeFilter,
   emptyDateRange,
@@ -83,6 +84,7 @@ export default function AdminReservasCrucerosPage() {
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     const list = cruiseBookings.filter((b) => {
+      if (isAwaitingOnlinePayment(b)) return false;
       if (tab === "cancelled") {
         if (b.status !== "cancelled") return false;
       } else if (tab === "done") {

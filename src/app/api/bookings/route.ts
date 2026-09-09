@@ -35,6 +35,10 @@ import {
 } from "@/lib/transfer-price";
 import { createStripeCheckoutForBookings, clearStripeSessionFields } from "@/lib/booking-checkout";
 import {
+  discardUnpaidCheckoutBookings,
+  cancelUnpaidConfirmedCheckouts,
+} from "@/lib/checkout-abandon";
+import {
   expectedOnlineCharge,
   isOnlineCardMethod,
   splitPaymentAmounts,
@@ -75,6 +79,12 @@ function isDateBlocked(
 export async function GET(request: Request) {
   const denied = await requireAdmin(request);
   if (denied) return denied;
+
+  try {
+    await cancelUnpaidConfirmedCheckouts();
+  } catch (err) {
+    console.error("[bookings] repair unpaid checkouts failed", err);
+  }
 
   const bookings = await getBookings();
   return NextResponse.json({ bookings });
@@ -205,16 +215,6 @@ export async function POST(request: Request) {
         ? bookingMethod.trim().toLowerCase()
         : undefined;
 
-    const status =
-      requestedStatus === "pending" ||
-      requestedStatus === "confirmed" ||
-      requestedStatus === "completed" ||
-      requestedStatus === "cancelled"
-        ? requestedStatus
-        : methodNorm === "request" || methodNorm === "phone"
-          ? "pending"
-          : "confirmed";
-
     const localeNorm =
       typeof locale === "string" && locale.trim()
         ? locale.trim().toLowerCase().slice(0, 5)
@@ -265,6 +265,29 @@ export async function POST(request: Request) {
     }
 
     const method = (paymentMethod as PaymentMethod) || "card";
+    const onlineCheckout = isOnlineCardMethod(method);
+
+    const status = onlineCheckout
+      ? "pending"
+      : requestedStatus === "pending" ||
+          requestedStatus === "confirmed" ||
+          requestedStatus === "completed" ||
+          requestedStatus === "cancelled"
+        ? requestedStatus
+        : methodNorm === "request" || methodNorm === "phone"
+          ? "pending"
+          : "confirmed";
+
+    if (
+      onlineCheckout &&
+      !skipStripeCheckout &&
+      !isStripeConfigured()
+    ) {
+      return NextResponse.json(
+        { error: "El pago online no está disponible ahora mismo. Inténtelo de nuevo." },
+        { status: 503 }
+      );
+    }
     if (
       (source === "cruise" ||
         (typeof customer?.cruiseShip === "string" &&
@@ -303,7 +326,9 @@ export async function POST(request: Request) {
       groupId: groupId ? String(groupId) : undefined,
     });
 
-    if (customer?.cruiseShip || booking.groupId) {
+    const awaitingStripe = onlineCheckout && status === "pending";
+
+    if (!awaitingStripe && (customer?.cruiseShip || booking.groupId)) {
       const assigned = await assignBookingToCruiseGroup(booking);
       booking = assigned.booking;
     }
@@ -312,10 +337,7 @@ export async function POST(request: Request) {
     let paymentId: string | undefined;
 
     const wantsOnline =
-      status !== "pending" &&
-      !skipStripeCheckout &&
-      isOnlineCardMethod(method) &&
-      isStripeConfigured();
+      awaitingStripe && !skipStripeCheckout && isStripeConfigured();
 
     if (wantsOnline) {
       const origin =
@@ -334,18 +356,30 @@ export async function POST(request: Request) {
       } catch (err) {
         console.error("[bookings] stripe checkout failed", err);
       }
+      if (!checkoutUrl) {
+        await discardUnpaidCheckoutBookings([booking.id]);
+        return NextResponse.json(
+          {
+            error:
+              "No se pudo iniciar el pago. La reserva no se ha creado. Inténtelo de nuevo.",
+          },
+          { status: 503 }
+        );
+      }
     }
 
     const invoice = shouldAutoIssueInvoice(booking)
       ? await createInvoiceForBooking(booking)
       : null;
 
-    void notifyNewBooking(booking, {
-      bookingMethod: methodNorm,
-      source: typeof source === "string" ? source : undefined,
-    }).catch((err) => {
-      console.error("[bookings] notify failed", err);
-    });
+    if (!awaitingStripe) {
+      void notifyNewBooking(booking, {
+        bookingMethod: methodNorm,
+        source: typeof source === "string" ? source : undefined,
+      }).catch((err) => {
+        console.error("[bookings] notify failed", err);
+      });
+    }
 
     const customerMailKind = shouldSendCustomerEmailOnCreate(
       booking,

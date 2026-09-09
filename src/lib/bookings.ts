@@ -1,6 +1,6 @@
 import type { Booking, BookingStatus, CashStatus } from "@/types";
 import { buildBookingId } from "@/lib/booking-ids";
-import { splitPaymentAmounts } from "@/lib/payments";
+import { isAwaitingOnlinePayment, splitPaymentAmounts } from "@/lib/payments";
 import {
   readCmsJson,
   readLocalCmsJson,
@@ -174,6 +174,17 @@ export async function updateBookingStatus(
   return bookings[idx];
 }
 
+export async function deleteBookingsById(ids: string[]): Promise<number> {
+  const unique = [...new Set(ids.map((id) => String(id).trim()).filter(Boolean))];
+  if (!unique.length) return 0;
+  const set = new Set(unique);
+  const bookings = await getBookings();
+  const next = bookings.filter((b) => !set.has(b.id));
+  const removed = bookings.length - next.length;
+  if (removed > 0) await saveBookings(next);
+  return removed;
+}
+
 export async function updateBooking(
   id: string,
   patch: Partial<Booking>
@@ -220,7 +231,9 @@ export function getCashPending(bookings: Booking[]): Booking[] {
 }
 
 export function getStats(bookings: Booking[]) {
-  const active = bookings.filter((b) => b.status !== "cancelled");
+  const active = bookings.filter(
+    (b) => b.status !== "cancelled" && !isAwaitingOnlinePayment(b)
+  );
   const revenue = active.reduce((sum, b) => {
     return sum + (b.amountPaidCard || 0) + (b.amountPaidCash || 0);
   }, 0);
