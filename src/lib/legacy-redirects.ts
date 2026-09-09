@@ -66,20 +66,6 @@ export const LEGACY_PATH_REDIRECTS: Record<string, string> = {
   "/de/cart": "/de/warenkorb",
   "/de/manage-booking": "/de/buchung-verwalten",
 
-  // —— Políticas / legal (PDF antiguos y aliases) ——
-  "/dist/legal/privacy-policy-es.pdf": "/es/politica-privacidad",
-  "/dist/legal/privacy-policy-en.pdf": "/en/privacy-policy",
-  "/dist/legal/privacy-policy-de.pdf": "/de/datenschutz",
-  "/dist/legal/sales-cancellation-policy-es.pdf":
-    "/es/condiciones-contratacion",
-  "/dist/legal/sales-cancellation-policy-en.pdf": "/en/terms-and-conditions",
-  "/dist/legal/sales-cancellation-policy-de.pdf": "/de/agb",
-  "/privacy": "/es/politica-privacidad",
-  "/privacy-policy": "/es/politica-privacidad",
-  "/cookies": "/es/politica-cookies",
-  "/aviso-legal": "/es/aviso-legal",
-  "/legal": "/es/aviso-legal",
-
   // —— Jameos (no incluidas en el mapa de slugs SEO) ——
   "/en/excursions/romantic-night-jameos-del-agua":
     "/en/excursions/velada-romantica-noche-jameos-del-agua-concierto-cena",
