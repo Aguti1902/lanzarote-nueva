@@ -1,17 +1,22 @@
 import type { Booking, PaymentLink } from "@/types";
 import { getPaymentLinks, upsertPaymentLink } from "@/lib/admin-extras";
+import { createStripeCheckoutForBookings } from "@/lib/booking-checkout";
 import {
   deleteBookingsById,
   getBookings,
   saveBookings,
-  updateBooking,
 } from "@/lib/bookings";
+import { sendCustomerBookingEmail } from "@/lib/customer-emails";
 import { isAwaitingOnlinePayment, isOnlineCardMethod } from "@/lib/payments";
 
+const PAYMENT_REMINDER_FLAG = "payment_reminder_sent";
+
 function idsFromPaymentLink(payment: PaymentLink): string[] {
-  const fromNotes = (payment.notes || "").startsWith("bookingIds:")
-    ? payment.notes!
-        .slice("bookingIds:".length)
+  const match = (payment.notes || "").match(
+    /bookingIds:([A-Za-z0-9_,\-]+)/
+  );
+  const fromNotes = match
+    ? match[1]
         .split(",")
         .map((s) => s.trim())
         .filter(Boolean)
@@ -25,6 +30,10 @@ function idsFromPaymentLink(payment: PaymentLink): string[] {
       ].filter(Boolean)
     ),
   ];
+}
+
+function hasPaymentReminder(payment: PaymentLink): boolean {
+  return (payment.notes || "").includes(PAYMENT_REMINDER_FLAG);
 }
 
 /** Solo borra reservas que siguen sin cobro online (intentos de checkout). */
@@ -85,6 +94,83 @@ export async function discardUnpaidCheckoutByPayment(
     });
   }
   return result;
+}
+
+/**
+ * Sesión Stripe expirada sin pago:
+ * 1ª vez → nuevo enlace (~12 h) + email «pago no completado».
+ * 2ª vez → cancela/borra el intento sin confirmar.
+ */
+export async function handleExpiredStripeCheckout(
+  payment: PaymentLink,
+  options?: { origin?: string }
+): Promise<{ action: "reminded" | "discarded" | "skipped" }> {
+  if (payment.status === "paid") return { action: "skipped" };
+
+  const bookings = await getBookings();
+  const ids = idsFromPaymentLink(payment);
+  const unpaid = bookings.filter(
+    (b) => ids.includes(b.id) && isAwaitingOnlinePayment(b)
+  );
+
+  if (!unpaid.length) {
+    if (payment.status === "pending") {
+      await upsertPaymentLink({
+        ...payment,
+        status: "cancelled",
+        notes: [payment.notes, "Checkout expirado sin reservas pendientes"]
+          .filter(Boolean)
+          .join(" · "),
+      });
+    }
+    return { action: "skipped" };
+  }
+
+  if (hasPaymentReminder(payment)) {
+    await discardUnpaidCheckoutByPayment(payment);
+    return { action: "discarded" };
+  }
+
+  try {
+    const locale = unpaid[0].locale || payment.customerLocale || "es";
+    const checkout = await createStripeCheckoutForBookings(unpaid, {
+      origin: options?.origin,
+      locale,
+      expiresInMinutes: 12 * 60,
+      existingPayment: payment,
+    });
+    if (!checkout?.checkoutUrl) {
+      await discardUnpaidCheckoutByPayment(payment);
+      return { action: "discarded" };
+    }
+
+    await upsertPaymentLink({
+      ...checkout.payment,
+      notes: [checkout.payment.notes, PAYMENT_REMINDER_FLAG]
+        .filter(Boolean)
+        .join(" · "),
+    });
+
+    for (const booking of unpaid) {
+      try {
+        await sendCustomerBookingEmail(booking, "payment_incomplete", {
+          origin: options?.origin,
+          payUrl: checkout.checkoutUrl,
+        });
+      } catch (err) {
+        console.error(
+          "[checkout-abandon] payment_incomplete email failed",
+          booking.id,
+          err
+        );
+      }
+    }
+    return { action: "reminded" };
+  } catch (err) {
+    console.error("[checkout-abandon] remind failed", payment.id, err);
+    await discardUnpaidCheckoutByPayment(payment);
+    return { action: "discarded" };
+  }
 }
 
 /**
@@ -155,18 +241,4 @@ export async function cancelUnpaidConfirmedCheckouts(): Promise<number> {
     }
   }
   return changed;
-}
-
-export async function stampCheckoutSessionOnBookings(
-  bookings: Booking[],
-  session: { sessionId: string; url: string; paymentIntentId?: string }
-) {
-  for (const booking of bookings) {
-    await updateBooking(booking.id, {
-      stripeCheckoutSessionId: session.sessionId,
-      ...(session.paymentIntentId
-        ? { stripePaymentIntentId: session.paymentIntentId }
-        : {}),
-    });
-  }
 }

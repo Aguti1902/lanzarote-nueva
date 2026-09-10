@@ -34,6 +34,11 @@ export type StripeCheckoutOptions = {
   successUrl?: string;
   /** Override cancel URL (absolute or path). */
   cancelUrl?: string;
+  /**
+   * Minutos hasta que expire la sesión (mín. 31, máx. 1439 ≈ 24 h).
+   * Por defecto 31.
+   */
+  expiresInMinutes?: number;
 };
 
 /** Create (or recreate) a Stripe Checkout Session for the payment link amount. */
@@ -89,11 +94,17 @@ export async function createStripeCheckoutForPayment(
 
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
-    payment_method_types: ["card"],
+    // Sin payment_method_types: Stripe usa los métodos activos del Dashboard
+    // (tarjeta, PayPal, etc.).
     customer_email: payment.customerEmail || undefined,
     client_reference_id: payment.id,
-    // 30 min: si no pagan, Stripe emite checkout.session.expired y se borra el intento.
-    expires_at: Math.floor(Date.now() / 1000) + 31 * 60,
+    // Por defecto ~30 min; en recordatorio de pago incompleto se puede alargar (máx. ~24 h).
+    expires_at:
+      Math.floor(Date.now() / 1000) +
+      Math.min(
+        Math.max(options?.expiresInMinutes ?? 31, 31),
+        24 * 60 - 1
+      ),
     line_items: [
       {
         quantity: 1,

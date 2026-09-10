@@ -9,7 +9,7 @@ import {
   createStripeCheckoutForPayment,
   isStripeConfigured,
 } from "@/lib/stripe";
-import { stampCheckoutSessionOnBookings } from "@/lib/checkout-abandon";
+import { updateBooking } from "@/lib/bookings";
 import { type Locale } from "@/i18n/config";
 import { localePath } from "@/i18n/path";
 
@@ -21,10 +21,29 @@ function serviceTypeForBooking(
   return "tour";
 }
 
+export async function stampCheckoutSessionOnBookings(
+  bookings: Booking[],
+  session: { sessionId: string; url: string; paymentIntentId?: string }
+) {
+  for (const booking of bookings) {
+    await updateBooking(booking.id, {
+      stripeCheckoutSessionId: session.sessionId,
+      ...(session.paymentIntentId
+        ? { stripePaymentIntentId: session.paymentIntentId }
+        : {}),
+    });
+  }
+}
+
 /** Crea (o reutiliza) un PaymentLink + Stripe Checkout para una o varias reservas. */
 export async function createStripeCheckoutForBookings(
   bookings: Booking[],
-  options?: { origin?: string; locale?: string }
+  options?: {
+    origin?: string;
+    locale?: string;
+    expiresInMinutes?: number;
+    existingPayment?: PaymentLink;
+  }
 ): Promise<{
   payment: PaymentLink;
   checkoutUrl: string;
@@ -66,22 +85,33 @@ export async function createStripeCheckoutForBookings(
       ? `${primary.tourTitle} · ${primary.id}`
       : `Pago reservas (${payable.length}): ${ids.join(", ")}`;
 
-  let payment = await upsertPaymentLink({
-    concept,
-    amount: Math.round(amount * 100) / 100,
-    locator: primary.id,
-    customerName: primary.customer.name,
-    customerEmail: primary.customer.email,
-    customerLocale: localeNorm,
-    bookingId: primary.id,
-    bookingIds: ids,
-    serviceType: serviceTypeForBooking(primary),
-    serviceId: primary.tourId,
-    serviceTitle: primary.tourTitle,
-    chargeFull,
-    paymentMethod: "Stripe",
-    notes: `bookingIds:${ids.join(",")}`,
-  });
+  let payment =
+    options?.existingPayment ||
+    (await upsertPaymentLink({
+      concept,
+      amount: Math.round(amount * 100) / 100,
+      locator: primary.id,
+      customerName: primary.customer.name,
+      customerEmail: primary.customer.email,
+      customerLocale: localeNorm,
+      bookingId: primary.id,
+      bookingIds: ids,
+      serviceType: serviceTypeForBooking(primary),
+      serviceId: primary.tourId,
+      serviceTitle: primary.tourTitle,
+      chargeFull,
+      paymentMethod: "Stripe",
+      notes: `bookingIds:${ids.join(",")}`,
+    }));
+
+  if (options?.existingPayment) {
+    payment = await upsertPaymentLink({
+      ...clearStripeSessionFields(payment),
+      status: "pending",
+      amount: Math.round(amount * 100) / 100,
+      customerLocale: localeNorm,
+    });
+  }
 
   const confirmationPath =
     payable.length === 1
@@ -95,6 +125,7 @@ export async function createStripeCheckoutForBookings(
     locale: localeNorm,
     successUrl: absoluteUrl(confirmationPath, options?.origin),
     cancelUrl: absoluteUrl(cancelPath, options?.origin),
+    expiresInMinutes: options?.expiresInMinutes,
   });
 
   if (!checkout) return null;

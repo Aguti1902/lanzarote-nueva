@@ -11,7 +11,7 @@ import { getBookings } from "@/lib/bookings";
 import { assignBookingToCruiseGroup } from "@/lib/cruise-groups";
 import { notifyNewBooking } from "@/lib/notify";
 import { isCruiseBooking } from "@/lib/booking-ids";
-import { discardUnpaidCheckoutByPayment } from "@/lib/checkout-abandon";
+import { handleExpiredStripeCheckout } from "@/lib/checkout-abandon";
 
 export const dynamic = "force-dynamic";
 
@@ -305,7 +305,17 @@ export async function POST(request: Request) {
       links.find((p) => p.id === paymentId) ||
       links.find((p) => p.stripeCheckoutSessionId === session.id);
     if (payment) {
-      await discardUnpaidCheckoutByPayment(payment);
+      const origin =
+        process.env.NEXT_PUBLIC_SITE_URL ||
+        process.env.VERCEL_PROJECT_PRODUCTION_URL ||
+        undefined;
+      await handleExpiredStripeCheckout(payment, {
+        origin: origin
+          ? origin.startsWith("http")
+            ? origin
+            : `https://${origin}`
+          : undefined,
+      });
     }
   }
 

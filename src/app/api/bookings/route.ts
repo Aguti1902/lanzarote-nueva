@@ -427,12 +427,17 @@ export async function POST(request: Request) {
       booking,
       checkoutUrl
     );
-    if (customerMailKind) {
+    // Con Checkout Stripe: responder ya con la URL (no esperar al correo).
+    if (customerMailKind && !wantsOnline) {
       try {
         await sendCustomerBookingEmail(booking, customerMailKind);
       } catch (err) {
         console.error("[bookings] customer email failed", err);
       }
+    } else if (customerMailKind && wantsOnline) {
+      void sendCustomerBookingEmail(booking, customerMailKind).catch((err) => {
+        console.error("[bookings] customer email failed", err);
+      });
     }
 
     return NextResponse.json(

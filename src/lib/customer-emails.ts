@@ -35,7 +35,8 @@ import { persistBookingLocaleIfMissing } from "@/lib/bookings";
 export type CustomerEmailKind =
   | "confirmation"
   | "request"
-  | "cancellation";
+  | "cancellation"
+  | "payment_incomplete";
 
 type LocaleKey = BookingLocale;
 
@@ -57,6 +58,12 @@ const COPY = {
     requestTitle: "Hemos recibido su solicitud",
     requestLead:
       "Nuestro equipo revisará su petición y se pondrá en contacto con usted lo antes posible.",
+    paymentIncompleteSubject: (id: string) =>
+      `Pago pendiente ${id} · Lanzarote Experience Tours`,
+    paymentIncompleteTitle: "No se completó el pago",
+    paymentIncompleteLead:
+      "Inició una reserva pero el pago online no se completó. Su plaza no está confirmada. Puede pagar ahora con el botón de abajo; si no lo hace a tiempo, la solicitud se cancelará automáticamente.",
+    payNow: "Completar pago",
     cancellationSubject: (id: string) =>
       `Cancelación de reserva ${id} · Lanzarote Experience Tours`,
     cancellationTitle: "Reserva cancelada",
@@ -114,6 +121,12 @@ const COPY = {
     requestTitle: "We have received your request",
     requestLead:
       "Our team will review your request and contact you as soon as possible.",
+    paymentIncompleteSubject: (id: string) =>
+      `Payment pending ${id} · Lanzarote Experience Tours`,
+    paymentIncompleteTitle: "Payment was not completed",
+    paymentIncompleteLead:
+      "You started a booking but the online payment was not finished. Your spot is not confirmed. You can pay now with the button below; if you do not pay in time, the request will be cancelled automatically.",
+    payNow: "Complete payment",
     cancellationSubject: (id: string) =>
       `Booking cancellation ${id} · Lanzarote Experience Tours`,
     cancellationTitle: "Booking cancelled",
@@ -171,6 +184,12 @@ const COPY = {
     requestTitle: "Wir haben Ihre Anfrage erhalten",
     requestLead:
       "Unser Team prüft Ihre Anfrage und meldet sich so schnell wie möglich.",
+    paymentIncompleteSubject: (id: string) =>
+      `Zahlung ausstehend ${id} · Lanzarote Experience Tours`,
+    paymentIncompleteTitle: "Zahlung nicht abgeschlossen",
+    paymentIncompleteLead:
+      "Sie haben eine Buchung gestartet, die Online-Zahlung aber nicht abgeschlossen. Ihr Platz ist noch nicht bestätigt. Sie können jetzt mit dem Button unten bezahlen; ohne rechtzeitige Zahlung wird die Anfrage automatisch storniert.",
+    payNow: "Zahlung abschließen",
     cancellationSubject: (id: string) =>
       `Stornierung ${id} · Lanzarote Experience Tours`,
     cancellationTitle: "Buchung storniert",
@@ -312,25 +331,27 @@ function bookingSummaryRows(
 }
 
 /**
- * Online con Checkout Stripe pendiente → no enviar aún (espera webhook).
- * Solicitudes pending → email de solicitud.
- * Resto (pago en el día, sin checkout, etc.) → confirmación al crear.
+ * Online con Checkout Stripe pendiente → no enviar aún (espera pago o recordatorio).
+ * Solicitudes pending (teléfono / a petición) → email de solicitud.
+ * Resto → confirmación al crear.
  */
 export function shouldSendCustomerEmailOnCreate(
   booking: Booking,
   checkoutUrl?: string
 ): CustomerEmailKind | null {
   if (booking.status === "cancelled") return null;
-  if (booking.status === "pending") return "request";
-  if (checkoutUrl && isOnlineCardMethod(booking.paymentMethod)) return null;
-  if (
+
+  const onlineUnpaid =
     isOnlineCardMethod(booking.paymentMethod) &&
     (booking.paymentStatus === "unpaid" || !booking.paymentStatus) &&
-    (booking.amountPaidCard || 0) <= 0
-  ) {
-    // Reserva online sin cobro todavía y sin URL de pago: no spamear como confirmada
+    (booking.amountPaidCard || 0) <= 0;
+
+  // Checkout Stripe en curso o reserva online sin cobro: no spamear como "solicitud".
+  if (onlineUnpaid || (checkoutUrl && isOnlineCardMethod(booking.paymentMethod))) {
     return null;
   }
+
+  if (booking.status === "pending") return "request";
   return "confirmation";
 }
 
@@ -341,6 +362,8 @@ export async function sendCustomerBookingEmail(
     origin?: string;
     assessment?: CancellationAssessment;
     reason?: string;
+    /** URL de Stripe Checkout para completar un pago pendiente. */
+    payUrl?: string;
   }
 ): Promise<SendEmailResult> {
   const to = booking.customer?.email?.trim();
@@ -375,6 +398,17 @@ export async function sendCustomerBookingEmail(
     lead = c.requestLead;
     subject = c.requestSubject(booking.id);
     actions = emailCta(links.manage, c.manage, true);
+  } else if (kind === "payment_incomplete") {
+    title = c.paymentIncompleteTitle;
+    lead = c.paymentIncompleteLead;
+    subject = c.paymentIncompleteSubject(booking.id);
+    const payUrl = options?.payUrl?.trim();
+    actions = [
+      payUrl ? emailCta(payUrl, c.payNow, true) : "",
+      emailCta(links.manage, c.manage),
+    ]
+      .filter(Boolean)
+      .join("");
   } else if (kind === "cancellation") {
     title = c.cancellationTitle;
     lead = c.cancellationLead;
@@ -443,6 +477,9 @@ export async function sendCustomerBookingEmail(
     `${c.payment}: ${paymentLabel(booking.paymentMethod, locale)}`,
     "",
     kind === "confirmation" ? `${c.viewVoucher}: ${links.voucher}` : "",
+    kind === "payment_incomplete" && options?.payUrl
+      ? `${c.payNow}: ${options.payUrl}`
+      : "",
     `${c.manage}: ${links.manage}`,
     kind === "confirmation" ? `${c.cancel}: ${links.cancel}` : "",
     links.invoice ? `${c.viewInvoice}: ${links.invoice}` : "",
