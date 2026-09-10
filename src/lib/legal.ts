@@ -63,9 +63,9 @@ function mapDoc(doc: LegalDoc, company: CompanyBits): LegalDoc {
 }
 
 const UPDATED = {
-  es: "Última actualización: 9 de septiembre de 2026",
-  en: "Last updated: 9 September 2026",
-  de: "Letzte Aktualisierung: 9. September 2026",
+  es: "Última actualización: 10 de septiembre de 2026",
+  en: "Last updated: 10 September 2026",
+  de: "Letzte Aktualisierung: 10. September 2026",
 } as const;
 
 const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
@@ -79,9 +79,10 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
         {
           heading: "1. Datos identificativos",
           paragraphs: [
-            "Titular: {legalName}. CIF: {taxId}. Domicilio: {address}. Teléfono: {phone}. Correo: {email}.",
+            "Titular: {legalName}. CIF: {taxId}. Domicilio: {address}. Teléfonos: {phone} y +34 928 52 12 26. Correo: {email}.",
+            "Inscrita en el Registro Mercantil de Lanzarote, Tomo 420, Folio 111, Hoja IL-9986, Inscripción 1ª.",
             "Licencia de agencia de viajes: {license}. Marca comercial: {brandName}.",
-            "Sitio web: https://www.lanzaroteexperiencetours.com",
+            "Sitio web: https://www.lanzaroteexperiencetours.com. {legalName} comercializa, gestiona, cobra y factura los productos ofrecidos en este sitio.",
           ],
         },
         {
@@ -127,7 +128,7 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
         {
           heading: "1. Responsable del tratamiento",
           paragraphs: [
-            "{legalName}, CIF {taxId}, {address}. Contacto: {email} · {phone}.",
+            "{legalName}, CIF {taxId}, {address}. Contacto: {email} · {phone} · +34 928 52 12 26.",
           ],
         },
         {
@@ -135,7 +136,7 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
           paragraphs: [
             "Reserva: nombre, correo, teléfono, idioma, alojamiento o barco, número de vuelo si aplica, número de viajeros, fecha y servicio elegido, notas y datos de pago (Stripe trata la tarjeta; nosotros no almacenamos el número completo).",
             "Contacto: nombre, correo, teléfono y mensaje.",
-            "Navegación: idioma preferido, consentimiento de cookies y, solo si usted lo acepta, identificadores de analítica.",
+            "Navegación: idioma preferido, consentimiento de cookies y, solo si usted lo acepta, identificadores de analítica. De forma técnica pueden registrarse IP, tipo de navegador o dispositivo para seguridad y funcionamiento del sitio.",
           ],
         },
         {
@@ -219,7 +220,8 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
         {
           heading: "6. Cómo borrarlas en el navegador",
           paragraphs: [
-            "Puede eliminar o bloquear cookies desde la configuración de Chrome, Safari, Firefox o Edge. Si las bloquea todas, algunas funciones (idioma, reserva o pago) pueden dejar de ir bien.",
+            "Puede eliminar o bloquear cookies desde la configuración de Chrome, Safari, Firefox o Edge (suele estar en Privacidad o en la ayuda del navegador). Si las bloquea todas, algunas funciones (idioma, reserva o pago) pueden dejar de ir bien.",
+            "Rechazar cookies no necesarias no implica dejar de ver publicidad en internet en general: solo afecta a lo que este sitio pueda cargar con su permiso.",
           ],
         },
       ],
@@ -288,7 +290,9 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
         {
           heading: "9. Reclamaciones",
           paragraphs: [
-            "Puede escribir a {email} o llamar al {phone}. Hojas de reclamaciones a su disposición. Plataforma europea de resolución de litigios en línea: https://ec.europa.eu/consumers/odr",
+            "Puede escribir a {email} o llamar al {phone} / +34 928 52 12 26.",
+            "Las hojas de reclamaciones están a disposición del cliente de lunes a viernes, de 09:00 a 13:00, en Calle Calderetas 100, 35550 San Bartolomé (Lanzarote).",
+            "Plataforma europea de resolución de litigios en línea: https://ec.europa.eu/consumers/odr",
           ],
         },
       ],
@@ -342,9 +346,10 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
         {
           heading: "1. Identity",
           paragraphs: [
-            "Owner: {legalName}. Tax ID: {taxId}. Address: {address}. Phone: {phone}. Email: {email}.",
+            "Owner: {legalName}. Tax ID: {taxId}. Address: {address}. Phones: {phone} and +34 928 52 12 26. Email: {email}.",
+            "Registered at the Lanzarote Commercial Registry, Volume 420, Folio 111, Sheet IL-9986, Entry 1.",
             "Travel-agency licence: {license}. Trading name: {brandName}.",
-            "Website: https://www.lanzaroteexperiencetours.com",
+            "Website: https://www.lanzaroteexperiencetours.com. {legalName} markets, manages, collects payment for and invoices the products offered on this site.",
           ],
         },
         {
@@ -390,7 +395,7 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
         {
           heading: "1. Controller",
           paragraphs: [
-            "{legalName}, tax ID {taxId}, {address}. Contact: {email} · {phone}.",
+            "{legalName}, tax ID {taxId}, {address}. Contact: {email} · {phone} · +34 928 52 12 26.",
           ],
         },
         {
@@ -398,7 +403,7 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
           paragraphs: [
             "Bookings: name, email, phone, language, hotel or cruise ship, flight number if needed, passenger numbers, date and service, notes, and payment data (Stripe handles the card; we do not store the full card number).",
             "Contact form: name, email, phone and message.",
-            "Browsing: preferred language, cookie consent and, only if you accept, analytics identifiers.",
+            "Browsing: preferred language, cookie consent and, only if you accept, analytics identifiers. Technical logs may include IP address, browser or device type for security and site operation.",
           ],
         },
         {
@@ -482,7 +487,8 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
         {
           heading: "6. Browser controls",
           paragraphs: [
-            "You can delete or block cookies in Chrome, Safari, Firefox or Edge. Blocking all cookies may break language, booking or payment.",
+            "You can delete or block cookies in Chrome, Safari, Firefox or Edge (usually under Privacy or the browser’s help). Blocking all cookies may break language, booking or payment.",
+            "Rejecting non-essential cookies only affects what this site may load with your permission; it does not stop online ads elsewhere on the internet.",
           ],
         },
       ],
@@ -551,7 +557,9 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
         {
           heading: "9. Complaints",
           paragraphs: [
-            "Email {email} or call {phone}. Complaint forms are available. EU online dispute resolution: https://ec.europa.eu/consumers/odr",
+            "Email {email} or call {phone} / +34 928 52 12 26.",
+            "Complaint forms are available Monday to Friday, 09:00–13:00, at Calle Calderetas 100, 35550 San Bartolomé (Lanzarote).",
+            "EU online dispute resolution: https://ec.europa.eu/consumers/odr",
           ],
         },
       ],
@@ -605,9 +613,10 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
         {
           heading: "1. Anbieter",
           paragraphs: [
-            "Inhaber: {legalName}. Steuernummer: {taxId}. Anschrift: {address}. Telefon: {phone}. E-Mail: {email}.",
+            "Inhaber: {legalName}. Steuernummer: {taxId}. Anschrift: {address}. Telefon: {phone} und +34 928 52 12 26. E-Mail: {email}.",
+            "Eingetragen im Handelsregister von Lanzarote, Band 420, Folio 111, Blatt IL-9986, Eintragung 1.",
             "Reisebürolizenz: {license}. Marke: {brandName}.",
-            "Website: https://www.lanzaroteexperiencetours.com",
+            "Website: https://www.lanzaroteexperiencetours.com. {legalName} vermarktet, verwaltet, kassiert und fakturiert die auf dieser Website angebotenen Produkte.",
           ],
         },
         {
@@ -653,7 +662,7 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
         {
           heading: "1. Verantwortlicher",
           paragraphs: [
-            "{legalName}, Steuernummer {taxId}, {address}. Kontakt: {email} · {phone}.",
+            "{legalName}, Steuernummer {taxId}, {address}. Kontakt: {email} · {phone} · +34 928 52 12 26.",
           ],
         },
         {
@@ -661,7 +670,7 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
           paragraphs: [
             "Buchung: Name, E-Mail, Telefon, Sprache, Hotel oder Schiff, Flugnummer falls nötig, Personenzahl, Datum und Leistung, Hinweise sowie Zahlungsdaten (Stripe verarbeitet die Karte; wir speichern keine vollständige Kartennummer).",
             "Kontaktformular: Name, E-Mail, Telefon und Nachricht.",
-            "Nutzung: Sprache, Cookie-Einwilligung und – nur bei Zustimmung – Analysekennungen.",
+            "Nutzung: Sprache, Cookie-Einwilligung und – nur bei Zustimmung – Analysekennungen. Technische Protokolle können IP-Adresse, Browser- oder Gerätetyp aus Sicherheits- und Betriebsgründen enthalten.",
           ],
         },
         {
@@ -745,7 +754,8 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
         {
           heading: "6. Browser",
           paragraphs: [
-            "Cookies können Sie in Chrome, Safari, Firefox oder Edge löschen oder blockieren. Ein komplettes Blocking kann Sprache, Buchung oder Zahlung stören.",
+            "Cookies können Sie in Chrome, Safari, Firefox oder Edge löschen oder blockieren (meist unter Datenschutz oder in der Browser-Hilfe). Ein komplettes Blocking kann Sprache, Buchung oder Zahlung stören.",
+            "Das Ablehnen nicht notwendiger Cookies betrifft nur, was diese Website mit Ihrer Erlaubnis laden darf – nicht Werbung im übrigen Internet.",
           ],
         },
       ],
@@ -814,7 +824,9 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
         {
           heading: "9. Reklamationen",
           paragraphs: [
-            "E-Mail {email} oder Telefon {phone}. Reklamationsformulare liegen bereit. EU-OS-Plattform: https://ec.europa.eu/consumers/odr",
+            "E-Mail {email} oder Telefon {phone} / +34 928 52 12 26.",
+            "Reklamationsformulare liegen montags bis freitags von 09:00 bis 13:00 in Calle Calderetas 100, 35550 San Bartolomé (Lanzarote) bereit.",
+            "EU-OS-Plattform: https://ec.europa.eu/consumers/odr",
           ],
         },
       ],
