@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { BlogSearchForm } from "@/components/BlogSearchForm";
 import { PageBodyText } from "@/components/PageBodyText";
 import { PageContentBlocks } from "@/components/PageContentBlocks";
 import { PageFaqs } from "@/components/PageFaqs";
@@ -25,7 +26,10 @@ import { stripHtml } from "@/lib/sanitize-html";
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
 export const revalidate = 300;
 
-type Props = { params: Promise<{ locale: string }> };
+type Props = {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ q?: string; tag?: string }>;
+};
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = resolveLocale((await params).locale);
@@ -37,8 +41,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function BlogPage({ params }: Props) {
+function matchesQuery(
+  post: { title: string; excerpt: string; content: string; tags: string[] },
+  q: string,
+  tag: string
+) {
+  if (tag) {
+    const needle = tag.toLowerCase();
+    if (!getBlogTopicTags(post.tags).some((t) => t.toLowerCase() === needle)) {
+      return false;
+    }
+  }
+  if (!q) return true;
+  const hay = `${post.title} ${stripHtml(post.excerpt)} ${stripHtml(post.content)} ${getBlogTopicTags(post.tags).join(" ")}`.toLowerCase();
+  return hay.includes(q.toLowerCase());
+}
+
+export default async function BlogPage({ params, searchParams }: Props) {
   const locale = resolveLocale((await params).locale);
+  const { q = "", tag = "" } = await searchParams;
+  const query = q.trim();
+  const tagFilter = tag.trim();
   const dict = await getDictionary(locale);
   const [blogPosts, settings] = await Promise.all([
     getBlogPosts().then(async (posts) =>
@@ -46,7 +69,12 @@ export default async function BlogPage({ params }: Props) {
     ),
     getSettings().then((s) => localizeSettings(s, locale)),
   ]);
-  const [featured, ...rest] = blogPosts;
+  const filtered = blogPosts.filter((post) =>
+    matchesQuery(post, query, tagFilter)
+  );
+  const isFiltered = Boolean(query || tagFilter);
+  const featured = !isFiltered ? filtered[0] : undefined;
+  const list = isFiltered ? filtered : filtered.slice(1);
   const lp = (path: string) => localePath(locale, path);
 
   return (
@@ -62,7 +90,27 @@ export default async function BlogPage({ params }: Props) {
       <PageBodyText text={settings.blogText} />
 
       <div className="mx-auto max-w-6xl px-4 pb-12 md:px-6 md:pb-16">
-        {featured && (
+        <div className="mb-8 max-w-xl">
+          <BlogSearchForm
+            actionPath={lp("/blog")}
+            placeholder={dict.blog.searchPlaceholder}
+            buttonLabel={dict.blog.searchButton}
+            defaultQuery={query}
+          />
+          {isFiltered && (
+            <p className="mt-3 text-sm text-ink-muted">
+              {dict.blog.searchResults}
+              {query ? `: “${query}”` : ""}
+              {tagFilter ? ` · #${tagFilter}` : ""}
+              {" · "}
+              <Link href={lp("/blog")} className="font-semibold text-ocean">
+                {dict.blog.eyebrow}
+              </Link>
+            </p>
+          )}
+        </div>
+
+        {!isFiltered && featured && (
           <Link
             href={lp(`/blog/${featured.slug}`)}
             className="group grid overflow-hidden rounded-3xl bg-surface ring-1 ring-sand-line transition hover:ring-ocean/35 md:grid-cols-2"
@@ -79,12 +127,12 @@ export default async function BlogPage({ params }: Props) {
             </div>
             <div className="flex flex-col justify-center p-6 md:p-10">
               <div className="flex flex-wrap gap-2">
-                {getBlogTopicTags(featured.tags).map((tag) => (
+                {getBlogTopicTags(featured.tags).map((t) => (
                   <span
-                    key={tag}
+                    key={t}
                     className="rounded-full bg-sky-soft px-2.5 py-1 text-xs font-medium text-ocean-deep"
                   >
-                    {tag}
+                    {t}
                   </span>
                 ))}
               </div>
@@ -105,8 +153,18 @@ export default async function BlogPage({ params }: Props) {
           </Link>
         )}
 
-        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {rest.map((post) => (
+        {isFiltered && filtered.length === 0 && (
+          <p className="rounded-2xl bg-sky-soft/60 px-5 py-8 text-center text-ink-muted ring-1 ring-sand-line">
+            {dict.blog.noSearchResults}
+          </p>
+        )}
+
+        <div
+          className={`grid gap-8 sm:grid-cols-2 lg:grid-cols-3 ${
+            !isFiltered && featured ? "mt-12" : ""
+          }`}
+        >
+          {list.map((post) => (
             <Link
               key={post.slug}
               href={lp(`/blog/${post.slug}`)}
@@ -125,12 +183,12 @@ export default async function BlogPage({ params }: Props) {
                 <div className="flex flex-wrap gap-2">
                   {getBlogTopicTags(post.tags)
                     .slice(0, 2)
-                    .map((tag) => (
+                    .map((t) => (
                       <span
-                        key={tag}
+                        key={t}
                         className="rounded-full bg-sky-soft px-2 py-0.5 text-[11px] font-medium text-ocean-deep"
                       >
-                        {tag}
+                        {t}
                       </span>
                     ))}
                 </div>

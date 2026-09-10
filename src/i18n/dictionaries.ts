@@ -339,6 +339,14 @@ export type Dictionary = {
     readArticle: string;
     readMore: string;
     related: string;
+    searchPlaceholder: string;
+    searchButton: string;
+    otherArticles: string;
+    featuredTags: string;
+    toursTitle: string;
+    viewAllTours: string;
+    searchResults: string;
+    noSearchResults: string;
   };
   booking: {
     date: string;
@@ -945,6 +953,14 @@ const es: Dictionary = {
     readArticle: "Leer artículo",
     readMore: "Leer más",
     related: "También te puede interesar",
+    searchPlaceholder: "Buscar en el blog…",
+    searchButton: "Buscar",
+    otherArticles: "Otros artículos",
+    featuredTags: "Tags destacados",
+    toursTitle: "Excursiones en Lanzarote",
+    viewAllTours: "Ver todas las excursiones",
+    searchResults: "Resultados de búsqueda",
+    noSearchResults: "No hay artículos para esa búsqueda.",
   },
   booking: {
     date: "Fecha *",
@@ -1514,6 +1530,14 @@ const en: Dictionary = {
     readArticle: "Read article",
     readMore: "Read more",
     related: "You may also like",
+    searchPlaceholder: "Search the blog…",
+    searchButton: "Search",
+    otherArticles: "Other articles",
+    featuredTags: "Featured tags",
+    toursTitle: "Lanzarote tours",
+    viewAllTours: "View all tours",
+    searchResults: "Search results",
+    noSearchResults: "No articles match that search.",
   },
   booking: {
     date: "Date *",
@@ -2092,6 +2116,14 @@ const de: Dictionary = {
     readArticle: "Artikel lesen",
     readMore: "Mehr lesen",
     related: "Das könnte Sie auch interessieren",
+    searchPlaceholder: "Blog durchsuchen…",
+    searchButton: "Suchen",
+    otherArticles: "Weitere Artikel",
+    featuredTags: "Beliebte Tags",
+    toursTitle: "Ausflüge auf Lanzarote",
+    viewAllTours: "Alle Ausflüge ansehen",
+    searchResults: "Suchergebnisse",
+    noSearchResults: "Keine Artikel für diese Suche.",
   },
   booking: {
     date: "Datum *",
