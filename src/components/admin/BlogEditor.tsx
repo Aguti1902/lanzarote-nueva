@@ -286,6 +286,7 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         image: meta.image,
         date: meta.date,
         tags: parseTagList(es.tags),
+        ...(initial?.published === false ? { published: false } : {}),
         ...(es.imageAlt.trim() ? { imageAlt: es.imageAlt.trim() } : {}),
         ...(esSeo ? { seo: esSeo } : {}),
         translations: {

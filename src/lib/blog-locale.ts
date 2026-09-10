@@ -67,11 +67,19 @@ export function isPrimaryBlogPost(
   return !tag || tag === "es";
 }
 
+/** ¿El artículo está publicado en la web? (por defecto sí). */
+export function isBlogPostPublished(
+  post: Pick<BlogPost, "published">
+): boolean {
+  return post.published !== false;
+}
+
 /** ¿Se muestra este post en el listado/detalle del locale? */
 export function isBlogPostVisibleInLocale(
-  post: Pick<BlogPost, "tags" | "translations">,
+  post: Pick<BlogPost, "tags" | "translations" | "published">,
   locale: Locale
 ): boolean {
+  if (!isBlogPostPublished(post)) return false;
   if (isPrimaryBlogPost(post)) return true;
   return getBlogPostLocale(post) === locale;
 }

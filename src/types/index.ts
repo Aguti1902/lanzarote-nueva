@@ -147,6 +147,11 @@ export interface BlogPost {
   author: string;
   /** Tags temáticos en español (sin códigos de idioma es/en/de). */
   tags: string[];
+  /**
+   * Si es `false`, el artículo no se muestra en la web pública.
+   * Por defecto (undefined/true) está visible.
+   */
+  published?: boolean;
   /** Texto ALT de la imagen de portada (ES). */
   imageAlt?: string;
   /** Meta SEO en español. */

@@ -359,19 +359,28 @@ export async function upsertBlogPost(
 ): Promise<BlogPost> {
   const posts = await readJsonFresh<BlogPost[]>("blog.json");
   const previousSlug = options?.previousSlug || post.slug;
+  const existing = posts.find((p) => p.slug === previousSlug);
   const translations = normalizeBlogTranslations(post.translations);
   const seo = normalizeBlogSeo(post.seo);
   const nextSlug = normalizeBlogSlug(post.slug) || post.slug;
+  const published =
+    post.published !== undefined
+      ? post.published !== false
+      : existing
+        ? existing.published !== false
+        : true;
   const normalized: BlogPost = {
     ...post,
     slug: nextSlug,
     tags: getBlogTopicTags(post.tags),
+    ...(published ? {} : { published: false }),
     ...(post.imageAlt?.trim()
       ? { imageAlt: post.imageAlt.trim() }
       : { imageAlt: undefined }),
     ...(seo ? { seo } : { seo: undefined }),
     ...(translations ? { translations } : { translations: undefined }),
   };
+  if (published) delete normalized.published;
   if (!normalized.imageAlt) delete normalized.imageAlt;
   if (!seo) delete normalized.seo;
   if (!translations) delete normalized.translations;
@@ -405,6 +414,7 @@ export async function createBlogPost(
     date: input.date || new Date().toISOString().slice(0, 10),
     author: input.author || "Equipo Lanzarote Experience Tours",
     tags: getBlogTopicTags(input.tags || []),
+    ...(input.published === false ? { published: false } : {}),
     ...(input.imageAlt?.trim() ? { imageAlt: input.imageAlt.trim() } : {}),
     ...(seo ? { seo } : {}),
     ...(translations ? { translations } : {}),
@@ -413,6 +423,21 @@ export async function createBlogPost(
   posts.unshift(post);
   await saveBlogPosts(posts);
   return post;
+}
+
+export async function setBlogPostPublished(
+  slug: string,
+  published: boolean
+): Promise<BlogPost | undefined> {
+  const posts = await readJsonFresh<BlogPost[]>("blog.json");
+  const idx = posts.findIndex((p) => p.slug === slug);
+  if (idx === -1) return undefined;
+  const next: BlogPost = { ...posts[idx] };
+  if (published) delete next.published;
+  else next.published = false;
+  posts[idx] = next;
+  await saveBlogPosts(posts);
+  return next;
 }
 
 export async function deleteBlogPost(slug: string): Promise<boolean> {
