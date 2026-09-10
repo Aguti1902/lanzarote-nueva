@@ -9,6 +9,7 @@ import { PageHero } from "@/components/PageHero";
 import { getBlogPosts, getSettings } from "@/lib/content";
 import {
   filterBlogPostsByLocale,
+  blogCoverAlt,
   getBlogTopicTags,
 } from "@/lib/blog-locale";
 import { formatDate } from "@/lib/format";
@@ -69,7 +70,7 @@ export default async function BlogPage({ params }: Props) {
             <div className="relative min-h-[260px] md:min-h-[360px]">
               <Image
                 src={featured.image}
-                alt={featured.title}
+                alt={blogCoverAlt(featured)}
                 fill
                 className="object-cover transition duration-700 group-hover:scale-105"
                 sizes="(max-width:768px) 100vw, 50vw"
@@ -114,7 +115,7 @@ export default async function BlogPage({ params }: Props) {
               <div className="relative aspect-[16/10]">
                 <Image
                   src={post.image}
-                  alt={post.title}
+                  alt={blogCoverAlt(post)}
                   fill
                   className="object-cover transition duration-700 group-hover:scale-105"
                   sizes="(max-width:768px) 100vw, 33vw"

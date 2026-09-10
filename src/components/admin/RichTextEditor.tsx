@@ -171,8 +171,24 @@ export function RichTextEditor({
       const res = await fetch("/api/admin/upload", { method: "POST", body });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error al subir");
+      const alt =
+        window
+          .prompt(
+            "Texto ALT de la imagen (SEO y accesibilidad). Déjelo vacío para usar el nombre del archivo.",
+            file.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ")
+          )
+          ?.trim() || file.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
+      const safeAlt = alt
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
       ref.current?.focus();
-      document.execCommand("insertImage", false, data.url);
+      document.execCommand(
+        "insertHTML",
+        false,
+        `<img src="${data.url}" alt="${safeAlt}" />`
+      );
       emit();
     } catch (err) {
       window.alert(
@@ -322,8 +338,10 @@ export function RichTextEditor({
       </div>
       <p className="text-xs text-ink-muted">
         Formato: negrita, enlace, listas, sangría, alineación, tamaño y color
-        {imagesFolder ? ", e imágenes subidas desde el ordenador" : ""}.
-        Seleccione un texto y pulse el icono de eslabón para vincularlo a otra
+        {imagesFolder
+          ? ", e imágenes subidas desde el ordenador (con texto ALT)"
+          : ""}
+        . Seleccione un texto y pulse el icono de eslabón para vincularlo a otra
         página.
       </p>
     </div>

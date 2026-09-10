@@ -115,6 +115,24 @@ export interface TransferDestination {
   distance: string;
 }
 
+/** SEO de un artículo de blog (por idioma). */
+export interface BlogSeo {
+  title?: string;
+  description?: string;
+  keywords?: string;
+}
+
+/** Traducción de un artículo (EN/DE); el español va en los campos base. */
+export interface BlogPostTranslation {
+  title?: string;
+  excerpt?: string;
+  content?: string;
+  author?: string;
+  /** Texto ALT de la imagen de portada en este idioma. */
+  imageAlt?: string;
+  seo?: BlogSeo;
+}
+
 export interface BlogPost {
   slug: string;
   title: string;
@@ -123,7 +141,17 @@ export interface BlogPost {
   image: string;
   date: string;
   author: string;
+  /** Tags temáticos (sin códigos de idioma es/en/de). */
   tags: string[];
+  /** Texto ALT de la imagen de portada (ES). */
+  imageAlt?: string;
+  /** Meta SEO en español. */
+  seo?: BlogSeo;
+  /** Traducciones EN/DE del mismo artículo. */
+  translations?: {
+    en?: BlogPostTranslation;
+    de?: BlogPostTranslation;
+  };
 }
 
 export interface VacationHouseTranslation {

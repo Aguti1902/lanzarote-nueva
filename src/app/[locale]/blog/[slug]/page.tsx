@@ -6,8 +6,9 @@ import { ArrowLeft } from "lucide-react";
 import { getBlogPosts, getPostBySlug } from "@/lib/content";
 import {
   filterBlogPostsByLocale,
-  getBlogPostLocale,
+  blogCoverAlt,
   getBlogTopicTags,
+  isBlogPostVisibleInLocale,
 } from "@/lib/blog-locale";
 import { formatDate } from "@/lib/format";
 import {
@@ -21,6 +22,7 @@ import { RichContent } from "@/components/RichContent";
 import {
   looksLikeHtml,
   sanitizeContentHtml,
+  stripHtml,
   RICH_CONTENT_CLASS,
 } from "@/lib/sanitize-html";
 
@@ -34,11 +36,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = resolveLocale(raw);
   const dict = await getDictionary(locale);
   const base = await getPostBySlug(slug);
-  if (!base || getBlogPostLocale(base) !== locale) {
+  if (!base || !isBlogPostVisibleInLocale(base, locale)) {
     return { title: dict.blog.eyebrow };
   }
   const post = await localizeBlogPost(base, locale);
-  return { title: post.title, description: post.excerpt };
+  const title = post.seo?.title?.trim() || post.title;
+  const description =
+    post.seo?.description?.trim() || stripHtml(post.excerpt).slice(0, 180);
+  const keywords = post.seo?.keywords?.trim() || undefined;
+  return {
+    title,
+    description,
+    ...(keywords ? { keywords } : {}),
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      images: post.image ? [{ url: post.image, alt: blogCoverAlt(post) }] : undefined,
+    },
+  };
 }
 
 export default async function BlogPostPage({ params }: Props) {
@@ -47,7 +63,7 @@ export default async function BlogPostPage({ params }: Props) {
   const dict = await getDictionary(locale);
   const base = await getPostBySlug(slug);
   if (!base) notFound();
-  if (getBlogPostLocale(base) !== locale) notFound();
+  if (!isBlogPostVisibleInLocale(base, locale)) notFound();
 
   const post = await localizeBlogPost(base, locale);
   const all = await getBlogPosts().then(async (posts) =>
@@ -65,7 +81,7 @@ export default async function BlogPostPage({ params }: Props) {
       <div className="relative min-h-[40vh] bg-bg-deep">
         <Image
           src={post.image}
-          alt={post.title}
+          alt={blogCoverAlt(post)}
           fill
           className="photo-vivid object-cover"
           priority
@@ -129,7 +145,7 @@ export default async function BlogPostPage({ params }: Props) {
                   <div className="relative min-h-[120px]">
                     <Image
                       src={item.image}
-                      alt={item.title}
+                      alt={blogCoverAlt(item)}
                       fill
                       className="object-cover"
                       sizes="140px"
