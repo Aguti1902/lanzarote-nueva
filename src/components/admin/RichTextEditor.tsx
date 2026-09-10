@@ -78,6 +78,7 @@ export function RichTextEditor({
   onChange,
   minHeight = 180,
   imagesFolder,
+  resetKey,
 }: {
   label?: string;
   value: string;
@@ -85,16 +86,26 @@ export function RichTextEditor({
   minHeight?: number;
   /** Si se indica, permite insertar fotos subidas (sin pegar URL). */
   imagesFolder?: string;
+  /** Cambia al cambiar de idioma/pestaña para forzar resincronizar el DOM. */
+  resetKey?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const lastExternal = useRef(value);
   const ready = useRef(false);
+  const lastResetKey = useRef(resetKey);
   const [uploading, setUploading] = useState(false);
+  const onChangeRef = useRef(onChange);
+  onChangeRef.current = onChange;
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    const resetChanged = lastResetKey.current !== resetKey;
+    if (resetChanged) {
+      lastResetKey.current = resetKey;
+      ready.current = false;
+    }
     if (!ready.current) {
       el.innerHTML = plainToHtml(value);
       lastExternal.current = value;
@@ -105,14 +116,14 @@ export function RichTextEditor({
       el.innerHTML = plainToHtml(value);
       lastExternal.current = value;
     }
-  }, [value]);
+  }, [value, resetKey]);
 
   function emit() {
     const el = ref.current;
     if (!el) return;
     const html = el.innerHTML;
     lastExternal.current = html;
-    onChange(html);
+    onChangeRef.current(html);
   }
 
   function run(command: string, arg?: string) {

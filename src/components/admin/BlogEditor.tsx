@@ -177,13 +177,31 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
   const isEdit = Boolean(initial);
 
   const active = editLocale === "es" ? es : editLocale === "en" ? en : de;
-  const setActive = (next: LangFields) => {
-    if (editLocale === "es") setEs(next);
-    else if (editLocale === "en") setEn(next);
-    else setDe(next);
-  };
+
+  /** Actualiza solo el idioma indicado (evita que EN/DE pisen ES por closures o DOM compartido). */
+  function patchLang(
+    locale: Locale,
+    patch: Partial<LangFields> | ((prev: LangFields) => LangFields)
+  ) {
+    const apply = (prev: LangFields): LangFields =>
+      typeof patch === "function" ? patch(prev) : { ...prev, ...patch };
+    if (locale === "es") setEs(apply);
+    else if (locale === "en") setEn(apply);
+    else setDe(apply);
+  }
+
+  function switchEditLocale(next: Locale) {
+    if (typeof document !== "undefined") {
+      const focused = document.activeElement;
+      if (focused instanceof HTMLElement) focused.blur();
+    }
+    setEditLocale(next);
+  }
 
   async function generateWithAI() {
+    const locale = editLocale;
+    const draftTitle =
+      locale === "es" ? es.title : locale === "en" ? en.title : de.title;
     setGenerating(true);
     setError("");
     try {
@@ -191,25 +209,25 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          topic: topic || active.title,
-          locale: editLocale,
+          topic: topic || draftTitle,
+          locale,
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error al generar");
-      setActive({
-        ...active,
-        title: data.title || active.title,
-        excerpt: data.excerpt || active.excerpt,
-        content: data.content || active.content,
-        seoTitle: data.seoTitle || active.seoTitle || data.title || "",
+      patchLang(locale, (prev) => ({
+        ...prev,
+        title: data.title || prev.title,
+        excerpt: data.excerpt || prev.excerpt,
+        content: data.content || prev.content,
+        seoTitle: data.seoTitle || prev.seoTitle || data.title || "",
         seoDescription:
           data.seoDescription ||
-          active.seoDescription ||
+          prev.seoDescription ||
           String(data.excerpt || "")
             .replace(/<[^>]+>/g, "")
             .slice(0, 160),
-      });
+      }));
       if (data.tags?.length) {
         setTopicTags(getBlogTopicTags(data.tags).join(", "));
       }
@@ -313,7 +331,7 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
             <button
               key={tab.id}
               type="button"
-              onClick={() => setEditLocale(tab.id)}
+              onClick={() => switchEditLocale(tab.id)}
               className={`rounded px-3 py-1.5 text-sm font-semibold transition ${
                 editLocale === tab.id
                   ? "bg-ocean text-white"
@@ -343,10 +361,16 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         }
       >
         <input
+          key={`${editLocale}-title`}
           className={adminInput}
           required={editLocale === "es"}
           value={active.title}
-          onChange={(e) => setActive({ ...active, title: e.target.value })}
+          onChange={(e) =>
+            patchLang(editLocale, (prev) => ({
+              ...prev,
+              title: e.target.value,
+            }))
+          }
         />
       </Field>
       <Field
@@ -359,8 +383,12 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         }
       >
         <RichTextEditor
+          key={`${editLocale}-excerpt`}
+          resetKey={editLocale}
           value={active.excerpt}
-          onChange={(html) => setActive({ ...active, excerpt: html })}
+          onChange={(html) =>
+            patchLang(editLocale, (prev) => ({ ...prev, excerpt: html }))
+          }
           minHeight={90}
         />
       </Field>
@@ -374,8 +402,12 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         }
       >
         <RichTextEditor
+          key={`${editLocale}-content`}
+          resetKey={editLocale}
           value={active.content}
-          onChange={(html) => setActive({ ...active, content: html })}
+          onChange={(html) =>
+            patchLang(editLocale, (prev) => ({ ...prev, content: html }))
+          }
           minHeight={280}
           imagesFolder="blog"
         />
@@ -390,9 +422,15 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         }
       >
         <input
+          key={`${editLocale}-author`}
           className={adminInput}
           value={active.author}
-          onChange={(e) => setActive({ ...active, author: e.target.value })}
+          onChange={(e) =>
+            patchLang(editLocale, (prev) => ({
+              ...prev,
+              author: e.target.value,
+            }))
+          }
         />
       </Field>
 
@@ -405,10 +443,14 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         <div className="mt-3 space-y-3">
           <Field label="Meta title">
             <input
+              key={`${editLocale}-seo-title`}
               className={adminInput}
               value={active.seoTitle}
               onChange={(e) =>
-                setActive({ ...active, seoTitle: e.target.value })
+                patchLang(editLocale, (prev) => ({
+                  ...prev,
+                  seoTitle: e.target.value,
+                }))
               }
               placeholder={active.title || "Título para Google"}
               maxLength={70}
@@ -416,11 +458,15 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
           </Field>
           <Field label="Meta description">
             <textarea
+              key={`${editLocale}-seo-description`}
               className={adminInput}
               rows={3}
               value={active.seoDescription}
               onChange={(e) =>
-                setActive({ ...active, seoDescription: e.target.value })
+                patchLang(editLocale, (prev) => ({
+                  ...prev,
+                  seoDescription: e.target.value,
+                }))
               }
               placeholder="Resumen breve para buscadores (máx. ~160 caracteres)"
               maxLength={180}
@@ -428,20 +474,28 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
           </Field>
           <Field label="Keywords (separadas por coma)">
             <input
+              key={`${editLocale}-seo-keywords`}
               className={adminInput}
               value={active.seoKeywords}
               onChange={(e) =>
-                setActive({ ...active, seoKeywords: e.target.value })
+                patchLang(editLocale, (prev) => ({
+                  ...prev,
+                  seoKeywords: e.target.value,
+                }))
               }
               placeholder="Lanzarote, Timanfaya, excursión…"
             />
           </Field>
           <Field label="ALT imagen de portada">
             <input
+              key={`${editLocale}-image-alt`}
               className={adminInput}
               value={active.imageAlt}
               onChange={(e) =>
-                setActive({ ...active, imageAlt: e.target.value })
+                patchLang(editLocale, (prev) => ({
+                  ...prev,
+                  imageAlt: e.target.value,
+                }))
               }
               placeholder="Descripción de la foto para accesibilidad y SEO"
             />
