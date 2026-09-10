@@ -44,7 +44,7 @@ export async function POST(request: Request) {
           messages: [
             {
               role: "system",
-              content: `Eres redactor de ${settings.brandName}, empresa de excursiones en Lanzarote. Responde SOLO JSON válido con keys: title, excerpt, content, tags (array de strings temáticos, sin códigos de idioma). content en párrafos separados por línea en blanco, puedes usar **negrita**. Idioma ${languageLabel}. Tours disponibles: ${tourNames}.`,
+              content: `Eres redactor de ${settings.brandName}, empresa de excursiones en Lanzarote. Responde SOLO JSON válido con keys: title, excerpt, content, tags (array de strings temáticos en el mismo idioma del artículo, sin códigos es/en/de). content en párrafos separados por línea en blanco, puedes usar **negrita**. Idioma ${languageLabel}. Tours disponibles: ${tourNames}.`,
             },
             {
               role: "user",

@@ -24,6 +24,7 @@ import {
 } from "@/lib/settings-i18n";
 import { tourSlugForLocale } from "@/i18n/tour-slugs";
 import { blogSlugForLocale } from "@/i18n/blog-slugs";
+import { getBlogTopicTags } from "@/lib/blog-locale";
 import { SHORE_TOUR_I18N_ALIASES } from "@/lib/cruise-shore-match";
 
 export {
@@ -393,6 +394,7 @@ export async function localizeBlogPost(
   // 1) Traducciones embebidas en el mismo artículo (modelo actual)
   const embedded = post.translations?.[locale as "en" | "de"];
   if (embedded) {
+    const localizedTags = getBlogTopicTags(embedded.tags);
     return {
       ...post,
       slug: localizedSlug,
@@ -401,6 +403,7 @@ export async function localizeBlogPost(
       content: embedded.content?.trim() || post.content,
       author: embedded.author?.trim() || post.author,
       imageAlt: embedded.imageAlt?.trim() || post.imageAlt,
+      tags: localizedTags.length ? localizedTags : post.tags,
       seo: embedded.seo || post.seo,
     };
   }

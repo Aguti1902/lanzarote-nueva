@@ -130,6 +130,8 @@ export interface BlogPostTranslation {
   excerpt?: string;
   content?: string;
   author?: string;
+  /** Tags temáticos en este idioma; si faltan, se usan los de ES. */
+  tags?: string[];
   /** Texto ALT de la imagen de portada en este idioma. */
   imageAlt?: string;
   seo?: BlogSeo;
@@ -143,7 +145,7 @@ export interface BlogPost {
   image: string;
   date: string;
   author: string;
-  /** Tags temáticos (sin códigos de idioma es/en/de). */
+  /** Tags temáticos en español (sin códigos de idioma es/en/de). */
   tags: string[];
   /** Texto ALT de la imagen de portada (ES). */
   imageAlt?: string;

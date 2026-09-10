@@ -19,6 +19,7 @@ type LangFields = {
   excerpt: string;
   content: string;
   author: string;
+  tags: string;
   imageAlt: string;
   seoTitle: string;
   seoDescription: string;
@@ -31,11 +32,25 @@ const emptyLang = (author = ""): LangFields => ({
   excerpt: "",
   content: "",
   author,
+  tags: "",
   imageAlt: "",
   seoTitle: "",
   seoDescription: "",
   seoKeywords: "",
 });
+
+function parseTagList(value: string): string[] {
+  return getBlogTopicTags(
+    value
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean)
+  );
+}
+
+function tagsToField(tags?: string[]): string {
+  return getBlogTopicTags(tags).join(", ");
+}
 
 function seoToFields(seo?: BlogSeo) {
   return {
@@ -68,6 +83,7 @@ function blockToFields(
     excerpt: block?.excerpt || "",
     content: block?.content || "",
     author: block?.author || fallbackAuthor,
+    tags: tagsToField(block?.tags),
     imageAlt: block?.imageAlt || "",
     ...seoToFields(block?.seo),
   };
@@ -75,12 +91,14 @@ function blockToFields(
 
 function fieldsToBlock(fields: LangFields): BlogPostTranslation {
   const seo = fieldsToSeo(fields);
+  const tags = parseTagList(fields.tags);
   return {
     ...(fields.slug.trim() ? { slug: fields.slug.trim() } : {}),
     title: fields.title,
     excerpt: fields.excerpt,
     content: fields.content,
     author: fields.author,
+    ...(tags.length ? { tags } : {}),
     ...(fields.imageAlt.trim() ? { imageAlt: fields.imageAlt.trim() } : {}),
     ...(seo ? { seo } : {}),
   };
@@ -115,6 +133,7 @@ function hydrateFromPost(initial?: BlogPost): {
         excerpt: initial.excerpt || "",
         content: initial.content || "",
         author: initial.author || defaultAuthor,
+        tags: tagsToField(initial.tags),
         imageAlt: initial.imageAlt || "",
         ...seoToFields(initial.seo),
       },
@@ -132,6 +151,7 @@ function hydrateFromPost(initial?: BlogPost): {
         excerpt: initial.excerpt || "",
         content: initial.content || "",
         author: initial.author || "",
+        tags: tagsToField(initial.tags),
         imageAlt: initial.imageAlt || "",
         ...seoToFields(initial.seo),
       },
@@ -148,6 +168,7 @@ function hydrateFromPost(initial?: BlogPost): {
       excerpt: initial.excerpt || "",
       content: initial.content || "",
       author: initial.author || "",
+      tags: tagsToField(initial.tags),
       imageAlt: initial.imageAlt || "",
       ...seoToFields(initial.seo),
     },
@@ -167,9 +188,6 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
   const [es, setEs] = useState<LangFields>(hydrated.es);
   const [en, setEn] = useState<LangFields>(hydrated.en);
   const [de, setDe] = useState<LangFields>(hydrated.de);
-  const [topicTags, setTopicTags] = useState(
-    getBlogTopicTags(initial?.tags).join(", ")
-  );
   const [meta, setMeta] = useState({
     image: initial?.image || "/images/heroes/blog.jpg",
     date: initial?.date || new Date().toISOString().slice(0, 10),
@@ -227,6 +245,9 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         title: data.title || prev.title,
         excerpt: data.excerpt || prev.excerpt,
         content: data.content || prev.content,
+        tags: Array.isArray(data.tags) && data.tags.length
+          ? tagsToField(data.tags)
+          : prev.tags,
         seoTitle: data.seoTitle || prev.seoTitle || data.title || "",
         seoDescription:
           data.seoDescription ||
@@ -235,9 +256,6 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
             .replace(/<[^>]+>/g, "")
             .slice(0, 160),
       }));
-      if (data.tags?.length) {
-        setTopicTags(getBlogTopicTags(data.tags).join(", "));
-      }
       if (data.title) setTopic(data.title);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error");
@@ -256,10 +274,6 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
           "Complete título, extracto y contenido en español (pestaña ES). Las traducciones EN/DE van en el mismo artículo."
         );
       }
-      const tags = topicTags
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean);
       const esSeo = fieldsToSeo(es);
       const baseSlug = (es.slug.trim() || es.title).trim();
       const body: Partial<BlogPost> & { previousSlug?: string } = {
@@ -271,7 +285,7 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         author: es.author || "Equipo Lanzarote Experience Tours",
         image: meta.image,
         date: meta.date,
-        tags,
+        tags: parseTagList(es.tags),
         ...(es.imageAlt.trim() ? { imageAlt: es.imageAlt.trim() } : {}),
         ...(esSeo ? { seo: esSeo } : {}),
         translations: {
@@ -541,6 +555,38 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
               placeholder="Descripción de la foto para accesibilidad y SEO"
             />
           </Field>
+          <Field
+            label={
+              editLocale === "es"
+                ? "Tags temáticos (ES)"
+                : editLocale === "en"
+                  ? "Topic tags (EN)"
+                  : "Themen-Tags (DE)"
+            }
+          >
+            <input
+              key={`${editLocale}-tags`}
+              className={adminInput}
+              value={active.tags}
+              onChange={(e) =>
+                patchLang(editLocale, (prev) => ({
+                  ...prev,
+                  tags: e.target.value,
+                }))
+              }
+              placeholder={
+                editLocale === "es"
+                  ? "Lanzarote, César Manrique, qué ver…"
+                  : editLocale === "en"
+                    ? "empty = use ES tags · Lanzarote, César Manrique…"
+                    : "leer lassen = ES-Tags · Lanzarote, César Manrique…"
+              }
+            />
+            <p className="mt-1 text-xs text-ink-muted">
+              Separados por coma. Cada idioma muestra sus propios tags en la
+              web; si EN/DE están vacíos, se usan los de español.
+            </p>
+          </Field>
         </div>
       </div>
 
@@ -563,14 +609,6 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         onChange={(url) => setMeta({ ...meta, image: url })}
       />
 
-      <Field label="Tags temáticos (separados por coma)">
-        <input
-          className={adminInput}
-          value={topicTags}
-          onChange={(e) => setTopicTags(e.target.value)}
-          placeholder="Lanzarote, César Manrique…"
-        />
-      </Field>
       {error && <p className="text-sm text-red-600">{error}</p>}
       <div className="flex gap-3">
         <button

@@ -112,12 +112,14 @@ export function normalizeBlogTranslations(
     const slug = block?.slug?.trim()
       ? normalizeBlogSlug(block.slug)
       : "";
+    const tags = getBlogTopicTags(block?.tags);
     next[locale] = {
       ...(slug ? { slug } : {}),
       ...(block?.title?.trim() ? { title: block.title } : {}),
       ...(block?.excerpt?.trim() ? { excerpt: block.excerpt } : {}),
       ...(block?.content?.trim() ? { content: block.content } : {}),
       ...(block?.author?.trim() ? { author: block.author } : {}),
+      ...(tags.length ? { tags } : {}),
       ...(block?.imageAlt?.trim() ? { imageAlt: block.imageAlt.trim() } : {}),
       ...(seo ? { seo } : {}),
     };
