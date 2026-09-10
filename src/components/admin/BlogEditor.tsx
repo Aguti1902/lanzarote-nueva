@@ -14,6 +14,7 @@ import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 
 type LangFields = {
+  slug: string;
   title: string;
   excerpt: string;
   content: string;
@@ -25,6 +26,7 @@ type LangFields = {
 };
 
 const emptyLang = (author = ""): LangFields => ({
+  slug: "",
   title: "",
   excerpt: "",
   content: "",
@@ -61,6 +63,7 @@ function blockToFields(
   fallbackAuthor = ""
 ): LangFields {
   return {
+    slug: block?.slug || "",
     title: block?.title || "",
     excerpt: block?.excerpt || "",
     content: block?.content || "",
@@ -73,6 +76,7 @@ function blockToFields(
 function fieldsToBlock(fields: LangFields): BlogPostTranslation {
   const seo = fieldsToSeo(fields);
   return {
+    ...(fields.slug.trim() ? { slug: fields.slug.trim() } : {}),
     title: fields.title,
     excerpt: fields.excerpt,
     content: fields.content,
@@ -106,6 +110,7 @@ function hydrateFromPost(initial?: BlogPost): {
   if (hasEmbedded || !langTag || langTag === "es") {
     return {
       es: {
+        slug: initial.slug || "",
         title: initial.title || "",
         excerpt: initial.excerpt || "",
         content: initial.content || "",
@@ -122,6 +127,7 @@ function hydrateFromPost(initial?: BlogPost): {
     return {
       es: emptyLang(defaultAuthor),
       en: {
+        slug: initial.slug || "",
         title: initial.title || "",
         excerpt: initial.excerpt || "",
         content: initial.content || "",
@@ -137,6 +143,7 @@ function hydrateFromPost(initial?: BlogPost): {
     es: emptyLang(defaultAuthor),
     en: blockToFields(initial.translations?.en),
     de: {
+      slug: initial.slug || "",
       title: initial.title || "",
       excerpt: initial.excerpt || "",
       content: initial.content || "",
@@ -164,10 +171,10 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
     getBlogTopicTags(initial?.tags).join(", ")
   );
   const [meta, setMeta] = useState({
-    slug: initial?.slug || "",
     image: initial?.image || "/images/heroes/blog.jpg",
     date: initial?.date || new Date().toISOString().slice(0, 10),
   });
+  const identitySlug = initial?.slug || "";
   const [topic, setTopic] = useState(
     hydrated.es.title || hydrated.en.title || hydrated.de.title || ""
   );
@@ -254,9 +261,10 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         .map((s) => s.trim())
         .filter(Boolean);
       const esSeo = fieldsToSeo(es);
-      const body: Partial<BlogPost> = {
-        ...(isEdit && initial?.slug ? { slug: initial.slug } : {}),
-        ...(meta.slug && isEdit ? { slug: meta.slug } : {}),
+      const baseSlug = (es.slug.trim() || es.title).trim();
+      const body: Partial<BlogPost> & { previousSlug?: string } = {
+        slug: baseSlug,
+        ...(isEdit && identitySlug ? { previousSlug: identitySlug } : {}),
         title: es.title,
         excerpt: es.excerpt,
         content: es.content,
@@ -347,8 +355,8 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         })}
       </div>
       <p className="text-xs text-ink-muted">
-        Un solo artículo con las tres versiones. El español es la base; EN y DE
-        se guardan como traducciones del mismo slug.
+        Un solo artículo con las tres versiones. Puede definir una URL (slug)
+        distinta en cada idioma; si EN/DE están vacíos, se usa el slug en español.
       </p>
 
       <Field
@@ -372,6 +380,39 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
             }))
           }
         />
+      </Field>
+      <Field
+        label={
+          editLocale === "es"
+            ? "Slug / URL (ES) *"
+            : editLocale === "en"
+              ? "Slug / URL (EN)"
+              : "Slug / URL (DE)"
+        }
+      >
+        <input
+          key={`${editLocale}-slug`}
+          className={adminInput}
+          required={editLocale === "es" && isEdit}
+          value={active.slug}
+          onChange={(e) =>
+            patchLang(editLocale, (prev) => ({
+              ...prev,
+              slug: e.target.value,
+            }))
+          }
+          placeholder={
+            editLocale === "es"
+              ? isEdit
+                ? "url-del-articulo"
+                : "si está vacío se genera del título"
+              : `vacío = usa el slug ES (${es.slug || "…"})`
+          }
+        />
+        <p className="mt-1 text-xs text-ink-muted">
+          Ruta pública: /{editLocale}/blog/
+          {(active.slug || es.slug || "…").trim() || "…"}
+        </p>
       </Field>
       <Field
         label={
@@ -512,17 +553,7 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
             onChange={(e) => setMeta({ ...meta, date: e.target.value })}
           />
         </Field>
-        {isEdit ? (
-          <Field label="Slug (URL)">
-            <input
-              className={adminInput}
-              value={meta.slug}
-              onChange={(e) => setMeta({ ...meta, slug: e.target.value })}
-            />
-          </Field>
-        ) : (
-          <div />
-        )}
+        <div />
       </div>
 
       <ImageUploadField

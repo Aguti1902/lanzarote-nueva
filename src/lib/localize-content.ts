@@ -23,6 +23,7 @@ import {
   SETTINGS_TRANSLATABLE_KEYS,
 } from "@/lib/settings-i18n";
 import { tourSlugForLocale } from "@/i18n/tour-slugs";
+import { blogSlugForLocale } from "@/i18n/blog-slugs";
 import { SHORE_TOUR_I18N_ALIASES } from "@/lib/cruise-shore-match";
 
 export {
@@ -383,13 +384,18 @@ export async function localizeBlogPost(
   post: BlogPost,
   locale: Locale
 ): Promise<BlogPost> {
-  if (locale === "es") return post;
+  const localizedSlug = blogSlugForLocale(post, locale);
+
+  if (locale === "es") {
+    return localizedSlug === post.slug ? post : { ...post, slug: localizedSlug };
+  }
 
   // 1) Traducciones embebidas en el mismo artículo (modelo actual)
   const embedded = post.translations?.[locale as "en" | "de"];
   if (embedded) {
     return {
       ...post,
+      slug: localizedSlug,
       title: embedded.title?.trim() || post.title,
       excerpt: embedded.excerpt?.trim() || post.excerpt,
       content: embedded.content?.trim() || post.content,
@@ -402,7 +408,8 @@ export async function localizeBlogPost(
   // 2) Overlay legado en i18n/{locale}.json por slug
   const translations = await loadTranslations(locale);
   const overlay = translations.blog[post.slug];
-  return overlay ? { ...post, ...overlay } : post;
+  const next = overlay ? { ...post, ...overlay } : { ...post };
+  return { ...next, slug: localizedSlug };
 }
 
 export async function localizeBlogPosts(

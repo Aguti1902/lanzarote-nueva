@@ -73,7 +73,15 @@ export default function AdminBlogPage() {
                 <tr key={p.slug} className="border-b border-sand-line/70">
                   <td className="px-4 py-3">
                     <p className="font-medium">{p.title}</p>
-                    <p className="text-xs text-ink-muted">/blog/{p.slug}</p>
+                    <p className="text-xs text-ink-muted">
+                      ES /blog/{p.slug}
+                      {p.translations?.en?.slug
+                        ? ` · EN /blog/${p.translations.en.slug}`
+                        : ""}
+                      {p.translations?.de?.slug
+                        ? ` · DE /blog/${p.translations.de.slug}`
+                        : ""}
+                    </p>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-1">

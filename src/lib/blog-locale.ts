@@ -1,5 +1,6 @@
 import type { Locale } from "@/i18n/config";
 import { locales } from "@/i18n/config";
+import { normalizeBlogSlug } from "@/i18n/blog-slugs";
 import type { BlogPost, BlogPostTranslation, BlogSeo } from "@/types";
 
 const LOCALE_TAGS = new Set<string>(locales);
@@ -14,6 +15,7 @@ function hasTranslationContent(
       block.content?.trim() ||
       block.author?.trim() ||
       block.imageAlt?.trim() ||
+      block.slug?.trim() ||
       block.seo?.title?.trim() ||
       block.seo?.description?.trim() ||
       block.seo?.keywords?.trim()
@@ -107,7 +109,11 @@ export function normalizeBlogTranslations(
     const block = translations[locale];
     if (!hasTranslationContent(block)) continue;
     const seo = normalizeBlogSeo(block?.seo);
+    const slug = block?.slug?.trim()
+      ? normalizeBlogSlug(block.slug)
+      : "";
     next[locale] = {
+      ...(slug ? { slug } : {}),
       ...(block?.title?.trim() ? { title: block.title } : {}),
       ...(block?.excerpt?.trim() ? { excerpt: block.excerpt } : {}),
       ...(block?.content?.trim() ? { content: block.content } : {}),

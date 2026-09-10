@@ -29,8 +29,11 @@ export async function POST(request: Request) {
     }
     const post = await createBlogPost(body);
     return NextResponse.json({ post }, { status: 201 });
-  } catch {
-    return NextResponse.json({ error: "No se pudo crear" }, { status: 500 });
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "No se pudo crear";
+    const status = /slug/i.test(message) ? 409 : 500;
+    return NextResponse.json({ error: message }, { status });
   }
 }
 
@@ -39,14 +42,21 @@ export async function PUT(request: Request) {
   if (denied) return denied;
 
   try {
-    const body = (await request.json()) as BlogPost;
+    const body = (await request.json()) as BlogPost & {
+      previousSlug?: string;
+    };
     if (!body.slug || !body.title) {
       return NextResponse.json({ error: "Datos incompletos" }, { status: 400 });
     }
-    const post = await upsertBlogPost(body);
-    return NextResponse.json({ post });
-  } catch {
-    return NextResponse.json({ error: "No se pudo guardar" }, { status: 500 });
+    const previousSlug = body.previousSlug || body.slug;
+    const { previousSlug: _drop, ...post } = body;
+    const saved = await upsertBlogPost(post, { previousSlug });
+    return NextResponse.json({ post: saved });
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "No se pudo guardar";
+    const status = /slug/i.test(message) ? 409 : 500;
+    return NextResponse.json({ error: message }, { status });
   }
 }
 

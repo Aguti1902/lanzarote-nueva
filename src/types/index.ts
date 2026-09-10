@@ -124,6 +124,8 @@ export interface BlogSeo {
 
 /** Traducción de un artículo (EN/DE); el español va en los campos base. */
 export interface BlogPostTranslation {
+  /** Slug de URL en este idioma; si falta, se usa el slug base (ES). */
+  slug?: string;
   title?: string;
   excerpt?: string;
   content?: string;

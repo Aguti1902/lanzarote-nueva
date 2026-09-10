@@ -32,6 +32,11 @@ import {
   normalizeBlogTranslations,
 } from "@/lib/blog-locale";
 import { tourMatchesSlug } from "@/i18n/tour-slugs";
+import {
+  blogAllSlugs,
+  blogMatchesSlug,
+  normalizeBlogSlug,
+} from "@/i18n/blog-slugs";
 import { SETTINGS_STRING_KEYS } from "@/lib/settings-i18n";
 import {
   looksLikePastedWebHtml,
@@ -324,19 +329,42 @@ export const getBlogPosts = cache(async (): Promise<BlogPost[]> => {
 });
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | undefined> {
-  return (await getBlogPosts()).find((p) => p.slug === slug);
+  return (await getBlogPosts()).find((p) => blogMatchesSlug(p, slug));
 }
 
 export async function saveBlogPosts(posts: BlogPost[]): Promise<void> {
   await writeJson("blog.json", posts);
 }
 
-export async function upsertBlogPost(post: BlogPost): Promise<BlogPost> {
+function assertBlogSlugsUnique(
+  posts: BlogPost[],
+  candidate: BlogPost,
+  ignoreSlug?: string
+) {
+  const used = new Set<string>();
+  for (const post of posts) {
+    if (ignoreSlug && post.slug === ignoreSlug) continue;
+    for (const s of blogAllSlugs(post)) used.add(s);
+  }
+  for (const s of blogAllSlugs(candidate)) {
+    if (used.has(s)) {
+      throw new Error(`El slug «${s}» ya está en uso por otro artículo`);
+    }
+  }
+}
+
+export async function upsertBlogPost(
+  post: BlogPost,
+  options?: { previousSlug?: string }
+): Promise<BlogPost> {
   const posts = await readJsonFresh<BlogPost[]>("blog.json");
+  const previousSlug = options?.previousSlug || post.slug;
   const translations = normalizeBlogTranslations(post.translations);
   const seo = normalizeBlogSeo(post.seo);
+  const nextSlug = normalizeBlogSlug(post.slug) || post.slug;
   const normalized: BlogPost = {
     ...post,
+    slug: nextSlug,
     tags: getBlogTopicTags(post.tags),
     ...(post.imageAlt?.trim()
       ? { imageAlt: post.imageAlt.trim() }
@@ -347,7 +375,8 @@ export async function upsertBlogPost(post: BlogPost): Promise<BlogPost> {
   if (!normalized.imageAlt) delete normalized.imageAlt;
   if (!seo) delete normalized.seo;
   if (!translations) delete normalized.translations;
-  const idx = posts.findIndex((p) => p.slug === normalized.slug);
+  assertBlogSlugsUnique(posts, normalized, previousSlug);
+  const idx = posts.findIndex((p) => p.slug === previousSlug);
   if (idx === -1) posts.unshift(normalized);
   else posts[idx] = normalized;
   await saveBlogPosts(posts);
@@ -358,10 +387,11 @@ export async function createBlogPost(
   input: Partial<BlogPost> & Pick<BlogPost, "title" | "excerpt" | "content">
 ): Promise<BlogPost> {
   const posts = await readJsonFresh<BlogPost[]>("blog.json");
-  const baseSlug = slugify(input.slug || input.title);
+  const baseSlug = normalizeBlogSlug(input.slug || input.title) || slugify(input.title);
   let slug = baseSlug;
   let n = 2;
-  while (posts.some((p) => p.slug === slug)) {
+  const taken = new Set(posts.flatMap((p) => blogAllSlugs(p)));
+  while (taken.has(slug)) {
     slug = `${baseSlug}-${n++}`;
   }
   const translations = normalizeBlogTranslations(input.translations);
@@ -379,6 +409,7 @@ export async function createBlogPost(
     ...(seo ? { seo } : {}),
     ...(translations ? { translations } : {}),
   };
+  assertBlogSlugsUnique(posts, post);
   posts.unshift(post);
   await saveBlogPosts(posts);
   return post;

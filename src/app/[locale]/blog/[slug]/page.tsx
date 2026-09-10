@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { getBlogPosts, getPostBySlug } from "@/lib/content";
 import {
@@ -10,6 +10,7 @@ import {
   getBlogTopicTags,
   isBlogPostVisibleInLocale,
 } from "@/lib/blog-locale";
+import { blogSlugForLocale } from "@/i18n/blog-slugs";
 import { formatDate } from "@/lib/format";
 import {
   localizeBlogPost,
@@ -64,6 +65,11 @@ export default async function BlogPostPage({ params }: Props) {
   const base = await getPostBySlug(slug);
   if (!base) notFound();
   if (!isBlogPostVisibleInLocale(base, locale)) notFound();
+
+  const canonicalSlug = blogSlugForLocale(base, locale);
+  if (slug !== canonicalSlug) {
+    redirect(localePath(locale, `/blog/${canonicalSlug}`));
+  }
 
   const post = await localizeBlogPost(base, locale);
   const all = await getBlogPosts().then(async (posts) =>
