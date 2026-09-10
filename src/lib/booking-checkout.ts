@@ -137,10 +137,13 @@ export async function createStripeCheckoutForBookings(
     stripePaymentIntentId: checkout.paymentIntentId,
   });
 
-  await stampCheckoutSessionOnBookings(payable, {
+  // No bloquear la redirección al cliente por el stamp en CMS.
+  void stampCheckoutSessionOnBookings(payable, {
     sessionId: checkout.sessionId,
     url: checkout.url,
     paymentIntentId: checkout.paymentIntentId,
+  }).catch((err) => {
+    console.error("[booking-checkout] stamp session failed", err);
   });
 
   return {
