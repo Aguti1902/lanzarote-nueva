@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { stripHtml } from "@/lib/sanitize-html";
 
 /** Altura unificada de héroes internos (igual que cruceros). La home usa su propio hero alto. */
 const HERO_MIN = "min-h-[40vh]";
@@ -22,6 +23,8 @@ export function PageHero({
   objectPosition?: string;
 }) {
   void _compact;
+  // Los intros del CMS suelen venir con <p>…</p>; el subtítulo del hero es texto plano.
+  const subtitleText = subtitle ? stripHtml(subtitle) : "";
   return (
     <section
       className={`relative overflow-hidden bg-[#2a3344] text-white ${HERO_MIN}`}
@@ -48,11 +51,11 @@ export function PageHero({
         <h1 className="animate-fade-up-delay text-hero-shadow max-w-3xl font-display text-4xl font-extrabold tracking-tight md:text-6xl">
           {title}
         </h1>
-        {subtitle && (
+        {subtitleText ? (
           <p className="animate-fade-up-delay-2 text-hero-shadow mt-4 max-w-2xl text-base leading-relaxed text-white md:text-lg">
-            {subtitle}
+            {subtitleText}
           </p>
-        )}
+        ) : null}
       </div>
     </section>
   );

@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const settings = await localizeSettings(await getSettings(), locale);
   return {
     title: settings.blogTitle || dict.blog.eyebrow,
-    description: settings.blogIntro || undefined,
+    description: stripHtml(settings.blogIntro || "") || undefined,
   };
 }
 
