@@ -15,6 +15,7 @@ import {
   X,
 } from "lucide-react";
 import { useLocale } from "@/components/LocaleProvider";
+import { WhatsAppLink } from "@/components/WhatsAppLink";
 
 type Msg = { role: "user" | "assistant"; content: string };
 type Panel = "menu" | "chat" | "contact" | null;
@@ -231,15 +232,13 @@ export function FloatingHelp() {
               </a>
             </li>
             <li>
-              <a
-                href="https://wa.me/34646080585"
-                target="_blank"
-                rel="noopener noreferrer"
+              <WhatsAppLink
+                locale={locale}
                 className="flex flex-col items-center gap-1 rounded-md bg-sky-soft px-2 py-3 text-xs font-bold text-ink transition hover:bg-ocean hover:text-white"
               >
                 <MessageCircle className="h-4 w-4" />
                 {dict.contactWidget.whatsapp}
-              </a>
+              </WhatsAppLink>
             </li>
             <li>
               <a
