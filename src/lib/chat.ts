@@ -270,7 +270,7 @@ function localReply(message: string, knowledge: string, locale: string): string 
   }
 
   if (
-    /contacto|telefono|llamar|email|correo|whatsapp|horario|contact|phone|call|hours|öffnungszeit|anrufen/.test(
+    /contacto|telefono|llamar|email|correo|whatsapp|horario|contact|phone|call|hours|offnungszeit|anrufen/.test(
       q
     )
   ) {
