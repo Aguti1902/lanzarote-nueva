@@ -924,6 +924,24 @@ export function TourEditor({ initial }: { initial?: Tour }) {
                   }}
                 />
               </Field>
+              <Field
+                label="Recomendaciones / sugerencias (uno por línea)"
+                className="md:col-span-2"
+              >
+                <textarea
+                  className={`${adminTextarea} min-h-[120px]`}
+                  value={arrayToLines(translationFields.recommendations)}
+                  onChange={(e) => {
+                    const value = linesToArray(e.target.value);
+                    if (lang === "es") set("recommendations", value);
+                    else updateTranslation(lang, { recommendations: value });
+                  }}
+                />
+                <p className="mt-1 text-xs text-ink-muted">
+                  Textos visibles en la ficha pública (ES / EN / DE según la
+                  pestaña). Puedes editarlos aquí sin tocar código.
+                </p>
+              </Field>
             </div>
           </div>
 

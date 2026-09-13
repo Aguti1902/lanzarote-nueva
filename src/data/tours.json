@@ -57,12 +57,10 @@
       "Comidas y otras bebidas"
     ],
     "recommendations": [
-      "Hasta finales de 2025, Las Salinas y Los Hervideros pueden estar cerrados al tráfico.",
-      "Calzado cómodo y chaqueta: en Timanfaya suele hacer viento.",
-      "Duración aproximada: 5 horas. En ocasiones el grupo puede compartir idioma."
+      "Calzado cómodo y chaqueta: en Timanfaya suele hacer viento."
     ],
     "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes de la recogida.",
-    "maxGroup": 20,
+    "maxGroup": 14,
     "languages": [
       "Español",
       "Inglés",
@@ -132,11 +130,10 @@
           "Lunch"
         ],
         "recommendations": [
-          "IMPORTANT INFORMATION.Until the end of 2025 the access to Las Salinas and Los Hervideros will be closed to traffic.",
-          "Comfortable shoes",
-          "Do not forget to bring your camera",
-          "The Fire Mountains can be very windy, therefore a jumper is recommended",
-          "It is important to know that the tour takes aprox 5 hours, occasionally we can reach up to 20 people and go in two languages."
+          "Comfortable shoes.",
+          "Don't forget to bring your camera.",
+          "The Fire Mountains can be very windy, so we recommend bringing a light jacket.",
+          "The tour lasts approximately 5 hours and is operated in small groups of up to 14 people. Tours are organized separately in English, Spanish and German."
         ],
         "shortTitle": "Lanzarote Volcano Tour and Timanfaya National…",
         "slug": "timanfaya-national-park-south-lanzarote-tour"
@@ -156,11 +153,10 @@
           "Mittagessen"
         ],
         "recommendations": [
-          "WICHTIGE INFORMATIONEN.Bis Ende 2025wird die Zufahrt zum Las Salinas und zu Los Hervideros für den Verkehr gesperrt sein.",
-          "Komfortable Schuhe",
-          "Vergessen Sie nicht Ihre Kamera",
-          "Eine Jacke",
-          "Es ist wichtig zu wissen, dass wir gelegentlich bis zu 20 Personen erreichen und in zwei Sprachen gehen können."
+          "Bequeme Schuhe.",
+          "Vergessen Sie Ihre Kamera nicht.",
+          "Eine leichte Jacke wird empfohlen, da es in den Feuerbergen windig sein kann.",
+          "Der Ausflug dauert etwa 5 Stunden und findet in kleinen Gruppen mit maximal 14 Personen statt. Die Gruppen werden je nach Sprache getrennt auf Deutsch, Englisch oder Spanisch organisiert."
         ],
         "shortTitle": "Timanfaya und die Feuerberge Experience",
         "slug": "timanfaya-nationalpark-sued-lanzarote-ausflug"
@@ -428,12 +424,12 @@
       "Almuerzo"
     ],
     "recommendations": [
-      "Hasta finales de 2025, Las Salinas y Los Hervideros pueden estar cerrados al tráfico.",
-      "Calzado cómodo, cámara y una chaqueta ligera.",
-      "Día completo: conviene madrugar y llevar agua extra."
+      "Calzado cómodo.",
+      "No olvides la cámara.",
+      "Esta excursión se realiza en grupos reducidos de hasta 14 personas. Los grupos se organizan por separado según el idioma reservado: español, inglés o alemán."
     ],
     "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes de la recogida.",
-    "maxGroup": 20,
+    "maxGroup": 14,
     "languages": [
       "Español",
       "Inglés",
@@ -503,13 +499,13 @@
           "Lunch"
         ],
         "recommendations": [
-          "IMPORTANT INFORMATION.Until the end of 2025 the access to Las Salinas and Los Hervideros will be closed to traffic.",
-          "Comfortable shoes",
-          "Do not forget to bring your camera",
-          "Lanzarote is a windy island and it can be chilly, so a jacket is recommended even in summer. Occasionally we join the clients of the south and grand tours in the same bus. In this case, clients who book the Grand Tour will have two more stops on their itinerary: photo stop at Los Hervideros cliffs and stop at the Camel Park in case there is someone interested in doing the Camel Ride. It is important to know that occasionally we can reach up to 20 people and go in two languages."
+          "Comfortable shoes.",
+          "Do not forget to bring your camera.",
+          "This tour is operated in small groups of up to 14 people. Excursions are organised in separate groups according to the requested language: Spanish, English or German."
         ],
         "shortTitle": "Grand Tour Experience: The footprint of the l…",
-        "slug": "lanzarote-grand-tour"
+        "slug": "lanzarote-grand-tour",
+        "duration": "Approx. 9 hours"
       },
       "de": {
         "title": "Inselrundfahrt Experience: Der Fußabdruck der Landschaft",
@@ -525,14 +521,13 @@
           "Mittagessen"
         ],
         "recommendations": [
-          "WICHTIGE INFORMATIONEN.Bis Ende 2025 wird die Zufahrt zum Las Salinas und zu Los Hervideros für den Verkehr gesperrt sein.",
-          "Komfortable Schuhe",
-          "Vergessen Sie nicht Ihre Kamera",
-          "Eine Jacke.",
-          "Gelegentlich fahren wir mit den Kunden der Südtour und der Grand Tour im selben Bus. In diesem Fall haben Kunden, die die Grand Tour gebucht haben, zwei weitere Haltestellen auf ihrem Reiseplan: einen Fotostopp an den Klippen von Los Hervideros und einen Halt an der Kamelstation, falls jemand Interesse an einem Kamelritt hat. Es ist wichtig zu wissen, dass wir gelegentlich bis zu 20 Personen erreichen und in zwei Sprachen gehen können."
+          "Bequeme Schuhe tragen.",
+          "Eine leichte Jacke mitnehmen, da es in einigen Teilen der Insel windig oder kühler sein kann.",
+          "Für den ganztägigen Ausflug empfehlen wir, zusätzliches Wasser mitzunehmen."
         ],
         "shortTitle": "Inselrundfahrt Experience: Der Fußabdruck der…",
-        "slug": "lanzarote-inselrundfahrt-grand-tour"
+        "slug": "lanzarote-inselrundfahrt-grand-tour",
+        "duration": "Ca. 9 Stunden"
       }
     },
     "legacyTourId": 2
@@ -598,12 +593,10 @@
       "Almuerzo"
     ],
     "recommendations": [
-      "Calzado cómodo y cámara.",
-      "Chaqueta ligera: la isla es ventosa.",
-      "Esta salida puede realizarse en varios idiomas según la fecha."
+      "Excursión disponible en español, inglés y alemán, con grupos organizados según el idioma reservado."
     ],
     "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
-    "maxGroup": 10,
+    "maxGroup": 14,
     "languages": [
       "Español",
       "Inglés",
@@ -671,13 +664,14 @@
           "Lunch"
         ],
         "recommendations": [
-          "Comfortable shoes",
-          "Do not forget to bring your camera",
-          "Lanzarote is a windy island, therefore we do recommend to bring a jacket",
-          "This excursion goes in 3 languages (English, Spanish and German)"
+          "Comfortable shoes.",
+          "Don't forget your camera.",
+          "Lanzarote can be windy, so we recommend bringing a light jacket.",
+          "This excursion is available in English, Spanish and German. Groups are organised separately according to language."
         ],
         "shortTitle": "César Manrique Experience: The talent of a ma…",
-        "slug": "cesar-manrique-lanzarote-tour"
+        "slug": "cesar-manrique-lanzarote-tour",
+        "duration": "Approx. 10 hours"
       },
       "de": {
         "title": "César Manrique Experience",
@@ -698,13 +692,14 @@
           "Mittagessen"
         ],
         "recommendations": [
-          "Komfortable Schuhe",
-          "Vergessen Sie nicht Ihre Kamera",
-          "Eine Jacke",
-          "Diese Exkursion findet in 3 Sprachen statt (Englisch, Spanisch und Deutsch)"
+          "Komfortable Schuhe.",
+          "Vergessen Sie Ihre Kamera nicht.",
+          "Eine leichte Jacke wird empfohlen.",
+          "Diese Exkursion wird in separaten Gruppen auf Deutsch, Englisch und Spanisch angeboten."
         ],
         "shortTitle": "César Manrique Experience",
-        "slug": "cesar-manrique-lanzarote-tour"
+        "slug": "cesar-manrique-lanzarote-tour",
+        "duration": "Ca. 10 Stunden"
       }
     },
     "legacyTourId": 3
@@ -774,9 +769,8 @@
     ],
     "recommendations": [
       "Duración base: 5 horas (ampliable; hora extra desde 100 €).",
-      "Capacidad orientativa: hasta 10 pasajeros.",
-      "Indícanos con antelación los lugares que te interesan.",
-      "Calzado cómodo y, en Timanfaya, una chaqueta ligera."
+      "Capacidad máxima: 10 personas.",
+      "Indícanos con antelación los lugares que te interesan."
     ],
     "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
     "maxGroup": 10,
@@ -849,8 +843,8 @@
         ],
         "recommendations": [
           "Base duration: 5 hours (extendable; extra hour from €100).",
-          "Capacity: up to about 10 passengers.",
-          "Tell us in advance which places you care about most."
+          "Maximum capacity: 10 people.",
+          "Tell us in advance which places interest you."
         ],
         "shortTitle": "Private tour",
         "highlights": [
@@ -880,8 +874,8 @@
           "Eintritts Karten. Essen."
         ],
         "recommendations": [
-          "Die Tour dauert 5 Stunden. Jede zusätzliche Stunde kostet 100,00 € pro Stunde.",
-          "Sie haben einen privaten kleinbus ( bis zu 10-Sitzer)."
+          "Die Tour dauert 5 Stunden. Jede zusätzliche Stunde kostet 100,00 €.",
+          "Für Ihre Gruppe steht ein privater Kleinbus für bis zu 10 Personen zur Verfügung."
         ],
         "shortTitle": "Private Tour",
         "highlights": [

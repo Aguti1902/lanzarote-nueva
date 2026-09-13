@@ -54,9 +54,10 @@
         "Lunch"
       ],
       "recommendations": [
-        "Comfortable footwear",
-        "Camera",
-        "Light jacket"
+        "Comfortable shoes.",
+        "Don't forget to bring your camera.",
+        "The Fire Mountains can be very windy, so we recommend bringing a light jacket.",
+        "The tour lasts approximately 5 hours and is operated in small groups of up to 14 people. Tours are organized separately in English, Spanish and German."
       ],
       "cancellationPolicy": "Free cancellation up to 48 hours before pickup.",
       "languages": [
@@ -66,7 +67,7 @@
     "grand-tour-experience": {
       "title": "Grand Tour Experience: the landscape's legacy",
       "shortTitle": "Grand Tour Experience",
-      "duration": "Approx. 8 hours",
+      "duration": "Approx. 9 hours",
       "summary": "The entire island in one day: north and south, Manrique, Timanfaya, Jameos del Agua, Mirador del Río and more.",
       "description": "The Grand Tour Experience covers Lanzarote's essential sights in one day: Timanfaya, the southern coast, César Manrique sites in the north (Jameos del Agua, Cueva de los Verdes or Mirador del Río, depending on the itinerary), and the island's unique landscapes. Small group, in Spanish only, with pickup from your accommodation.",
       "highlights": [
@@ -93,9 +94,9 @@
         "Drinks"
       ],
       "recommendations": [
-        "Full-day tour: bring water and a snack",
-        "Comfortable footwear",
-        "Sunscreen"
+        "Comfortable shoes.",
+        "Do not forget to bring your camera.",
+        "This tour is operated in small groups of up to 14 people. Excursions are organised in separate groups according to the requested language: Spanish, English or German."
       ],
       "cancellationPolicy": "Free cancellation up to 48 hours before pickup.",
       "languages": [
@@ -105,7 +106,7 @@
     "tour-privado": {
       "title": "Private Lanzarote Tour: Minibus + Tour Guide",
       "shortTitle": "Private Tour",
-      "duration": "Tailor-made",
+      "duration": "Approx. 5 hours",
       "summary": "A minibus and official guide exclusively for your group. An itinerary tailored to you.",
       "description": "Design your day in Lanzarote with a private minibus and official tour guide. Ideal for families, groups of friends or cruise passengers who want to explore at their own pace with complete flexibility.",
       "highlights": [
@@ -127,7 +128,9 @@
         "Meals"
       ],
       "recommendations": [
-        "Tell us your preferences when booking"
+        "Base duration: 5 hours (extendable; extra hour from €100).",
+        "Maximum capacity: 10 people.",
+        "Tell us in advance which places interest you."
       ],
       "cancellationPolicy": "Free cancellation up to 48 hours in advance.",
       "languages": [
@@ -137,7 +140,7 @@
     "cesar-manrique": {
       "title": "César Manrique Experience Tour",
       "shortTitle": "César Manrique Experience",
-      "duration": "Approx. 6 hours",
+      "duration": "Approx. 10 hours",
       "summary": "One man's talent and love for his homeland: the Foundation, Jameos del Agua, Mirador del Río and the Cactus Garden.",
       "description": "A tour dedicated to the work of César Manrique: César Manrique Foundation, Jameos del Agua, Mirador del Río and the Cactus Garden. Small groups and in Spanish only.",
       "highlights": [
@@ -160,7 +163,10 @@
         "Lunch"
       ],
       "recommendations": [
-        "Comfortable footwear"
+        "Comfortable shoes.",
+        "Don't forget your camera.",
+        "Lanzarote can be windy, so we recommend bringing a light jacket.",
+        "This excursion is available in English, Spanish and German. Groups are organised separately according to language."
       ],
       "cancellationPolicy": "Free cancellation up to 48 hours in advance.",
       "languages": [
