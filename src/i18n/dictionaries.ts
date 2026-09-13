@@ -519,7 +519,7 @@ const es: Dictionary = {
       { text: "No mezclamos idiomas" },
       { text: "Le recogemos en la puerta de su alojamiento" },
     ],
-    toursTitle: "Lanzarote tours",
+    toursTitle: "Excursiones en Lanzarote",
     toursKicker: "Experiencias",
     transfersKicker: "Sin esperas",
     transfersTitle: "Traslados privados en Lanzarote",
@@ -528,7 +528,7 @@ const es: Dictionary = {
     cruisesTitle: "Excursiones para cruceros",
     cruisesCta: "Ver opciones",
     agencyKicker: "Empresa familiar",
-    agencyTitle: "Agencia de excursiones",
+    agencyTitle: "Agencia local de excursiones en Lanzarote",
     agencyBody:
       "Vigilamos la calidad con grupos pequeños y minibuses propios.",
     agencyCta: "Conocer LET",
