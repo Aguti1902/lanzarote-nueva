@@ -5879,7 +5879,7 @@
     ],
     "notIncluded": [],
     "recommendations": [
-      "EN CASO DE QUE TENGA COCHE DE ALQUILER, EL PUNTO DE ENCUENTRO ES EN EL PUEBLO DE  YAIZA, PLAZA DE LOS REMEDIOS."
+      "Si vienes en coche de alquiler, el punto de encuentro es en Yaiza, junto a la Plaza de los Remedios. Hay aparcamiento en las inmediaciones. Tras realizar la reserva, te enviaremos la ubicación exacta y las indicaciones para llegar."
     ],
     "cancellationPolicy": "Cancelación gratuita hasta 24 h antes. Reembolso completo si el barco no atraca.",
     "maxGroup": 55,
@@ -5940,7 +5940,9 @@
         "description": "",
         "included": [],
         "notIncluded": [],
-        "recommendations": [],
+        "recommendations": [
+          "If you are coming by rental car, the meeting point is in Yaiza, by Plaza de los Remedios. There is parking nearby. After booking, we will send you the exact location and directions."
+        ],
         "slug": "timanfaya-express"
       },
       "de": {
@@ -5949,7 +5951,9 @@
         "description": "",
         "included": [],
         "notIncluded": [],
-        "recommendations": [],
+        "recommendations": [
+          "Wenn Sie mit einem Mietwagen kommen, ist der Treffpunkt in Yaiza, an der Plaza de los Remedios. In der Nähe gibt es Parkplätze. Nach der Buchung senden wir Ihnen den genauen Standort und die Anfahrt."
+        ],
         "slug": "timanfaya-express"
       }
     },
