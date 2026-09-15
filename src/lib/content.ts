@@ -39,8 +39,10 @@ import {
 } from "@/i18n/blog-slugs";
 import { SETTINGS_STRING_KEYS } from "@/lib/settings-i18n";
 import {
+  looksLikeHtml,
   looksLikePastedWebHtml,
   pastedWebHtmlToCleanHtml,
+  sanitizeContentHtml,
 } from "@/lib/sanitize-html";
 
 async function readJson<T>(file: string): Promise<T> {
@@ -745,8 +747,11 @@ function scrubSettingsHtml(settings: SiteSettings): SiteSettings {
   const next = { ...settings };
   for (const key of SETTINGS_STRING_KEYS) {
     const value = next[key];
-    if (typeof value === "string" && looksLikePastedWebHtml(value)) {
+    if (typeof value !== "string" || !value.trim()) continue;
+    if (looksLikePastedWebHtml(value)) {
       (next as Record<string, unknown>)[key] = pastedWebHtmlToCleanHtml(value);
+    } else if (looksLikeHtml(value)) {
+      (next as Record<string, unknown>)[key] = sanitizeContentHtml(value);
     }
   }
   return next;

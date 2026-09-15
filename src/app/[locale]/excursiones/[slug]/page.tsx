@@ -20,6 +20,7 @@ import {
   formatPrice,
   formatTourLanguages,
   groupSizeLabel,
+  tourDurationLabel,
 } from "@/lib/format";
 import {
   isHttpUrl,
@@ -150,7 +151,7 @@ export default async function TourDetailPage({ params }: Props) {
             </span>
             <span className="inline-flex items-center gap-1">
               <Clock className="h-4 w-4" />
-              {tour.duration}
+              {tourDurationLabel(tour, dict.common.durationApprox)}
             </span>
             {tour.maxGroup && (
               <span className="inline-flex items-center gap-1">

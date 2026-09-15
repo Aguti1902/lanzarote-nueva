@@ -4,13 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Clock, Star, Users } from "lucide-react";
 import type { Tour } from "@/types";
-import { formatPrice, groupSizeLabel } from "@/lib/format";
+import { formatPrice, groupSizeLabel, tourDurationLabel } from "@/lib/format";
 import { isFlatPriceTour } from "@/lib/tour-pricing";
 import { useLocale } from "@/components/LocaleProvider";
 
 export function TourCard({ tour }: { tour: Tour }) {
   const { dict, href, locale } = useLocale();
   const flat = isFlatPriceTour(tour);
+  const duration = tourDurationLabel(tour, dict.common.durationApprox);
 
   return (
     <Link
@@ -58,7 +59,7 @@ export function TourCard({ tour }: { tour: Tour }) {
         <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-ink-muted">
           <span className="inline-flex items-center gap-1 rounded-full bg-sky-soft px-2.5 py-1">
             <Clock className="h-3.5 w-3.5 text-ocean" />
-            {tour.duration}
+            {duration}
           </span>
           {tour.maxGroup && (
             <span className="inline-flex items-center gap-1 rounded-full bg-sky-soft px-2.5 py-1">

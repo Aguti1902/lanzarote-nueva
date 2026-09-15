@@ -63,6 +63,25 @@ export function groupSizeLabel(
   return L.private;
 }
 
+/**
+ * Duración visible en tarjetas/fichas según idioma.
+ * Prioriza `durationHours` + plantilla i18n; si no, el texto almacenado.
+ */
+export function tourDurationLabel(
+  tour: { duration?: string; durationHours?: number | null },
+  approxTemplate: string
+): string {
+  const hours = Number(tour.durationHours);
+  if (Number.isFinite(hours) && hours > 0) {
+    const n = Number.isInteger(hours) ? String(hours) : String(hours);
+    return approxTemplate.replace(/\{n\}/g, n);
+  }
+  const raw = (tour.duration || "").trim();
+  if (!raw) return "";
+  // Si el texto guardado es el patrón ES típico y tenemos horas parseables, no forzar.
+  return raw;
+}
+
 export function paymentLabel(
   method: string,
   locale: Locale | string = "es"
