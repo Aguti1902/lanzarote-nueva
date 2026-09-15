@@ -44,6 +44,7 @@ export default function AdminCruiseCallsPage() {
   const [editing, setEditing] = useState<CruiseCall | null>(null);
   const [form, setForm] = useState<CruiseCall>(emptyCall());
   const [month, setMonth] = useState("all");
+  const [seasonFilter, setSeasonFilter] = useState("2026-2027");
   const [status, setStatus] = useState<"all" | "published" | "hidden">("all");
   const [query, setQuery] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
@@ -58,6 +59,9 @@ export default function AdminCruiseCallsPage() {
       if (!res.ok) throw new Error(data.error || "No se pudieron cargar las escalas");
       setCalls(data.calls || []);
       setSeason(data.season || "2026-2027");
+      setSeasonFilter((prev) =>
+        prev === "all" ? "all" : data.season || "2026-2027"
+      );
       setPort(data.port || "Puerto de Los Mármoles, Lanzarote");
       setSource(data.source || "");
       setUpdatedAt(data.updatedAt || "");
@@ -72,14 +76,23 @@ export default function AdminCruiseCallsPage() {
     load();
   }, []);
 
-  const months = useMemo(
-    () => Array.from(new Set(calls.map((c) => c.date.slice(0, 7)))).sort(),
+  const seasons = useMemo(
+    () => Array.from(new Set(calls.map((c) => c.season).filter(Boolean))).sort(),
     [calls]
   );
+
+  const months = useMemo(() => {
+    const pool =
+      seasonFilter === "all"
+        ? calls
+        : calls.filter((c) => c.season === seasonFilter);
+    return Array.from(new Set(pool.map((c) => c.date.slice(0, 7)))).sort();
+  }, [calls, seasonFilter]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return calls.filter((c) => {
+      if (seasonFilter !== "all" && c.season !== seasonFilter) return false;
       if (month !== "all" && c.date.slice(0, 7) !== month) return false;
       if (status === "published" && !c.published) return false;
       if (status === "hidden" && c.published) return false;
@@ -91,7 +104,7 @@ export default function AdminCruiseCallsPage() {
         c.date.includes(q)
       );
     });
-  }, [calls, month, query, status]);
+  }, [calls, month, query, seasonFilter, status]);
 
   function startCreate() {
     setCreating(true);
@@ -447,6 +460,21 @@ export default function AdminCruiseCallsPage() {
       )}
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <select
+          value={seasonFilter}
+          onChange={(e) => {
+            setSeasonFilter(e.target.value);
+            setMonth("all");
+          }}
+          className={adminInput}
+        >
+          <option value="all">Todas las temporadas</option>
+          {seasons.map((s) => (
+            <option key={s} value={s}>
+              Temporada {s}
+            </option>
+          ))}
+        </select>
         <select
           value={month}
           onChange={(e) => setMonth(e.target.value)}
