@@ -26,6 +26,8 @@ export type Dictionary = {
     continue: string;
     backHome: string;
     max: string;
+    /** Plantilla de duración aproximada, p. ej. "{n} horas aprox." */
+    durationApprox: string;
     adults: string;
     children: string;
     date: string;
@@ -495,6 +497,7 @@ const es: Dictionary = {
     continue: "Continuar",
     backHome: "Volver al inicio",
     max: "Máx.",
+    durationApprox: "{n} horas aprox.",
     adults: "Adultos",
     children: "Niños",
     date: "Fecha",
@@ -1121,6 +1124,7 @@ const en: Dictionary = {
     continue: "Continue",
     backHome: "Back to home",
     max: "Max.",
+    durationApprox: "Approx. {n} hours",
     adults: "Adults",
     children: "Children",
     date: "Date",
@@ -1698,6 +1702,7 @@ const de: Dictionary = {
     continue: "Weiter",
     backHome: "Zur Startseite",
     max: "Max.",
+    durationApprox: "Ca. {n} Stunden",
     adults: "Erwachsene",
     children: "Kinder",
     date: "Datum",

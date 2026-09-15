@@ -1,6 +1,6 @@
-/** Pegado desde Google (resultados, Docs, traductor): metadatos que no son contenido. */
+/** Pegado desde Google / ChatGPT / Docs: metadatos que no son contenido. */
 const PASTED_WEB_MARKERS =
-  /jscontroller|data-sfc-|data-hveid|jsaction=|jsuid=|data-copy-service|docs-internal-guid/i;
+  /jscontroller|data-sfc-|data-hveid|jsaction=|jsuid=|data-copy-service|docs-internal-guid|data-start=|data-end=|PDq2pG_|selectionAnchor/i;
 
 export function looksLikePastedWebHtml(text: string): boolean {
   return PASTED_WEB_MARKERS.test(text || "");
@@ -135,6 +135,9 @@ export function sanitizeContentHtml(raw: string): string {
     )
     .replace(/<\s*(script|style|iframe|object|embed|link|meta)[^>]*\/?>/gi, "")
     .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
+    // Atributos de pegado (ChatGPT/Docs) que a veces quedan en <p>/<span>
+    .replace(/\sdata-(start|end|hveid|sfc-[a-z0-9-]+)\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
+    .replace(/\sclass\s*=\s*("[^"]*PDq2pG_[^"]*"|'[^']*PDq2pG_[^']*')/gi, "")
     .replace(/javascript:/gi, "");
 
   let droppedAnchors = 0;

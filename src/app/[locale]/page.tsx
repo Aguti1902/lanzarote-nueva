@@ -211,9 +211,11 @@ export default async function HomePage({ params }: Props) {
           <h2 className="text-hero-shadow mt-3 max-w-xl font-display text-4xl font-extrabold tracking-tight md:text-5xl">
             {dict.home.transfersTitle}
           </h2>
-          <p className="text-hero-shadow mt-4 max-w-lg text-base leading-relaxed text-white">
-            {settings.transferIntro}
-          </p>
+          <RichContent
+            text={settings.transferIntro}
+            tone="on-dark"
+            className="mt-4 max-w-lg !space-y-3 text-base"
+          />
           <Link href={lp("/traslados")} className="btn-primary mt-8 w-fit">
             {dict.home.transfersCta}
             <ArrowRight className="h-4 w-4" />
@@ -236,9 +238,11 @@ export default async function HomePage({ params }: Props) {
           <h2 className="text-hero-shadow mt-3 max-w-xl font-display text-4xl font-extrabold tracking-tight md:text-5xl">
             {dict.home.cruisesTitle}
           </h2>
-          <p className="text-hero-shadow mt-4 max-w-lg text-base leading-relaxed text-white">
-            {settings.cruiseIntro}
-          </p>
+          <RichContent
+            text={settings.cruiseIntro}
+            tone="on-dark"
+            className="mt-4 max-w-lg !space-y-3 text-base md:text-right"
+          />
           <Link href={lp("/excursiones-cruceros")} className="btn-primary mt-8 w-fit">
             {dict.home.cruisesCta}
             <ArrowRight className="h-4 w-4" />
