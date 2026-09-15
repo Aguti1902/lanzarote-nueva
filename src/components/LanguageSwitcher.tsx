@@ -7,7 +7,7 @@ import { useLocale } from "@/components/LocaleProvider";
 import { useAppLoadingOptional } from "@/components/AppLoadingProvider";
 
 export function LanguageSwitcher() {
-  const { locale, dict } = useLocale();
+  const { locale, dict, transferSlugs } = useLocale();
   const pathname = usePathname();
   const router = useRouter();
   const loading = useAppLoadingOptional();
@@ -16,7 +16,12 @@ export function LanguageSwitcher() {
     if (next === locale) return;
     const search =
       typeof window !== "undefined" ? window.location.search : "";
-    const target = switchLocalePath(pathname, next, search);
+    const target = switchLocalePath(
+      pathname,
+      next,
+      search,
+      transferSlugs ? { transferSlugs } : undefined
+    );
     document.cookie = `NEXT_LOCALE=${next}; path=/; max-age=31536000`;
     loading?.startLanguageSwitch(next, locale);
     router.prefetch(target);

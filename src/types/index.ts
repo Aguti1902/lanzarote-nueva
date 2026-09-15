@@ -275,6 +275,12 @@ export interface SiteSettings {
   transferBlocksTitle?: string;
   transferBlocksIntro?: string;
   transferBlocks?: PageContentBlock[];
+  /** SEO de la página de traslados (por idioma vía traducciones de ajustes). */
+  transferSeoTitle?: string;
+  transferSeoDescription?: string;
+  transferSeoKeywords?: string;
+  /** Slug/URL pública del idioma (sin barras). Ej. airport-transfers */
+  transferSlug?: string;
   housesHeroImage?: string;
   housesHeroPosition?: string;
   housesFaqTitle?: string;

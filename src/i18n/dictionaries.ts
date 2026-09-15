@@ -538,7 +538,7 @@ const es: Dictionary = {
       "Reserva de la Biosfera, silencio, calma y un paisaje volcánico moldeado por César Manrique y Jesús Soto. Timanfaya, Cueva de los Verdes, Jardín de Cactus o Jameos del Agua: la isla se vive mejor con quien la conoce.",
     islandCta: "Empezar a planificar",
     reviewsKicker: "Tripadvisor",
-    reviewsTitle: "Lo que dicen los viajeros",
+    reviewsTitle: "Opiniones de nuestros viajeros",
     reviewsSubtitle:
       "Reseñas reales de quienes ya descubrieron Lanzarote con nosotros.",
     reviewsBasedOn: "Basado en {n} opiniones en Tripadvisor",
@@ -704,12 +704,13 @@ const es: Dictionary = {
     noResults: "No hay escalas con estos filtros.",
     shipSingular: "barco",
     shipPlural: "barcos",
-    shipsToday: "Barcos ese día",
+    shipsToday: "en escala ese día",
     browseTitle: "Excursiones para cruceros en Canarias",
     browseSubtitle:
       "Lo más fácil: elija en el calendario el día de su escala en Lanzarote. También puede buscar por naviera, barco y salida.",
     selectCruise: "Seleccione su crucero",
-    companiesTitle: "Compañías de cruceros",
+    companiesTitle:
+      "Selecciona tu compañía de cruceros para consultar sus próximas escalas en Lanzarote y las excursiones disponibles.",
     companySailings: "salidas previstas",
     upcomingCruises: "Próximos cruceros de",
     shipSailings: "salidas previstas",
@@ -751,18 +752,18 @@ const es: Dictionary = {
     notIncluded: "No incluido",
     goToCart: "Ir al carrito",
     dateCalendarKicker: "Fecha de escala",
-    dateCalendarTitle: "Elija el día de su escala en Lanzarote",
+    dateCalendarTitle: "Elige la fecha de tu escala en Lanzarote",
     dateCalendarText:
-      "Pulse en el calendario la fecha en la que atraca su barco y verá las salidas disponibles en",
+      "Selecciona en el calendario la fecha en la que tu crucero hace escala en Lanzarote. A continuación, elige tu barco para consultar las excursiones disponibles durante su estancia en la isla.",
     dateCalendarLegend:
-      "Los días marcados tienen escalas. Pulse uno para ver los barcos y sus excursiones.",
+      "Los días marcados tienen escalas. Selecciona una fecha para ver los barcos y las excursiones disponibles.",
     dateCalendarEmptyDay: "No hay barcos publicados este día.",
     dateCalendarPickDay: "Seleccione un día del calendario para continuar.",
     dateCalendarNoItinerary:
       "Itinerario completo aún no disponible para esta escala.",
     prevMonth: "Mes anterior",
     nextMonth: "Mes siguiente",
-    orBrowseByCompany: "O busque por compañía de cruceros",
+    orBrowseByCompany: "O busca tu excursión por compañía de cruceros",
     companyPageIntro:
       "Ofrecemos excursiones en cada escala de Canarias. Empresa familiar local, grupos pequeños y minibuses propios, con regreso a tiempo a su barco.",
     companyBenefits: [
@@ -941,7 +942,7 @@ const es: Dictionary = {
     map: "Mapa del recorrido",
     openMap: "Abrir mapa",
     reviewsKicker: "Tripadvisor",
-    reviewsTitle: "Opiniones de esta excursión",
+    reviewsTitle: "Opiniones de nuestros viajeros",
     reviewsSubtitle:
       "Experiencias de viajeros en Tripadvisor y en nuestras salidas.",
     reviewsBasedOn: "Basado en {n} opiniones en Tripadvisor",
@@ -1164,7 +1165,7 @@ const en: Dictionary = {
       "A Biosphere Reserve of silence, calm and volcanic landscapes shaped by César Manrique. Timanfaya, Cueva de los Verdes, Cactus Garden or Jameos del Agua: the island is better with those who know it.",
     islandCta: "Start planning",
     reviewsKicker: "Tripadvisor",
-    reviewsTitle: "What travellers say",
+    reviewsTitle: "Reviews from our travellers",
     reviewsSubtitle:
       "Real reviews from people who have already discovered Lanzarote with us.",
     reviewsBasedOn: "Based on {n} Tripadvisor reviews",
@@ -1286,12 +1287,13 @@ const en: Dictionary = {
     noResults: "No port calls match these filters.",
     shipSingular: "ship",
     shipPlural: "ships",
-    shipsToday: "Ships that day",
+    shipsToday: "calling that day",
     browseTitle: "Shore excursions in the Canary Islands",
     browseSubtitle:
       "Easiest path: pick your Lanzarote port-call day on the calendar. You can also browse by cruise line, ship and sailing.",
     selectCruise: "Select your cruise",
-    companiesTitle: "Cruise lines",
+    companiesTitle:
+      "Select your cruise line to see its upcoming calls in Lanzarote and the shore excursions available",
     companySailings: "scheduled sailings",
     upcomingCruises: "Upcoming cruises from",
     shipSailings: "scheduled sailings",
@@ -1333,18 +1335,18 @@ const en: Dictionary = {
     notIncluded: "Not included",
     goToCart: "Go to cart",
     dateCalendarKicker: "Port-call date",
-    dateCalendarTitle: "Choose your Lanzarote port-call day",
+    dateCalendarTitle: "Choose your port-call date in Lanzarote",
     dateCalendarText:
-      "Tap the calendar on the day your ship docks and see the available sailings at",
+      "Select the date your cruise ship calls at Lanzarote. Then choose your ship to see the shore excursions available during your time on the island.",
     dateCalendarLegend:
-      "Marked days have port calls. Tap one to see the ships and shore excursions.",
+      "Marked dates have cruise calls. Select a date to see the ships and available shore excursions.",
     dateCalendarEmptyDay: "No ships published for this day.",
     dateCalendarPickDay: "Select a day on the calendar to continue.",
     dateCalendarNoItinerary:
       "Full itinerary is not available for this port call yet.",
     prevMonth: "Previous month",
     nextMonth: "Next month",
-    orBrowseByCompany: "Or browse by cruise line",
+    orBrowseByCompany: "Or find your shore excursion by cruise line",
     companyPageIntro:
       "We offer excursions at every Canary Islands port call. A local family business, small groups and our own minibuses, with a guaranteed return to your ship.",
     companyBenefits: [
@@ -1518,7 +1520,7 @@ const en: Dictionary = {
     map: "Tour map",
     openMap: "Open map",
     reviewsKicker: "Tripadvisor",
-    reviewsTitle: "Reviews for this tour",
+    reviewsTitle: "Reviews from our travellers",
     reviewsSubtitle:
       "Traveller experiences from Tripadvisor and our own departures.",
     reviewsBasedOn: "Based on {n} Tripadvisor reviews",
@@ -1741,7 +1743,7 @@ const de: Dictionary = {
       "Biosphärenreservat, Stille, Ruhe und eine vulkanische Landschaft geprägt von César Manrique. Timanfaya, Cueva de los Verdes, Kakteengarten oder Jameos del Agua: die Insel erlebt man besser mit Kennern.",
     islandCta: "Jetzt planen",
     reviewsKicker: "Tripadvisor",
-    reviewsTitle: "Das sagen Reisende",
+    reviewsTitle: "Bewertungen unserer Gäste",
     reviewsSubtitle:
       "Echte Bewertungen von Gästen, die Lanzarote mit uns entdeckt haben.",
     reviewsBasedOn: "Basierend auf {n} Tripadvisor-Bewertungen",
@@ -1866,12 +1868,13 @@ const de: Dictionary = {
     noResults: "Keine Anläufe für diese Filter.",
     shipSingular: "Schiff",
     shipPlural: "Schiffe",
-    shipsToday: "Schiffe an diesem Tag",
+    shipsToday: "an diesem Tag",
     browseTitle: "Landausflüge auf den Kanarischen Inseln",
     browseSubtitle:
       "Am einfachsten: wählen Sie im Kalender Ihren Hafentag auf Lanzarote. Sie können auch nach Reederei, Schiff und Abfahrt suchen.",
     selectCruise: "Wählen Sie Ihre Kreuzfahrt",
-    companiesTitle: "Kreuzfahrtgesellschaften",
+    companiesTitle:
+      "Wählen Sie Ihre Reederei aus, um die nächsten Kreuzfahrtanläufe auf Lanzarote und die verfügbaren Landausflüge zu sehen.",
     companySailings: "geplante Abfahrten",
     upcomingCruises: "Kommende Kreuzfahrten von",
     shipSailings: "geplante Abfahrten",
@@ -1913,18 +1916,18 @@ const de: Dictionary = {
     notIncluded: "Nicht inbegriffen",
     goToCart: "Zum Warenkorb",
     dateCalendarKicker: "Hafentag",
-    dateCalendarTitle: "Wählen Sie Ihren Hafentag auf Lanzarote",
+    dateCalendarTitle: "Wählen Sie das Datum Ihres Aufenthalts auf Lanzarote",
     dateCalendarText:
-      "Tippen Sie im Kalender auf den Tag, an dem Ihr Schiff anlegt, und sehen Sie die verfügbaren Abfahrten in",
+      "Wählen Sie im Kalender das Datum aus, an dem Ihr Kreuzfahrtschiff Lanzarote anläuft. Anschließend wählen Sie Ihr Schiff aus, um die während Ihres Aufenthalts verfügbaren Landausflüge zu sehen.",
     dateCalendarLegend:
-      "Markierte Tage haben Hafenstopps. Tippen Sie auf einen Tag, um Schiffe und Ausflüge zu sehen.",
+      "An den markierten Tagen laufen Kreuzfahrtschiffe Lanzarote an. Wählen Sie ein Datum aus, um die Schiffe und verfügbaren Landausflüge zu sehen.",
     dateCalendarEmptyDay: "An diesem Tag sind keine Schiffe veröffentlicht.",
     dateCalendarPickDay: "Wählen Sie einen Tag im Kalender, um fortzufahren.",
     dateCalendarNoItinerary:
       "Die komplette Route ist für diesen Hafenstopp noch nicht verfügbar.",
     prevMonth: "Vorheriger Monat",
     nextMonth: "Nächster Monat",
-    orBrowseByCompany: "Oder nach Reederei suchen",
+    orBrowseByCompany: "Oder finden Sie Ihren Landausflug nach Reederei",
     companyPageIntro:
       "Wir bieten Ausflüge an jedem Kanaren-Hafenstopp. Lokales Familienunternehmen, kleine Gruppen und eigene Minibusse – mit pünktlicher Rückkehr zum Schiff.",
     companyBenefits: [
@@ -2104,7 +2107,7 @@ const de: Dictionary = {
     map: "Kartenübersicht",
     openMap: "Karte öffnen",
     reviewsKicker: "Tripadvisor",
-    reviewsTitle: "Bewertungen zu dieser Tour",
+    reviewsTitle: "Bewertungen unserer Gäste",
     reviewsSubtitle:
       "Erfahrungen von Reisenden auf Tripadvisor und bei unseren Touren.",
     reviewsBasedOn: "Basierend auf {n} Tripadvisor-Bewertungen",

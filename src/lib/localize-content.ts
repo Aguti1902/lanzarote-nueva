@@ -167,6 +167,15 @@ export async function patchSettingsTranslations(
     }
   }
   await saveContentTranslations(locale, data);
+  try {
+    const { syncTransferRouteOverrides } = await import("@/lib/transfer-seo");
+    await syncTransferRouteOverrides();
+  } catch (error) {
+    console.warn(
+      "[i18n] no se pudieron sincronizar slugs de traslados",
+      error
+    );
+  }
   return data;
 }
 

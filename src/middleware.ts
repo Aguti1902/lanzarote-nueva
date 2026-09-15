@@ -4,7 +4,9 @@ import { defaultLocale, isLocale, locales } from "@/i18n/config";
 import {
   canonicalLocalizedPathname,
   rewriteToInternalPathname,
+  type LocalePathOptions,
 } from "@/i18n/path";
+import { getStaticTransferSlugs } from "@/i18n/transfer-paths";
 import { resolveLegacyRedirect } from "@/lib/legacy-redirects";
 import {
   ADMIN_SESSION_COOKIE,
@@ -12,6 +14,27 @@ import {
 } from "@/lib/admin-auth";
 
 const PUBLIC_FILE = /\.(.*)$/;
+
+/** Carga slugs de traslados (API pública) con fallback estático. */
+async function loadTransferPathOptions(
+  request: NextRequest
+): Promise<LocalePathOptions | undefined> {
+  try {
+    const url = new URL("/api/public/transfer-slugs", request.url);
+    const res = await fetch(url, {
+      headers: { Accept: "application/json" },
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return { transferSlugs: getStaticTransferSlugs() };
+    const data = (await res.json()) as {
+      transfers?: LocalePathOptions["transferSlugs"];
+    };
+    if (data.transfers) return { transferSlugs: data.transfers };
+  } catch {
+    /* fallback estático */
+  }
+  return { transferSlugs: getStaticTransferSlugs() };
+}
 
 /** Rutas API admin públicas (login / sesión check). */
 const ADMIN_API_PUBLIC = new Set([
@@ -110,14 +133,16 @@ export async function middleware(request: NextRequest) {
     const alreadyRewritten = request.headers.get("x-let-rewritten") === "1";
 
     if (!alreadyRewritten) {
-      const canonical = canonicalLocalizedPathname(pathname);
+      const pathOpts = await loadTransferPathOptions(request);
+
+      const canonical = canonicalLocalizedPathname(pathname, pathOpts);
       if (canonical && canonical !== pathname) {
         const url = request.nextUrl.clone();
         url.pathname = canonical;
         return securityHeaders(NextResponse.redirect(url, 301));
       }
 
-      const rewriteTarget = rewriteToInternalPathname(pathname);
+      const rewriteTarget = rewriteToInternalPathname(pathname, pathOpts);
       if (rewriteTarget && rewriteTarget !== pathname) {
         const url = request.nextUrl.clone();
         url.pathname = rewriteTarget;

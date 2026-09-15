@@ -16,6 +16,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { locales } from "@/i18n/config";
 import { localePath } from "@/i18n/path";
+import { getTransferSlugMap } from "@/lib/transfer-seo";
 import { resolvePublicOrigin } from "@/lib/voucher";
 import type { TransferDirection } from "@/lib/transfer-price";
 
@@ -27,15 +28,31 @@ type Props = { params: Promise<{ locale: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = resolveLocale((await params).locale);
   const dict = await getDictionary(locale);
-  const settings = await localizeSettings(await getSettings(), locale);
+  const baseSettings = await getSettings();
+  const [settings, transferSlugs] = await Promise.all([
+    localizeSettings(baseSettings, locale),
+    getTransferSlugMap(baseSettings),
+  ]);
   const origin = resolvePublicOrigin();
+  const pathOpts = { transferSlugs };
   const languages: Record<string, string> = {};
   for (const loc of locales) {
-    languages[loc] = `${origin}${localePath(loc, "/traslados")}`;
+    languages[loc] = `${origin}${localePath(loc, "/traslados", pathOpts)}`;
   }
   languages["x-default"] = languages.es;
+  const title =
+    settings.transferSeoTitle?.trim() ||
+    settings.transferTitle ||
+    dict.transfers.title;
+  const description =
+    settings.transferSeoDescription?.trim() ||
+    settings.transferIntro ||
+    undefined;
+  const keywords = settings.transferSeoKeywords?.trim() || undefined;
   return {
-    title: settings.transferTitle || dict.transfers.title,
+    title,
+    description,
+    keywords,
     alternates: {
       canonical: languages[locale],
       languages,

@@ -729,4 +729,10 @@ export const getSettings = cache(async (): Promise<SiteSettings> => {
 
 export async function saveSettings(settings: SiteSettings): Promise<void> {
   await writeJson("settings.json", scrubSettingsHtml(settings));
+  try {
+    const { syncTransferRouteOverrides } = await import("@/lib/transfer-seo");
+    await syncTransferRouteOverrides(settings);
+  } catch (error) {
+    console.warn("[settings] no se pudieron sincronizar slugs de traslados", error);
+  }
 }

@@ -1,11 +1,19 @@
 import { isLocale, type Locale } from "./config";
 import { remapExcursionPath } from "./tour-slugs";
+import {
+  DEFAULT_TRANSFER_SLUGS,
+  getStaticTransferSlugs,
+  matchesTransferSlug,
+  TRANSFER_INTERNAL_PATH,
+  type TransferSlugMap,
+} from "./transfer-paths";
 
 /**
  * Rutas canónicas internas = carpetas bajo `app/[locale]/…` (siempre en español).
  * Las URLs públicas se localizan por idioma; el middleware hace rewrite a estas.
  *
  * Orden: prefijos más largos primero.
+ * Nota: traslados se resuelve aparte (slugs editables en ajustes / route-overrides).
  */
 export const ROUTE_LOCALES = [
   {
@@ -30,10 +38,12 @@ export const ROUTE_LOCALES = [
   },
   { es: "/sobre-nosotros", en: "/about-us", de: "/uber-uns" },
   { es: "/excursiones", en: "/excursions", de: "/ausfluege" },
+  // Placeholder: slugs públicos reales vienen de getStaticTransferSlugs() /
+  // LocalePathOptions.transferSlugs. La carpeta interna ES no cambia.
   {
-    es: "/traslados-aeropuerto-lanzarote",
-    en: "/airport-transfers",
-    de: "/flughafen-transfer",
+    es: TRANSFER_INTERNAL_PATH,
+    en: `/${DEFAULT_TRANSFER_SLUGS.en}`,
+    de: `/${DEFAULT_TRANSFER_SLUGS.de}`,
   },
   {
     es: "/cruceristas",
@@ -72,6 +82,11 @@ export const ROUTE_LOCALES = [
   },
 ] as const;
 
+export type LocalePathOptions = {
+  /** Slugs públicos de traslados (CMS / ajustes). */
+  transferSlugs?: TransferSlugMap;
+};
+
 /** Alias → segmento canónico del mismo idioma (umlauts, sinónimos legacy). */
 const ALIASES: Record<string, string> = {
   "/ausflüge": "/ausfluege",
@@ -84,8 +99,8 @@ const ALIASES: Record<string, string> = {
   "/cruise-excursions": "/shore-excursions",
   "/vacation-homes": "/holiday-homes",
   "/casas-vacacionales": "/casas",
-  "/traslados-aeropuerto": "/traslados-aeropuerto-lanzarote",
-  "/traslados": "/traslados-aeropuerto-lanzarote",
+  "/traslados-aeropuerto": TRANSFER_INTERNAL_PATH,
+  "/traslados": TRANSFER_INTERNAL_PATH,
 };
 
 function splitPathAndQuery(path: string): { pathname: string; search: string } {
@@ -111,14 +126,68 @@ function applyAlias(pathname: string): string {
   return pathname;
 }
 
+function resolveTransferMap(options?: LocalePathOptions): TransferSlugMap {
+  return options?.transferSlugs || getStaticTransferSlugs();
+}
+
+function transferPublicPath(locale: Locale, map: TransferSlugMap): string {
+  return `/${map[locale] || DEFAULT_TRANSFER_SLUGS[locale]}`;
+}
+
+function isTransferInternal(pathname: string): boolean {
+  const clean = normalizePathname(pathname);
+  return (
+    clean === TRANSFER_INTERNAL_PATH ||
+    clean.startsWith(`${TRANSFER_INTERNAL_PATH}/`)
+  );
+}
+
+/**
+ * Si el path (sin locale) es un slug público de traslados (custom o default),
+ * devuelve { rest } tras el segmento. Si no, null.
+ */
+function matchTransferPublic(
+  pathname: string,
+  map: TransferSlugMap
+): { rest: string } | null {
+  const path = applyAlias(normalizePathname(pathname));
+  const segment = path.replace(/^\//, "").split("/")[0] || "";
+  if (!segment || !matchesTransferSlug(segment, map)) return null;
+  const rest = path.slice(segment.length + 1); // includes leading / or ""
+  return { rest: rest || "" };
+}
+
 type RouteDef = (typeof ROUTE_LOCALES)[number];
+
+function isTransferRoute(route: RouteDef): boolean {
+  return route.es === TRANSFER_INTERNAL_PATH;
+}
 
 function matchRoute(
   pathname: string,
-  localeKey: Locale
+  localeKey: Locale,
+  map: TransferSlugMap
 ): { route: RouteDef; rest: string } | null {
   const path = applyAlias(normalizePathname(pathname));
+
+  // Traslados: slugs editables (overrides) tienen prioridad.
+  const transferHit = matchTransferPublic(path, map);
+  if (transferHit) {
+    const route = ROUTE_LOCALES.find(isTransferRoute);
+    if (route) return { route, rest: transferHit.rest };
+  }
+
   for (const route of ROUTE_LOCALES) {
+    if (isTransferRoute(route)) {
+      // Ya contemplado arriba con el mapa dinámico.
+      // Mantener match por defaults hardcodeados como fallback.
+      const prefix = transferPublicPath(localeKey, map);
+      if (path === prefix) return { route, rest: "" };
+      if (path.startsWith(`${prefix}/`)) {
+        return { route, rest: path.slice(prefix.length) };
+      }
+      continue;
+    }
     const prefix = route[localeKey];
     if (path === prefix) return { route, rest: "" };
     if (path.startsWith(`${prefix}/`)) {
@@ -128,11 +197,13 @@ function matchRoute(
   return null;
 }
 
-/** Detecta en qué “idioma de slug” está escrito el path (sin locale). */
-function detectSlugLocale(pathname: string): Locale | null {
+function detectSlugLocale(
+  pathname: string,
+  map: TransferSlugMap
+): Locale | null {
   const path = applyAlias(normalizePathname(pathname));
   for (const locale of ["es", "en", "de"] as Locale[]) {
-    if (matchRoute(path, locale)) return locale;
+    if (matchRoute(path, locale, map)) return locale;
   }
   return null;
 }
@@ -141,13 +212,17 @@ function detectSlugLocale(pathname: string): Locale | null {
  * Convierte cualquier path de sección (ES/EN/DE) a la ruta interna (carpetas ES).
  * Conserva el resto (`/excursions/foo` → `/excursiones/foo`).
  */
-export function toInternalPath(path: string): string {
+export function toInternalPath(
+  path: string,
+  options?: LocalePathOptions
+): string {
   const { pathname, search } = splitPathAndQuery(path);
   const clean = applyAlias(normalizePathname(pathname));
   if (clean === "/") return search ? `/${search}` : "/";
+  const map = resolveTransferMap(options);
 
   for (const locale of ["es", "en", "de"] as Locale[]) {
-    const matched = matchRoute(clean, locale);
+    const matched = matchRoute(clean, locale, map);
     if (matched) {
       return `${matched.route.es}${matched.rest}${search}`;
     }
@@ -156,18 +231,34 @@ export function toInternalPath(path: string): string {
 }
 
 /** Path interno (ES) → path localizado para el locale (sin prefijo /es|/en|/de). */
-export function toLocalizedPath(locale: Locale, internalPath: string): string {
+export function toLocalizedPath(
+  locale: Locale,
+  internalPath: string,
+  options?: LocalePathOptions
+): string {
   const { pathname, search } = splitPathAndQuery(internalPath);
   const clean = normalizePathname(pathname);
   if (clean === "/") return search || "/";
+  const map = resolveTransferMap(options);
 
-  const matched = matchRoute(clean, "es") || matchRoute(clean, locale);
+  if (isTransferInternal(clean)) {
+    const rest = clean.slice(TRANSFER_INTERNAL_PATH.length);
+    return `${transferPublicPath(locale, map)}${rest}${search}`;
+  }
+
+  const matched =
+    matchRoute(clean, "es", map) || matchRoute(clean, locale, map);
   if (matched) {
+    if (isTransferRoute(matched.route)) {
+      return `${transferPublicPath(locale, map)}${matched.rest}${search}`;
+    }
     return `${matched.route[locale]}${matched.rest}${search}`;
   }
-  // Ya podría estar en el locale destino
-  const asLocale = matchRoute(clean, locale);
+  const asLocale = matchRoute(clean, locale, map);
   if (asLocale) {
+    if (isTransferRoute(asLocale.route)) {
+      return `${transferPublicPath(locale, map)}${asLocale.rest}${search}`;
+    }
     return `${asLocale.route[locale]}${asLocale.rest}${search}`;
   }
   return `${clean}${search}`;
@@ -177,13 +268,20 @@ export function toLocalizedPath(locale: Locale, internalPath: string): string {
  * Construye URL pública con locale y slugs traducidos.
  * Acepta paths internos (`/excursiones`) o ya localizados.
  */
-export function localePath(locale: Locale, path = "/"): string {
+export function localePath(
+  locale: Locale,
+  path = "/",
+  options?: LocalePathOptions
+): string {
   const { pathname, search } = splitPathAndQuery(path);
   const clean = normalizePathname(pathname);
   if (clean === "/") return `/${locale}${search}`;
 
-  const internal = remapExcursionPath(toInternalPath(clean), locale);
-  const localized = toLocalizedPath(locale, internal);
+  const internal = remapExcursionPath(
+    toInternalPath(clean, options),
+    locale
+  );
+  const localized = toLocalizedPath(locale, internal, options);
   if (localized === "/") return `/${locale}${search}`;
   return `/${locale}${localized}${search}`;
 }
@@ -207,35 +305,49 @@ export function stripLocaleFromPathname(pathname: string): {
 }
 
 /** Pathname completo → path interno sin locale (`/en/excursions/x` → `/excursiones/x`). */
-export function internalPathFromPathname(pathname: string): string {
+export function internalPathFromPathname(
+  pathname: string,
+  options?: LocalePathOptions
+): string {
   const { path } = stripLocaleFromPathname(pathname);
-  return toInternalPath(path);
+  return toInternalPath(path, options);
 }
 
 /** Cambia solo el idioma conservando la sección/recurso. */
 export function switchLocalePath(
   pathname: string,
   nextLocale: Locale,
-  search = ""
+  search = "",
+  options?: LocalePathOptions
 ): string {
   const { path } = stripLocaleFromPathname(pathname);
-  const internal = toInternalPath(path);
-  return localePath(nextLocale, remapExcursionPath(internal, nextLocale)) + search;
+  const internal = toInternalPath(path, options);
+  return (
+    localePath(
+      nextLocale,
+      remapExcursionPath(internal, nextLocale),
+      options
+    ) + search
+  );
 }
 
 /**
  * Si la URL usa slugs en español (u otro idioma) con locale en/de,
  * devuelve el pathname canónico localizado (para 301).
  */
-export function canonicalLocalizedPathname(fullPathname: string): string | null {
+export function canonicalLocalizedPathname(
+  fullPathname: string,
+  options?: LocalePathOptions
+): string | null {
   const { locale, path } = stripLocaleFromPathname(fullPathname);
   if (!locale || path === "/") return null;
+  const map = resolveTransferMap(options);
 
-  const slugLocale = detectSlugLocale(path);
+  const slugLocale = detectSlugLocale(path, map);
   if (!slugLocale) return null;
 
-  const internal = remapExcursionPath(toInternalPath(path), locale);
-  const canonical = toLocalizedPath(locale, internal);
+  const internal = remapExcursionPath(toInternalPath(path, options), locale);
+  const canonical = toLocalizedPath(locale, internal, options);
   const current = applyAlias(normalizePathname(path));
 
   if (normalizePathname(canonical) === current) return null;
@@ -246,11 +358,14 @@ export function canonicalLocalizedPathname(fullPathname: string): string | null 
  * Pathname público con locale → pathname interno para rewrite
  * (`/en/excursions/foo` → `/en/excursiones/foo`).
  */
-export function rewriteToInternalPathname(fullPathname: string): string | null {
+export function rewriteToInternalPathname(
+  fullPathname: string,
+  options?: LocalePathOptions
+): string | null {
   const { locale, path } = stripLocaleFromPathname(fullPathname);
   if (!locale || path === "/") return null;
 
-  const internal = toInternalPath(path);
+  const internal = toInternalPath(path, options);
   if (normalizePathname(internal) === normalizePathname(path)) return null;
 
   return `/${locale}${internal === "/" ? "" : internal}`;
