@@ -9,6 +9,7 @@ import { LocaleProvider } from "@/components/LocaleProvider";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getTripadvisorMeta } from "@/lib/reviews";
+import { getTransferSlugMap } from "@/lib/transfer-seo";
 
 export const revalidate = 300;
 
@@ -26,13 +27,18 @@ export default async function LocaleLayout({
   const { locale: raw } = await params;
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
-  const [dict, tripadvisor] = await Promise.all([
+  const [dict, tripadvisor, transferSlugs] = await Promise.all([
     getDictionary(locale),
     getTripadvisorMeta(),
+    getTransferSlugMap().catch(() => undefined),
   ]);
 
   return (
-    <LocaleProvider locale={locale} dict={dict}>
+    <LocaleProvider
+      locale={locale}
+      dict={dict}
+      transferSlugs={transferSlugs}
+    >
       <div lang={locale} className="flex min-h-full flex-1 flex-col">
         <Header />
         <main className="flex-1">{children}</main>

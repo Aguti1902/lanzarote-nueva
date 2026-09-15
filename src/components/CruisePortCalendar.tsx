@@ -110,13 +110,13 @@ export function CruisePortCalendar({ calls, season, port }: Props) {
     <div className="space-y-6">
       <div>
         <p className="text-sm font-semibold uppercase tracking-wide text-ocean">
-          {dict.cruises.dateCalendarKicker} · {season}
+          {dict.cruises.dateCalendarKicker}
         </p>
         <h2 className="mt-1 text-3xl font-bold md:text-4xl">
           {dict.cruises.dateCalendarTitle}
         </h2>
         <p className="mt-2 max-w-2xl text-ink-muted">
-          {dict.cruises.dateCalendarText} {port}.
+          {dict.cruises.dateCalendarText}
         </p>
       </div>
 
@@ -225,7 +225,7 @@ export function CruisePortCalendar({ calls, season, port }: Props) {
                     {selectedCalls.length === 1
                       ? dict.cruises.shipSingular
                       : dict.cruises.shipPlural}{" "}
-                    · {dict.cruises.shipsToday}
+                    {dict.cruises.shipsToday}
                   </p>
                 </div>
               </div>

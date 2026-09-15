@@ -322,9 +322,10 @@
         "Einkäufe"
       ],
       "recommendations": [
-        "Bargeld für den Markt"
+        "Bequeme Schuhe, da Sie zu Fuß durch den Markt und die Altstadt gehen.",
+        "Etwas Bargeld für Einkäufe an den Marktständen mitnehmen."
       ],
-      "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden im Voraus.",
+      "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden vor Beginn des Ausflugs.",
       "languages": [
         "Deutsch"
       ]

@@ -323,9 +323,10 @@
         "Purchases"
       ],
       "recommendations": [
-        "Cash for the market"
+        "Wear comfortable shoes, as you'll be walking around the historic town.",
+        "It may be useful to carry some cash for small purchases at the market."
       ],
-      "cancellationPolicy": "Free cancellation up to 48 hours in advance.",
+      "cancellationPolicy": "Free cancellation up to 48 hours before the tour.",
       "languages": [
         "English"
       ]

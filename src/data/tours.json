@@ -5155,7 +5155,7 @@
     ],
     "recommendations": [
       "Calzado cómodo: se camina bastante por el pueblo.",
-      "Lleve efectivo pequeño para puestos del mercadillo."
+      "Puede ser útil llevar algo de efectivo para pequeñas compras en el mercadillo."
     ],
     "cancellationPolicy": "Cancelación gratuita hasta 48 horas antes.",
     "maxGroup": 50,
@@ -5278,10 +5278,12 @@
         ],
         "notIncluded": [],
         "recommendations": [
-          "Comfortable shoes"
+          "Wear comfortable shoes, as you'll be walking around the historic town.",
+          "It may be useful to carry some cash for small purchases at the market."
         ],
         "shortTitle": "Teguise Market",
-        "slug": "teguise-market-lanzarote"
+        "slug": "teguise-market-lanzarote",
+        "cancellationPolicy": "Free cancellation up to 48 hours before the tour."
       },
       "de": {
         "title": "Teguise Markt",
@@ -5291,9 +5293,13 @@
           "Bus"
         ],
         "notIncluded": [],
-        "recommendations": [],
+        "recommendations": [
+          "Bequeme Schuhe, da Sie zu Fuß durch den Markt und die Altstadt gehen.",
+          "Etwas Bargeld für Einkäufe an den Marktständen mitnehmen."
+        ],
         "shortTitle": "Teguise Markt",
-        "slug": "teguise-markt-lanzarote"
+        "slug": "teguise-markt-lanzarote",
+        "cancellationPolicy": "Kostenlose Stornierung bis 48 Stunden vor Beginn des Ausflugs."
       }
     },
     "legacyTourId": 28

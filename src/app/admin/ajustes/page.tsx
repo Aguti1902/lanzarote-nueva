@@ -79,6 +79,10 @@ const empty: SiteSettings = {
   transferBlocksTitle: "",
   transferBlocksIntro: "",
   transferBlocks: [],
+  transferSeoTitle: "",
+  transferSeoDescription: "",
+  transferSeoKeywords: "",
+  transferSlug: "",
   housesHeroImage: "",
   housesHeroPosition: "50% 40%",
   housesFaqTitle: "",
@@ -164,6 +168,10 @@ const SECTION_KEYS: Record<SectionId, SettingsTranslatableKey[]> = {
     "transferFaqTitle",
     "transferBlocksTitle",
     "transferBlocksIntro",
+    "transferSeoTitle",
+    "transferSeoDescription",
+    "transferSeoKeywords",
+    "transferSlug",
   ],
 };
 
@@ -993,6 +1001,68 @@ export default function AdminAjustesPage() {
                   }
             }
           />
+          <div className="space-y-3 rounded-lg bg-sky-soft/50 p-4 ring-1 ring-sand-line">
+            <h3 className="font-display text-lg">SEO (este idioma)</h3>
+            <p className="text-sm text-ink-muted">
+              Meta title, description y keywords independientes por ES / EN / DE,
+              como en las fichas de excursiones. El slug define la URL pública de
+              este idioma (sin barras). Canonical y hreflang se generan automáticamente.
+            </p>
+            <Field label="Meta title">
+              <input
+                className={adminInput}
+                value={textValue("transferSeoTitle")}
+                onChange={(e) => setText("transferSeoTitle", e.target.value)}
+                placeholder="Ej. Traslados aeropuerto Lanzarote | LET"
+              />
+            </Field>
+            <Field label="Meta description">
+              <textarea
+                className={adminTextarea}
+                rows={3}
+                value={textValue("transferSeoDescription")}
+                onChange={(e) =>
+                  setText("transferSeoDescription", e.target.value)
+                }
+                placeholder="Resumen de ~150 caracteres para Google"
+              />
+            </Field>
+            <Field label="Keywords">
+              <input
+                className={adminInput}
+                value={textValue("transferSeoKeywords")}
+                onChange={(e) => setText("transferSeoKeywords", e.target.value)}
+                placeholder="traslado aeropuerto lanzarote, transfer ACE, …"
+              />
+            </Field>
+            <Field label="Slug / URL de este idioma">
+              <input
+                className={adminInput}
+                value={textValue("transferSlug")}
+                onChange={(e) =>
+                  setText(
+                    "transferSlug",
+                    e.target.value
+                      .trim()
+                      .toLowerCase()
+                      .replace(/^\/+/, "")
+                      .replace(/\/+$/, "")
+                  )
+                }
+                placeholder={
+                  locale === "es"
+                    ? "traslados-aeropuerto-lanzarote"
+                    : locale === "en"
+                      ? "airport-transfers"
+                      : "flughafen-transfer"
+                }
+              />
+              <p className="mt-1 text-xs text-ink-muted">
+                Vacío = slug por defecto del idioma. Tras guardar, la URL pública
+                y el hreflang usan este valor.
+              </p>
+            </Field>
+          </div>
         </section>
 
         <section className="space-y-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
