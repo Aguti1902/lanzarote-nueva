@@ -3,6 +3,7 @@ import {
   createCruiseCall,
   deleteCruiseCall,
   getCruisesData,
+  updateCruisesMeta,
   upsertCruiseCall,
 } from "@/lib/content";
 import type { CruiseCall } from "@/types";
@@ -79,5 +80,31 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: "No se pudo eliminar" }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: Request) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
+  try {
+    const body = await request.json();
+    const data = await updateCruisesMeta({
+      season: typeof body.season === "string" ? body.season : undefined,
+      port: typeof body.port === "string" ? body.port : undefined,
+      source: typeof body.source === "string" ? body.source : undefined,
+    });
+    return NextResponse.json({
+      season: data.season,
+      port: data.port,
+      source: data.source,
+      updatedAt: data.updatedAt,
+      calls: data.calls,
+    });
+  } catch {
+    return NextResponse.json(
+      { error: "No se pudo actualizar la temporada" },
+      { status: 500 }
+    );
   }
 }

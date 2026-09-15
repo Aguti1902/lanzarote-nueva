@@ -3,10 +3,12 @@
  * Importa el dossier TEMPORADA CRUCEROS (Excel MC_DOSSIER) al calendario
  * de escalas de Lanzarote y completa navieras/barcos que falten.
  *
- * No borra escalas históricas ni toca shoreTours.json.
+ * Por defecto fusiona con lo existente. Con --replace-window sustituye
+ * TODAS las escalas entre la primera y la última fecha del Excel.
  *
  *   node --env-file=.env.local scripts/import-cruise-season-excel.mjs [xlsx]
  *   node --env-file=.env.local scripts/import-cruise-season-excel.mjs [xlsx] --cms
+ *   node --env-file=.env.local scripts/import-cruise-season-excel.mjs [xlsx] --cms --replace-window
  */
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { execSync } from "node:child_process";
@@ -17,10 +19,12 @@ import { createClient } from "@supabase/supabase-js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const writeCms = process.argv.includes("--cms");
+const replaceWindow = process.argv.includes("--replace-window");
 const excelArg = process.argv.slice(2).find((a) => !a.startsWith("--"));
 
 const EXCEL_CANDIDATES = [
   excelArg,
+  "/home/ubuntu/.cursor/projects/workspace/uploads/TEMPORADA_CRUCEROS_2027_54da.xlsx",
   "/home/ubuntu/.cursor/projects/workspace/uploads/TEMPORADA_CRUCEROS_2026-2027_6c2f.xlsx",
   path.join(root, "scripts/data/temporada-cruceros-2026-2027.xlsx"),
 ].filter(Boolean);
@@ -60,6 +64,9 @@ const COMPANY_MAP = {
   msc: { slug: "msc-cruises", name: "MSC Cruceros" },
   "msc cruises": { slug: "msc-cruises", name: "MSC Cruceros" },
   "msc cruceros": { slug: "msc-cruises", name: "MSC Cruceros" },
+  "windstar cruises": { slug: "windstar-cruises", name: "Windstar Cruises" },
+  "windstar cruises": { slug: "windstar-cruises", name: "Windstar Cruises" },
+  windstar: { slug: "windstar-cruises", name: "Windstar Cruises" },
   "norwegian cruise line": {
     slug: "norwegian-cruise-line-ncl",
     name: "Norwegian Cruise Line",
@@ -102,6 +109,15 @@ const COMPANY_MAP = {
 
 /** Nombres canónicos por código de barco del dossier. */
 const SHIP_BY_CODE = {
+  ABL: "AIDAblu",
+  ACM: "AIDAcosma",
+  ALU: "AIDALuna",
+  AMA: "AIDAmar",
+  APE: "AIDAperla",
+  APM: "AIDAprima",
+  AWN: "World Navigator",
+  AWT: "World Traveller",
+  AWV: "World Voyager",
   ABL: "AIDAblu",
   ACM: "AIDAcosma",
   ALU: "AIDALuna",
