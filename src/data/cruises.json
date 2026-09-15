@@ -1,7 +1,7 @@
 {
   "season": "2026-2027",
   "port": "Puerto de Los Mármoles, Lanzarote",
-  "source": "temporada-cruceros-2026-2027.xlsx",
+  "source": "TEMPORADA CRUCEROS 2027.xlsx",
   "updatedAt": "2026-09-15",
   "calls": [
     {
@@ -13382,7 +13382,8 @@
       "arrivalTime": "12:00",
       "departureTime": "23:59",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-09-20-ventura-pve",
@@ -13394,7 +13395,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-10-07-ventura-pve",
@@ -13406,7 +13408,8 @@
       "arrivalTime": "09:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-10-10-iona-pon",
@@ -13418,7 +13421,8 @@
       "arrivalTime": "07:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-10-11-msc-virtuosa-mvi",
@@ -13430,7 +13434,8 @@
       "arrivalTime": "07:00",
       "departureTime": "14:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-10-15-azura-paz",
@@ -13442,7 +13447,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-10-23-norwegian-star-nst",
@@ -13454,7 +13460,8 @@
       "arrivalTime": "07:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-10-24-britannia-pbr",
@@ -13466,7 +13473,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-10-25-europa-2-hle",
@@ -13478,7 +13486,8 @@
       "arrivalTime": "08:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-10-26-le-laperouse-pla",
@@ -13490,7 +13499,8 @@
       "arrivalTime": "06:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-10-29-azura-paz",
@@ -13502,7 +13512,8 @@
       "arrivalTime": "09:30",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-02-le-laperouse-pla",
@@ -13514,7 +13525,8 @@
       "arrivalTime": "22:15",
       "departureTime": "23:59",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-03-le-laperouse-pla",
@@ -13526,7 +13538,8 @@
       "arrivalTime": "00:00",
       "departureTime": "18:30",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-03-mein-schiff-7-tm7",
@@ -13538,7 +13551,8 @@
       "arrivalTime": "19:00",
       "departureTime": "23:59",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-04-mein-schiff-7-tm7",
@@ -13550,7 +13564,8 @@
       "arrivalTime": "00:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-04-sea-cloud-ii-sc2",
@@ -13562,7 +13577,8 @@
       "arrivalTime": "07:00",
       "departureTime": "14:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-04-norwegian-star-nst",
@@ -13574,7 +13590,8 @@
       "arrivalTime": "10:30",
       "departureTime": "20:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-05-mein-schiff-3-tm3",
@@ -13586,7 +13603,8 @@
       "arrivalTime": "08:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-05-arcadia-par",
@@ -13598,7 +13616,8 @@
       "arrivalTime": "09:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-06-regatta-ore",
@@ -13610,7 +13629,8 @@
       "arrivalTime": "10:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-07-aidablu-abl",
@@ -13622,7 +13642,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-08-ventura-pve",
@@ -13634,7 +13655,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-11-sea-cloud-spirit-scs",
@@ -13646,7 +13668,8 @@
       "arrivalTime": "08:00",
       "departureTime": "23:59",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-11-insignia-oin",
@@ -13658,7 +13681,8 @@
       "arrivalTime": "10:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-11-star-flyer-ssf",
@@ -13670,7 +13694,8 @@
       "arrivalTime": "10:00",
       "departureTime": "15:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-12-sea-cloud-spirit-scs",
@@ -13682,7 +13707,8 @@
       "arrivalTime": "00:00",
       "departureTime": "10:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-12-azura-paz",
@@ -13694,7 +13720,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-13-aidaperla-ape",
@@ -13706,7 +13733,8 @@
       "arrivalTime": "09:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-13-aidaprima-apm",
@@ -13718,7 +13746,8 @@
       "arrivalTime": "11:00",
       "departureTime": "20:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-13-le-dumont-d-urville-plu",
@@ -13730,7 +13759,8 @@
       "arrivalTime": "13:30",
       "departureTime": "18:30",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-14-iona-pon",
@@ -13742,7 +13772,8 @@
       "arrivalTime": "07:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-14-mein-schiff-relax-tmr",
@@ -13754,7 +13785,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-15-mein-schiff-7-tm7",
@@ -13766,7 +13798,8 @@
       "arrivalTime": "19:00",
       "departureTime": "23:59",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-16-mein-schiff-7-tm7",
@@ -13778,7 +13811,8 @@
       "arrivalTime": "00:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-16-aidablu-abl",
@@ -13790,7 +13824,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-16-le-dumont-d-urville-plu",
@@ -13802,7 +13837,8 @@
       "arrivalTime": "22:15",
       "departureTime": "23:59",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-17-le-dumont-d-urville-plu",
@@ -13814,7 +13850,8 @@
       "arrivalTime": "00:00",
       "departureTime": "18:30",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-17-queen-victoria-cqv",
@@ -13826,7 +13863,8 @@
       "arrivalTime": "09:00",
       "departureTime": "23:59",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-17-celebrity-infinity-cin",
@@ -13838,7 +13876,8 @@
       "arrivalTime": "11:00",
       "departureTime": "20:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-18-marella-discovery-2-td2",
@@ -13850,7 +13889,8 @@
       "arrivalTime": "09:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-18-seven-seas-navigator-rnv",
@@ -13862,7 +13902,8 @@
       "arrivalTime": "09:30",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-18-star-clipper-ssl",
@@ -13874,7 +13915,8 @@
       "arrivalTime": "10:00",
       "departureTime": "15:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-18-wind-spirit-wsp",
@@ -13886,7 +13928,8 @@
       "arrivalTime": "11:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-19-europa-hlu",
@@ -13898,7 +13941,8 @@
       "arrivalTime": "07:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-20-aidaprima-apm",
@@ -13910,7 +13954,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-21-mein-schiff-relax-tmr",
@@ -13922,7 +13967,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-22-allura-oaa",
@@ -13934,7 +13980,8 @@
       "arrivalTime": "07:00",
       "departureTime": "13:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-22-marella-discovery-2-td2",
@@ -13946,7 +13993,8 @@
       "arrivalTime": "09:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-24-ventura-pve",
@@ -13958,7 +14006,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-25-costa-smeralda-csm",
@@ -13970,7 +14019,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-26-azura-paz",
@@ -13982,7 +14032,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-27-aidaprima-apm",
@@ -13994,7 +14045,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-28-iona-pon",
@@ -14006,7 +14058,8 @@
       "arrivalTime": "07:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-28-mein-schiff-relax-tmr",
@@ -14018,7 +14071,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-29-seven-seas-navigator-rnv",
@@ -14030,7 +14084,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-29-borealis-fbs",
@@ -14042,7 +14097,8 @@
       "arrivalTime": "08:30",
       "departureTime": "17:30",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-29-marella-discovery-2-td2",
@@ -14054,7 +14110,8 @@
       "arrivalTime": "09:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-29-mein-schiff-7-tm7",
@@ -14066,7 +14123,8 @@
       "arrivalTime": "19:00",
       "departureTime": "23:59",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-30-mein-schiff-7-tm7",
@@ -14078,7 +14136,8 @@
       "arrivalTime": "00:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-11-30-bolette-fbb",
@@ -14090,7 +14149,8 @@
       "arrivalTime": "08:30",
       "departureTime": "23:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-02-costa-smeralda-csm",
@@ -14102,7 +14162,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-02-balmoral-fba",
@@ -14114,7 +14175,8 @@
       "arrivalTime": "08:00",
       "departureTime": "16:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-02-le-champlain-plc",
@@ -14126,7 +14188,8 @@
       "arrivalTime": "13:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-03-aidablu-abl",
@@ -14138,7 +14201,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-04-celebrity-infinity-cin",
@@ -14150,7 +14214,8 @@
       "arrivalTime": "07:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-04-le-champlain-plc",
@@ -14162,7 +14227,8 @@
       "arrivalTime": "07:00",
       "departureTime": "23:59",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-04-aidaprima-apm",
@@ -14174,7 +14240,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-05-mein-schiff-relax-tmr",
@@ -14186,7 +14253,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-06-aidaprima-apm",
@@ -14198,7 +14266,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-06-marella-explorer-1-me1",
@@ -14210,7 +14279,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-07-queen-anne-cqa",
@@ -14222,7 +14292,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-07-marella-discovery-2-td2",
@@ -14234,7 +14305,8 @@
       "arrivalTime": "09:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-08-costa-smeralda-csm",
@@ -14246,7 +14318,8 @@
       "arrivalTime": "09:00",
       "departureTime": "20:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-10-azura-paz",
@@ -14258,7 +14331,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-11-aidacosma-acm",
@@ -14270,7 +14344,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-11-queen-victoria-cqv",
@@ -14282,7 +14357,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-12-iona-pon",
@@ -14294,7 +14370,8 @@
       "arrivalTime": "07:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-12-mein-schiff-relax-tmr",
@@ -14306,7 +14383,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-13-marella-explorer-1-me1",
@@ -14318,7 +14396,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-13-marella-discovery-2-td2",
@@ -14330,7 +14409,8 @@
       "arrivalTime": "09:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-14-arcadia-par",
@@ -14342,7 +14422,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-14-ventura-pve",
@@ -14354,7 +14435,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-15-aidablu-abl",
@@ -14366,7 +14448,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-15-explora-ii-ex2",
@@ -14378,7 +14461,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-15-sirena-osi",
@@ -14390,7 +14474,8 @@
       "arrivalTime": "10:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-16-celebrity-infinity-cin",
@@ -14402,7 +14487,8 @@
       "arrivalTime": "07:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-16-wind-spirit-wsp",
@@ -14414,7 +14500,8 @@
       "arrivalTime": "08:00",
       "departureTime": "13:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-17-msc-fantasia-mfa",
@@ -14426,7 +14513,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-18-aidacosma-acm",
@@ -14438,7 +14526,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-18-mein-schiff-7-tm7",
@@ -14450,7 +14539,8 @@
       "arrivalTime": "08:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-18-wind-spirit-wsp",
@@ -14462,7 +14552,8 @@
       "arrivalTime": "11:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-19-mein-schiff-relax-tmr",
@@ -14474,7 +14565,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-20-marella-explorer-1-me1",
@@ -14486,7 +14578,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-20-marella-discovery-2-td2",
@@ -14498,7 +14591,8 @@
       "arrivalTime": "09:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-22-costa-smeralda-csm",
@@ -14510,7 +14604,8 @@
       "arrivalTime": "09:00",
       "departureTime": "20:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-23-marella-explorer-1-me1",
@@ -14522,7 +14617,8 @@
       "arrivalTime": "10:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-23-celebrity-infinity-cin",
@@ -14534,7 +14630,8 @@
       "arrivalTime": "11:00",
       "departureTime": "20:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-24-queen-victoria-cqv",
@@ -14546,7 +14643,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-24-msc-fantasia-mfa",
@@ -14558,7 +14656,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-25-aidacosma-acm",
@@ -14570,7 +14669,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-26-queen-anne-cqa",
@@ -14582,7 +14682,8 @@
       "arrivalTime": "07:00",
       "departureTime": "21:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-26-mein-schiff-relax-tmr",
@@ -14594,7 +14695,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-27-arcadia-par",
@@ -14606,7 +14708,8 @@
       "arrivalTime": "09:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-28-iona-pon",
@@ -14618,7 +14721,8 @@
       "arrivalTime": "07:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-28-wind-spirit-wsp",
@@ -14630,7 +14734,8 @@
       "arrivalTime": "11:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-29-ventura-pve",
@@ -14642,7 +14747,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-29-costa-smeralda-csm",
@@ -14654,7 +14760,8 @@
       "arrivalTime": "09:00",
       "departureTime": "20:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-30-aidaluna-alu",
@@ -14666,7 +14773,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-30-marella-discovery-2-td2",
@@ -14678,7 +14786,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-31-aidablu-abl",
@@ -14690,7 +14799,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2026-12-31-msc-fantasia-mfa",
@@ -14702,7 +14812,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-01-aidacosma-acm",
@@ -14714,7 +14825,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-02-mein-schiff-relax-tmr",
@@ -14726,7 +14838,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-03-marella-discovery-2-td2",
@@ -14738,7 +14851,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-04-mein-schiff-3-tm3",
@@ -14750,7 +14864,8 @@
       "arrivalTime": "08:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-05-mein-schiff-7-tm7",
@@ -14762,7 +14877,8 @@
       "arrivalTime": "19:00",
       "departureTime": "23:59",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-06-mein-schiff-7-tm7",
@@ -14774,7 +14890,8 @@
       "arrivalTime": "00:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-06-costa-smeralda-csm",
@@ -14786,7 +14903,8 @@
       "arrivalTime": "08:00",
       "departureTime": "23:59",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-06-azura-paz",
@@ -14798,7 +14916,8 @@
       "arrivalTime": "09:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-07-costa-smeralda-csm",
@@ -14810,7 +14929,8 @@
       "arrivalTime": "00:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-07-msc-fantasia-mfa",
@@ -14822,7 +14942,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-07-wind-spirit-wsp",
@@ -14834,7 +14955,8 @@
       "arrivalTime": "11:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-08-aidacosma-acm",
@@ -14846,7 +14968,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-09-marella-explorer-1-me1",
@@ -14858,7 +14981,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-09-mein-schiff-relax-tmr",
@@ -14870,7 +14994,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-10-celebrity-infinity-cin",
@@ -14882,7 +15007,8 @@
       "arrivalTime": "07:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-10-marella-discovery-2-td2",
@@ -14894,7 +15020,8 @@
       "arrivalTime": "09:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-12-aidablu-abl",
@@ -14906,7 +15033,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-12-ventura-pve",
@@ -14918,7 +15046,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-14-costa-smeralda-csm",
@@ -14930,7 +15059,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-14-msc-fantasia-mfa",
@@ -14942,7 +15072,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-15-aidacosma-acm",
@@ -14954,7 +15085,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-16-marella-explorer-1-me1",
@@ -14966,7 +15098,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-16-mein-schiff-relax-tmr",
@@ -14978,7 +15111,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-17-marella-discovery-2-td2",
@@ -14990,7 +15124,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-17-celebrity-infinity-cin",
@@ -15002,7 +15137,8 @@
       "arrivalTime": "11:00",
       "departureTime": "20:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-18-aidablu-abl",
@@ -15014,7 +15150,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-19-aidaprima-apm",
@@ -15026,7 +15163,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-21-msc-fantasia-mfa",
@@ -15038,7 +15176,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-21-azura-paz",
@@ -15050,7 +15189,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-21-aidamar-ama",
@@ -15062,7 +15202,8 @@
       "arrivalTime": "11:00",
       "departureTime": "20:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-22-aidacosma-acm",
@@ -15074,7 +15215,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-23-marella-explorer-1-me1",
@@ -15086,7 +15228,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-23-queen-elizabeth-cqe",
@@ -15098,7 +15241,8 @@
       "arrivalTime": "09:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-23-mein-schiff-relax-tmr",
@@ -15110,7 +15254,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-24-azura-paz",
@@ -15122,7 +15267,8 @@
       "arrivalTime": "09:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-24-marella-discovery-2-td2",
@@ -15134,7 +15280,8 @@
       "arrivalTime": "09:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-24-mein-schiff-7-tm7",
@@ -15146,7 +15293,8 @@
       "arrivalTime": "19:00",
       "departureTime": "23:59",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-25-mein-schiff-7-tm7",
@@ -15158,7 +15306,8 @@
       "arrivalTime": "00:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-25-wind-spirit-wsp",
@@ -15170,7 +15319,8 @@
       "arrivalTime": "08:00",
       "departureTime": "13:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-26-costa-smeralda-csm",
@@ -15182,7 +15332,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-28-aidamar-ama",
@@ -15194,7 +15345,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-28-msc-fantasia-mfa",
@@ -15206,7 +15358,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-29-aidacosma-acm",
@@ -15218,7 +15371,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-30-celebrity-infinity-cin",
@@ -15230,7 +15384,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-30-marella-explorer-1-me1",
@@ -15242,7 +15397,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-30-mein-schiff-relax-tmr",
@@ -15254,7 +15410,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-01-31-marella-discovery-2-td2",
@@ -15266,7 +15423,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-02-ventura-pve",
@@ -15278,7 +15436,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-02-costa-smeralda-csm",
@@ -15290,7 +15449,8 @@
       "arrivalTime": "09:00",
       "departureTime": "23:59",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-03-costa-smeralda-csm",
@@ -15302,7 +15462,8 @@
       "arrivalTime": "00:00",
       "departureTime": "13:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-04-msc-fantasia-mfa",
@@ -15314,7 +15475,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-04-azura-paz",
@@ -15326,7 +15488,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-05-aidacosma-acm",
@@ -15338,7 +15501,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-06-costa-smeralda-csm",
@@ -15350,7 +15514,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-06-marella-voyager-mv1",
@@ -15362,7 +15527,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-06-mein-schiff-relax-tmr",
@@ -15374,7 +15540,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-07-marella-discovery-2-td2",
@@ -15386,7 +15553,8 @@
       "arrivalTime": "09:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-07-mein-schiff-7-tm7",
@@ -15398,7 +15566,8 @@
       "arrivalTime": "19:00",
       "departureTime": "23:59",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-08-mein-schiff-7-tm7",
@@ -15410,7 +15579,8 @@
       "arrivalTime": "00:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-09-aidamar-ama",
@@ -15422,7 +15592,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-11-celebrity-infinity-cin",
@@ -15434,7 +15605,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-11-queen-elizabeth-cqe",
@@ -15446,7 +15618,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-11-msc-fantasia-mfa",
@@ -15458,7 +15631,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-12-aidacosma-acm",
@@ -15470,7 +15644,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-13-costa-smeralda-csm",
@@ -15482,7 +15657,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-13-marella-explorer-1-me1",
@@ -15494,7 +15670,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-13-mein-schiff-relax-tmr",
@@ -15506,7 +15683,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-14-marella-discovery-2-td2",
@@ -15518,7 +15696,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-17-explora-ii-ex2",
@@ -15530,7 +15709,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-17-msc-fantasia-mfa",
@@ -15542,7 +15722,8 @@
       "arrivalTime": "12:00",
       "departureTime": "20:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-18-azura-paz",
@@ -15554,7 +15735,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-18-ventura-pve",
@@ -15566,7 +15748,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-19-aidacosma-acm",
@@ -15578,7 +15761,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-20-costa-smeralda-csm",
@@ -15590,7 +15774,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-20-marella-explorer-1-me1",
@@ -15602,7 +15787,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-20-mein-schiff-relax-tmr",
@@ -15614,7 +15800,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-21-marella-discovery-2-td2",
@@ -15626,7 +15813,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-21-mein-schiff-7-tm7",
@@ -15638,7 +15826,8 @@
       "arrivalTime": "19:00",
       "departureTime": "23:59",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-22-mein-schiff-7-tm7",
@@ -15650,7 +15839,8 @@
       "arrivalTime": "00:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-22-celebrity-infinity-cin",
@@ -15662,7 +15852,8 @@
       "arrivalTime": "11:00",
       "departureTime": "20:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-25-majestic-princess-pmj",
@@ -15674,7 +15865,8 @@
       "arrivalTime": "07:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-25-aidamar-ama",
@@ -15686,7 +15878,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-25-msc-fantasia-mfa",
@@ -15698,7 +15891,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-26-aidacosma-acm",
@@ -15710,7 +15904,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-27-costa-smeralda-csm",
@@ -15722,7 +15917,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-27-mein-schiff-relax-tmr",
@@ -15734,7 +15930,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-28-marella-explorer-1-me1",
@@ -15746,7 +15943,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-28-sirena-osi",
@@ -15758,7 +15956,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-02-28-marella-discovery-2-td2",
@@ -15770,7 +15969,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-04-msc-fantasia-mfa",
@@ -15782,7 +15982,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-04-azura-paz",
@@ -15794,7 +15995,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-05-aidacosma-acm",
@@ -15806,7 +16008,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-06-iona-pon",
@@ -15818,7 +16021,8 @@
       "arrivalTime": "07:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-06-marella-explorer-1-me1",
@@ -15830,7 +16034,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-06-celebrity-infinity-cin",
@@ -15842,7 +16047,8 @@
       "arrivalTime": "11:00",
       "departureTime": "20:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-07-marella-discovery-2-td2",
@@ -15854,7 +16060,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-08-aidamar-ama",
@@ -15866,7 +16073,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-09-aidamar-ama",
@@ -15878,7 +16086,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-09-queen-mary-2-cqm",
@@ -15890,7 +16099,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-11-costa-smeralda-csm",
@@ -15902,7 +16112,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-11-msc-fantasia-mfa",
@@ -15914,7 +16125,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-12-aidacosma-acm",
@@ -15926,7 +16138,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-13-costa-smeralda-csm",
@@ -15938,7 +16151,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-13-marella-explorer-1-me1",
@@ -15950,7 +16164,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-13-mein-schiff-relax-tmr",
@@ -15962,7 +16177,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-14-marella-discovery-2-td2",
@@ -15974,7 +16190,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-16-mein-schiff-7-tm7",
@@ -15986,7 +16203,8 @@
       "arrivalTime": "19:00",
       "departureTime": "23:59",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-17-mein-schiff-7-tm7",
@@ -15998,7 +16216,8 @@
       "arrivalTime": "00:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-18-msc-fantasia-mfa",
@@ -16010,7 +16229,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-18-azura-paz",
@@ -16022,7 +16242,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-19-aidacosma-acm",
@@ -16034,7 +16255,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-20-iona-pon",
@@ -16046,7 +16268,8 @@
       "arrivalTime": "07:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-20-marella-explorer-1-me1",
@@ -16058,7 +16281,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-20-mein-schiff-relax-tmr",
@@ -16070,7 +16294,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-21-marella-discovery-2-td2",
@@ -16082,7 +16307,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-25-aidamar-ama",
@@ -16094,7 +16320,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-25-costa-smeralda-csm",
@@ -16106,7 +16333,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-25-msc-fantasia-mfa",
@@ -16118,7 +16346,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-26-aidacosma-acm",
@@ -16130,7 +16359,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-26-ventura-pve",
@@ -16142,7 +16372,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-27-marella-explorer-1-me1",
@@ -16154,7 +16385,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-27-mein-schiff-relax-tmr",
@@ -16166,7 +16398,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-03-30-costa-smeralda-csm",
@@ -16178,7 +16411,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-01-msc-fantasia-mfa",
@@ -16190,7 +16424,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-02-aidacosma-acm",
@@ -16202,7 +16437,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-03-marella-explorer-1-me1",
@@ -16214,7 +16450,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-03-mein-schiff-relax-tmr",
@@ -16226,7 +16463,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-04-mein-schiff-7-tm7",
@@ -16238,7 +16476,8 @@
       "arrivalTime": "19:00",
       "departureTime": "23:59",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-05-mein-schiff-7-tm7",
@@ -16250,7 +16489,8 @@
       "arrivalTime": "00:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-05-msc-fantasia-mfa",
@@ -16262,7 +16502,8 @@
       "arrivalTime": "09:00",
       "departureTime": "20:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-06-aidamar-ama",
@@ -16274,7 +16515,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-08-world-voyager-awv",
@@ -16286,7 +16528,8 @@
       "arrivalTime": "08:00",
       "departureTime": "15:30",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-09-aidacosma-acm",
@@ -16298,7 +16541,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-09-l-austral-ple",
@@ -16310,7 +16554,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-09-mein-schiff-7-tm7",
@@ -16322,7 +16567,8 @@
       "arrivalTime": "08:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-10-marella-explorer-1-me1",
@@ -16334,7 +16580,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-10-le-boreal-plb",
@@ -16346,7 +16593,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-10-mein-schiff-relax-tmr",
@@ -16358,7 +16606,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-11-ventura-pve",
@@ -16370,7 +16619,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-13-seven-seas-voyager-rvo",
@@ -16382,7 +16632,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-15-norwegian-star-nst",
@@ -16394,7 +16645,8 @@
       "arrivalTime": "09:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-16-aidacosma-acm",
@@ -16406,7 +16658,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-17-marella-explorer-1-me1",
@@ -16418,7 +16671,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-17-world-traveller-awt",
@@ -16430,7 +16684,8 @@
       "arrivalTime": "09:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-17-mein-schiff-relax-tmr",
@@ -16442,7 +16697,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-20-insignia-oin",
@@ -16454,7 +16710,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-21-queen-elizabeth-cqe",
@@ -16466,7 +16723,8 @@
       "arrivalTime": "08:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-22-seabourn-venture-sve",
@@ -16478,7 +16736,8 @@
       "arrivalTime": "07:00",
       "departureTime": "17:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-23-aidacosma-acm",
@@ -16490,7 +16749,8 @@
       "arrivalTime": "07:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-24-marella-explorer-1-me1",
@@ -16502,7 +16762,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-24-mein-schiff-relax-tmr",
@@ -16514,7 +16775,8 @@
       "arrivalTime": "09:00",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-25-aidacosma-acm",
@@ -16526,7 +16788,8 @@
       "arrivalTime": "07:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-25-ventura-pve",
@@ -16538,7 +16801,8 @@
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-26-world-navigator-awn",
@@ -16550,7 +16814,8 @@
       "arrivalTime": "12:00",
       "departureTime": "20:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-28-marella-explorer-1-me1",
@@ -16562,7 +16827,8 @@
       "arrivalTime": "10:00",
       "departureTime": "18:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-29-world-navigator-awn",
@@ -16574,7 +16840,8 @@
       "arrivalTime": "08:00",
       "departureTime": "15:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-04-29-hanseatic-nature-hln",
@@ -16586,7 +16853,8 @@
       "arrivalTime": "08:30",
       "departureTime": "19:00",
       "season": "2026-2027",
-      "published": true
+      "published": true,
+      "notes": ""
     },
     {
       "id": "2027-05-06-silver-dawn-3359",
