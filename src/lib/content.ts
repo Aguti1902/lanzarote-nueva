@@ -571,6 +571,71 @@ export async function deleteCruiseCall(id: string): Promise<boolean> {
   return true;
 }
 
+export async function updateCruisesMeta(
+  patch: Partial<Pick<CruisesData, "season" | "port" | "source">>
+): Promise<CruisesData> {
+  const data = await loadCruisesDataFresh();
+  if (typeof patch.season === "string") data.season = patch.season.trim();
+  if (typeof patch.port === "string") data.port = patch.port.trim();
+  if (typeof patch.source === "string") data.source = patch.source.trim();
+  await saveCruisesData(data);
+  return data;
+}
+
+/**
+ * Sustituye todas las escalas entre fromDate y toDate (inclusive)
+ * por las filas recibidas. Conserva el histórico fuera de la ventana.
+ */
+export async function replaceCruiseCallsWindow(input: {
+  fromDate: string;
+  toDate: string;
+  calls: Array<
+    Partial<CruiseCall> & Pick<CruiseCall, "date" | "shipName" | "company">
+  >;
+  season?: string;
+  port?: string;
+  source?: string;
+}): Promise<CruisesData> {
+  const data = await loadCruisesDataFresh();
+  const outside = data.calls.filter(
+    (c) => c.date < input.fromDate || c.date > input.toDate
+  );
+  const used = new Set(outside.map((c) => c.id));
+  const port = input.port || data.port || defaultCruisesData.port;
+  const season = input.season || data.season || defaultCruisesData.season;
+  const imported: CruiseCall[] = [];
+
+  for (const row of input.calls) {
+    const base = slugify(
+      `${row.date}-${row.shipName}-${row.shipCode || "ship"}`
+    );
+    let id = base;
+    let n = 2;
+    while (used.has(id)) id = `${base}-${n++}`;
+    used.add(id);
+    imported.push({
+      id,
+      date: row.date,
+      port: row.port || port,
+      company: row.company,
+      shipCode: row.shipCode || "",
+      shipName: row.shipName,
+      arrivalTime: row.arrivalTime || "08:00",
+      departureTime: row.departureTime || "18:00",
+      season: row.season || season,
+      published: row.published ?? true,
+      notes: row.notes || "",
+    });
+  }
+
+  data.calls = [...outside, ...imported];
+  if (input.season) data.season = input.season;
+  if (input.port) data.port = input.port;
+  if (input.source) data.source = input.source;
+  await saveCruisesData(data);
+  return data;
+}
+
 /* ── Settings ── */
 
 const defaultSettings: SiteSettings = {

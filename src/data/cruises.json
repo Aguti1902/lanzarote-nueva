@@ -1,8 +1,8 @@
 {
-  "season": "2025-2027",
+  "season": "2026-2027",
   "port": "Puerto de Los Mármoles, Lanzarote",
-  "source": "TEMPORADA CRUCEROS 2026-2027.xlsx (MC_DOSSIER) + histórico",
-  "updatedAt": "2026-09-08",
+  "source": "temporada-cruceros-2026-2027.xlsx",
+  "updatedAt": "2026-09-15",
   "calls": [
     {
       "id": "2024-01-04-azura-2337",
@@ -13385,7 +13385,7 @@
       "published": true
     },
     {
-      "id": "2026-09-20-ventura-3736",
+      "id": "2026-09-20-ventura-pve",
       "date": "2026-09-20",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -13397,7 +13397,7 @@
       "published": true
     },
     {
-      "id": "2026-10-07-ventura-3740",
+      "id": "2026-10-07-ventura-pve",
       "date": "2026-10-07",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -13409,7 +13409,7 @@
       "published": true
     },
     {
-      "id": "2026-10-10-iona-3739",
+      "id": "2026-10-10-iona-pon",
       "date": "2026-10-10",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -13421,19 +13421,7 @@
       "published": true
     },
     {
-      "id": "2026-10-11-nieuw-statendam-3738",
-      "date": "2026-10-11",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Holland America Line",
-      "shipCode": "NIE",
-      "shipName": "Nieuw Statendam",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-10-11-msc-virtuosa-3325",
+      "id": "2026-10-11-msc-virtuosa-mvi",
       "date": "2026-10-11",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "MSC Cruceros",
@@ -13445,31 +13433,7 @@
       "published": true
     },
     {
-      "id": "2026-10-11-msc-virtuosa-3327",
-      "date": "2026-10-11",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MVI",
-      "shipName": "MSC Virtuosa",
-      "arrivalTime": "07:00",
-      "departureTime": "14:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-10-15-crystal-serenity-3748",
-      "date": "2026-10-15",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Crystal Cruises",
-      "shipCode": "CRY",
-      "shipName": "Crystal Serenity",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-10-15-azura-3743",
+      "id": "2026-10-15-azura-paz",
       "date": "2026-10-15",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -13481,55 +13445,7 @@
       "published": true
     },
     {
-      "id": "2026-10-15-azura-3744",
-      "date": "2026-10-15",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-10-15-azura-3745",
-      "date": "2026-10-15",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-10-15-azura-3746",
-      "date": "2026-10-15",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-10-20-spirit-of-adventure-3747",
-      "date": "2026-10-20",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Saga Cruises",
-      "shipCode": "SPI",
-      "shipName": "Spirit Of Adventure",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-10-23-norwegian-star-3761",
+      "id": "2026-10-23-norwegian-star-nst",
       "date": "2026-10-23",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Norwegian Cruise Line",
@@ -13541,7 +13457,7 @@
       "published": true
     },
     {
-      "id": "2026-10-24-britannia-3752",
+      "id": "2026-10-24-britannia-pbr",
       "date": "2026-10-24",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -13553,7 +13469,7 @@
       "published": true
     },
     {
-      "id": "2026-10-25-europa-2-3755",
+      "id": "2026-10-25-europa-2-hle",
       "date": "2026-10-25",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Hapag-Lloyd Cruises",
@@ -13577,19 +13493,7 @@
       "published": true
     },
     {
-      "id": "2026-10-28-amadea-3749",
-      "date": "2026-10-28",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Phoenix Reisen",
-      "shipCode": "AMA",
-      "shipName": "Amadea",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-10-29-azura-3751",
+      "id": "2026-10-29-azura-paz",
       "date": "2026-10-29",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -13597,78 +13501,6 @@
       "shipName": "Azura",
       "arrivalTime": "09:30",
       "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-10-29-azura-3754",
-      "date": "2026-10-29",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "09:30",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-10-29-azura-3762",
-      "date": "2026-10-29",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "09:30",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-10-29-azura-3763",
-      "date": "2026-10-29",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "09:30",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-10-29-azura-3764",
-      "date": "2026-10-29",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "09:30",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-10-29-azura-3765",
-      "date": "2026-10-29",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "09:30",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-10-31-sky-princess-3364",
-      "date": "2026-10-31",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Princess Cruises",
-      "shipCode": "SKY",
-      "shipName": "Sky Princess",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
       "season": "2026-2027",
       "published": true
     },
@@ -13697,7 +13529,7 @@
       "published": true
     },
     {
-      "id": "2026-11-03-mein-schiff-7-3770",
+      "id": "2026-11-03-mein-schiff-7-tm7",
       "date": "2026-11-03",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -13733,7 +13565,7 @@
       "published": true
     },
     {
-      "id": "2026-11-04-norwegian-star-3771",
+      "id": "2026-11-04-norwegian-star-nst",
       "date": "2026-11-04",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Norwegian Cruise Line",
@@ -13745,7 +13577,7 @@
       "published": true
     },
     {
-      "id": "2026-11-05-mein-schiff-3-3767",
+      "id": "2026-11-05-mein-schiff-3-tm3",
       "date": "2026-11-05",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -13757,7 +13589,7 @@
       "published": true
     },
     {
-      "id": "2026-11-05-arcadia-3769",
+      "id": "2026-11-05-arcadia-par",
       "date": "2026-11-05",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -13769,7 +13601,7 @@
       "published": true
     },
     {
-      "id": "2026-11-06-regatta-4138",
+      "id": "2026-11-06-regatta-ore",
       "date": "2026-11-06",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Oceania Cruises",
@@ -13781,7 +13613,7 @@
       "published": true
     },
     {
-      "id": "2026-11-07-aidablu-3782",
+      "id": "2026-11-07-aidablu-abl",
       "date": "2026-11-07",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -13793,43 +13625,7 @@
       "published": true
     },
     {
-      "id": "2026-11-07-aidablu-3783",
-      "date": "2026-11-07",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ABL",
-      "shipName": "AIDAblu",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-07-aidablu-3784",
-      "date": "2026-11-07",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ABL",
-      "shipName": "AIDAblu",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-07-aidablu-3794",
-      "date": "2026-11-07",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ABL",
-      "shipName": "AIDAblu",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-08-ventura-3781",
+      "id": "2026-11-08-ventura-pve",
       "date": "2026-11-08",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -13837,30 +13633,6 @@
       "shipName": "Ventura",
       "arrivalTime": "08:00",
       "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-09-amera-3777",
-      "date": "2026-11-09",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Phoenix Reisen",
-      "shipCode": "AME",
-      "shipName": "Amera",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-09-amera-3778",
-      "date": "2026-11-09",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Phoenix Reisen",
-      "shipCode": "AME",
-      "shipName": "Amera",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
       "season": "2026-2027",
       "published": true
     },
@@ -13877,30 +13649,6 @@
       "published": true
     },
     {
-      "id": "2026-11-11-star-flyer-3768",
-      "date": "2026-11-11",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Star Clippers",
-      "shipCode": "SSF",
-      "shipName": "Star Flyer",
-      "arrivalTime": "10:00",
-      "departureTime": "15:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-11-star-flyer-3790",
-      "date": "2026-11-11",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Star Clippers",
-      "shipCode": "SSF",
-      "shipName": "Star Flyer",
-      "arrivalTime": "10:00",
-      "departureTime": "15:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
       "id": "2026-11-11-insignia-oin",
       "date": "2026-11-11",
       "port": "Puerto de Los Mármoles, Lanzarote",
@@ -13909,6 +13657,18 @@
       "shipName": "Insignia",
       "arrivalTime": "10:00",
       "departureTime": "18:00",
+      "season": "2026-2027",
+      "published": true
+    },
+    {
+      "id": "2026-11-11-star-flyer-ssf",
+      "date": "2026-11-11",
+      "port": "Puerto de Los Mármoles, Lanzarote",
+      "company": "Star Clippers",
+      "shipCode": "SSF",
+      "shipName": "Star Flyer",
+      "arrivalTime": "10:00",
+      "departureTime": "15:00",
       "season": "2026-2027",
       "published": true
     },
@@ -13925,7 +13685,7 @@
       "published": true
     },
     {
-      "id": "2026-11-12-azura-3774",
+      "id": "2026-11-12-azura-paz",
       "date": "2026-11-12",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -13937,67 +13697,7 @@
       "published": true
     },
     {
-      "id": "2026-11-12-azura-3780",
-      "date": "2026-11-12",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-12-azura-3795",
-      "date": "2026-11-12",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-12-azura-3796",
-      "date": "2026-11-12",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-12-azura-3799",
-      "date": "2026-11-12",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-12-azura-3800",
-      "date": "2026-11-12",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-13-aidaperla-3791",
+      "id": "2026-11-13-aidaperla-ape",
       "date": "2026-11-13",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -14009,43 +13709,7 @@
       "published": true
     },
     {
-      "id": "2026-11-13-aidaprima-3786",
-      "date": "2026-11-13",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "APM",
-      "shipName": "AIDAprima",
-      "arrivalTime": "11:00",
-      "departureTime": "20:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-13-aidaprima-3797",
-      "date": "2026-11-13",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "APM",
-      "shipName": "AIDAprima",
-      "arrivalTime": "11:00",
-      "departureTime": "20:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-13-aidaprima-3798",
-      "date": "2026-11-13",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "APM",
-      "shipName": "AIDAprima",
-      "arrivalTime": "11:00",
-      "departureTime": "20:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-13-aidaprima-3808",
+      "id": "2026-11-13-aidaprima-apm",
       "date": "2026-11-13",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -14069,7 +13733,7 @@
       "published": true
     },
     {
-      "id": "2026-11-14-iona-3801",
+      "id": "2026-11-14-iona-pon",
       "date": "2026-11-14",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -14081,7 +13745,7 @@
       "published": true
     },
     {
-      "id": "2026-11-14-mein-schiff-relax-3788",
+      "id": "2026-11-14-mein-schiff-relax-tmr",
       "date": "2026-11-14",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -14093,43 +13757,7 @@
       "published": true
     },
     {
-      "id": "2026-11-14-mein-schiff-relax-3827",
-      "date": "2026-11-14",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "TUI Cruises",
-      "shipCode": "TMR",
-      "shipName": "Mein Schiff Relax",
-      "arrivalTime": "09:00",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-15-mein-schiff-7-3793",
-      "date": "2026-11-15",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "TUI Cruises",
-      "shipCode": "TM7",
-      "shipName": "Mein Schiff 7",
-      "arrivalTime": "19:00",
-      "departureTime": "23:59",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-15-mein-schiff-7-3818",
-      "date": "2026-11-15",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "TUI Cruises",
-      "shipCode": "TM7",
-      "shipName": "Mein Schiff 7",
-      "arrivalTime": "19:00",
-      "departureTime": "23:59",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-15-mein-schiff-7-3819",
+      "id": "2026-11-15-mein-schiff-7-tm7",
       "date": "2026-11-15",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -14153,67 +13781,7 @@
       "published": true
     },
     {
-      "id": "2026-11-16-aidablu-3803",
-      "date": "2026-11-16",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ABL",
-      "shipName": "AIDAblu",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-16-aidablu-3804",
-      "date": "2026-11-16",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ABL",
-      "shipName": "AIDAblu",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-16-aidablu-3820",
-      "date": "2026-11-16",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ABL",
-      "shipName": "AIDAblu",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-16-aidablu-3837",
-      "date": "2026-11-16",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ABL",
-      "shipName": "AIDAblu",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-16-aidablu-3838",
-      "date": "2026-11-16",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ABL",
-      "shipName": "AIDAblu",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-16-aidablu-3839",
+      "id": "2026-11-16-aidablu-abl",
       "date": "2026-11-16",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -14249,7 +13817,7 @@
       "published": true
     },
     {
-      "id": "2026-11-17-queen-victoria-3812",
+      "id": "2026-11-17-queen-victoria-cqv",
       "date": "2026-11-17",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Cunard",
@@ -14261,7 +13829,7 @@
       "published": true
     },
     {
-      "id": "2026-11-17-celebrity-infinity-3833",
+      "id": "2026-11-17-celebrity-infinity-cin",
       "date": "2026-11-17",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Celebrity Cruises",
@@ -14273,7 +13841,7 @@
       "published": true
     },
     {
-      "id": "2026-11-18-marella-discovery-2-3825",
+      "id": "2026-11-18-marella-discovery-2-td2",
       "date": "2026-11-18",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Marella Cruises",
@@ -14285,19 +13853,7 @@
       "published": true
     },
     {
-      "id": "2026-11-18-marella-discovery-2-3826",
-      "date": "2026-11-18",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "TD2",
-      "shipName": "Marella Discovery 2",
-      "arrivalTime": "09:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-18-seven-seas-navigator-3813",
+      "id": "2026-11-18-seven-seas-navigator-rnv",
       "date": "2026-11-18",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Regent Seven Seas Cruises",
@@ -14309,7 +13865,7 @@
       "published": true
     },
     {
-      "id": "2026-11-18-star-clipper-3828",
+      "id": "2026-11-18-star-clipper-ssl",
       "date": "2026-11-18",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Star Clippers",
@@ -14321,7 +13877,7 @@
       "published": true
     },
     {
-      "id": "2026-11-18-wind-spirit-3843",
+      "id": "2026-11-18-wind-spirit-wsp",
       "date": "2026-11-18",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Windstar Cruises",
@@ -14333,7 +13889,7 @@
       "published": true
     },
     {
-      "id": "2026-11-19-europa-3840",
+      "id": "2026-11-19-europa-hlu",
       "date": "2026-11-19",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Hapag-Lloyd Cruises",
@@ -14345,7 +13901,7 @@
       "published": true
     },
     {
-      "id": "2026-11-20-aidaprima-3797",
+      "id": "2026-11-20-aidaprima-apm",
       "date": "2026-11-20",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -14357,43 +13913,7 @@
       "published": true
     },
     {
-      "id": "2026-11-20-aidaprima-3808",
-      "date": "2026-11-20",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "APM",
-      "shipName": "AIDAprima",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-20-aidaprima-3829",
-      "date": "2026-11-20",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "APM",
-      "shipName": "AIDAprima",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-20-aidaprima-3830",
-      "date": "2026-11-20",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "APM",
-      "shipName": "AIDAprima",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-21-mein-schiff-relax-3841",
+      "id": "2026-11-21-mein-schiff-relax-tmr",
       "date": "2026-11-21",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -14401,30 +13921,6 @@
       "shipName": "Mein Schiff Relax",
       "arrivalTime": "09:00",
       "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-21-mein-schiff-relax-3855",
-      "date": "2026-11-21",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "TUI Cruises",
-      "shipCode": "TMR",
-      "shipName": "Mein Schiff Relax",
-      "arrivalTime": "09:00",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-22-ambition-3821",
-      "date": "2026-11-22",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "ambassador-cruise-line",
-      "shipCode": "AMB",
-      "shipName": "Ambition",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
       "season": "2026-2027",
       "published": true
     },
@@ -14441,7 +13937,7 @@
       "published": true
     },
     {
-      "id": "2026-11-22-marella-discovery-2-3854",
+      "id": "2026-11-22-marella-discovery-2-td2",
       "date": "2026-11-22",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Marella Cruises",
@@ -14453,19 +13949,7 @@
       "published": true
     },
     {
-      "id": "2026-11-22-marella-discovery-2-3862",
-      "date": "2026-11-22",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "TD2",
-      "shipName": "Marella Discovery 2",
-      "arrivalTime": "09:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-24-ventura-3842",
+      "id": "2026-11-24-ventura-pve",
       "date": "2026-11-24",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -14477,7 +13961,7 @@
       "published": true
     },
     {
-      "id": "2026-11-25-costa-smeralda-3815",
+      "id": "2026-11-25-costa-smeralda-csm",
       "date": "2026-11-25",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Costa Cruceros",
@@ -14489,55 +13973,7 @@
       "published": true
     },
     {
-      "id": "2026-11-25-costa-smeralda-3836",
-      "date": "2026-11-25",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Costa Cruceros",
-      "shipCode": "CSM",
-      "shipName": "Costa Smeralda",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-25-costa-smeralda-3846",
-      "date": "2026-11-25",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Costa Cruceros",
-      "shipCode": "CSM",
-      "shipName": "Costa Smeralda",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-25-costa-smeralda-3866",
-      "date": "2026-11-25",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Costa Cruceros",
-      "shipCode": "CSM",
-      "shipName": "Costa Smeralda",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-25-costa-smeralda-3870",
-      "date": "2026-11-25",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Costa Cruceros",
-      "shipCode": "CSM",
-      "shipName": "Costa Smeralda",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-26-azura-3823",
+      "id": "2026-11-26-azura-paz",
       "date": "2026-11-26",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -14549,67 +13985,7 @@
       "published": true
     },
     {
-      "id": "2026-11-26-azura-3832",
-      "date": "2026-11-26",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-26-azura-3852",
-      "date": "2026-11-26",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-26-azura-3853",
-      "date": "2026-11-26",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-26-azura-3858",
-      "date": "2026-11-26",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-26-azura-3859",
-      "date": "2026-11-26",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-27-aidaprima-3830",
+      "id": "2026-11-27-aidaprima-apm",
       "date": "2026-11-27",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -14621,43 +13997,7 @@
       "published": true
     },
     {
-      "id": "2026-11-27-aidaprima-3856",
-      "date": "2026-11-27",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "APM",
-      "shipName": "AIDAprima",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-27-aidaprima-3857",
-      "date": "2026-11-27",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "APM",
-      "shipName": "AIDAprima",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-28-spirit-of-adventure-3849",
-      "date": "2026-11-28",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Saga Cruises",
-      "shipCode": "SPI",
-      "shipName": "Spirit Of Adventure",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-28-iona-3861",
+      "id": "2026-11-28-iona-pon",
       "date": "2026-11-28",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -14669,7 +14009,7 @@
       "published": true
     },
     {
-      "id": "2026-11-28-mein-schiff-relax-3867",
+      "id": "2026-11-28-mein-schiff-relax-tmr",
       "date": "2026-11-28",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -14681,19 +14021,7 @@
       "published": true
     },
     {
-      "id": "2026-11-28-mein-schiff-relax-3883",
-      "date": "2026-11-28",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "TUI Cruises",
-      "shipCode": "TMR",
-      "shipName": "Mein Schiff Relax",
-      "arrivalTime": "09:00",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-29-seven-seas-navigator-3871",
+      "id": "2026-11-29-seven-seas-navigator-rnv",
       "date": "2026-11-29",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Regent Seven Seas Cruises",
@@ -14705,7 +14033,7 @@
       "published": true
     },
     {
-      "id": "2026-11-29-borealis-3869",
+      "id": "2026-11-29-borealis-fbs",
       "date": "2026-11-29",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Fred. Olsen Cruise Lines",
@@ -14717,7 +14045,7 @@
       "published": true
     },
     {
-      "id": "2026-11-29-marella-discovery-2-3882",
+      "id": "2026-11-29-marella-discovery-2-td2",
       "date": "2026-11-29",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Marella Cruises",
@@ -14729,43 +14057,7 @@
       "published": true
     },
     {
-      "id": "2026-11-29-marella-discovery-2-3887",
-      "date": "2026-11-29",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "TD2",
-      "shipName": "Marella Discovery 2",
-      "arrivalTime": "09:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-29-mein-schiff-7-3848",
-      "date": "2026-11-29",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "TUI Cruises",
-      "shipCode": "TM7",
-      "shipName": "Mein Schiff 7",
-      "arrivalTime": "19:00",
-      "departureTime": "23:59",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-29-mein-schiff-7-3878",
-      "date": "2026-11-29",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "TUI Cruises",
-      "shipCode": "TM7",
-      "shipName": "Mein Schiff 7",
-      "arrivalTime": "19:00",
-      "departureTime": "23:59",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-11-29-mein-schiff-7-3879",
+      "id": "2026-11-29-mein-schiff-7-tm7",
       "date": "2026-11-29",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -14789,7 +14081,7 @@
       "published": true
     },
     {
-      "id": "2026-11-30-bolette-3860",
+      "id": "2026-11-30-bolette-fbb",
       "date": "2026-11-30",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Fred. Olsen Cruise Lines",
@@ -14801,19 +14093,19 @@
       "published": true
     },
     {
-      "id": "2026-12-01-spirit-of-discovery-3868",
-      "date": "2026-12-01",
+      "id": "2026-12-02-costa-smeralda-csm",
+      "date": "2026-12-02",
       "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Saga Cruises",
-      "shipCode": "SPI",
-      "shipName": "Spirit Of Discovery",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
+      "company": "Costa Cruceros",
+      "shipCode": "CSM",
+      "shipName": "Costa Smeralda",
+      "arrivalTime": "08:00",
+      "departureTime": "18:00",
       "season": "2026-2027",
       "published": true
     },
     {
-      "id": "2026-12-02-balmoral-3844",
+      "id": "2026-12-02-balmoral-fba",
       "date": "2026-12-02",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Fred. Olsen Cruise Lines",
@@ -14821,54 +14113,6 @@
       "shipName": "Balmoral",
       "arrivalTime": "08:00",
       "departureTime": "16:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-02-costa-smeralda-3875",
-      "date": "2026-12-02",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Costa Cruceros",
-      "shipCode": "CSM",
-      "shipName": "Costa Smeralda",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-02-costa-smeralda-3891",
-      "date": "2026-12-02",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Costa Cruceros",
-      "shipCode": "CSM",
-      "shipName": "Costa Smeralda",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-02-balmoral-3893",
-      "date": "2026-12-02",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Fred. Olsen Cruise Lines",
-      "shipCode": "FBA",
-      "shipName": "Balmoral",
-      "arrivalTime": "08:00",
-      "departureTime": "16:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-02-costa-smeralda-3894",
-      "date": "2026-12-02",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Costa Cruceros",
-      "shipCode": "CSM",
-      "shipName": "Costa Smeralda",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
       "season": "2026-2027",
       "published": true
     },
@@ -14897,7 +14141,7 @@
       "published": true
     },
     {
-      "id": "2026-12-04-celebrity-infinity-3874",
+      "id": "2026-12-04-celebrity-infinity-cin",
       "date": "2026-12-04",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Celebrity Cruises",
@@ -14921,7 +14165,7 @@
       "published": true
     },
     {
-      "id": "2026-12-04-aidaprima-3857",
+      "id": "2026-12-04-aidaprima-apm",
       "date": "2026-12-04",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -14933,19 +14177,7 @@
       "published": true
     },
     {
-      "id": "2026-12-04-aidaprima-3885",
-      "date": "2026-12-04",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "APM",
-      "shipName": "AIDAprima",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-05-mein-schiff-relax-3892",
+      "id": "2026-12-05-mein-schiff-relax-tmr",
       "date": "2026-12-05",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -14953,42 +14185,6 @@
       "shipName": "Mein Schiff Relax",
       "arrivalTime": "09:00",
       "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-05-mein-schiff-relax-3906",
-      "date": "2026-12-05",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "TUI Cruises",
-      "shipCode": "TMR",
-      "shipName": "Mein Schiff Relax",
-      "arrivalTime": "09:00",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-06-marella-explorer-3895",
-      "date": "2026-12-06",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "MAR",
-      "shipName": "Marella Explorer",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-06-marella-explorer-3896",
-      "date": "2026-12-06",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "MAR",
-      "shipName": "Marella Explorer",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
       "season": "2026-2027",
       "published": true
     },
@@ -15017,7 +14213,7 @@
       "published": true
     },
     {
-      "id": "2026-12-07-queen-anne-3334",
+      "id": "2026-12-07-queen-anne-cqa",
       "date": "2026-12-07",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Cunard",
@@ -15029,7 +14225,7 @@
       "published": true
     },
     {
-      "id": "2026-12-07-marella-discovery-2-3905",
+      "id": "2026-12-07-marella-discovery-2-td2",
       "date": "2026-12-07",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Marella Cruises",
@@ -15041,19 +14237,7 @@
       "published": true
     },
     {
-      "id": "2026-12-07-marella-discovery-2-3911",
-      "date": "2026-12-07",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "TD2",
-      "shipName": "Marella Discovery 2",
-      "arrivalTime": "09:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-08-costa-smeralda-3900",
+      "id": "2026-12-08-costa-smeralda-csm",
       "date": "2026-12-08",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Costa Cruceros",
@@ -15065,31 +14249,7 @@
       "published": true
     },
     {
-      "id": "2026-12-08-costa-smeralda-3915",
-      "date": "2026-12-08",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Costa Cruceros",
-      "shipCode": "CSM",
-      "shipName": "Costa Smeralda",
-      "arrivalTime": "09:00",
-      "departureTime": "20:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-08-costa-smeralda-3919",
-      "date": "2026-12-08",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Costa Cruceros",
-      "shipCode": "CSM",
-      "shipName": "Costa Smeralda",
-      "arrivalTime": "09:00",
-      "departureTime": "20:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-10-azura-3881",
+      "id": "2026-12-10-azura-paz",
       "date": "2026-12-10",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -15101,67 +14261,7 @@
       "published": true
     },
     {
-      "id": "2026-12-10-azura-3886",
-      "date": "2026-12-10",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-10-azura-3903",
-      "date": "2026-12-10",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-10-azura-3904",
-      "date": "2026-12-10",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-10-azura-3908",
-      "date": "2026-12-10",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-10-azura-3909",
-      "date": "2026-12-10",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-11-aidacosma-3873",
+      "id": "2026-12-11-aidacosma-acm",
       "date": "2026-12-11",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -15173,43 +14273,7 @@
       "published": true
     },
     {
-      "id": "2026-12-11-aidacosma-3898",
-      "date": "2026-12-11",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ACM",
-      "shipName": "AIDAcosma",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-11-aidacosma-3899",
-      "date": "2026-12-11",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ACM",
-      "shipName": "AIDAcosma",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-11-aidacosma-3929",
-      "date": "2026-12-11",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ACM",
-      "shipName": "AIDAcosma",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-11-queen-victoria-3907",
+      "id": "2026-12-11-queen-victoria-cqv",
       "date": "2026-12-11",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Cunard",
@@ -15221,7 +14285,7 @@
       "published": true
     },
     {
-      "id": "2026-12-12-iona-3910",
+      "id": "2026-12-12-iona-pon",
       "date": "2026-12-12",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -15233,7 +14297,7 @@
       "published": true
     },
     {
-      "id": "2026-12-12-mein-schiff-relax-3916",
+      "id": "2026-12-12-mein-schiff-relax-tmr",
       "date": "2026-12-12",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -15241,42 +14305,6 @@
       "shipName": "Mein Schiff Relax",
       "arrivalTime": "09:00",
       "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-12-mein-schiff-relax-3941",
-      "date": "2026-12-12",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "TUI Cruises",
-      "shipCode": "TMR",
-      "shipName": "Mein Schiff Relax",
-      "arrivalTime": "09:00",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-13-marella-explorer-3920",
-      "date": "2026-12-13",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "MAR",
-      "shipName": "Marella Explorer",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-13-marella-explorer-3928",
-      "date": "2026-12-13",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "MAR",
-      "shipName": "Marella Explorer",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
       "season": "2026-2027",
       "published": true
     },
@@ -15293,19 +14321,7 @@
       "published": true
     },
     {
-      "id": "2026-12-13-marella-discovery-2-3940",
-      "date": "2026-12-13",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "TD2",
-      "shipName": "Marella Discovery 2",
-      "arrivalTime": "09:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-13-marella-discovery-2-3946",
+      "id": "2026-12-13-marella-discovery-2-td2",
       "date": "2026-12-13",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Marella Cruises",
@@ -15341,19 +14357,7 @@
       "published": true
     },
     {
-      "id": "2026-12-15-spirit-of-discovery-3917",
-      "date": "2026-12-15",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Saga Cruises",
-      "shipCode": "SPI",
-      "shipName": "Spirit Of Discovery",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-15-aidablu-3913",
+      "id": "2026-12-15-aidablu-abl",
       "date": "2026-12-15",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -15365,67 +14369,7 @@
       "published": true
     },
     {
-      "id": "2026-12-15-aidablu-3914",
-      "date": "2026-12-15",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ABL",
-      "shipName": "AIDAblu",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-15-aidablu-3937",
-      "date": "2026-12-15",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ABL",
-      "shipName": "AIDAblu",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-15-aidablu-3947",
-      "date": "2026-12-15",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ABL",
-      "shipName": "AIDAblu",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-15-aidablu-3948",
-      "date": "2026-12-15",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ABL",
-      "shipName": "AIDAblu",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-15-aidablu-3949",
-      "date": "2026-12-15",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ABL",
-      "shipName": "AIDAblu",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-15-explora-ii-3930",
+      "id": "2026-12-15-explora-ii-ex2",
       "date": "2026-12-15",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Explora Journeys",
@@ -15437,43 +14381,7 @@
       "published": true
     },
     {
-      "id": "2026-12-15-explora-ii-3931",
-      "date": "2026-12-15",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Explora Journeys",
-      "shipCode": "EX2",
-      "shipName": "EXPLORA II",
-      "arrivalTime": "09:00",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-15-explora-ii-3932",
-      "date": "2026-12-15",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Explora Journeys",
-      "shipCode": "EX2",
-      "shipName": "EXPLORA II",
-      "arrivalTime": "09:00",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-15-explora-ii-3951",
-      "date": "2026-12-15",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Explora Journeys",
-      "shipCode": "EX2",
-      "shipName": "EXPLORA II",
-      "arrivalTime": "09:00",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-15-oceania-sirena-3897",
+      "id": "2026-12-15-sirena-osi",
       "date": "2026-12-15",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Oceania Cruises",
@@ -15485,31 +14393,7 @@
       "published": true
     },
     {
-      "id": "2026-12-15-oceania-sirena-3933",
-      "date": "2026-12-15",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Oceania Cruises",
-      "shipCode": "OSI",
-      "shipName": "Sirena",
-      "arrivalTime": "10:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-15-oceania-sirena-3934",
-      "date": "2026-12-15",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Oceania Cruises",
-      "shipCode": "OSI",
-      "shipName": "Sirena",
-      "arrivalTime": "10:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-16-celebrity-infinity-3927",
+      "id": "2026-12-16-celebrity-infinity-cin",
       "date": "2026-12-16",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Celebrity Cruises",
@@ -15521,7 +14405,7 @@
       "published": true
     },
     {
-      "id": "2026-12-16-wind-spirit-3926",
+      "id": "2026-12-16-wind-spirit-wsp",
       "date": "2026-12-16",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Windstar Cruises",
@@ -15533,19 +14417,7 @@
       "published": true
     },
     {
-      "id": "2026-12-17-spirit-of-adventure-3925",
-      "date": "2026-12-17",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Saga Cruises",
-      "shipCode": "SPI",
-      "shipName": "Spirit Of Adventure",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-17-msc-fantasia-3923",
+      "id": "2026-12-17-msc-fantasia-mfa",
       "date": "2026-12-17",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "MSC Cruceros",
@@ -15557,91 +14429,7 @@
       "published": true
     },
     {
-      "id": "2026-12-17-msc-fantasia-3924",
-      "date": "2026-12-17",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-17-msc-fantasia-3953",
-      "date": "2026-12-17",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-17-msc-fantasia-3957",
-      "date": "2026-12-17",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-17-msc-fantasia-3962",
-      "date": "2026-12-17",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-18-aidacosma-3899",
-      "date": "2026-12-18",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ACM",
-      "shipName": "AIDAcosma",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-18-aidacosma-3942",
-      "date": "2026-12-18",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ACM",
-      "shipName": "AIDAcosma",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-18-aidacosma-3943",
-      "date": "2026-12-18",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ACM",
-      "shipName": "AIDAcosma",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-18-aidacosma-3958",
+      "id": "2026-12-18-aidacosma-acm",
       "date": "2026-12-18",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -15665,7 +14453,7 @@
       "published": true
     },
     {
-      "id": "2026-12-18-wind-spirit-3963",
+      "id": "2026-12-18-wind-spirit-wsp",
       "date": "2026-12-18",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Windstar Cruises",
@@ -15677,7 +14465,7 @@
       "published": true
     },
     {
-      "id": "2026-12-19-mein-schiff-relax-3952",
+      "id": "2026-12-19-mein-schiff-relax-tmr",
       "date": "2026-12-19",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -15685,42 +14473,6 @@
       "shipName": "Mein Schiff Relax",
       "arrivalTime": "09:00",
       "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-19-mein-schiff-relax-3966",
-      "date": "2026-12-19",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "TUI Cruises",
-      "shipCode": "TMR",
-      "shipName": "Mein Schiff Relax",
-      "arrivalTime": "09:00",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-20-marella-explorer-3955",
-      "date": "2026-12-20",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "MAR",
-      "shipName": "Marella Explorer",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-20-marella-explorer-3956",
-      "date": "2026-12-20",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "MAR",
-      "shipName": "Marella Explorer",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
       "season": "2026-2027",
       "published": true
     },
@@ -15737,7 +14489,7 @@
       "published": true
     },
     {
-      "id": "2026-12-20-marella-discovery-2-3965",
+      "id": "2026-12-20-marella-discovery-2-td2",
       "date": "2026-12-20",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Marella Cruises",
@@ -15749,19 +14501,7 @@
       "published": true
     },
     {
-      "id": "2026-12-20-marella-discovery-2-3971",
-      "date": "2026-12-20",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "TD2",
-      "shipName": "Marella Discovery 2",
-      "arrivalTime": "09:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-22-costa-smeralda-3961",
+      "id": "2026-12-22-costa-smeralda-csm",
       "date": "2026-12-22",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Costa Cruceros",
@@ -15769,54 +14509,6 @@
       "shipName": "Costa Smeralda",
       "arrivalTime": "09:00",
       "departureTime": "20:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-22-costa-smeralda-3977",
-      "date": "2026-12-22",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Costa Cruceros",
-      "shipCode": "CSM",
-      "shipName": "Costa Smeralda",
-      "arrivalTime": "09:00",
-      "departureTime": "20:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-22-costa-smeralda-3984",
-      "date": "2026-12-22",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Costa Cruceros",
-      "shipCode": "CSM",
-      "shipName": "Costa Smeralda",
-      "arrivalTime": "09:00",
-      "departureTime": "20:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-23-marella-explorer-3985",
-      "date": "2026-12-23",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "MAR",
-      "shipName": "Marella Explorer",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-23-marella-explorer-3988",
-      "date": "2026-12-23",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "MAR",
-      "shipName": "Marella Explorer",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
       "season": "2026-2027",
       "published": true
     },
@@ -15833,7 +14525,7 @@
       "published": true
     },
     {
-      "id": "2026-12-23-celebrity-infinity-3976",
+      "id": "2026-12-23-celebrity-infinity-cin",
       "date": "2026-12-23",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Celebrity Cruises",
@@ -15845,7 +14537,7 @@
       "published": true
     },
     {
-      "id": "2026-12-24-queen-victoria-3960",
+      "id": "2026-12-24-queen-victoria-cqv",
       "date": "2026-12-24",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Cunard",
@@ -15857,7 +14549,7 @@
       "published": true
     },
     {
-      "id": "2026-12-24-msc-fantasia-3962",
+      "id": "2026-12-24-msc-fantasia-mfa",
       "date": "2026-12-24",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "MSC Cruceros",
@@ -15869,55 +14561,7 @@
       "published": true
     },
     {
-      "id": "2026-12-24-msc-fantasia-3967",
-      "date": "2026-12-24",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-24-msc-fantasia-3979",
-      "date": "2026-12-24",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-24-msc-fantasia-3989",
-      "date": "2026-12-24",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-24-msc-fantasia-3993",
-      "date": "2026-12-24",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-25-aidacosma-3943",
+      "id": "2026-12-25-aidacosma-acm",
       "date": "2026-12-25",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -15929,43 +14573,7 @@
       "published": true
     },
     {
-      "id": "2026-12-25-aidacosma-3968",
-      "date": "2026-12-25",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ACM",
-      "shipName": "AIDAcosma",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-25-aidacosma-3969",
-      "date": "2026-12-25",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ACM",
-      "shipName": "AIDAcosma",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-25-aidacosma-3990",
-      "date": "2026-12-25",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ACM",
-      "shipName": "AIDAcosma",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-26-queen-anne-3335",
+      "id": "2026-12-26-queen-anne-cqa",
       "date": "2026-12-26",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Cunard",
@@ -15977,31 +14585,7 @@
       "published": true
     },
     {
-      "id": "2026-12-26-queen-anne-3336",
-      "date": "2026-12-26",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Cunard",
-      "shipCode": "CQA",
-      "shipName": "Queen Anne",
-      "arrivalTime": "07:00",
-      "departureTime": "21:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-26-queen-anne-3980",
-      "date": "2026-12-26",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Cunard",
-      "shipCode": "CQA",
-      "shipName": "Queen Anne",
-      "arrivalTime": "07:00",
-      "departureTime": "21:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-26-mein-schiff-relax-3978",
+      "id": "2026-12-26-mein-schiff-relax-tmr",
       "date": "2026-12-26",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -16013,19 +14597,7 @@
       "published": true
     },
     {
-      "id": "2026-12-26-mein-schiff-relax-3996",
-      "date": "2026-12-26",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "TUI Cruises",
-      "shipCode": "TMR",
-      "shipName": "Mein Schiff Relax",
-      "arrivalTime": "09:00",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-27-arcadia-3982",
+      "id": "2026-12-27-arcadia-par",
       "date": "2026-12-27",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -16037,19 +14609,7 @@
       "published": true
     },
     {
-      "id": "2026-12-28-queen-anne-3335",
-      "date": "2026-12-28",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Cunard Line Cruises",
-      "shipCode": "QUE",
-      "shipName": "Queen Anne",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-28-iona-3970",
+      "id": "2026-12-28-iona-pon",
       "date": "2026-12-28",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -16061,7 +14621,7 @@
       "published": true
     },
     {
-      "id": "2026-12-28-wind-spirit-4007",
+      "id": "2026-12-28-wind-spirit-wsp",
       "date": "2026-12-28",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Windstar Cruises",
@@ -16073,19 +14633,7 @@
       "published": true
     },
     {
-      "id": "2026-12-29-spirit-of-discovery-3981",
-      "date": "2026-12-29",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Saga Cruises",
-      "shipCode": "SPI",
-      "shipName": "Spirit Of Discovery",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-29-ventura-3986",
+      "id": "2026-12-29-ventura-pve",
       "date": "2026-12-29",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -16097,7 +14645,7 @@
       "published": true
     },
     {
-      "id": "2026-12-29-costa-smeralda-3992",
+      "id": "2026-12-29-costa-smeralda-csm",
       "date": "2026-12-29",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Costa Cruceros",
@@ -16109,31 +14657,7 @@
       "published": true
     },
     {
-      "id": "2026-12-29-costa-smeralda-4004",
-      "date": "2026-12-29",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Costa Cruceros",
-      "shipCode": "CSM",
-      "shipName": "Costa Smeralda",
-      "arrivalTime": "09:00",
-      "departureTime": "20:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-29-costa-smeralda-4010",
-      "date": "2026-12-29",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Costa Cruceros",
-      "shipCode": "CSM",
-      "shipName": "Costa Smeralda",
-      "arrivalTime": "09:00",
-      "departureTime": "20:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-30-aidaluna-3975",
+      "id": "2026-12-30-aidaluna-alu",
       "date": "2026-12-30",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -16145,84 +14669,12 @@
       "published": true
     },
     {
-      "id": "2026-12-30-marella-discovery-2-3995",
+      "id": "2026-12-30-marella-discovery-2-td2",
       "date": "2026-12-30",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Marella Cruises",
       "shipCode": "TD2",
       "shipName": "Marella Discovery 2",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-30-marella-discovery-2-4000",
-      "date": "2026-12-30",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "TD2",
-      "shipName": "Marella Discovery 2",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-31-msc-fantasia-3993",
-      "date": "2026-12-31",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-31-msc-fantasia-3997",
-      "date": "2026-12-31",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-31-msc-fantasia-4006",
-      "date": "2026-12-31",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-31-msc-fantasia-4016",
-      "date": "2026-12-31",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2026-12-31-msc-fantasia-4019",
-      "date": "2026-12-31",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
@@ -16241,7 +14693,19 @@
       "published": true
     },
     {
-      "id": "2027-01-01-aidacosma-3969",
+      "id": "2026-12-31-msc-fantasia-mfa",
+      "date": "2026-12-31",
+      "port": "Puerto de Los Mármoles, Lanzarote",
+      "company": "MSC Cruceros",
+      "shipCode": "MFA",
+      "shipName": "MSC Fantasia",
+      "arrivalTime": "08:00",
+      "departureTime": "18:00",
+      "season": "2026-2027",
+      "published": true
+    },
+    {
+      "id": "2027-01-01-aidacosma-acm",
       "date": "2027-01-01",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -16253,43 +14717,7 @@
       "published": true
     },
     {
-      "id": "2027-01-01-aidacosma-3998",
-      "date": "2027-01-01",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ACM",
-      "shipName": "AIDAcosma",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-01-01-aidacosma-3999",
-      "date": "2027-01-01",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ACM",
-      "shipName": "AIDAcosma",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-01-01-aidacosma-4017",
-      "date": "2027-01-01",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ACM",
-      "shipName": "AIDAcosma",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-01-02-mein-schiff-relax-4005",
+      "id": "2027-01-02-mein-schiff-relax-tmr",
       "date": "2027-01-02",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -16301,19 +14729,7 @@
       "published": true
     },
     {
-      "id": "2027-01-02-mein-schiff-relax-4022",
-      "date": "2027-01-02",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "TUI Cruises",
-      "shipCode": "TMR",
-      "shipName": "Mein Schiff Relax",
-      "arrivalTime": "09:00",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-01-03-marella-discovery-2-4021",
+      "id": "2027-01-03-marella-discovery-2-td2",
       "date": "2027-01-03",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Marella Cruises",
@@ -16325,19 +14741,7 @@
       "published": true
     },
     {
-      "id": "2027-01-03-marella-discovery-2-4027",
-      "date": "2027-01-03",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "TD2",
-      "shipName": "Marella Discovery 2",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-01-04-mein-schiff-3-3991",
+      "id": "2027-01-04-mein-schiff-3-tm3",
       "date": "2027-01-04",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -16349,7 +14753,7 @@
       "published": true
     },
     {
-      "id": "2027-01-05-mein-schiff-7-4012",
+      "id": "2027-01-05-mein-schiff-7-tm7",
       "date": "2027-01-05",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -16373,7 +14777,7 @@
       "published": true
     },
     {
-      "id": "2027-01-06-costa-smeralda-4018",
+      "id": "2027-01-06-costa-smeralda-csm",
       "date": "2027-01-06",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Costa Cruceros",
@@ -16385,43 +14789,7 @@
       "published": true
     },
     {
-      "id": "2027-01-06-azura-4008",
-      "date": "2027-01-06",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "09:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-01-06-azura-4009",
-      "date": "2027-01-06",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "09:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-01-06-azura-4013",
-      "date": "2027-01-06",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "P&O Cruises",
-      "shipCode": "PAZ",
-      "shipName": "Azura",
-      "arrivalTime": "09:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-01-06-azura-4014",
+      "id": "2027-01-06-azura-paz",
       "date": "2027-01-06",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -16445,19 +14813,7 @@
       "published": true
     },
     {
-      "id": "2027-01-07-msc-fantasia-4019",
-      "date": "2027-01-07",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-01-07-msc-fantasia-4023",
+      "id": "2027-01-07-msc-fantasia-mfa",
       "date": "2027-01-07",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "MSC Cruceros",
@@ -16481,31 +14837,7 @@
       "published": true
     },
     {
-      "id": "2027-01-08-aidacosma-3999",
-      "date": "2027-01-08",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ACM",
-      "shipName": "AIDAcosma",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-01-08-aidacosma-4024",
-      "date": "2027-01-08",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ACM",
-      "shipName": "AIDAcosma",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-01-08-aidacosma-4025",
+      "id": "2027-01-08-aidacosma-acm",
       "date": "2027-01-08",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -16541,7 +14873,7 @@
       "published": true
     },
     {
-      "id": "2027-01-10-celebrity-infinity-4026",
+      "id": "2027-01-10-celebrity-infinity-cin",
       "date": "2027-01-10",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Celebrity Cruises",
@@ -16565,7 +14897,7 @@
       "published": true
     },
     {
-      "id": "2027-01-12-aidablu-4029",
+      "id": "2027-01-12-aidablu-abl",
       "date": "2027-01-12",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -16613,7 +14945,7 @@
       "published": true
     },
     {
-      "id": "2027-01-15-aidacosma-4025",
+      "id": "2027-01-15-aidacosma-acm",
       "date": "2027-01-15",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -16949,7 +15281,7 @@
       "published": true
     },
     {
-      "id": "2027-02-02-costa-smeralda-4030",
+      "id": "2027-02-02-costa-smeralda-csm",
       "date": "2027-02-02",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Costa Cruceros",
@@ -16973,19 +15305,7 @@
       "published": true
     },
     {
-      "id": "2027-02-04-msc-fantasia-4035",
-      "date": "2027-02-04",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-02-04-msc-fantasia-4039",
+      "id": "2027-02-04-msc-fantasia-mfa",
       "date": "2027-02-04",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "MSC Cruceros",
@@ -17009,7 +15329,7 @@
       "published": true
     },
     {
-      "id": "2027-02-05-aidacosma-4036",
+      "id": "2027-02-05-aidacosma-acm",
       "date": "2027-02-05",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -17021,31 +15341,7 @@
       "published": true
     },
     {
-      "id": "2027-02-06-marella-explorer-4031",
-      "date": "2027-02-06",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "MAR",
-      "shipName": "Marella Explorer",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-02-06-marella-explorer-4034",
-      "date": "2027-02-06",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "MAR",
-      "shipName": "Marella Explorer",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-02-06-costa-smeralda-4030",
+      "id": "2027-02-06-costa-smeralda-csm",
       "date": "2027-02-06",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Costa Cruceros",
@@ -17093,19 +15389,7 @@
       "published": true
     },
     {
-      "id": "2027-02-07-mein-schiff-7-4037",
-      "date": "2027-02-07",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "TUI Cruises",
-      "shipCode": "TM7",
-      "shipName": "Mein Schiff 7",
-      "arrivalTime": "19:00",
-      "departureTime": "23:59",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-02-07-mein-schiff-7-4038",
+      "id": "2027-02-07-mein-schiff-7-tm7",
       "date": "2027-02-07",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -17141,18 +15425,6 @@
       "published": true
     },
     {
-      "id": "2027-02-11-msc-fantasia-4039",
-      "date": "2027-02-11",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
       "id": "2027-02-11-celebrity-infinity-cin",
       "date": "2027-02-11",
       "port": "Puerto de Los Mármoles, Lanzarote",
@@ -17173,6 +15445,18 @@
       "shipName": "Queen Elizabeth",
       "arrivalTime": "08:00",
       "departureTime": "17:00",
+      "season": "2026-2027",
+      "published": true
+    },
+    {
+      "id": "2027-02-11-msc-fantasia-mfa",
+      "date": "2027-02-11",
+      "port": "Puerto de Los Mármoles, Lanzarote",
+      "company": "MSC Cruceros",
+      "shipCode": "MFA",
+      "shipName": "MSC Fantasia",
+      "arrivalTime": "08:00",
+      "departureTime": "18:00",
       "season": "2026-2027",
       "published": true
     },
@@ -17237,7 +15521,7 @@
       "published": true
     },
     {
-      "id": "2027-02-17-explora-ii-4033",
+      "id": "2027-02-17-explora-ii-ex2",
       "date": "2027-02-17",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Explora Journeys",
@@ -17489,19 +15773,7 @@
       "published": true
     },
     {
-      "id": "2027-03-04-msc-fantasia-4043",
-      "date": "2027-03-04",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-03-04-msc-fantasia-4048",
+      "id": "2027-03-04-msc-fantasia-mfa",
       "date": "2027-03-04",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "MSC Cruceros",
@@ -17525,7 +15797,7 @@
       "published": true
     },
     {
-      "id": "2027-03-05-aidacosma-4044",
+      "id": "2027-03-05-aidacosma-acm",
       "date": "2027-03-05",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -17533,30 +15805,6 @@
       "shipName": "AIDAcosma",
       "arrivalTime": "07:30",
       "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-03-06-marella-explorer-4041",
-      "date": "2027-03-06",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "MAR",
-      "shipName": "Marella Explorer",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-03-06-marella-explorer-4042",
-      "date": "2027-03-06",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "Marella Cruises",
-      "shipCode": "MAR",
-      "shipName": "Marella Explorer",
-      "arrivalTime": "00:00",
-      "departureTime": "00:00",
       "season": "2026-2027",
       "published": true
     },
@@ -17585,7 +15833,7 @@
       "published": true
     },
     {
-      "id": "2027-03-06-celebrity-infinity-4045",
+      "id": "2027-03-06-celebrity-infinity-cin",
       "date": "2027-03-06",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Celebrity Cruises",
@@ -17621,7 +15869,7 @@
       "published": true
     },
     {
-      "id": "2027-03-09-aidamar-4049",
+      "id": "2027-03-09-aidamar-ama",
       "date": "2027-03-09",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -17645,24 +15893,24 @@
       "published": true
     },
     {
-      "id": "2027-03-11-msc-fantasia-4048",
-      "date": "2027-03-11",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "MSC Cruceros",
-      "shipCode": "MFA",
-      "shipName": "MSC Fantasia",
-      "arrivalTime": "08:00",
-      "departureTime": "18:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
       "id": "2027-03-11-costa-smeralda-csm",
       "date": "2027-03-11",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Costa Cruceros",
       "shipCode": "CSM",
       "shipName": "Costa Smeralda",
+      "arrivalTime": "08:00",
+      "departureTime": "18:00",
+      "season": "2026-2027",
+      "published": true
+    },
+    {
+      "id": "2027-03-11-msc-fantasia-mfa",
+      "date": "2027-03-11",
+      "port": "Puerto de Los Mármoles, Lanzarote",
+      "company": "MSC Cruceros",
+      "shipCode": "MFA",
+      "shipName": "MSC Fantasia",
       "arrivalTime": "08:00",
       "departureTime": "18:00",
       "season": "2026-2027",
@@ -17729,7 +15977,7 @@
       "published": true
     },
     {
-      "id": "2027-03-16-mein-schiff-7-4046",
+      "id": "2027-03-16-mein-schiff-7-tm7",
       "date": "2027-03-16",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -17933,7 +16181,7 @@
       "published": true
     },
     {
-      "id": "2027-04-01-msc-fantasia-4051",
+      "id": "2027-04-01-msc-fantasia-mfa",
       "date": "2027-04-01",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "MSC Cruceros",
@@ -17969,7 +16217,7 @@
       "published": true
     },
     {
-      "id": "2027-04-03-mein-schiff-relax-4053",
+      "id": "2027-04-03-mein-schiff-relax-tmr",
       "date": "2027-04-03",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -17981,7 +16229,7 @@
       "published": true
     },
     {
-      "id": "2027-04-04-mein-schiff-7-4050",
+      "id": "2027-04-04-mein-schiff-7-tm7",
       "date": "2027-04-04",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -18005,7 +16253,7 @@
       "published": true
     },
     {
-      "id": "2027-04-05-msc-fantasia-4051",
+      "id": "2027-04-05-msc-fantasia-mfa",
       "date": "2027-04-05",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "MSC Cruceros",
@@ -18017,19 +16265,7 @@
       "published": true
     },
     {
-      "id": "2027-04-06-aidamar-4052",
-      "date": "2027-04-06",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "AMA",
-      "shipName": "AIDAmar",
-      "arrivalTime": "08:00",
-      "departureTime": "17:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-04-06-aidamar-4057",
+      "id": "2027-04-06-aidamar-ama",
       "date": "2027-04-06",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -18053,19 +16289,7 @@
       "published": true
     },
     {
-      "id": "2027-04-09-aidacosma-4054",
-      "date": "2027-04-09",
-      "port": "Puerto de Los Mármoles, Lanzarote",
-      "company": "AIDA Cruises",
-      "shipCode": "ACM",
-      "shipName": "AIDAcosma",
-      "arrivalTime": "07:30",
-      "departureTime": "19:00",
-      "season": "2026-2027",
-      "published": true
-    },
-    {
-      "id": "2027-04-09-aidacosma-4055",
+      "id": "2027-04-09-aidacosma-acm",
       "date": "2027-04-09",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
@@ -18125,7 +16349,7 @@
       "published": true
     },
     {
-      "id": "2027-04-10-mein-schiff-relax-4058",
+      "id": "2027-04-10-mein-schiff-relax-tmr",
       "date": "2027-04-10",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "TUI Cruises",
@@ -18137,7 +16361,7 @@
       "published": true
     },
     {
-      "id": "2027-04-11-ventura-4056",
+      "id": "2027-04-11-ventura-pve",
       "date": "2027-04-11",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "P&O Cruises",
@@ -18149,7 +16373,7 @@
       "published": true
     },
     {
-      "id": "2027-04-13-seven-seas-voyager-3358",
+      "id": "2027-04-13-seven-seas-voyager-rvo",
       "date": "2027-04-13",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "Regent Seven Seas Cruises",
@@ -18173,7 +16397,7 @@
       "published": true
     },
     {
-      "id": "2027-04-16-aidacosma-4055",
+      "id": "2027-04-16-aidacosma-acm",
       "date": "2027-04-16",
       "port": "Puerto de Los Mármoles, Lanzarote",
       "company": "AIDA Cruises",
