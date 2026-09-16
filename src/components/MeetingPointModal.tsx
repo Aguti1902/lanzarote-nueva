@@ -66,7 +66,11 @@ export function MeetingPointModal({
             {images.map((src, idx) => (
               <div
                 key={`${src}-${idx}`}
-                className="relative aspect-[3/4] overflow-hidden rounded-lg bg-sky-soft ring-1 ring-sand-line sm:aspect-[4/5]"
+                className={`relative overflow-hidden rounded-lg bg-sky-soft ring-1 ring-sand-line ${
+                  images.length === 1
+                    ? "aspect-[3/2] sm:aspect-[16/10]"
+                    : "aspect-[3/4] sm:aspect-[4/5]"
+                }`}
               >
                 <Image
                   src={src}

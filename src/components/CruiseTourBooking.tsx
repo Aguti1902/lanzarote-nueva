@@ -11,6 +11,7 @@ import {
   shoreTourBookingTotal,
   shoreTourIsFlatPrice,
   shoreTourMaxPassengers,
+  shoreTourMeetingPointImages,
   shoreTourUnitPrice,
 } from "@/lib/shore-tour-display";
 import { useCart } from "@/components/CartProvider";
@@ -227,7 +228,7 @@ export function CruiseTourBooking({
 
       <div className="mt-4">
         <ShoreMeetingPointButton
-          images={tour.meetingPointImages}
+          images={shoreTourMeetingPointImages(tour)}
           title={dict.cruises.meetingPointTitle}
           body={dict.cruises.meetingPointBody}
           buttonLabel={dict.cruises.meetingPoint}
