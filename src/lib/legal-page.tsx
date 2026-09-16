@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { LegalDocument } from "@/components/LegalDocument";
 import { getSettings } from "@/lib/content";
 import { companyFromSettings } from "@/lib/invoice-document";
-import { getLegalDoc, type LegalPageId } from "@/lib/legal";
+import { getLegalDoc, LEGAL_PATHS, type LegalPageId } from "@/lib/legal";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
+import { localeAlternates } from "@/lib/seo";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -22,7 +23,11 @@ export function legalMetadata(pageId: LegalPageId) {
       brandName: company.brandName,
       agencyLicense: company.agencyLicense,
     });
-    return { title: doc.title, description: doc.intro };
+    return {
+      title: doc.title,
+      description: doc.intro,
+      alternates: localeAlternates(LEGAL_PATHS[pageId], locale),
+    };
   };
 }
 

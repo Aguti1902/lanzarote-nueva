@@ -37,6 +37,7 @@ function toIso(year: number, monthIndex: number, day: number): string {
 
 export function CruisePortCalendar({ calls, season, port }: Props) {
   const { dict, locale, href } = useLocale();
+  void port;
 
   const months = useMemo(() => {
     return Array.from(new Set(calls.map((c) => monthKey(c.date)))).sort();
@@ -116,7 +117,7 @@ export function CruisePortCalendar({ calls, season, port }: Props) {
           {dict.cruises.dateCalendarTitle}
         </h2>
         <p className="mt-2 max-w-2xl text-ink-muted">
-          {dict.cruises.dateCalendarText} {port}.
+          {dict.cruises.dateCalendarText}
         </p>
       </div>
 

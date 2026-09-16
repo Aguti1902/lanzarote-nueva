@@ -9,6 +9,7 @@ import { formatDateShort } from "@/lib/format";
 import { localizeShoreTours } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
+import { localeAlternates } from "@/lib/seo";
 
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
 export const revalidate = 300;
@@ -30,6 +31,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!sailing) return { title: dict.cruises.browseTitle };
   return {
     title: `${sailing.shipName} · ${formatDateShort(sailing.departureDate)}`,
+    alternates: localeAlternates(
+      `/crucero/${company}/${ship}/${sailingId}`,
+      locale
+    ),
   };
 }
 

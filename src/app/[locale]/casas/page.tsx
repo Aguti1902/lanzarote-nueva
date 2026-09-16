@@ -9,6 +9,7 @@ import { getPublicHouses } from "@/lib/houses";
 import { localizeHouses, localizeSettings } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
+import { localeAlternates } from "@/lib/seo";
 
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
 export const revalidate = 300;
@@ -18,7 +19,10 @@ type Props = { params: Promise<{ locale: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = resolveLocale((await params).locale);
   const dict = await getDictionary(locale);
-  return { title: dict.houses.title };
+  return {
+    title: dict.houses.title,
+    alternates: localeAlternates("/casas", locale),
+  };
 }
 
 export default async function CasasPage({ params }: Props) {

@@ -25,6 +25,7 @@ export function CruiseSchedule({
   sailingLinks = {},
 }: Props) {
   const { dict, locale, href } = useLocale();
+  void port;
   const months = useMemo(() => {
     const keys = Array.from(new Set(calls.map((c) => monthKey(c.date))));
     return keys;
@@ -81,7 +82,7 @@ export function CruiseSchedule({
             {dict.cruises.scheduleTitle}
           </h2>
           <p className="mt-2 max-w-2xl text-ink-muted">
-            {dict.cruises.scheduleText} {port}.
+            {dict.cruises.scheduleText}
           </p>
           <p className="mt-2">
             <Link

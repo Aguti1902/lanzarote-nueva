@@ -12,6 +12,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
 import { stripHtml } from "@/lib/sanitize-html";
+import { localeAlternates } from "@/lib/seo";
 
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
 export const revalidate = 300;
@@ -21,7 +22,10 @@ type Props = { params: Promise<{ locale: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = resolveLocale((await params).locale);
   const dict = await getDictionary(locale);
-  return { title: dict.nav.about };
+  return {
+    title: dict.nav.about,
+    alternates: localeAlternates("/sobre-nosotros", locale),
+  };
 }
 
 export default async function SobreNosotrosPage({ params }: Props) {

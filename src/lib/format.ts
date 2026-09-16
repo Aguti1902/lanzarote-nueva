@@ -123,7 +123,14 @@ const LANG_LABELS: Record<string, Record<string, string>> = {
     pt: "Portugués",
     español: "Español",
     espanol: "Español",
+    spanish: "Español",
+    spanisch: "Español",
+    inglés: "Inglés",
+    ingles: "Inglés",
     english: "Inglés",
+    englisch: "Inglés",
+    alemán: "Alemán",
+    aleman: "Alemán",
     deutsch: "Alemán",
     german: "Alemán",
   },
@@ -136,7 +143,14 @@ const LANG_LABELS: Record<string, Record<string, string>> = {
     pt: "Portuguese",
     español: "Spanish",
     espanol: "Spanish",
+    spanish: "Spanish",
+    spanisch: "Spanish",
+    inglés: "English",
+    ingles: "English",
     english: "English",
+    englisch: "English",
+    alemán: "German",
+    aleman: "German",
     deutsch: "German",
     german: "German",
   },
@@ -149,7 +163,14 @@ const LANG_LABELS: Record<string, Record<string, string>> = {
     pt: "Portugiesisch",
     español: "Spanisch",
     espanol: "Spanisch",
+    spanish: "Spanisch",
+    spanisch: "Spanisch",
+    inglés: "Englisch",
+    ingles: "Englisch",
     english: "Englisch",
+    englisch: "Englisch",
+    alemán: "Deutsch",
+    aleman: "Deutsch",
     deutsch: "Deutsch",
     german: "Deutsch",
   },
@@ -165,15 +186,111 @@ export function formatTourLanguages(
   const seen = new Set<string>();
   const labels: string[] = [];
   for (const raw of languages) {
-    const key = raw.trim().toLowerCase();
+    const key = raw
+      .trim()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
     if (!key) continue;
-    const label = table[key] || raw.trim();
-    const dedupe = label.toLowerCase();
+    const label =
+      table[key] ||
+      table[raw.trim().toLowerCase()] ||
+      raw.trim();
+    const dedupe = label
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
     if (seen.has(dedupe)) continue;
     seen.add(dedupe);
     labels.push(label);
   }
   return labels.join(", ");
+}
+
+const DEFAULT_TOUR_CANCELLATION: Record<string, string> = {
+  es: "Cancelación gratuita hasta 48 h antes.",
+  en: "Free cancellation up to 48 hours before the excursion.",
+  de: "Kostenlose Stornierung bis 48 Stunden vor dem Ausflug.",
+};
+
+const DEFAULT_24H_CANCELLATION: Record<string, string> = {
+  es: "Cancelación gratuita hasta 24 h antes.",
+  en: "Free cancellation up to 24 hours before the service.",
+  de: "Kostenlose Stornierung bis 24 Stunden vor dem Service.",
+};
+
+/** Detecta política de cancelación aún en español (para EN/DE). */
+export function looksLikeSpanishCancellation(text: string): boolean {
+  return /cancelaci[oó]n\s+gratuita|horas\s+antes|antes\s+de\s+la\s+recogida/i.test(
+    text || ""
+  );
+}
+
+function looksLike48hFreeCancellation(text: string): boolean {
+  return (
+    /48\s*h(?:oras|ours|unden)?|48\s*stunden/i.test(text) &&
+    /cancel|stornier/i.test(text) &&
+    !/\b24\b/.test(text)
+  );
+}
+
+/** Política de cancelación de excursiones según idioma (no aplica a traslados). */
+export function tourCancellationPolicyForLocale(
+  stored: string | undefined,
+  locale: Locale | string
+): string {
+  const raw = (stored || "").trim();
+  const loc =
+    (locale as string) in DEFAULT_TOUR_CANCELLATION ? String(locale) : "es";
+  if (!raw) return DEFAULT_TOUR_CANCELLATION[loc];
+
+  // Políticas de 24 h (barco / servicio especial): no forzar 48 h.
+  if (/\b24\b/.test(raw)) {
+    if (loc !== "es" && looksLikeSpanishCancellation(raw)) {
+      return DEFAULT_24H_CANCELLATION[loc];
+    }
+    return raw;
+  }
+
+  // Unificar la política general de 48 h al texto oficial por idioma.
+  if (looksLike48hFreeCancellation(raw)) {
+    return DEFAULT_TOUR_CANCELLATION[loc];
+  }
+
+  if (loc !== "es" && looksLikeSpanishCancellation(raw)) {
+    return DEFAULT_TOUR_CANCELLATION[loc];
+  }
+  return raw;
+}
+
+/**
+ * Limpia nombres de puerto en itinerarios dinámicos:
+ * - quita «Canary Islands» duplicado
+ * - Cádiz con tilde en español
+ */
+export function formatCruisePortName(
+  port: string | undefined,
+  locale: Locale | string = "es"
+): string {
+  let name = String(port || "").trim();
+  if (!name) return "";
+  name = name.replace(
+    /,\s*Canary Islands(\s*,\s*Canary Islands)+/gi,
+    ", Canary Islands"
+  );
+  name = name.replace(/(\bCanary Islands\b)(\s*,\s*\1)+/gi, "$1");
+  if (locale === "es") {
+    name = name.replace(/\bCadiz\b/g, "Cádiz");
+  }
+  return name;
+}
+
+/** Corrige tipografía dinámica «mas completa» → «más completa». */
+export function fixSpanishDynamicTypos(text: string | undefined): string {
+  return String(text || "").replace(
+    /\bmas completa\b/gi,
+    (m) => (m[0] === "M" ? "Más completa" : "más completa")
+  );
 }
 
 /** Quita bloques legacy de salidas/precios pegados al final de la descripción. */
