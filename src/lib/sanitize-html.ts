@@ -124,7 +124,7 @@ export function looksLikeHtml(text: string): boolean {
 }
 
 const STYLE_ALLOWED =
-  /^(color|font-size|font-weight|text-decoration|text-align|margin-left|padding-left)\s*:/i;
+  /^(color|text-decoration|text-align|margin-left|padding-left)\s*:/i;
 
 function escapeAttr(value: string): string {
   return value
@@ -324,9 +324,10 @@ export function sanitizeContentHtml(raw: string): string {
             parts.push(`color="${c}"`);
           }
         }
+        // Solo tamaños «título» del editor (5–7). size 1–4 → texto normal (hereda CSS).
         if (size && t === "font") {
           const s = size[2] || size[3] || size[4] || "";
-          if (/^\d$/.test(s)) parts.push(`size="${s}"`);
+          if (/^[567]$/.test(s)) parts.push(`size="${s}"`);
         }
         if (safeStyle) parts.push(`style="${safeStyle}"`);
         return parts.length ? `<${t} ${parts.join(" ")}>` : `<${t}>`;
@@ -338,6 +339,18 @@ export function sanitizeContentHtml(raw: string): string {
       return parts.length ? `<${t} ${parts.join(" ")}>` : `<${t}>`;
     }
   );
+
+  // Si un h2/h3/h4 envuelve párrafos u otros bloques (pegado del editor),
+  // quitar el heading envolvente para no aplicar tipografía de título al cuerpo.
+  html = html.replace(/<h([1-4])>([\s\S]*?)<\/h\1>/gi, (full, _lvl, inner) => {
+    if (/<(?:p|div|ul|ol|h[1-6]|blockquote)\b/i.test(inner)) {
+      return String(inner);
+    }
+    return full;
+  });
+
+  // <font> vacío de atributos → dejar solo el contenido tipográfico base.
+  html = html.replace(/<font>([\s\S]*?)<\/font>/gi, "$1");
 
   return html.trim();
 }

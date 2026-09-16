@@ -19,13 +19,12 @@ import {
   Unlink,
 } from "lucide-react";
 import type { ReactNode } from "react";
-import { normalizeEditorHref } from "@/lib/sanitize-html";
+import { normalizeEditorHref, sanitizeContentHtml } from "@/lib/sanitize-html";
 
 const SIZES = [
   { label: "Normal", value: "3" },
-  { label: "Grande", value: "5" },
-  { label: "Muy grande", value: "6" },
-  { label: "Pequeño", value: "2" },
+  { label: "Grande (título)", value: "5" },
+  { label: "Muy grande (título)", value: "6" },
 ] as const;
 
 const COLORS = [
@@ -121,15 +120,36 @@ export function RichTextEditor({
   function emit() {
     const el = ref.current;
     if (!el) return;
-    const html = el.innerHTML;
+    const html = sanitizeContentHtml(el.innerHTML);
     lastExternal.current = html;
     onChangeRef.current(html);
   }
 
   function run(command: string, arg?: string) {
     ref.current?.focus();
+    // «Normal» → quitar tamaño de fuente para heredar tipografía CSS uniforme.
+    if (command === "fontSize" && arg === "3") {
+      document.execCommand("removeFormat", false);
+      // Conservar negrita/subrayado si el usuario solo quería resetear tamaño:
+      // removeFormat es agresivo; mejor unwrap font tags tras fontSize 3.
+      document.execCommand("fontSize", false, "3");
+      elNormalizeFontSizes(ref.current);
+      emit();
+      return;
+    }
     document.execCommand(command, false, arg);
+    if (command === "fontSize") elNormalizeFontSizes(ref.current);
     emit();
+  }
+
+  function elNormalizeFontSizes(root: HTMLDivElement | null) {
+    if (!root) return;
+    root.querySelectorAll("font[size]").forEach((node) => {
+      const size = node.getAttribute("size") || "";
+      if (!/^[567]$/.test(size)) {
+        node.removeAttribute("size");
+      }
+    });
   }
 
   function insertLink() {
@@ -329,30 +349,38 @@ export function RichTextEditor({
           aria-multiline="true"
           contentEditable
           suppressContentEditableWarning
-          className="rich-editor max-w-none px-3 py-2.5 text-sm leading-relaxed text-ink outline-none [&_a]:font-semibold [&_a]:text-ocean [&_a]:underline [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5 [&_img]:my-2 [&_img]:max-h-80 [&_img]:max-w-full [&_img]:rounded-md"
+          className="rich-editor max-w-none px-3 py-2.5 text-base leading-relaxed text-ink-muted outline-none [&_a]:font-semibold [&_a]:text-ocean [&_a]:underline [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5 [&_img]:my-2 [&_img]:max-h-80 [&_img]:max-w-full [&_img]:rounded-md"
           style={{ minHeight }}
           onInput={emit}
           onBlur={emit}
           onPaste={(e) => {
-            const html = e.clipboardData.getData("text/html") || "";
-            if (
-              !/jscontroller|data-sfc-|data-hveid|data-copy-service/i.test(html)
-            ) {
-              return;
-            }
             e.preventDefault();
+            const html = e.clipboardData.getData("text/html") || "";
             const text = e.clipboardData.getData("text/plain") || "";
-            document.execCommand("insertText", false, text);
+            const cleaned = html
+              ? sanitizeContentHtml(html)
+              : text
+                  .split(/\n+/)
+                  .map((p) => p.trim())
+                  .filter(Boolean)
+                  .map((p) => `<p>${p.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</p>`)
+                  .join("");
+            if (cleaned) {
+              document.execCommand("insertHTML", false, cleaned);
+            } else if (text) {
+              document.execCommand("insertText", false, text);
+            }
             emit();
           }}
         />
       </div>
       <p className="text-xs text-ink-muted">
-        Formato: negrita, enlace, listas, sangría, alineación, tamaño y color
+        Tipografía unificada automáticamente (misma que en la web pública). Use
+        negrita, enlace, listas y «Grande / Muy grande» solo para títulos.
         {imagesFolder
-          ? ", e imágenes subidas desde el ordenador (con texto ALT)"
-          : ""}
-        . Seleccione un texto y pulse el icono de eslabón para vincularlo a otra
+          ? " Puede insertar imágenes subidas (con texto ALT)."
+          : ""}{" "}
+        Seleccione un texto y pulse el icono de eslabón para vincularlo a otra
         página.
       </p>
     </div>

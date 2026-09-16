@@ -151,6 +151,28 @@ h3,
   }
 }
 
+/* Tipografía uniforme del contenido enriquecido (ficha, blog, home…).
+   Anula font-size/family/line-height que mete el editor o el pegado. */
+.rich-content {
+  font-family: var(--font-outfit), system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--ink-muted);
+}
+
+.rich-content p,
+.rich-content li,
+.rich-content span,
+.rich-content font,
+.rich-content div {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+  letter-spacing: normal !important;
+}
+
 .rich-content-on-dark,
 .rich-content-on-dark p,
 .rich-content-on-dark li,
@@ -165,34 +187,47 @@ h3,
 /* Negritas / encabezados del editor enriquecido (contentEditable → b/strong/font). */
 .rich-content b,
 .rich-content strong {
+  font-family: inherit !important;
+  font-size: inherit !important;
   font-weight: 700 !important;
+  line-height: inherit !important;
   color: var(--ink);
-}
-
-.rich-content font[size="5"],
-.rich-content font[size="6"],
-.rich-content font[size="7"] {
-  display: block;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.25;
-  margin: 0.85em 0 0.35em;
-}
-
-.rich-content font[size="5"] {
-  font-size: 1.25rem;
-}
-
-.rich-content font[size="6"],
-.rich-content font[size="7"] {
-  font-size: 1.45rem;
 }
 
 .rich-content h2,
 .rich-content h3,
-.rich-content h4 {
+.rich-content h4,
+.rich-content font[size="5"],
+.rich-content font[size="6"],
+.rich-content font[size="7"] {
+  font-family: inherit !important;
   font-weight: 700 !important;
   color: var(--ink);
+  letter-spacing: normal !important;
+}
+
+.rich-content h2,
+.rich-content font[size="6"],
+.rich-content font[size="7"] {
+  display: block;
+  font-size: 1.35rem !important;
+  line-height: 1.35 !important;
+  margin: 1rem 0 0.4rem;
+}
+
+.rich-content h3,
+.rich-content font[size="5"] {
+  display: block;
+  font-size: 1.2rem !important;
+  line-height: 1.4 !important;
+  margin: 0.9rem 0 0.35rem;
+}
+
+.rich-content h4 {
+  display: block;
+  font-size: 1.05rem !important;
+  line-height: 1.45 !important;
+  margin: 0.8rem 0 0.3rem;
 }
 
 .rich-content-on-dark b,
@@ -204,6 +239,61 @@ h3,
 .rich-content-on-dark h3,
 .rich-content-on-dark h4 {
   color: #ffffff !important;
+}
+
+/* Misma tipografía en el editor admin (WYSIWYG ≈ web pública). */
+.rich-editor {
+  font-family: var(--font-outfit), system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--ink-muted);
+}
+
+.rich-editor p,
+.rich-editor li,
+.rich-editor span,
+.rich-editor font,
+.rich-editor div {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+  letter-spacing: normal !important;
+}
+
+.rich-editor b,
+.rich-editor strong {
+  font-weight: 700 !important;
+  color: var(--ink);
+}
+
+.rich-editor h2,
+.rich-editor h3,
+.rich-editor h4,
+.rich-editor font[size="5"],
+.rich-editor font[size="6"],
+.rich-editor font[size="7"] {
+  font-family: inherit !important;
+  font-weight: 700 !important;
+  color: var(--ink);
+}
+
+.rich-editor h2,
+.rich-editor font[size="6"],
+.rich-editor font[size="7"] {
+  display: block;
+  font-size: 1.35rem !important;
+  line-height: 1.35 !important;
+  margin: 1rem 0 0.4rem;
+}
+
+.rich-editor h3,
+.rich-editor font[size="5"] {
+  display: block;
+  font-size: 1.2rem !important;
+  line-height: 1.4 !important;
+  margin: 0.9rem 0 0.35rem;
 }
 
 .prose-blog p {
