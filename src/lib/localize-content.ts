@@ -26,6 +26,7 @@ import { tourSlugForLocale } from "@/i18n/tour-slugs";
 import { blogSlugForLocale } from "@/i18n/blog-slugs";
 import { getBlogTopicTags } from "@/lib/blog-locale";
 import { SHORE_TOUR_I18N_ALIASES } from "@/lib/cruise-shore-match";
+import { tourCancellationPolicyForLocale, fixSpanishDynamicTypos } from "@/lib/format";
 
 export {
   mergeSettingsOverlay,
@@ -324,7 +325,16 @@ export async function localizeTour(
   locale: Locale
 ): Promise<Tour> {
   const slug = tourSlugForLocale(tour, locale);
-  if (locale === "es") return { ...tour, slug };
+  if (locale === "es") {
+    return {
+      ...tour,
+      slug,
+      cancellationPolicy: tourCancellationPolicyForLocale(
+        tour.cancellationPolicy,
+        "es"
+      ),
+    };
+  }
 
   const fileOverlay = (await loadTranslations(locale)).tours[tour.id] as
     | Record<string, unknown>
@@ -363,11 +373,19 @@ export async function localizeTour(
     tour.shortTitle
   );
 
+  const cancellationPolicy = tourCancellationPolicyForLocale(
+    typeof strings.cancellationPolicy === "string"
+      ? strings.cancellationPolicy
+      : tour.cancellationPolicy,
+    locale
+  );
+
   return {
     ...tour,
     ...strings,
     ...arrays,
     shortTitle,
+    cancellationPolicy,
     slug,
     seo: resolveLocalizedSeo(tour.seo, embedded, fileOverlay),
   } as Tour;
@@ -464,7 +482,21 @@ export async function localizeShoreTour(
   tour: CruiseShoreTour,
   locale: Locale
 ): Promise<CruiseShoreTour> {
-  if (locale === "es") return tour;
+  const titleEs = fixSpanishDynamicTypos(tour.title);
+  const shortTitleEs = fixSpanishDynamicTypos(tour.shortTitle || tour.title);
+  const cancellationPolicy = tourCancellationPolicyForLocale(
+    tour.cancellationPolicy,
+    locale
+  );
+
+  if (locale === "es") {
+    return {
+      ...tour,
+      title: titleEs,
+      shortTitle: shortTitleEs,
+      cancellationPolicy,
+    };
+  }
 
   const overlayMap = (await loadTranslations(locale)).shoreTours || {};
   const fileOverlay = (overlayMap[tour.id] ||
@@ -478,7 +510,14 @@ export async function localizeShoreTour(
     ? embeddedRaw
     : undefined;
 
-  if (!embedded && !fileOverlay) return tour;
+  if (!embedded && !fileOverlay) {
+    return {
+      ...tour,
+      title: titleEs,
+      shortTitle: shortTitleEs,
+      cancellationPolicy,
+    };
+  }
 
   const strings = mergeStringFields(embedded, fileOverlay, tour as unknown as Record<string, unknown>, [
     "title",
@@ -486,6 +525,7 @@ export async function localizeShoreTour(
     "summary",
     "description",
     "duration",
+    "cancellationPolicy",
   ]);
 
   const arrays = pickTranslatedArrays(embedded, fileOverlay, tour as unknown as Record<string, unknown>, [
@@ -499,14 +539,23 @@ export async function localizeShoreTour(
     strings,
     embedded,
     fileOverlay,
-    tour.shortTitle || tour.title
+    shortTitleEs || tour.shortTitle || tour.title
   );
 
   return {
     ...tour,
     ...strings,
     ...arrays,
-    shortTitle,
+    title: fixSpanishDynamicTypos(
+      typeof strings.title === "string" ? strings.title : titleEs
+    ),
+    shortTitle: fixSpanishDynamicTypos(shortTitle),
+    cancellationPolicy: tourCancellationPolicyForLocale(
+      typeof strings.cancellationPolicy === "string"
+        ? strings.cancellationPolicy
+        : tour.cancellationPolicy,
+      locale
+    ),
     seo: resolveLocalizedSeo(tour.seo, embedded, fileOverlay),
   } as CruiseShoreTour;
 }

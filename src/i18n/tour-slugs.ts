@@ -1,6 +1,6 @@
 import type { Locale } from "./config";
 
-type TourSlugSource = {
+export type TourSlugSource = {
   id: string;
   slug: string;
   translations?: {

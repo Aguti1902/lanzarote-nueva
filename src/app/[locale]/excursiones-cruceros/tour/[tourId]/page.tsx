@@ -10,7 +10,7 @@ import {
   getCruiseSailingById,
   getCruiseShoreTourById,
 } from "@/lib/cruise-itineraries";
-import { formatDateShort, formatPrice } from "@/lib/format";
+import { formatCruisePortName, formatDateShort, formatPrice } from "@/lib/format";
 import { localizeShoreTour } from "@/lib/localize-content";
 import { isHttpUrl, mapEmbedUrl, youtubeEmbedUrl } from "@/lib/media-embeds";
 import {
@@ -20,6 +20,7 @@ import {
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
+import { localeAlternates } from "@/lib/seo";
 
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
 export const revalidate = 300;
@@ -45,6 +46,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: tour.seo?.title || tour.title || dict.cruises.browseTitle,
     description: tour.seo?.description || tour.summary || undefined,
     keywords: tour.seo?.keywords || undefined,
+    alternates: localeAlternates(
+      `/excursiones-cruceros/tour/${tourId}`,
+      locale
+    ),
   };
 }
 
@@ -76,9 +81,11 @@ export default async function CruiseShoreTourPage({
       ?.date ||
     "";
 
-  const portName =
+  const portName = formatCruisePortName(
     sailing?.stops.find((s) => s.date === callDate)?.port ||
-    "Lanzarote, Canary Islands";
+      "Lanzarote, Canary Islands",
+    locale
+  );
 
   const videoSrc = youtubeEmbedUrl(tour.youtubeUrl);
   const mapSrc = mapEmbedUrl(tour.mapUrl);

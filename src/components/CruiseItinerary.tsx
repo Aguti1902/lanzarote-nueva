@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { MapPin, Ship, Waves } from "lucide-react";
 import type { CruiseSailing, CruiseShoreTour } from "@/types";
-import { formatDateShort, formatPrice } from "@/lib/format";
+import { formatCruisePortName, formatDateShort, formatPrice } from "@/lib/format";
 import {
   shoreTourDurationLabel,
   shoreTourPublicHighlights,
@@ -90,6 +90,7 @@ export function CruiseItinerary({ sailing, tours }: Props) {
               stop.port,
               tours
             );
+            const portLabel = formatCruisePortName(stop.port, locale);
 
             return (
               <li key={`${stop.day}-${stop.date}-${stop.portKey}`}>
@@ -115,7 +116,7 @@ export function CruiseItinerary({ sailing, tours }: Props) {
                     )}
                     <div className="min-w-0 flex-1">
                       <h3 className="text-xl font-bold text-ink">
-                        {stop.isSeaDay ? dict.cruises.atSea : stop.port}
+                        {stop.isSeaDay ? dict.cruises.atSea : portLabel}
                       </h3>
                       {stop.time ? (
                         <p className="mt-1 text-sm text-ink-muted">{stop.time}</p>
@@ -282,7 +283,7 @@ export function CruiseItinerary({ sailing, tours }: Props) {
                                       tour={tour}
                                       sailing={sailing}
                                       callDate={stop.date}
-                                      portName={stop.port}
+                                      portName={portLabel}
                                       onClose={() => setBookingTour(null)}
                                     />
                                   )}
@@ -293,7 +294,7 @@ export function CruiseItinerary({ sailing, tours }: Props) {
                         </div>
                       ) : (
                         <p className="mt-3 text-sm leading-relaxed text-ink-muted italic">
-                          {dict.cruises.noToursYet.replace("{port}", stop.port)}
+                          {dict.cruises.noToursYet.replace("{port}", portLabel)}
                         </p>
                       )}
                     </div>

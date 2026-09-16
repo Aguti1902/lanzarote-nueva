@@ -31,6 +31,7 @@ import {
   stripHtml,
   RICH_CONTENT_CLASS,
 } from "@/lib/sanitize-html";
+import { blogLocaleAlternates } from "@/lib/seo";
 
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
 export const revalidate = 300;
@@ -54,6 +55,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     ...(keywords ? { keywords } : {}),
+    alternates: blogLocaleAlternates(base, locale),
     openGraph: {
       title,
       description,

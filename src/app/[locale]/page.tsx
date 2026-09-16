@@ -24,6 +24,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
 import { RichContent } from "@/components/RichContent";
+import { localeAlternates } from "@/lib/seo";
 
 const ReviewsSection = dynamic(() =>
   import("@/components/ReviewsSection").then((m) => m.ReviewsSection)
@@ -34,6 +35,17 @@ const HomeIslandVideo = dynamic(() =>
 
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
 export const revalidate = 300;
+
+type Props = { params: Promise<{ locale: string }> };
+
+export async function generateMetadata({
+  params,
+}: Props): Promise<import("next").Metadata> {
+  const locale = resolveLocale((await params).locale);
+  return {
+    alternates: localeAlternates("/", locale),
+  };
+}
 
 const awards = [
   { src: "/images/awards/turismo-seguro.jpg", alt: "Turismo Seguro frente al COVID-19" },
@@ -53,8 +65,6 @@ const advantageIcons: LucideIcon[] = [
   Globe2,
   Building2,
 ];
-
-type Props = { params: Promise<{ locale: string }> };
 
 export default async function HomePage({ params }: Props) {
   const { locale: raw } = await params;

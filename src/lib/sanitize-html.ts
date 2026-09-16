@@ -31,9 +31,36 @@ function decodeBasicEntities(value: string): string {
     .replace(/&amp;/g, "&");
 }
 
-/** Convierte HTML copiado de la web en párrafos limpios. */
+/** Marcadores internos para conservar énfasis al limpiar pegados sucios. */
+const BOLD_OPEN = "\uE000B\uE000";
+const BOLD_CLOSE = "\uE000/B\uE000";
+const EM_OPEN = "\uE000I\uE000";
+const EM_CLOSE = "\uE000/I\uE000";
+const U_OPEN = "\uE000U\uE000";
+const U_CLOSE = "\uE000/U\uE000";
+
+function restoreEmphasisMarkers(text: string): string {
+  return text
+    .replaceAll(BOLD_OPEN, "<strong>")
+    .replaceAll(BOLD_CLOSE, "</strong>")
+    .replaceAll(EM_OPEN, "<em>")
+    .replaceAll(EM_CLOSE, "</em>")
+    .replaceAll(U_OPEN, "<u>")
+    .replaceAll(U_CLOSE, "</u>");
+}
+
+/**
+ * Convierte HTML copiado de la web en párrafos limpios,
+ * conservando negrita / cursiva / subrayado del editor.
+ */
 export function pastedWebHtmlToCleanHtml(raw: string): string {
   let s = raw
+    .replace(/<(strong|b)(\s[^>]*)?>/gi, BOLD_OPEN)
+    .replace(/<\/(strong|b)>/gi, BOLD_CLOSE)
+    .replace(/<(em|i)(\s[^>]*)?>/gi, EM_OPEN)
+    .replace(/<\/(em|i)>/gi, EM_CLOSE)
+    .replace(/<u(\s[^>]*)?>/gi, U_OPEN)
+    .replace(/<\/u>/gi, U_CLOSE)
     .replace(/<br\s*\/?>/gi, "\n")
     .replace(/<\/(p|div|h[1-6]|li|tr|blockquote)>/gi, "\n");
   s = s.replace(/<[^>]+>/g, (match, offset: number) => {
@@ -51,7 +78,44 @@ export function pastedWebHtmlToCleanHtml(raw: string): string {
     .map((p) => p.replace(/[ \t]+/g, " ").trim())
     .filter(Boolean);
   if (!paragraphs.length) return "";
-  return paragraphs.map((p) => `<p>${escapeHtmlText(p)}</p>`).join("");
+  return paragraphs
+    .map((p) => {
+      const withMarks = restoreEmphasisMarkers(p);
+      // escapeHtmlText rompería las etiquetas restauradas: escapar solo el texto
+      // alrededor de strong/em/u.
+      const safe = withMarks.replace(
+        /(<\/?(?:strong|em|u)>)|([^<]+)/gi,
+        (chunk, tag, text) => (tag ? tag : escapeHtmlText(text || ""))
+      );
+      return `<p>${safe}</p>`;
+    })
+    .join("");
+}
+
+/** Quita metadatos de pegado (ChatGPT/Docs) sin destruir el formato tipográfico. */
+function stripPasteArtifacts(raw: string): string {
+  return raw
+    .replace(/\sdata-(start|end|hveid|sfc-[a-z0-9-]+)\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
+    .replace(
+      /\sclass\s*=\s*("([^"]*)"|'([^']*)')/gi,
+      (_m, _q, doubleCls: string, singleCls: string) => {
+        const cls = doubleCls ?? singleCls ?? "";
+        if (!/PDq2pG_|selectionAnchor|isSelectedEnd/i.test(cls)) return _m;
+        const cleaned = cls
+          .split(/\s+/)
+          .filter((c) => c && !/PDq2pG_|selectionAnchor|isSelectedEnd/i.test(c))
+          .join(" ");
+        return cleaned ? ` class="${cleaned}"` : "";
+      }
+    )
+    .replace(/<span[^>]*aria-hidden=["']true["'][^>]*>\s*<\/span>/gi, "");
+}
+
+/** Pegados realmente tóxicos (no solo data-start del editor). */
+function looksLikeToxicPastedHtml(text: string): boolean {
+  return /jscontroller|data-sfc-|data-hveid|jsaction=|jsuid=|data-copy-service|docs-internal-guid/i.test(
+    text || ""
+  );
 }
 
 /** Detecta si el texto parece HTML de contenido. */
@@ -125,19 +189,22 @@ function filterSafeStyle(raw: string): string {
  */
 export function sanitizeContentHtml(raw: string): string {
   if (!raw) return "";
-  if (looksLikePastedWebHtml(raw)) {
-    return pastedWebHtmlToCleanHtml(raw);
+  // Primero quitar basura de pegado; si aún es tóxico, limpiar a párrafos
+  // conservando negritas. Si solo había data-start/etc., seguir con whitelist.
+  let prepared = stripPasteArtifacts(raw);
+  if (looksLikeToxicPastedHtml(prepared) || looksLikePastedWebHtml(prepared)) {
+    if (looksLikeToxicPastedHtml(prepared)) {
+      return pastedWebHtmlToCleanHtml(prepared);
+    }
+    // data-start u otros marcadores leves: ya strippeados → sanitizar normal
   }
-  let html = raw
+  let html = prepared
     .replace(
       /<\s*(script|style|iframe|object|embed|link|meta)[\s\S]*?>[\s\S]*?<\s*\/\s*\1\s*>/gi,
       ""
     )
     .replace(/<\s*(script|style|iframe|object|embed|link|meta)[^>]*\/?>/gi, "")
     .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
-    // Atributos de pegado (ChatGPT/Docs) que a veces quedan en <p>/<span>
-    .replace(/\sdata-(start|end|hveid|sfc-[a-z0-9-]+)\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
-    .replace(/\sclass\s*=\s*("[^"]*PDq2pG_[^"]*"|'[^']*PDq2pG_[^']*')/gi, "")
     .replace(/javascript:/gi, "");
 
   let droppedAnchors = 0;
@@ -159,15 +226,21 @@ export function sanitizeContentHtml(raw: string): string {
         "ul",
         "ol",
         "li",
+        "h1",
         "h2",
         "h3",
         "h4",
+        "blockquote",
         "img",
         "figure",
         "figcaption",
         "a",
       ]);
       if (!allowed.has(t)) return "";
+      // El editor a veces envuelve títulos en <h1>; tratarlos como h2 públicos.
+      if (t === "h1") {
+        return match.startsWith("</") ? "</h2>" : "<h2>";
+      }
       if (t === "br") return "<br />";
       if (t === "img") {
         if (match.startsWith("</")) return "";
@@ -279,8 +352,8 @@ export function stripHtml(raw: string): string {
 
 /** Clases Tailwind comunes para HTML tipográfico sanitizado. */
 export const RICH_CONTENT_CLASS =
-  "rich-content space-y-3 leading-relaxed text-ink-muted [&_a]:font-semibold [&_a]:text-ocean [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:text-ocean-deep [&_b]:font-bold [&_b]:text-ink [&_strong]:font-bold [&_strong]:text-ink [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-ink [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-ink [&_img]:my-4 [&_img]:h-auto [&_img]:max-w-full [&_img]:rounded-lg";
+  "rich-content space-y-3 leading-relaxed text-ink-muted [&_a]:font-semibold [&_a]:text-ocean [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:text-ocean-deep [&_b]:font-bold [&_b]:text-ink [&_strong]:font-bold [&_strong]:text-ink [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-ink [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-ink [&_h4]:text-base [&_h4]:font-bold [&_h4]:text-ink [&_blockquote]:border-l-4 [&_blockquote]:border-ocean/30 [&_blockquote]:pl-4 [&_blockquote]:italic [&_img]:my-4 [&_img]:h-auto [&_img]:max-w-full [&_img]:rounded-lg";
 
 /** Mismo bloque sobre fondos oscuros (p. ej. «Nuestra promesa»). */
 export const RICH_CONTENT_ON_DARK_CLASS =
-  "rich-content rich-content-on-dark space-y-3 leading-relaxed text-white [&_p]:text-white [&_li]:text-white [&_span]:text-white [&_div]:text-white [&_a]:font-semibold [&_a]:text-white [&_a]:underline [&_b]:font-bold [&_b]:text-white [&_strong]:font-bold [&_strong]:text-white [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-white [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-white";
+  "rich-content rich-content-on-dark space-y-3 leading-relaxed text-white [&_p]:text-white [&_li]:text-white [&_span]:text-white [&_div]:text-white [&_a]:font-semibold [&_a]:text-white [&_a]:underline [&_b]:font-bold [&_b]:text-white [&_strong]:font-bold [&_strong]:text-white [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-white [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-white [&_h4]:text-base [&_h4]:font-bold [&_h4]:text-white";

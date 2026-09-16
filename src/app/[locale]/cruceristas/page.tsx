@@ -16,6 +16,7 @@ import {
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
 import { localePath } from "@/i18n/path";
+import { localeAlternates } from "@/lib/seo";
 
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
 export const revalidate = 300;
@@ -25,7 +26,10 @@ type Props = { params: Promise<{ locale: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = resolveLocale((await params).locale);
   const dict = await getDictionary(locale);
-  return { title: dict.cruises.title };
+  return {
+    title: dict.cruises.title,
+    alternates: localeAlternates("/cruceristas", locale),
+  };
 }
 
 export default async function CruceristasPage({ params }: Props) {

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Outfit, Syne } from "next/font/google";
 import { AppLoadingProvider } from "@/components/AppLoadingProvider";
 import { CartProvider } from "@/components/CartProvider";
+import { googleSiteVerification } from "@/lib/seo";
+import { resolvePublicOrigin } from "@/lib/voucher";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -18,7 +20,10 @@ const syne = Syne({
   display: "swap",
 });
 
+const siteVerification = googleSiteVerification();
+
 export const metadata: Metadata = {
+  metadataBase: new URL(resolvePublicOrigin()),
   title: {
     default: "Lanzarote Experience Tours - Visitas guiadas en Lanzarote",
     template: "%s | Lanzarote Experience Tours",
@@ -37,6 +42,7 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   manifest: "/site.webmanifest",
+  ...(siteVerification ? { verification: siteVerification } : {}),
 };
 
 export default function RootLayout({

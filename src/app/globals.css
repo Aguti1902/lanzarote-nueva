@@ -162,6 +162,50 @@ h3,
   color: #ffffff !important;
 }
 
+/* Negritas / encabezados del editor enriquecido (contentEditable → b/strong/font). */
+.rich-content b,
+.rich-content strong {
+  font-weight: 700 !important;
+  color: var(--ink);
+}
+
+.rich-content font[size="5"],
+.rich-content font[size="6"],
+.rich-content font[size="7"] {
+  display: block;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.25;
+  margin: 0.85em 0 0.35em;
+}
+
+.rich-content font[size="5"] {
+  font-size: 1.25rem;
+}
+
+.rich-content font[size="6"],
+.rich-content font[size="7"] {
+  font-size: 1.45rem;
+}
+
+.rich-content h2,
+.rich-content h3,
+.rich-content h4 {
+  font-weight: 700 !important;
+  color: var(--ink);
+}
+
+.rich-content-on-dark b,
+.rich-content-on-dark strong,
+.rich-content-on-dark font[size="5"],
+.rich-content-on-dark font[size="6"],
+.rich-content-on-dark font[size="7"],
+.rich-content-on-dark h2,
+.rich-content-on-dark h3,
+.rich-content-on-dark h4 {
+  color: #ffffff !important;
+}
+
 .prose-blog p {
   margin-bottom: 1.1rem;
   line-height: 1.8;

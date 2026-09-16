@@ -699,7 +699,7 @@ const es: Dictionary = {
       "La opción más flexible si viaja en familia o quiere un itinerario a medida.",
     scheduleKicker: "Temporada",
     scheduleTitle: "Calendario de escalas en Lanzarote",
-    scheduleText: "Consulta los barcos previstos en",
+    scheduleText: "Consulta los barcos previstos en Lanzarote.",
     scheduleEmpty: "Aún no hay escalas publicadas.",
     filterMonth: "Mes",
     searchShip: "Buscar",
@@ -756,9 +756,9 @@ const es: Dictionary = {
     dateCalendarKicker: "Fecha de escala",
     dateCalendarTitle: "Elija el día de su escala en Lanzarote",
     dateCalendarText:
-      "Pulse en el calendario la fecha en la que atraca su barco y verá las salidas disponibles en",
+      "Selecciona en el calendario la fecha en la que tu crucero hace escala en Lanzarote para ver los barcos y las excursiones disponibles.",
     dateCalendarLegend:
-      "Los días marcados tienen escalas. Pulse uno para ver los barcos y sus excursiones.",
+      "Los días marcados tienen escalas. Selecciona una fecha para ver los barcos y las excursiones disponibles.",
     dateCalendarEmptyDay: "No hay barcos publicados este día.",
     dateCalendarPickDay: "Seleccione un día del calendario para continuar.",
     dateCalendarNoItinerary:
@@ -1282,7 +1282,7 @@ const en: Dictionary = {
     privateText: "The most flexible option for families or a custom itinerary.",
     scheduleKicker: "Season",
     scheduleTitle: "Lanzarote cruise call calendar",
-    scheduleText: "See the ships scheduled at",
+    scheduleText: "See the ships scheduled in Lanzarote.",
     scheduleEmpty: "No published port calls yet.",
     filterMonth: "Month",
     searchShip: "Search",
@@ -1339,9 +1339,9 @@ const en: Dictionary = {
     dateCalendarKicker: "Port-call date",
     dateCalendarTitle: "Choose your Lanzarote port-call day",
     dateCalendarText:
-      "Tap the calendar on the day your ship docks and see the available sailings at",
+      "Select the date your cruise ship calls at Lanzarote to see the ships and shore excursions available.",
     dateCalendarLegend:
-      "Marked days have port calls. Tap one to see the ships and shore excursions.",
+      "Marked dates have cruise calls. Select a date to see the ships and available shore excursions.",
     dateCalendarEmptyDay: "No ships published for this day.",
     dateCalendarPickDay: "Select a day on the calendar to continue.",
     dateCalendarNoItinerary:
@@ -1863,7 +1863,7 @@ const de: Dictionary = {
       "Die flexibelste Option für Familien oder eine individuelle Route.",
     scheduleKicker: "Saison",
     scheduleTitle: "Kreuzfahrtkalender Lanzarote",
-    scheduleText: "Geplante Schiffe in",
+    scheduleText: "Geplante Schiffe in Lanzarote.",
     scheduleEmpty: "Noch keine veröffentlichten Anläufe.",
     filterMonth: "Monat",
     searchShip: "Suche",
@@ -1920,9 +1920,9 @@ const de: Dictionary = {
     dateCalendarKicker: "Hafentag",
     dateCalendarTitle: "Wählen Sie Ihren Hafentag auf Lanzarote",
     dateCalendarText:
-      "Tippen Sie im Kalender auf den Tag, an dem Ihr Schiff anlegt, und sehen Sie die verfügbaren Abfahrten in",
+      "Wählen Sie im Kalender das Datum aus, an dem Ihr Kreuzfahrtschiff Lanzarote anläuft, um die Schiffe und verfügbaren Landausflüge zu sehen.",
     dateCalendarLegend:
-      "Markierte Tage haben Hafenstopps. Tippen Sie auf einen Tag, um Schiffe und Ausflüge zu sehen.",
+      "An den markierten Tagen laufen Kreuzfahrtschiffe Lanzarote an. Wählen Sie ein Datum aus, um die Schiffe und verfügbaren Landausflüge zu sehen.",
     dateCalendarEmptyDay: "An diesem Tag sind keine Schiffe veröffentlicht.",
     dateCalendarPickDay: "Wählen Sie einen Tag im Kalender, um fortzufahren.",
     dateCalendarNoItinerary:
