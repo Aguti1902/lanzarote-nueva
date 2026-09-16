@@ -1,8 +1,44 @@
 import type { CruiseShoreTour } from "@/types";
 
+/** Infografía ES/EN/DE: muelles Las Marinas y Los Mármoles (puerto Arrecife). */
+export const LANZAROTE_PORT_MEETING_POINT_IMAGE =
+  "/images/cruise/punto-encuentro-lanzarote.jpg";
+
 /** Highlights that duplicate structured admin fields (max pax / duration). */
 const STALE_HIGHLIGHT =
   /(m[aá]ximo\s+\d+\s+personas)|(maximum\s+\d+\s+(people|persons))|(max\.?\s*\d+\s+personen)|(grupos?\s+peque[nñ]os)|(small\s+groups?)|(bis\s+zu\s+\d+\s+personen)|(hasta\s+\d+\s+personas)|(^duraci[oó]n\b)|(^tour\s+duration\b)|(^tourdauer\b)/i;
+
+export function isTimanfayaExpressShoreTour(
+  tour: Pick<CruiseShoreTour, "id" | "title" | "shortTitle">
+): boolean {
+  if (tour.id === "shore-4") return true;
+  const label = `${tour.title || ""} ${tour.shortTitle || ""}`.toLowerCase();
+  return /timanfaya\s*express/.test(label);
+}
+
+export function isLanzaroteShoreTour(
+  tour: Pick<CruiseShoreTour, "port">
+): boolean {
+  return /lanzarote/i.test(String(tour.port || ""));
+}
+
+/**
+ * Fotos del botón «Punto de encuentro».
+ * Si la ficha no tiene fotos propias y es Lanzarote (no Timanfaya Express),
+ * usa la infografía del puerto de Arrecife.
+ */
+export function shoreTourMeetingPointImages(
+  tour: Pick<
+    CruiseShoreTour,
+    "id" | "title" | "shortTitle" | "port" | "meetingPointImages"
+  >
+): string[] {
+  const custom = (tour.meetingPointImages || []).filter(Boolean);
+  if (custom.length) return custom;
+  if (isTimanfayaExpressShoreTour(tour)) return [];
+  if (isLanzaroteShoreTour(tour)) return [LANZAROTE_PORT_MEETING_POINT_IMAGE];
+  return [];
+}
 
 /** Cruceros: solo tarjeta (100% o depósito). Sin Bizum ni pago el día. */
 export function applyShoreTourPaymentPolicy<T extends Partial<CruiseShoreTour>>(

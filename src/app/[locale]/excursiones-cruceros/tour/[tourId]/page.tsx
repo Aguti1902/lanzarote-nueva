@@ -15,6 +15,7 @@ import { localizeShoreTour } from "@/lib/localize-content";
 import { isHttpUrl, mapEmbedUrl, youtubeEmbedUrl } from "@/lib/media-embeds";
 import {
   shoreTourDurationLabel,
+  shoreTourMeetingPointImages,
   shoreTourPublicHighlights,
 } from "@/lib/shore-tour-display";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -91,7 +92,7 @@ export default async function CruiseShoreTourPage({
   const mapSrc = mapEmbedUrl(tour.mapUrl);
   const mapLink =
     !mapSrc && isHttpUrl(tour.mapUrl) ? tour.mapUrl!.trim() : null;
-  const meetingImages = (tour.meetingPointImages || []).filter(Boolean);
+  const meetingImages = shoreTourMeetingPointImages(tour);
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-14">

@@ -8,6 +8,7 @@ import type { CruiseSailing, CruiseShoreTour } from "@/types";
 import { formatCruisePortName, formatDateShort, formatPrice } from "@/lib/format";
 import {
   shoreTourDurationLabel,
+  shoreTourMeetingPointImages,
   shoreTourPublicHighlights,
 } from "@/lib/shore-tour-display";
 import { resolveShoreToursForStop } from "@/lib/cruise-shore-match";
@@ -29,7 +30,9 @@ export function CruiseItinerary({ sailing, tours }: Props) {
   const meetingTour = meetingTourId
     ? tours.find((t) => t.id === meetingTourId)
     : undefined;
-  const meetingImages = meetingTour?.meetingPointImages?.filter(Boolean) || [];
+  const meetingImages = meetingTour
+    ? shoreTourMeetingPointImages(meetingTour)
+    : [];
 
   const nightsLabel =
     sailing.nights == null
