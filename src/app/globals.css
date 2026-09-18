@@ -215,6 +215,17 @@ h3,
   margin: 1rem 0 0.4rem;
 }
 
+/* Anclas internas (#iona, #faq…): compensar header sticky al saltar. */
+.rich-content h2[id],
+.rich-content h3[id],
+.rich-content h4[id],
+.rich-content p[id],
+.rich-content div[id],
+.rich-content span[id],
+.prose-blog [id] {
+  scroll-margin-top: 5.5rem;
+}
+
 .rich-content h3,
 .rich-content font[size="5"] {
   display: block;

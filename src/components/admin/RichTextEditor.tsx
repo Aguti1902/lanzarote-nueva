@@ -7,6 +7,7 @@ import {
   AlignLeft,
   AlignRight,
   Bold,
+  Bookmark,
   ImagePlus,
   Indent,
   Link2,
@@ -19,7 +20,11 @@ import {
   Unlink,
 } from "lucide-react";
 import type { ReactNode } from "react";
-import { normalizeEditorHref, sanitizeContentHtml } from "@/lib/sanitize-html";
+import {
+  normalizeEditorHref,
+  sanitizeAnchorId,
+  sanitizeContentHtml,
+} from "@/lib/sanitize-html";
 
 const SIZES = [
   { label: "Normal", value: "3" },
@@ -156,17 +161,21 @@ export function RichTextEditor({
     const selected = window.getSelection()?.toString().trim() || "";
     const raw = window.prompt(
       selected
-        ? "URL o ruta de la página (ej. /excursiones o https://…)"
-        : "URL o ruta. Si no hay texto seleccionado, se inserta el propio enlace.",
-      selected.startsWith("http") || selected.startsWith("/")
+        ? "URL, ruta o ancla interna (ej. #iona, /excursiones o https://…)"
+        : "URL, ruta o ancla. Sin texto seleccionado se inserta el propio enlace.",
+      selected.startsWith("http") ||
+        selected.startsWith("/") ||
+        selected.startsWith("#")
         ? selected
-        : "https://"
+        : selected
+          ? `#${sanitizeAnchorId(selected) || "seccion"}`
+          : "#"
     );
     if (raw == null) return;
     const href = normalizeEditorHref(raw);
     if (!href) {
       window.alert(
-        "Use una URL http(s), un correo mailto: o una ruta de esta web que empiece por /."
+        "Use #ancla (ej. #iona), una URL http(s), un correo mailto: o una ruta que empiece por /."
       );
       return;
     }
@@ -190,6 +199,61 @@ export function RichTextEditor({
       });
     }
     emit();
+  }
+
+  function markSectionAnchor() {
+    const root = ref.current;
+    if (!root) return;
+    root.focus();
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) {
+      window.alert("Coloque el cursor en el título o párrafo de la sección.");
+      return;
+    }
+    let node: Node | null = sel.anchorNode;
+    let el: HTMLElement | null =
+      node?.nodeType === Node.ELEMENT_NODE
+        ? (node as HTMLElement)
+        : node?.parentElement || null;
+    while (el && el !== root) {
+      const tag = el.tagName.toLowerCase();
+      if (
+        tag === "h2" ||
+        tag === "h3" ||
+        tag === "h4" ||
+        tag === "p" ||
+        tag === "div"
+      ) {
+        break;
+      }
+      el = el.parentElement;
+    }
+    if (!el || el === root) {
+      window.alert(
+        "Seleccione o sitúe el cursor en un título (Grande) o párrafo."
+      );
+      return;
+    }
+    const suggested =
+      sanitizeAnchorId(el.getAttribute("id") || el.textContent || "") ||
+      "seccion";
+    const raw = window.prompt(
+      "ID de la ancla (sin #). Ej.: iona, ventura, azura, faq",
+      suggested
+    );
+    if (raw == null) return;
+    const id = sanitizeAnchorId(raw);
+    if (!id) {
+      window.alert(
+        "Use solo letras, números y guiones (debe empezar por letra). Ej.: iona"
+      );
+      return;
+    }
+    el.setAttribute("id", id);
+    emit();
+    window.alert(
+      `Ancla marcada: #${id}\nEn el índice, enlace ese texto a #${id}`
+    );
   }
 
   async function insertUploadedImage(file: File) {
@@ -246,6 +310,12 @@ export function RichTextEditor({
           </ToolbarBtn>
           <ToolbarBtn title="Insertar enlace" onClick={insertLink}>
             <Link2 className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn
+            title="Marcar ancla de sección (para índice interno)"
+            onClick={markSectionAnchor}
+          >
+            <Bookmark className="h-4 w-4" />
           </ToolbarBtn>
           <ToolbarBtn title="Quitar enlace" onClick={() => run("unlink")}>
             <Unlink className="h-4 w-4" />
@@ -376,12 +446,14 @@ export function RichTextEditor({
       </div>
       <p className="text-xs text-ink-muted">
         Tipografía unificada automáticamente (misma que en la web pública). Use
-        negrita, enlace, listas y «Grande / Muy grande» solo para títulos.
+        negrita, enlace, listas y «Grande / Muy grande» solo para títulos. Para
+        un índice interno: marque cada sección con el icono de marcador (ancla)
+        y enlace desde arriba con <code className="text-[11px]">#iona</code>,{" "}
+        <code className="text-[11px]">#faq</code>, etc.
         {imagesFolder
           ? " Puede insertar imágenes subidas (con texto ALT)."
           : ""}{" "}
-        Seleccione un texto y pulse el icono de eslabón para vincularlo a otra
-        página.
+        Seleccione un texto y pulse el icono de eslabón para vincularlo.
       </p>
     </div>
   );
