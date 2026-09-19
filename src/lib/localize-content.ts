@@ -471,9 +471,15 @@ export async function localizeTransfers(
     }
   }
 
+  const extra = translations.transfers || {};
+  const { destinations: _ignoredDestinations, ...transferCopy } = extra as {
+    destinations?: unknown;
+    highlights?: string[];
+  } & Record<string, unknown>;
   return {
     ...data,
-    ...(translations.transfers || {}),
+    ...transferCopy,
+    destinations: data.destinations,
     ...(highlights?.length ? { highlights } : {}),
   };
 }

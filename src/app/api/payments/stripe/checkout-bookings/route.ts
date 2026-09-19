@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getBookings } from "@/lib/bookings";
 import { createStripeCheckoutForBookings } from "@/lib/booking-checkout";
 import { isStripeConfigured } from "@/lib/stripe";
+import { checkoutOriginFromRequest } from "@/lib/voucher";
 
 export const dynamic = "force-dynamic";
 
@@ -36,11 +37,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const origin =
-      String(body.origin || "") ||
-      (request.headers.get("x-forwarded-host")
-        ? `${request.headers.get("x-forwarded-proto") || "https"}://${request.headers.get("x-forwarded-host")}`
-        : new URL(request.url).origin);
+    const origin = checkoutOriginFromRequest(request, body.origin);
 
     const checkout = await createStripeCheckoutForBookings(bookings as never, {
       origin,

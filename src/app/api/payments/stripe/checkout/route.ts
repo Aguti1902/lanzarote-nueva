@@ -8,17 +8,9 @@ import {
   createStripeCheckoutForPayment,
   isStripeConfigured,
 } from "@/lib/stripe";
+import { checkoutOriginFromRequest } from "@/lib/voucher";
 
 export const dynamic = "force-dynamic";
-
-function originFromRequest(request: Request, bodyOrigin?: string): string {
-  if (bodyOrigin) return bodyOrigin;
-  const host = request.headers.get("x-forwarded-host");
-  if (host) {
-    return `${request.headers.get("x-forwarded-proto") || "https"}://${host}`;
-  }
-  return new URL(request.url).origin;
-}
 
 /** Create or refresh a Stripe Checkout Session for a payment link (100% card). */
 export async function POST(request: Request) {
@@ -37,7 +29,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const paymentId = String(body.paymentId || body.id || "");
     const hash = String(body.h || body.hash || "");
-    const origin = originFromRequest(request, body.origin);
+    const origin = checkoutOriginFromRequest(request, body.origin);
 
     let payment =
       (paymentId

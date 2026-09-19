@@ -7,6 +7,7 @@ import {
   createStripeCheckoutForPayment,
   isStripeConfigured,
 } from "@/lib/stripe";
+import { checkoutOriginFromRequest } from "@/lib/voucher";
 
 export const dynamic = "force-dynamic";
 
@@ -67,11 +68,7 @@ export async function POST(request: Request) {
     }
 
     const action = String(body.action || "pay");
-    const origin =
-      String(body.origin || "") ||
-      (request.headers.get("x-forwarded-host")
-        ? `${request.headers.get("x-forwarded-proto") || "https"}://${request.headers.get("x-forwarded-host")}`
-        : new URL(request.url).origin);
+    const origin = checkoutOriginFromRequest(request, body.origin);
 
     const customerName =
       (body.customerName && String(body.customerName).trim()) ||
