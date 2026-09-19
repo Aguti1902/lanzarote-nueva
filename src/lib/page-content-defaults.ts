@@ -11,7 +11,7 @@ export const DEFAULT_EXCURSIONS_FAQS: PageFaqItem[] = [
   {
     id: "exc-faq-2",
     question: "¿Cuáles son las formas de pago disponibles?",
-    answer: "Puede pagar con tarjeta de crédito o débito a través de Stripe.",
+    answer: "Puede pagar con tarjeta de crédito o débito, Apple Pay o Google Pay a través de Stripe.",
   },
   {
     id: "exc-faq-3",

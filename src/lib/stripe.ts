@@ -117,7 +117,7 @@ export async function createStripeCheckoutForPayment(
 
   const sessionParams: Stripe.Checkout.SessionCreateParams = {
     mode: "payment",
-    // Solo tarjeta. No usamos los métodos del Dashboard (PayPal, etc.).
+    // Tarjeta + Apple Pay + Google Pay (wallets de card). Sin PayPal.
     payment_method_types: ["card"],
     customer_email: safeEmail,
     client_reference_id: payment.id.slice(0, 200),
