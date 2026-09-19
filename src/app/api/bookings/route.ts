@@ -53,6 +53,7 @@ import {
 } from "@/lib/tour-availability";
 import { isFlatPriceTour } from "@/lib/tour-pricing";
 import { isStripeConfigured } from "@/lib/stripe";
+import { checkoutOriginFromRequest } from "@/lib/voucher";
 import type { BookingStatus, PaymentMethod } from "@/types";
 import { requireAdmin } from "@/lib/admin-auth";
 import {
@@ -275,6 +276,7 @@ export async function POST(request: Request) {
           : undefined;
       const dest =
         transfers.destinations.find((d) => d.id === destId) ||
+        transfers.destinations.find((d) => d.slug === destId) ||
         transfers.destinations.find(
           (d) => d.name.toLowerCase() === String(destName || "").toLowerCase()
         );
@@ -285,11 +287,21 @@ export async function POST(request: Request) {
           dir === "hotel_to_airport" ||
           dir === "return")
       ) {
-        resolvedTotal = calcTransferTotal({
+        const priced = calcTransferTotal({
           destination: dest,
           direction: dir,
           passengers: adultsNum + childrenNum,
         });
+        if (priced > 0) resolvedTotal = priced;
+      }
+      if (resolvedTotal <= 0) {
+        return NextResponse.json(
+          {
+            error:
+              "El precio de este traslado no es válido. Recargue la página e inténtelo de nuevo.",
+          },
+          { status: 400 }
+        );
       }
     }
 
@@ -375,10 +387,7 @@ export async function POST(request: Request) {
       awaitingStripe && !skipStripeCheckout && isStripeConfigured();
 
     if (wantsOnline) {
-      const origin =
-        request.headers.get("x-forwarded-host")
-          ? `${request.headers.get("x-forwarded-proto") || "https"}://${request.headers.get("x-forwarded-host")}`
-          : new URL(request.url).origin;
+      const origin = checkoutOriginFromRequest(request);
       try {
         const checkout = await createStripeCheckoutForBookings([booking], {
           origin,

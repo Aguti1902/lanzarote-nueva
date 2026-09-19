@@ -13,6 +13,32 @@ import { customerFacingNotes } from "@/lib/customer-notes";
 import type { Locale } from "@/i18n/config";
 import { localePath } from "@/i18n/path";
 
+const FALLBACK_PUBLIC_ORIGIN = "https://www.lanzaroteexperiencetours.com";
+
+/** Host público https, sin listas de x-forwarded-host ni http (Stripe lo rechaza). */
+export function sanitizePublicOrigin(raw?: string | null): string {
+  const first = String(raw || "")
+    .split(",")[0]
+    .trim()
+    .replace(/^['"]|['"]$/g, "");
+  if (!first) return FALLBACK_PUBLIC_ORIGIN;
+  const host = first
+    .replace(/^https?:\/\//i, "")
+    .split("/")[0]
+    .replace(/:\d+$/, "")
+    .trim()
+    .toLowerCase();
+  if (
+    !host ||
+    host === "localhost" ||
+    host === "127.0.0.1" ||
+    host.startsWith("[")
+  ) {
+    return FALLBACK_PUBLIC_ORIGIN;
+  }
+  return `https://${host}`;
+}
+
 export function resolvePublicOrigin(origin?: string): string {
   const raw =
     (origin && origin.trim()) ||
@@ -21,9 +47,25 @@ export function resolvePublicOrigin(origin?: string): string {
       ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
       : "") ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "") ||
-    "https://lanzarote-nueva.vercel.app";
-  const withProto = raw.startsWith("http") ? raw : `https://${raw}`;
-  return withProto.replace(/\/$/, "");
+    FALLBACK_PUBLIC_ORIGIN;
+  return sanitizePublicOrigin(raw);
+}
+
+/** Origen para Checkout Stripe: SITE_URL o el host público de la petición. */
+export function checkoutOriginFromRequest(
+  request: Request,
+  bodyOrigin?: string
+): string {
+  const site = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (site) return sanitizePublicOrigin(site);
+  if (bodyOrigin?.trim()) return sanitizePublicOrigin(bodyOrigin);
+  const host = request.headers.get("x-forwarded-host");
+  if (host) return sanitizePublicOrigin(host);
+  try {
+    return sanitizePublicOrigin(new URL(request.url).origin);
+  } catch {
+    return resolvePublicOrigin();
+  }
 }
 
 export type VoucherCompany = {

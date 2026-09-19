@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import type { PaymentLink } from "@/types";
+import { resolvePublicOrigin, sanitizePublicOrigin } from "@/lib/voucher";
 
 let stripeClient: Stripe | null = null;
 
@@ -17,14 +18,11 @@ export function getStripe(): Stripe | null {
 }
 
 export function absoluteUrl(path: string, origin?: string): string {
-  const base =
-    origin ||
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    process.env.VERCEL_PROJECT_PRODUCTION_URL ||
-    process.env.VERCEL_URL ||
-    "http://localhost:3000";
-  const normalized = base.startsWith("http") ? base : `https://${base}`;
-  return `${normalized.replace(/\/$/, "")}${path.startsWith("/") ? path : `/${path}`}`;
+  const base = origin
+    ? sanitizePublicOrigin(origin)
+    : resolvePublicOrigin();
+  const suffix = path.startsWith("/") ? path : `/${path}`;
+  return `${base}${suffix}`;
 }
 
 export type StripeCheckoutOptions = {
