@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { CruiseCompanySailings } from "@/components/CruiseCompanySailings";
 import {
   getCruiseCompanies,
@@ -8,6 +8,8 @@ import {
 } from "@/lib/cruise-itineraries";
 import { getDictionary } from "@/i18n/dictionaries";
 import { resolveLocale } from "@/i18n/get-locale";
+import { localePath } from "@/i18n/path";
+import { localeAlternates } from "@/lib/seo";
 
 /** ISR: HTML/RSC cacheados; CMS se refresca ~cada 60s o al guardar. */
 export const revalidate = 300;
@@ -24,14 +26,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!company) return { title: dict.cruises.browseTitle };
   return {
     title: `${dict.cruises.upcomingCruises} ${company.name}`,
+    alternates: localeAlternates(
+      `/excursiones-cruceros/${company.slug}`,
+      locale
+    ),
   };
 }
 
 export default async function CruiseCompanyPage({ params }: Props) {
   const { locale: raw, company: companySlug } = await params;
-  resolveLocale(raw);
+  const locale = resolveLocale(raw);
   const company = await getCruiseCompany(companySlug);
   if (!company) notFound();
+  if (company.slug !== companySlug) {
+    permanentRedirect(
+      localePath(locale, `/excursiones-cruceros/${company.slug}`)
+    );
+  }
 
   const [sailings, companies] = await Promise.all([
     getSailingsByCompany(company.slug),

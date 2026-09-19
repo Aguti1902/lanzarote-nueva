@@ -52,6 +52,11 @@ export async function middleware(request: NextRequest) {
 
   // —— Panel admin (páginas) ——
   if (pathname.startsWith("/admin")) {
+    if (pathname.length > 1 && pathname.endsWith("/")) {
+      const url = request.nextUrl.clone();
+      url.pathname = pathname.slice(0, -1);
+      return securityHeaders(NextResponse.redirect(url, 301));
+    }
     if (pathname === "/admin/login") {
       // Si ya hay sesión, ir al panel
       if (await isAdmin(request)) {
@@ -97,11 +102,20 @@ export async function middleware(request: NextRequest) {
     return securityHeaders(NextResponse.next());
   }
 
-  // URLs de la web antigua → rutas nuevas (301)
-  const legacyTarget = resolveLegacyRedirect(pathname);
+  // URLs de la web antigua → rutas nuevas (301, un solo salto).
+  const stripped =
+    pathname.length > 1 && pathname.endsWith("/")
+      ? pathname.slice(0, -1)
+      : pathname;
+  const legacyTarget = resolveLegacyRedirect(stripped);
   if (legacyTarget && legacyTarget !== pathname) {
     const url = request.nextUrl.clone();
     url.pathname = legacyTarget;
+    return securityHeaders(NextResponse.redirect(url, 301));
+  }
+  if (stripped !== pathname) {
+    const url = request.nextUrl.clone();
+    url.pathname = stripped;
     return securityHeaders(NextResponse.redirect(url, 301));
   }
 
