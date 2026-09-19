@@ -6,6 +6,7 @@ import type {
   CruiseSailing,
   CruiseShoreTour,
 } from "@/types";
+import { canonicalCruiseCompanySlug } from "@/lib/cruise-company-aliases";
 import { cruiseCompanyDisplayName } from "@/lib/cruise-company-display";
 import { readCmsJson, readCmsJsonFresh, readCmsJsonIfExists, writeCmsJson } from "@/lib/supabase/cms-store";
 import { applyShoreTourPaymentPolicy } from "@/lib/shore-tour-display";
@@ -178,7 +179,11 @@ export async function getCruiseCompany(
   slug: string
 ): Promise<CruiseCompany | undefined> {
   const companies = await getCruiseCompanies();
-  return companies.find((c) => c.slug === slug);
+  const wanted = canonicalCruiseCompanySlug(slug);
+  return (
+    companies.find((c) => c.slug === wanted) ||
+    companies.find((c) => c.slug === slug)
+  );
 }
 
 export async function getCruiseShoreTours(): Promise<CruiseShoreTour[]> {

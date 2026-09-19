@@ -5,6 +5,7 @@ import { blogSlugForLocale } from "@/i18n/blog-slugs";
 import { tourSlugForLocale } from "@/i18n/tour-slugs";
 import { filterBlogPostsByLocale } from "@/lib/blog-locale";
 import { getBlogPosts, getPublicTours } from "@/lib/content";
+import { getCruiseCompanies } from "@/lib/cruise-itineraries";
 import { resolvePublicOrigin } from "@/lib/voucher";
 
 export const revalidate = 3600;
@@ -56,6 +57,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           lastModified: now,
           changeFrequency: "weekly",
           priority: 0.8,
+        });
+      }
+    }
+  } catch {
+    /* CMS no disponible en build: sitemap parcial */
+  }
+
+  try {
+    const companies = await getCruiseCompanies();
+    for (const company of companies) {
+      if (company.active === false) continue;
+      for (const locale of locales) {
+        entries.push({
+          url: abs(
+            locale,
+            `/excursiones-cruceros/${company.slug}`,
+            origin
+          ),
+          lastModified: now,
+          changeFrequency: "weekly",
+          priority: 0.75,
         });
       }
     }

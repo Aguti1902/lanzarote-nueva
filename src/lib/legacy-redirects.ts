@@ -1,3 +1,4 @@
+import { canonicalCruiseCompanySlug } from "./cruise-company-aliases";
 import { buildTourSlugRedirects } from "../i18n/tour-slugs";
 
 /**
@@ -124,6 +125,34 @@ export function normalizePathname(pathname: string): string {
   return noQuery || "/";
 }
 
+const CRUISE_COMPANY_PATH_PREFIXES = [
+  "/en/shore-excursions/",
+  "/en/cruise-excursions/",
+  "/es/excursiones-cruceros/",
+  "/de/kreuzfahrtausfluege/",
+  "/de/kreuzfahrtausfluge/",
+];
+
+function remapCruiseCompanyPath(pathname: string): string | null {
+  const path = normalizePathname(pathname);
+  const lower = path.toLowerCase();
+  for (const prefix of CRUISE_COMPANY_PATH_PREFIXES) {
+    if (!lower.startsWith(prefix)) continue;
+    const rest = path.slice(prefix.length);
+    if (!rest || rest.includes("/")) continue;
+    const canonical = canonicalCruiseCompanySlug(rest);
+    if (canonical === rest) return null;
+    const destPrefix =
+      prefix === "/en/cruise-excursions/"
+        ? "/en/shore-excursions/"
+        : prefix === "/de/kreuzfahrtausfluge/"
+          ? "/de/kreuzfahrtausfluege/"
+          : prefix;
+    return `${destPrefix}${canonical}`;
+  }
+  return null;
+}
+
 export function resolveLegacyRedirect(pathname: string): string | null {
   const path = normalizePathname(pathname);
   const lower = path.toLowerCase();
@@ -136,9 +165,10 @@ export function resolveLegacyRedirect(pathname: string): string | null {
     const from = rule.fromPrefix.toLowerCase();
     if (lower.startsWith(from) && rule.fromPrefix !== rule.toPrefix) {
       const rest = path.slice(rule.fromPrefix.length);
-      return `${rule.toPrefix}${rest}`.replace(/\/{2,}/g, "/");
+      const mapped = `${rule.toPrefix}${rest}`.replace(/\/{2,}/g, "/");
+      return remapCruiseCompanyPath(mapped) || mapped;
     }
   }
 
-  return null;
+  return remapCruiseCompanyPath(path);
 }

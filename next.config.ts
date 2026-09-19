@@ -19,18 +19,21 @@ const legacyRedirects = Object.entries(LEGACY_PATH_REDIRECTS).flatMap(
       {
         source,
         destination,
-        permanent: true as const,
+        statusCode: 301 as const,
       },
       {
         source: `${source}/`,
         destination,
-        permanent: true as const,
+        statusCode: 301 as const,
       },
     ];
   }
 );
 
 const nextConfig: NextConfig = {
+  // Evita el 308 automático /ruta/ → /ruta, para poder 301 de una sola vez
+  // (p. ej. /en/cruise-excursions/marella-cruises/ → /en/shore-excursions/...).
+  skipTrailingSlashRedirect: true,
   // Cloud agent / remote browser may hit the app via 127.0.0.1
   allowedDevOrigins: ["127.0.0.1", "localhost"],
   serverExternalPackages: ["exceljs"],
@@ -88,83 +91,93 @@ const nextConfig: NextConfig = {
       {
         source: "/de/ausfluge",
         destination: "/de/ausfluege",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/de/ausfluge/:path*",
         destination: "/de/ausfluege/:path*",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/en/cruise-excursions",
         destination: "/en/shore-excursions",
-        permanent: true,
+        statusCode: 301,
+      },
+      {
+        source: "/en/cruise-excursions/",
+        destination: "/en/shore-excursions",
+        statusCode: 301,
       },
       {
         source: "/en/cruise-excursions/:path*",
         destination: "/en/shore-excursions/:path*",
-        permanent: true,
+        statusCode: 301,
+      },
+      {
+        source: "/en/cruise-excursions/:path*/",
+        destination: "/en/shore-excursions/:path*",
+        statusCode: 301,
       },
       {
         source: "/de/kreuzfahrtausfluge",
         destination: "/de/kreuzfahrtausfluege",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/de/kreuzfahrtausfluge/:path*",
         destination: "/de/kreuzfahrtausfluege/:path*",
-        permanent: true,
+        statusCode: 301,
       },
       // Prefijos ES con locale EN/DE → slugs traducidos
       {
         source: "/en/excursiones",
         destination: "/en/excursions",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/en/excursiones/:path*",
         destination: "/en/excursions/:path*",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/de/excursiones",
         destination: "/de/ausfluege",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/de/excursiones/:path*",
         destination: "/de/ausfluege/:path*",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/en/excursiones-cruceros",
         destination: "/en/shore-excursions",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/en/excursiones-cruceros/:path*",
         destination: "/en/shore-excursions/:path*",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/de/excursiones-cruceros",
         destination: "/de/kreuzfahrtausfluege",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/de/excursiones-cruceros/:path*",
         destination: "/de/kreuzfahrtausfluege/:path*",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/en/crucero/:path*",
         destination: "/en/cruise/:path*",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/de/crucero/:path*",
         destination: "/de/kreuzfahrt/:path*",
-        permanent: true,
+        statusCode: 301,
       },
     ];
   },
