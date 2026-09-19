@@ -117,8 +117,7 @@ export async function createStripeCheckoutForPayment(
 
   const sessionParams: Stripe.Checkout.SessionCreateParams = {
     mode: "payment",
-    // Tarjeta siempre. Si el Dashboard tiene un método mal configurado
-    // (PayPal, etc.), Stripe rechazaba toda la sesión.
+    // Solo tarjeta. No usamos los métodos del Dashboard (PayPal, etc.).
     payment_method_types: ["card"],
     customer_email: safeEmail,
     client_reference_id: payment.id.slice(0, 200),
@@ -156,17 +155,7 @@ export async function createStripeCheckoutForPayment(
     cancel_url: safeCancel,
   };
 
-  let session: Stripe.Checkout.Session;
-  try {
-    session = await stripe.checkout.sessions.create(sessionParams);
-  } catch (err) {
-    const { payment_method_types: _pm, ...withoutTypes } = sessionParams;
-    try {
-      session = await stripe.checkout.sessions.create(withoutTypes);
-    } catch {
-      throw err;
-    }
-  }
+  const session = await stripe.checkout.sessions.create(sessionParams);
 
   if (!session.url) {
     throw new Error("Stripe no devolvió URL de Checkout");

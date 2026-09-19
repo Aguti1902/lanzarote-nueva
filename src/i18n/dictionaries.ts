@@ -596,7 +596,7 @@ const es: Dictionary = {
       },
       {
         q: "¿Cuáles son las formas de pago disponibles?",
-        a: "Puede pagar con tarjeta de crédito, PayPal o Stripe.",
+        a: "Puede pagar con tarjeta de crédito o débito a través de Stripe.",
       },
       {
         q: "¿Dónde será el punto de encuentro con el guía?",
