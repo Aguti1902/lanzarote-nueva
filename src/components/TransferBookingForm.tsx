@@ -145,7 +145,11 @@ export function TransferBookingForm({
         window.location.href = data.checkoutUrl;
         return;
       }
-      router.push(`${href("/reserva/confirmacion")}?id=${data.booking.id}`);
+      if (data.booking?.id) {
+        router.push(`${href("/reserva/confirmacion")}?id=${data.booking.id}`);
+        return;
+      }
+      throw new Error(data.error || "Error");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error");
     } finally {

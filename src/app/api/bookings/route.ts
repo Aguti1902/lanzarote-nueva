@@ -35,10 +35,7 @@ import {
   type TransferDirection,
 } from "@/lib/transfer-price";
 import { createStripeCheckoutForBookings, clearStripeSessionFields } from "@/lib/booking-checkout";
-import {
-  discardUnpaidCheckoutBookings,
-  cancelUnpaidConfirmedCheckouts,
-} from "@/lib/checkout-abandon";
+import { cancelUnpaidConfirmedCheckouts } from "@/lib/checkout-abandon";
 import {
   expectedOnlineCharge,
   isOnlineCardMethod,
@@ -61,6 +58,8 @@ import {
   resolveCreateBookingLocale,
 } from "@/lib/booking-locale";
 import { normalizeBookingPhone } from "@/lib/phone";
+
+export const maxDuration = 60;
 
 /** Solo factura automática si hay cobro con tarjeta. El efectivo no se factura. */
 function shouldAutoIssueInvoice(booking: {
@@ -388,6 +387,7 @@ export async function POST(request: Request) {
 
     if (wantsOnline) {
       const origin = checkoutOriginFromRequest(request);
+      let stripeError = "";
       try {
         const checkout = await createStripeCheckoutForBookings([booking], {
           origin,
@@ -396,18 +396,25 @@ export async function POST(request: Request) {
         if (checkout) {
           checkoutUrl = checkout.checkoutUrl;
           paymentId = checkout.payment.id;
+        } else {
+          stripeError = "Stripe no devolvió URL de Checkout";
         }
       } catch (err) {
+        stripeError = err instanceof Error ? err.message : String(err);
         console.error("[bookings] stripe checkout failed", err);
       }
       if (!checkoutUrl) {
-        await discardUnpaidCheckoutBookings([booking.id]);
         return NextResponse.json(
           {
-            error:
-              "No se pudo iniciar el pago. La reserva no se ha creado. Inténtelo de nuevo.",
+            booking,
+            checkoutUrl: null,
+            paymentId,
+            stripeConfigured: isStripeConfigured(),
+            error: stripeError
+              ? `No se pudo iniciar el pago: ${stripeError}`
+              : "No se pudo iniciar el pago. Inténtelo de nuevo.",
           },
-          { status: 503 }
+          { status: 201 }
         );
       }
     }

@@ -25,6 +25,22 @@ export function absoluteUrl(path: string, origin?: string): string {
   return `${base}${suffix}`;
 }
 
+function assertHttpsCheckoutUrl(value: string, label: string): string {
+  let parsed: URL;
+  try {
+    parsed = new URL(value);
+  } catch {
+    throw new Error(`${label} inválida: ${value}`);
+  }
+  if (parsed.protocol === "http:") {
+    parsed.protocol = "https:";
+  }
+  if (parsed.protocol !== "https:") {
+    throw new Error(`${label} debe ser https: ${value}`);
+  }
+  return parsed.toString();
+}
+
 export type StripeCheckoutOptions = {
   origin?: string;
   locale?: string;
@@ -90,17 +106,26 @@ export async function createStripeCheckoutForPayment(
     ...(payment.bookingId ? [payment.bookingId] : []),
   ].filter((id, i, arr) => arr.indexOf(id) === i);
 
-  const session = await stripe.checkout.sessions.create({
+  const email = String(payment.customerEmail || "").trim();
+  const safeEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : undefined;
+  const productName = (payment.concept || "Pago Lanzarote Experience")
+    .replace(/[→↔]/g, "-")
+    .slice(0, 120);
+
+  const safeSuccess = assertHttpsCheckoutUrl(successUrl, "success_url");
+  const safeCancel = assertHttpsCheckoutUrl(cancelUrl, "cancel_url");
+
+  const sessionParams: Stripe.Checkout.SessionCreateParams = {
     mode: "payment",
-    // Sin payment_method_types: Stripe usa los métodos activos del Dashboard
-    // (tarjeta, PayPal, etc.).
-    customer_email: payment.customerEmail || undefined,
-    client_reference_id: payment.id,
-    // Por defecto ~30 min; en recordatorio de pago incompleto se puede alargar (máx. ~24 h).
+    // Tarjeta siempre. Si el Dashboard tiene un método mal configurado
+    // (PayPal, etc.), Stripe rechazaba toda la sesión.
+    payment_method_types: ["card"],
+    customer_email: safeEmail,
+    client_reference_id: payment.id.slice(0, 200),
     expires_at:
       Math.floor(Date.now() / 1000) +
       Math.min(
-        Math.max(options?.expiresInMinutes ?? 31, 31),
+        Math.max(options?.expiresInMinutes ?? 60, 31),
         24 * 60 - 1
       ),
     line_items: [
@@ -110,7 +135,7 @@ export async function createStripeCheckoutForPayment(
           currency: "eur",
           unit_amount: amountCents,
           product_data: {
-            name: payment.concept.slice(0, 120) || "Pago Lanzarote Experience",
+            name: productName,
             description: descriptionParts.join(" · ").slice(0, 500),
           },
         },
@@ -123,13 +148,25 @@ export async function createStripeCheckoutForPayment(
       serviceType: payment.serviceType || "custom",
       serviceId: payment.serviceId || "",
       bookingId: payment.bookingId || bookingIds[0] || "",
-      bookingIds: bookingIds.join(","),
+      bookingIds: bookingIds.join(",").slice(0, 500),
       chargeFull: payment.chargeFull === false ? "0" : "1",
       expectedAmount: String(amountCents),
     },
-    success_url: successUrl,
-    cancel_url: cancelUrl,
-  });
+    success_url: safeSuccess,
+    cancel_url: safeCancel,
+  };
+
+  let session: Stripe.Checkout.Session;
+  try {
+    session = await stripe.checkout.sessions.create(sessionParams);
+  } catch (err) {
+    const { payment_method_types: _pm, ...withoutTypes } = sessionParams;
+    try {
+      session = await stripe.checkout.sessions.create(withoutTypes);
+    } catch {
+      throw err;
+    }
+  }
 
   if (!session.url) {
     throw new Error("Stripe no devolvió URL de Checkout");
