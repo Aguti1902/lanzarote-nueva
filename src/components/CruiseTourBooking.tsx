@@ -191,12 +191,15 @@ export function CruiseTourBooking({
         }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || dict.booking.bookError);
       if (data.checkoutUrl) {
         window.location.href = data.checkoutUrl;
         return;
       }
-      router.push(`${href("/reserva/confirmacion")}?id=${data.booking.id}`);
+      if (data.booking?.id) {
+        router.push(`${href("/reserva/confirmacion")}?id=${data.booking.id}`);
+        return;
+      }
+      throw new Error(data.error || dict.booking.bookError);
     } catch (err) {
       setError(err instanceof Error ? err.message : dict.booking.bookError);
     } finally {

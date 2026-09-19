@@ -25,6 +25,46 @@ export function absoluteUrl(path: string, origin?: string): string {
   return `${base}${suffix}`;
 }
 
+function stripeErrorMessage(err: unknown): string {
+  if (err && typeof err === "object") {
+    const rec = err as { message?: string; raw?: { message?: string } };
+    return rec.raw?.message || rec.message || String(err);
+  }
+  return String(err);
+}
+
+/**
+ * Crea Checkout sin PayPal, con reintentos:
+ * 1) Métodos del Dashboard excepto PayPal (incluye tarjeta, Apple Pay, Google Pay).
+ * 2) Solo tarjeta (wallets incluidas).
+ * 3) Dashboard sin exclusiones (último recurso si 1/2 las rechaza la cuenta).
+ */
+async function createCheckoutSession(
+  stripe: Stripe,
+  base: Stripe.Checkout.SessionCreateParams
+): Promise<Stripe.Checkout.Session> {
+  const attempts: Stripe.Checkout.SessionCreateParams[] = [
+    { ...base, excluded_payment_method_types: ["paypal"] },
+    { ...base, payment_method_types: ["card"] },
+    base,
+  ];
+  let lastError: unknown;
+  for (const params of attempts) {
+    try {
+      return await stripe.checkout.sessions.create(params);
+    } catch (err) {
+      lastError = err;
+      console.error(
+        "[stripe] checkout session failed",
+        stripeErrorMessage(err)
+      );
+    }
+  }
+  throw lastError instanceof Error
+    ? lastError
+    : new Error(stripeErrorMessage(lastError));
+}
+
 function assertHttpsCheckoutUrl(value: string, label: string): string {
   let parsed: URL;
   try {
@@ -114,11 +154,12 @@ export async function createStripeCheckoutForPayment(
 
   const safeSuccess = assertHttpsCheckoutUrl(successUrl, "success_url");
   const safeCancel = assertHttpsCheckoutUrl(cancelUrl, "cancel_url");
+  const checkoutLocale =
+    locale === "en" || locale === "de" || locale === "es" ? locale : "es";
 
   const sessionParams: Stripe.Checkout.SessionCreateParams = {
     mode: "payment",
-    // Tarjeta + Apple Pay + Google Pay (wallets de card). Sin PayPal.
-    payment_method_types: ["card"],
+    locale: checkoutLocale,
     customer_email: safeEmail,
     client_reference_id: payment.id.slice(0, 200),
     expires_at:
@@ -155,7 +196,7 @@ export async function createStripeCheckoutForPayment(
     cancel_url: safeCancel,
   };
 
-  const session = await stripe.checkout.sessions.create(sessionParams);
+  const session = await createCheckoutSession(stripe, sessionParams);
 
   if (!session.url) {
     throw new Error("Stripe no devolvió URL de Checkout");

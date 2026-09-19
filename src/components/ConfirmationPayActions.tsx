@@ -71,23 +71,31 @@ export function ConfirmationPayActions({
     const sync = async () => {
       attempts += 1;
       try {
-        const res = await fetch("/api/bookings");
-        const data = await res.json();
-        const fresh = ((data.bookings || []) as Booking[]).find(
-          (b) => b.id === booking.id
-        );
-        if (!fresh || cancelled) return;
+        const res = await fetch("/api/bookings/payment-status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: booking.id,
+            email: booking.customer.email,
+          }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || cancelled) return;
 
-        const paid = Number(fresh.amountPaidCard) || 0;
+        const paid = Number(data.amountPaidCard) || 0;
         if (paid > 0) {
           setPaidCard(paid);
-          setStatus(fresh.paymentStatus);
+          setStatus(data.paymentStatus);
           setWaitingStripe(false);
-          await ensureInvoice(fresh);
+          await ensureInvoice({
+            ...booking,
+            amountPaidCard: paid,
+            invoiceId: data.invoiceId || booking.invoiceId,
+          });
           return;
         }
-        if (fresh.invoiceId) {
-          setInvoiceId(fresh.invoiceId);
+        if (data.invoiceId) {
+          setInvoiceId(data.invoiceId);
         }
       } catch {
         /* ignore */
