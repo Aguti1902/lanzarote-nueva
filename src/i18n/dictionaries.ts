@@ -414,6 +414,8 @@ export type Dictionary = {
     print: string;
     payCancelledTitle: string;
     payCancelledBody: string;
+    payPendingTitle: string;
+    payPendingBody: string;
   };
   payments: {
     card: string;
@@ -1035,6 +1037,9 @@ const es: Dictionary = {
     payCancelledTitle: "Pago no completado",
     payCancelledBody:
       "No se ha creado ninguna reserva porque el pago no se realizó. Puede volver a reservar cuando quiera.",
+    payPendingTitle: "Falta completar el pago",
+    payPendingBody:
+      "Su reserva está guardada. Pulse el botón de pago para pagar con tarjeta, Apple Pay o Google Pay.",
   },
   payments: {
     card: "Pago 100% online",
@@ -1614,6 +1619,9 @@ const en: Dictionary = {
     payCancelledTitle: "Payment not completed",
     payCancelledBody:
       "No booking was created because the payment was not completed. You can book again whenever you like.",
+    payPendingTitle: "Payment still needed",
+    payPendingBody:
+      "Your booking is saved. Use the payment button to pay by card, Apple Pay or Google Pay.",
   },
   payments: {
     card: "100% online payment",
@@ -2202,6 +2210,9 @@ const de: Dictionary = {
     payCancelledTitle: "Zahlung nicht abgeschlossen",
     payCancelledBody:
       "Es wurde keine Buchung erstellt, weil die Zahlung nicht erfolgt ist. Sie können jederzeit erneut buchen.",
+    payPendingTitle: "Zahlung noch ausstehend",
+    payPendingBody:
+      "Ihre Buchung ist gespeichert. Zahlen Sie per Karte, Apple Pay oder Google Pay.",
   },
   payments: {
     card: "100% Online-Zahlung",

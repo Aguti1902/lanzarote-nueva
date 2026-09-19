@@ -140,7 +140,6 @@ export function TransferBookingForm({
         }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Error");
       if (data.checkoutUrl) {
         window.location.href = data.checkoutUrl;
         return;

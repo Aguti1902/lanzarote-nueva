@@ -54,7 +54,8 @@ export default async function ConfirmacionPage({ params, searchParams }: Props) 
   }
 
   const awaiting = Boolean(booking && isAwaitingOnlinePayment(booking));
-  const showAsCancelled = payCancelled || (awaiting && paid !== "1");
+  const showPayPending = awaiting && paid !== "1";
+  const showAsCancelled = payCancelled && !booking;
 
   function payLabel(method: PaymentMethod) {
     return dict.payments[method] ?? method;
@@ -82,17 +83,23 @@ export default async function ConfirmacionPage({ params, searchParams }: Props) 
       {showAsCancelled ? (
         <XCircle className="h-14 w-14 text-red-600" />
       ) : (
-        <CheckCircle2 className="h-14 w-14 text-success" />
+        <CheckCircle2
+          className={`h-14 w-14 ${showPayPending ? "text-amber-500" : "text-success"}`}
+        />
       )}
       <h1 className="mt-5 font-display text-3xl text-ink md:text-4xl">
         {showAsCancelled
           ? dict.confirmation.payCancelledTitle
-          : dict.confirmation.title}
+          : showPayPending
+            ? dict.confirmation.payPendingTitle
+            : dict.confirmation.title}
       </h1>
       <p className="mt-3 max-w-lg text-ink-muted">
         {showAsCancelled
           ? dict.confirmation.payCancelledBody
-          : dict.confirmation.body}
+          : showPayPending
+            ? dict.confirmation.payPendingBody
+            : dict.confirmation.body}
       </p>
 
       {booking && !showAsCancelled ? (
