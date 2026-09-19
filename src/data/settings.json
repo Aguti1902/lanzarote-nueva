@@ -67,7 +67,7 @@
     {
       "id": "exc-faq-4",
       "question": "¿Cuáles son las formas de pago disponibles?",
-      "answer": "<div class=\"n6owBd awi2gc\" data-sfc-cp=\"\" jsaction=\"\" jscontroller=\"TDBkbc#Ml18Xb\" data-sfc-root=\"ep\" jsuid=\"Tgcxzb_1u\" data-hveid=\"CAAIChAT\" data-complete=\"true\" data-processed=\"true\" data-copy-service-computed-style=\"font-family: &quot;Google Sans&quot;, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);\" style=\"font-size: 16px; border-bottom: 0px rgb(10, 10, 10);\">Para tu total comodidad y seguridad, aceptamos pagos con tarjeta de crédito/débito a través de Stripe. Nuestro sistema de pago está totalmente encriptado y protegido.</div>"
+      "answer": "<div class=\"n6owBd awi2gc\" data-sfc-cp=\"\" jsaction=\"\" jscontroller=\"TDBkbc#Ml18Xb\" data-sfc-root=\"ep\" jsuid=\"Tgcxzb_1u\" data-hveid=\"CAAIChAT\" data-complete=\"true\" data-processed=\"true\" data-copy-service-computed-style=\"font-family: &quot;Google Sans&quot;, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);\" style=\"font-size: 16px; border-bottom: 0px rgb(10, 10, 10);\">Para tu total comodidad y seguridad, aceptamos pagos con tarjeta de crédito/débito, Apple Pay y Google Pay a través de Stripe. Nuestro sistema de pago está totalmente encriptado y protegido.</div>"
     },
     {
       "id": "exc-faq-5",

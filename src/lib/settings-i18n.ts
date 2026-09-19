@@ -88,26 +88,42 @@ export type SettingsBlocksListKey = (typeof SETTINGS_BLOCKS_LIST_KEYS)[number];
 
 /** Quita PayPal de textos públicos (FAQ CMS) sin tocar reservas históricas. */
 export function stripPaypalFromCopy(text: string): string {
-  if (!text || !/paypal/i.test(text)) return text;
+  if (!text) return text;
   return text
     .replace(
       /tarjeta de crédito\/débito,\s*PayPal y Stripe/gi,
-      "tarjeta de crédito/débito a través de Stripe"
+      "tarjeta de crédito/débito, Apple Pay y Google Pay a través de Stripe"
     )
     .replace(
       /tarjeta de crédito,\s*PayPal o Stripe/gi,
-      "tarjeta de crédito o débito a través de Stripe"
+      "tarjeta de crédito o débito, Apple Pay o Google Pay a través de Stripe"
     )
     .replace(
       /credit\/debit card,\s*PayPal,?\s*and Stripe/gi,
-      "credit/debit card through Stripe"
+      "credit/debit card, Apple Pay, and Google Pay through Stripe"
     )
     .replace(
       /Kredit-\/Debitkarte,\s*PayPal und Stripe/gi,
-      "Kredit-/Debitkarte über Stripe"
+      "Kredit-/Debitkarte, Apple Pay und Google Pay über Stripe"
     )
     .replace(/,\s*PayPal\s+(y|o|and|und)\s+/gi, " ")
-    .replace(/\s+PayPal\s+/gi, " ");
+    .replace(/\s+PayPal\s+/gi, " ")
+    .replace(
+      /tarjeta de crédito\/débito a través de Stripe/gi,
+      "tarjeta de crédito/débito, Apple Pay y Google Pay a través de Stripe"
+    )
+    .replace(
+      /tarjeta de crédito o débito a través de Stripe/gi,
+      "tarjeta de crédito o débito, Apple Pay o Google Pay a través de Stripe"
+    )
+    .replace(
+      /credit\/debit card through Stripe/gi,
+      "credit/debit card, Apple Pay, and Google Pay through Stripe"
+    )
+    .replace(
+      /Kredit-\/Debitkarte über Stripe/gi,
+      "Kredit-/Debitkarte, Apple Pay und Google Pay über Stripe"
+    );
 }
 
 export function scrubFaqsPaypal(faqs: PageFaqItem[]): PageFaqItem[] {
