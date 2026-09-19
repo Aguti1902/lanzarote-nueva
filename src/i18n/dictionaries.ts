@@ -769,7 +769,7 @@ const es: Dictionary = {
     nextMonth: "Mes siguiente",
     orBrowseByCompany: "O busque por compañía de cruceros",
     companyPageIntro:
-      "Ofrecemos excursiones en cada escala de Canarias. Empresa familiar local, grupos pequeños y minibuses propios, con regreso a tiempo a su barco.",
+      "Ofrecemos excursiones shore en cada escala en Lanzarote. Empresa familiar local, grupos pequeños y minibuses propios; cada excursión se planifica según el horario de su barco en puerto.",
     companyBenefits: [
       "Garantizamos su regreso a tiempo a su barco",
       "No mezclamos idiomas",
@@ -1353,7 +1353,7 @@ const en: Dictionary = {
     nextMonth: "Next month",
     orBrowseByCompany: "Or browse by cruise line",
     companyPageIntro:
-      "We offer excursions at every Canary Islands port call. A local family business, small groups and our own minibuses, with a guaranteed return to your ship.",
+      "We offer shore excursions for every Lanzarote port call. A local family business, small groups and our own minibuses, with every excursion planned around your ship's time in port.",
     companyBenefits: [
       "We guarantee your return to the ship on time",
       "We don't mix languages",
@@ -1935,7 +1935,7 @@ const de: Dictionary = {
     nextMonth: "Nächster Monat",
     orBrowseByCompany: "Oder nach Reederei suchen",
     companyPageIntro:
-      "Wir bieten Ausflüge an jedem Kanaren-Hafenstopp. Lokales Familienunternehmen, kleine Gruppen und eigene Minibusse – mit pünktlicher Rückkehr zum Schiff.",
+      "Wir bieten Landausflüge für jeden Anlauf auf Lanzarote. Lokales Familienunternehmen, kleine Gruppen und eigene Minibusse – jeder Ausflug ist auf die Liegezeit Ihres Schiffes abgestimmt.",
     companyBenefits: [
       "Wir garantieren die pünktliche Rückkehr zum Schiff",
       "Keine Sprachmischung",
