@@ -86,6 +86,38 @@ export type SettingsStringKey = (typeof SETTINGS_STRING_KEYS)[number];
 export type SettingsFaqListKey = (typeof SETTINGS_FAQ_LIST_KEYS)[number];
 export type SettingsBlocksListKey = (typeof SETTINGS_BLOCKS_LIST_KEYS)[number];
 
+/** Quita PayPal de textos públicos (FAQ CMS) sin tocar reservas históricas. */
+export function stripPaypalFromCopy(text: string): string {
+  if (!text || !/paypal/i.test(text)) return text;
+  return text
+    .replace(
+      /tarjeta de crédito\/débito,\s*PayPal y Stripe/gi,
+      "tarjeta de crédito/débito a través de Stripe"
+    )
+    .replace(
+      /tarjeta de crédito,\s*PayPal o Stripe/gi,
+      "tarjeta de crédito o débito a través de Stripe"
+    )
+    .replace(
+      /credit\/debit card,\s*PayPal,?\s*and Stripe/gi,
+      "credit/debit card through Stripe"
+    )
+    .replace(
+      /Kredit-\/Debitkarte,\s*PayPal und Stripe/gi,
+      "Kredit-/Debitkarte über Stripe"
+    )
+    .replace(/,\s*PayPal\s+(y|o|and|und)\s+/gi, " ")
+    .replace(/\s+PayPal\s+/gi, " ");
+}
+
+export function scrubFaqsPaypal(faqs: PageFaqItem[]): PageFaqItem[] {
+  return faqs.map((item) => ({
+    ...item,
+    question: stripPaypalFromCopy(item.question || ""),
+    answer: stripPaypalFromCopy(item.answer || ""),
+  }));
+}
+
 function isFaqList(value: unknown): value is PageFaqItem[] {
   return (
     Array.isArray(value) &&
@@ -130,11 +162,13 @@ export function pickSettingsTranslations(
   for (const key of SETTINGS_FAQ_LIST_KEYS) {
     const value = source[key];
     if (isFaqList(value)) {
-      out[key] = value.map((item) => ({
-        id: item.id || "",
-        question: item.question || "",
-        answer: item.answer || "",
-      }));
+      out[key] = scrubFaqsPaypal(
+        value.map((item) => ({
+          id: item.id || "",
+          question: item.question || "",
+          answer: item.answer || "",
+        }))
+      );
     }
   }
 
@@ -179,7 +213,7 @@ export function mergeSettingsOverlay(
   for (const key of SETTINGS_FAQ_LIST_KEYS) {
     const value = overlay[key];
     if (isFaqList(value) && value.length > 0) {
-      merged[key] = value;
+      merged[key] = scrubFaqsPaypal(value);
     }
   }
 

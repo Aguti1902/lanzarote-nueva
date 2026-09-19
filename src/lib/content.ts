@@ -37,7 +37,7 @@ import {
   blogMatchesSlug,
   normalizeBlogSlug,
 } from "@/i18n/blog-slugs";
-import { SETTINGS_STRING_KEYS } from "@/lib/settings-i18n";
+import { SETTINGS_STRING_KEYS, scrubFaqsPaypal } from "@/lib/settings-i18n";
 import {
   looksLikeHtml,
   looksLikePastedWebHtml,
@@ -733,7 +733,7 @@ function coalesceFaqs(
   fallback: PageFaqItem[]
 ): PageFaqItem[] {
   const base = stored === undefined ? fallback : stored;
-  return expandPackedFaqs(base);
+  return scrubFaqsPaypal(expandPackedFaqs(base));
 }
 
 function coalesceBlocks(
