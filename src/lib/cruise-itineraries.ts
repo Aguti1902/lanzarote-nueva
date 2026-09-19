@@ -221,19 +221,16 @@ export async function getCruiseSailingById(
 export async function getSailingsByCompany(
   companySlug: string
 ): Promise<CruiseSailing[]> {
-  const data = await getCruiseItinerariesData();
-  const catalog = data.sailings.filter((s) => s.companySlug === companySlug);
-  const extras = await lanzaroteCallSailingsForCompany(companySlug);
-  const seen = new Set(catalog.map((s) => s.id));
-  const merged = [...catalog];
-  for (const sailing of extras) {
-    if (seen.has(sailing.id)) continue;
-    seen.add(sailing.id);
-    merged.push(sailing);
+  const fromExcel = await lanzaroteCallSailingsForCompany(companySlug);
+  if (fromExcel.length) {
+    return fromExcel.sort((a, b) =>
+      a.departureDate.localeCompare(b.departureDate)
+    );
   }
-  return merged.sort((a, b) =>
-    a.departureDate.localeCompare(b.departureDate)
-  );
+  const data = await getCruiseItinerariesData();
+  return data.sailings
+    .filter((s) => s.companySlug === companySlug)
+    .sort((a, b) => a.departureDate.localeCompare(b.departureDate));
 }
 
 export async function getCruiseSailing(
@@ -429,10 +426,10 @@ async function enrichCompaniesWithLanzaroteCalls(
     ])
   );
 
+  const recounted = new Set<string>();
   for (const call of dedupePortCalls(
     calls.map((c) => ({ ...c, sailingHref: links[c.id] }))
   )) {
-    if (call.sailingHref?.startsWith("/crucero/")) continue;
     const slug = companySlugForCall(call.company, catalog);
     if (!slug) continue;
     let entry = bySlug.get(slug);
@@ -445,6 +442,10 @@ async function enrichCompaniesWithLanzaroteCalls(
         active: true,
       };
       bySlug.set(slug, entry);
+    }
+    if (!recounted.has(slug)) {
+      entry.sailingCount = 0;
+      recounted.add(slug);
     }
     entry.sailingCount += 1;
     const shipSlug = slugify(call.shipName);
@@ -465,7 +466,7 @@ async function enrichCompaniesWithLanzaroteCalls(
   );
 }
 
-/** Escalas Excel de una naviera que aún no tienen itinerario completo. */
+/** Escalas de Lanzarote (Excel) de una naviera; enlazan al itinerario si existe. */
 async function lanzaroteCallSailingsForCompany(
   companySlug: string
 ): Promise<CruiseSailing[]> {
@@ -486,9 +487,25 @@ async function lanzaroteCallSailingsForCompany(
     }))
   );
 
+  const data = await getCruiseItinerariesData();
   const sailings: CruiseSailing[] = [];
   for (const call of unique) {
-    if (call.sailingHref?.startsWith("/crucero/")) continue;
+    const href = links[call.id] || "";
+    if (href.startsWith("/crucero/")) {
+      const matched = data.sailings.find(
+        (s) =>
+          `/crucero/${s.companySlug}/${s.shipSlug}/${s.id}` === href
+      );
+      if (matched) {
+        sailings.push({
+          ...matched,
+          shipName: call.shipName || matched.shipName,
+          departureDate: call.date,
+          nights: null,
+        });
+        continue;
+      }
+    }
     sailings.push(await sailingFromLanzaroteCall(call, catalog));
   }
   return sailings;
