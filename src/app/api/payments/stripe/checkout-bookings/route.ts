@@ -5,6 +5,7 @@ import { isStripeConfigured } from "@/lib/stripe";
 import { checkoutOriginFromRequest } from "@/lib/voucher";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 /** Checkout Stripe combinado para varias reservas (carrito). */
 export async function POST(request: Request) {

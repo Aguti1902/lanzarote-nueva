@@ -1,5 +1,5 @@
 import type { Booking, PaymentLink } from "@/types";
-import { upsertPaymentLink } from "@/lib/admin-extras";
+import { buildPaymentLinkDraft, upsertPaymentLink } from "@/lib/admin-extras";
 import {
   expectedOnlineCharge,
   isOnlineCardMethod,
@@ -85,9 +85,9 @@ export async function createStripeCheckoutForBookings(
       ? `${primary.tourTitle} · ${primary.id}`
       : `Pago reservas (${payable.length}): ${ids.join(", ")}`;
 
-  let payment =
+  const paymentDraft =
     options?.existingPayment ||
-    (await upsertPaymentLink({
+    buildPaymentLinkDraft({
       concept,
       amount: Math.round(amount * 100) / 100,
       locator: primary.id,
@@ -102,16 +102,7 @@ export async function createStripeCheckoutForBookings(
       chargeFull,
       paymentMethod: "Stripe",
       notes: `bookingIds:${ids.join(",")}`,
-    }));
-
-  if (options?.existingPayment) {
-    payment = await upsertPaymentLink({
-      ...clearStripeSessionFields(payment),
-      status: "pending",
-      amount: Math.round(amount * 100) / 100,
-      customerLocale: localeNorm,
     });
-  }
 
   const confirmationPath =
     payable.length === 1
@@ -120,7 +111,7 @@ export async function createStripeCheckoutForBookings(
 
   const cancelPath = `${localePath(localeNorm as Locale, "/reserva/confirmacion")}?id=${encodeURIComponent(primary.id)}&cancelled=1`;
 
-  const checkout = await createStripeCheckoutForPayment(payment, {
+  const checkout = await createStripeCheckoutForPayment(paymentDraft, {
     origin: options?.origin,
     locale: localeNorm,
     successUrl: absoluteUrl(confirmationPath, options?.origin),
@@ -130,12 +121,23 @@ export async function createStripeCheckoutForBookings(
 
   if (!checkout) return null;
 
-  payment = await upsertPaymentLink({
-    ...payment,
-    stripeCheckoutSessionId: checkout.sessionId,
-    stripeCheckoutUrl: checkout.url,
-    stripePaymentIntentId: checkout.paymentIntentId,
-  });
+  let payment = paymentDraft;
+  try {
+    payment = await upsertPaymentLink({
+      ...paymentDraft,
+      stripeCheckoutSessionId: checkout.sessionId,
+      stripeCheckoutUrl: checkout.url,
+      stripePaymentIntentId: checkout.paymentIntentId,
+    });
+  } catch (err) {
+    console.error("[booking-checkout] persist payment link failed", err);
+    payment = {
+      ...paymentDraft,
+      stripeCheckoutSessionId: checkout.sessionId,
+      stripeCheckoutUrl: checkout.url,
+      stripePaymentIntentId: checkout.paymentIntentId,
+    };
+  }
 
   // No bloquear la redirección al cliente por el stamp en CMS.
   void stampCheckoutSessionOnBookings(payable, {

@@ -62,35 +62,13 @@ export async function getPaymentLinkByHash(hash: string) {
   );
 }
 
-export async function upsertPaymentLink(
+export function buildPaymentLinkDraft(
   input: Partial<PaymentLink> & Pick<PaymentLink, "concept" | "amount">
-) {
-  const data = await readData();
-  if (input.id) {
-    const idx = data.paymentLinks.findIndex((p) => p.id === input.id);
-    if (idx >= 0) {
-      const merged = {
-        ...data.paymentLinks[idx],
-        ...input,
-      } as PaymentLink;
-      // Vaciar sesión Stripe si se pide explícitamente (importe editado)
-      if (input.stripeCheckoutUrl === "") {
-        delete merged.stripeCheckoutUrl;
-        delete merged.stripeCheckoutSessionId;
-        delete merged.stripePaymentIntentId;
-      }
-      if (input.bookingIds) {
-        merged.bookingIds = [...input.bookingIds];
-      }
-      data.paymentLinks[idx] = merged;
-      await writeData(data);
-      return data.paymentLinks[idx];
-    }
-  }
-  const created: PaymentLink = {
-    id: uid("pay"),
-    createdAt: new Date().toISOString(),
-    locator: input.locator || `PAY-${1000 + data.paymentLinks.length + 1}`,
+): PaymentLink {
+  return {
+    id: input.id || uid("pay"),
+    createdAt: input.createdAt || new Date().toISOString(),
+    locator: input.locator || `PAY-${Date.now().toString(36).slice(-6).toUpperCase()}`,
     concept: input.concept,
     amount: Number(input.amount) || 0,
     status: input.status || "pending",
@@ -122,6 +100,37 @@ export async function upsertPaymentLink(
     stripePaymentIntentId: input.stripePaymentIntentId,
     stripeCheckoutUrl: input.stripeCheckoutUrl,
   };
+}
+
+export async function upsertPaymentLink(
+  input: Partial<PaymentLink> & Pick<PaymentLink, "concept" | "amount">
+) {
+  const data = await readData();
+  if (input.id) {
+    const idx = data.paymentLinks.findIndex((p) => p.id === input.id);
+    if (idx >= 0) {
+      const merged = {
+        ...data.paymentLinks[idx],
+        ...input,
+      } as PaymentLink;
+      // Vaciar sesión Stripe si se pide explícitamente (importe editado)
+      if (input.stripeCheckoutUrl === "") {
+        delete merged.stripeCheckoutUrl;
+        delete merged.stripeCheckoutSessionId;
+        delete merged.stripePaymentIntentId;
+      }
+      if (input.bookingIds) {
+        merged.bookingIds = [...input.bookingIds];
+      }
+      data.paymentLinks[idx] = merged;
+      await writeData(data);
+      return data.paymentLinks[idx];
+    }
+  }
+  const created = buildPaymentLinkDraft({
+    ...input,
+    locator: input.locator || `PAY-${1000 + data.paymentLinks.length + 1}`,
+  });
   data.paymentLinks.unshift(created);
   await writeData(data);
   return created;
