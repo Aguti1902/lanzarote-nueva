@@ -156,6 +156,7 @@ export type Dictionary = {
     upcomingCruises: string;
     shipSailings: string;
     departure: string;
+    lanzaroteCallDate: string;
     nights: string;
     nightSingular: string;
     nightPlural: string;
@@ -710,13 +711,14 @@ const es: Dictionary = {
     shipsToday: "Barcos ese día",
     browseTitle: "Excursiones para cruceros en Canarias",
     browseSubtitle:
-      "Lo más fácil: elija en el calendario el día de su escala en Lanzarote. También puede buscar por naviera, barco y salida.",
+      "Lo más fácil: elija en el calendario el día de su escala en Lanzarote. También puede buscar por naviera, barco y fecha de escala.",
     selectCruise: "Seleccione su crucero",
     companiesTitle: "Compañías de cruceros",
-    companySailings: "salidas previstas",
+    companySailings: "escalas en Lanzarote",
     upcomingCruises: "Próximos cruceros de",
-    shipSailings: "salidas previstas",
+    shipSailings: "escalas en Lanzarote",
     departure: "Salida prevista",
+    lanzaroteCallDate: "Escala en Lanzarote",
     nights: "noches",
     nightSingular: "noche",
     nightPlural: "noches",
@@ -1293,13 +1295,14 @@ const en: Dictionary = {
     shipsToday: "Ships that day",
     browseTitle: "Shore excursions in the Canary Islands",
     browseSubtitle:
-      "Easiest path: pick your Lanzarote port-call day on the calendar. You can also browse by cruise line, ship and sailing.",
+      "Easiest path: pick your Lanzarote port-call day on the calendar. You can also browse by cruise line, ship and call date.",
     selectCruise: "Select your cruise",
     companiesTitle: "Cruise lines",
-    companySailings: "scheduled sailings",
+    companySailings: "Lanzarote port calls",
     upcomingCruises: "Upcoming cruises from",
-    shipSailings: "scheduled sailings",
+    shipSailings: "Lanzarote port calls",
     departure: "Scheduled departure",
+    lanzaroteCallDate: "Lanzarote port call",
     nights: "nights",
     nightSingular: "night",
     nightPlural: "nights",
@@ -1874,13 +1877,14 @@ const de: Dictionary = {
     shipsToday: "Schiffe an diesem Tag",
     browseTitle: "Landausflüge auf den Kanarischen Inseln",
     browseSubtitle:
-      "Am einfachsten: wählen Sie im Kalender Ihren Hafentag auf Lanzarote. Sie können auch nach Reederei, Schiff und Abfahrt suchen.",
+      "Am einfachsten: wählen Sie im Kalender Ihren Hafentag auf Lanzarote. Sie können auch nach Reederei, Schiff und Anlaufdatum suchen.",
     selectCruise: "Wählen Sie Ihre Kreuzfahrt",
     companiesTitle: "Kreuzfahrtgesellschaften",
-    companySailings: "geplante Abfahrten",
+    companySailings: "Anläufe auf Lanzarote",
     upcomingCruises: "Kommende Kreuzfahrten von",
-    shipSailings: "geplante Abfahrten",
+    shipSailings: "Anläufe auf Lanzarote",
     departure: "Geplante Abfahrt",
+    lanzaroteCallDate: "Anlauf Lanzarote",
     nights: "Nächte",
     nightSingular: "Nacht",
     nightPlural: "Nächte",

@@ -7,6 +7,7 @@ import type {
   CruiseShoreTour,
 } from "@/types";
 import { cruiseCompanyDisplayName } from "@/lib/cruise-company-display";
+import { getCruiseCalls } from "@/lib/content";
 import { readCmsJson, readCmsJsonFresh, readCmsJsonIfExists, writeCmsJson } from "@/lib/supabase/cms-store";
 import { applyShoreTourPaymentPolicy } from "@/lib/shore-tour-display";
 
@@ -159,7 +160,8 @@ async function writeCruiseSlimIndexes(data: CruiseItinerariesData) {
   });
 }
 
-export async function getCruiseCompanies(): Promise<CruiseCompany[]> {
+/** Solo catálogo de itinerarios (sin escalas Excel). */
+async function getCatalogCompanies(): Promise<CruiseCompany[]> {
   try {
     const slim = await readCmsJson<{ companies: CruiseCompany[] }>(
       "cruiseCompanies.json"
@@ -173,6 +175,15 @@ export async function getCruiseCompanies(): Promise<CruiseCompany[]> {
   const data = await getCruiseItinerariesData();
   return data.companies;
 }
+
+/**
+ * Navieras del catálogo + las que solo aparecen en el Excel de escalas
+ * de Lanzarote (Autoridad Portuaria), para el buscador por compañía.
+ */
+export const getCruiseCompanies = cache(async (): Promise<CruiseCompany[]> => {
+  const catalog = await getCatalogCompanies();
+  return enrichCompaniesWithLanzaroteCalls(catalog);
+});
 
 export async function getCruiseCompany(
   slug: string
@@ -210,6 +221,12 @@ export async function getCruiseSailingById(
 export async function getSailingsByCompany(
   companySlug: string
 ): Promise<CruiseSailing[]> {
+  const fromExcel = await lanzaroteCallSailingsForCompany(companySlug);
+  if (fromExcel.length) {
+    return fromExcel.sort((a, b) =>
+      a.departureDate.localeCompare(b.departureDate)
+    );
+  }
   const data = await getCruiseItinerariesData();
   return data.sailings
     .filter((s) => s.companySlug === companySlug)
@@ -377,6 +394,123 @@ export async function buildPortCallSailingLinks(
   return links;
 }
 
+function companySlugForCall(
+  companyName: string,
+  companies: CruiseCompany[]
+): string {
+  const matched = matchCompanyForCall(companyName, companies);
+  if (matched) return matched.slug;
+  return slugify(companyName);
+}
+
+async function futurePublishedLanzaroteCalls(): Promise<CruiseCall[]> {
+  const today = new Date().toISOString().slice(0, 10);
+  return getCruiseCalls({ publishedOnly: true, fromDate: today });
+}
+
+/** Añade navieras/contadores desde escalas Excel sin itinerario completo. */
+async function enrichCompaniesWithLanzaroteCalls(
+  catalog: CruiseCompany[]
+): Promise<CruiseCompany[]> {
+  const calls = await futurePublishedLanzaroteCalls();
+  if (!calls.length) return catalog;
+
+  const links = await buildPortCallSailingLinks(calls);
+  const bySlug = new Map(
+    catalog.map((company) => [
+      company.slug,
+      {
+        ...company,
+        ships: [...(company.ships || [])],
+      },
+    ])
+  );
+
+  const recounted = new Set<string>();
+  for (const call of dedupePortCalls(
+    calls.map((c) => ({ ...c, sailingHref: links[c.id] }))
+  )) {
+    const slug = companySlugForCall(call.company, catalog);
+    if (!slug) continue;
+    let entry = bySlug.get(slug);
+    if (!entry) {
+      entry = {
+        slug,
+        name: call.company,
+        sailingCount: 0,
+        ships: [],
+        active: true,
+      };
+      bySlug.set(slug, entry);
+    }
+    if (!recounted.has(slug)) {
+      entry.sailingCount = 0;
+      recounted.add(slug);
+    }
+    entry.sailingCount += 1;
+    const shipSlug = slugify(call.shipName);
+    if (
+      shipSlug &&
+      !entry.ships.some((ship) => ship.slug === shipSlug || ship.name === call.shipName)
+    ) {
+      entry.ships.push({
+        slug: shipSlug,
+        name: call.shipName,
+        active: true,
+      });
+    }
+  }
+
+  return [...bySlug.values()].sort((a, b) =>
+    cruiseCompanyDisplayName(a).localeCompare(cruiseCompanyDisplayName(b), "es")
+  );
+}
+
+/** Escalas de Lanzarote (Excel) de una naviera; enlazan al itinerario si existe. */
+async function lanzaroteCallSailingsForCompany(
+  companySlug: string
+): Promise<CruiseSailing[]> {
+  const calls = await futurePublishedLanzaroteCalls();
+  if (!calls.length) return [];
+
+  const catalog = await getCatalogCompanies();
+  const relevant = calls.filter(
+    (call) => companySlugForCall(call.company, catalog) === companySlug
+  );
+  if (!relevant.length) return [];
+
+  const links = await buildPortCallSailingLinks(relevant);
+  const unique = dedupePortCalls(
+    relevant.map((call) => ({
+      ...call,
+      sailingHref: links[call.id],
+    }))
+  );
+
+  const data = await getCruiseItinerariesData();
+  const sailings: CruiseSailing[] = [];
+  for (const call of unique) {
+    const href = links[call.id] || "";
+    if (href.startsWith("/crucero/")) {
+      const matched = data.sailings.find(
+        (s) =>
+          `/crucero/${s.companySlug}/${s.shipSlug}/${s.id}` === href
+      );
+      if (matched) {
+        sailings.push({
+          ...matched,
+          shipName: call.shipName || matched.shipName,
+          departureDate: call.date,
+          nights: null,
+        });
+        continue;
+      }
+    }
+    sailings.push(await sailingFromLanzaroteCall(call, catalog));
+  }
+  return sailings;
+}
+
 export function lanzaroteCallExcursionPath(callId: string): string {
   return `/excursiones-cruceros/escala/${encodeURIComponent(callId)}`;
 }
@@ -418,10 +552,11 @@ function matchCompanyForCall(
 }
 
 export async function sailingFromLanzaroteCall(
-  call: CruiseCall
+  call: CruiseCall,
+  companies?: CruiseCompany[]
 ): Promise<CruiseSailing> {
-  const companies = await getCruiseCompanies();
-  const company = matchCompanyForCall(call.company, companies);
+  const list = companies ?? (await getCatalogCompanies());
+  const company = matchCompanyForCall(call.company, list);
   const arrival = call.arrivalTime || "";
   const departure = call.departureTime || "";
   const time =
@@ -436,7 +571,7 @@ export async function sailingFromLanzaroteCall(
     shipName: call.shipName,
     departureDate: call.date,
     endDate: call.date,
-    nights: 0,
+    nights: null,
     active: true,
     stops: [
       {

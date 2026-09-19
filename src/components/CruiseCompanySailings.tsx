@@ -210,17 +210,9 @@ export function CruiseCompanySailings({
             <>
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {visible.map((sailing) => {
-                  const nights =
-                    sailing.nights == null
-                      ? null
-                      : `${sailing.nights} ${
-                          sailing.nights === 1
-                            ? dict.cruises.nightSingular
-                            : dict.cruises.nightPlural
-                        }`;
                   return (
                     <Link
-                      key={sailing.id}
+                      key={`${sailing.id}-${sailing.departureDate}`}
                       href={href(sailingPath(sailing))}
                       className="group flex gap-3 rounded-xl bg-white p-4 ring-1 ring-sand-line transition hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(23,28,38,0.08)] hover:ring-ocean/35"
                     >
@@ -238,14 +230,9 @@ export function CruiseCompanySailings({
                           {sailing.shipName}
                         </span>
                         <span className="mt-1 block text-sm text-ink-muted">
-                          {dict.cruises.departure}:{" "}
+                          {dict.cruises.lanzaroteCallDate}:{" "}
                           {formatDateShort(sailing.departureDate)}
                         </span>
-                        {nights ? (
-                          <span className="mt-0.5 block text-sm text-ink-muted">
-                            {dict.cruises.durationLabelShort}: {nights}
-                          </span>
-                        ) : null}
                       </span>
                       <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-ocean transition group-hover:translate-x-0.5" />
                     </Link>

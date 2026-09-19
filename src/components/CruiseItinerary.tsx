@@ -6,6 +6,7 @@ import { useState } from "react";
 import { MapPin, Ship, Waves } from "lucide-react";
 import type { CruiseSailing, CruiseShoreTour } from "@/types";
 import { formatCruisePortName, formatDateShort, formatPrice } from "@/lib/format";
+import { isLanzaroteCallSailingId } from "@/lib/cruise-paths";
 import {
   shoreTourDurationLabel,
   shoreTourMeetingPointImages,
@@ -44,8 +45,14 @@ export function CruiseItinerary({ sailing, tours }: Props) {
         }`;
 
   const departure = formatDateShort(sailing.departureDate);
-  const title =
-    locale === "es"
+  const isLanzaroteOnly = isLanzaroteCallSailingId(sailing.id);
+  const title = isLanzaroteOnly
+    ? locale === "es"
+      ? `Excursiones ${sailing.shipName} (${sailing.companyName}) · escala en Lanzarote ${departure}`
+      : locale === "de"
+        ? `Ausflüge ${sailing.shipName} (${sailing.companyName}) · Anlauf Lanzarote ${departure}`
+        : `Excursions for ${sailing.shipName} (${sailing.companyName}) · Lanzarote port call ${departure}`
+    : locale === "es"
       ? `Excursiones ${sailing.shipName} (${sailing.companyName}) con salida el ${departure}${nightsLabel ? ` (${nightsLabel})` : ""}`
       : locale === "de"
         ? `Ausflüge ${sailing.shipName} (${sailing.companyName}) Abfahrt ${departure}${nightsLabel ? ` (${nightsLabel})` : ""}`
