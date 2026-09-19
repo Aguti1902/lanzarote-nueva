@@ -133,6 +133,29 @@ function escapeAttr(value: string): string {
     .replace(/</g, "&lt;");
 }
 
+/** id HTML seguro para anclas internas del blog/editor. */
+export function sanitizeAnchorId(raw: string): string {
+  const id = String(raw || "")
+    .trim()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\-_\s]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+  if (!id || !/^[a-z][a-z0-9\-_]*$/.test(id)) return "";
+  return id;
+}
+
+function extractSafeId(attrs: string): string {
+  const idMatch = attrs.match(/\sid\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/i);
+  const raw = (idMatch?.[2] || idMatch?.[3] || idMatch?.[4] || "").trim();
+  return sanitizeAnchorId(raw);
+}
+
 function looksLikeDangerousProtocol(href: string): boolean {
   const compact = href.replace(/[\u0000-\u001f\u007f\s]/g, "");
   if (/^(javascript|data|vbscript|file):/i.test(compact)) return true;
@@ -156,7 +179,11 @@ export function sanitizeHref(raw: string): string {
   if (/^https?:\/\//i.test(href)) return href;
   if (/^mailto:[^\s<>]+@[^\s<>]+$/i.test(href)) return href;
   if (href.startsWith("/") && !href.startsWith("//")) return href;
-  if (/^#[\w\-./?=]+$/.test(href)) return href;
+  // Anclas internas: #iona, #faq, #punto-encuentro
+  if (href.startsWith("#")) {
+    const id = sanitizeAnchorId(href.slice(1));
+    return id ? `#${id}` : "";
+  }
   return "";
 }
 
@@ -239,7 +266,9 @@ export function sanitizeContentHtml(raw: string): string {
       if (!allowed.has(t)) return "";
       // El editor a veces envuelve títulos en <h1>; tratarlos como h2 públicos.
       if (t === "h1") {
-        return match.startsWith("</") ? "</h2>" : "<h2>";
+        if (match.startsWith("</")) return "</h2>";
+        const id = extractSafeId(attrs);
+        return id ? `<h2 id="${escapeAttr(id)}">` : "<h2>";
       }
       if (t === "br") return "<br />";
       if (t === "img") {
@@ -309,6 +338,15 @@ export function sanitizeContentHtml(raw: string): string {
       )
         ? alignVal
         : "";
+      const safeId =
+        t === "h2" ||
+        t === "h3" ||
+        t === "h4" ||
+        t === "p" ||
+        t === "div" ||
+        t === "span"
+          ? extractSafeId(attrs)
+          : "";
 
       if (t === "font" || t === "span") {
         const color = attrs.match(
@@ -318,6 +356,7 @@ export function sanitizeContentHtml(raw: string): string {
           /\ssize\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/i
         );
         const parts: string[] = [];
+        if (safeId && t === "span") parts.push(`id="${escapeAttr(safeId)}"`);
         if (color) {
           const c = color[2] || color[3] || color[4] || "";
           if (/^#?[0-9a-f]{3,8}$/i.test(c) || /^[a-z]+$/i.test(c)) {
@@ -334,6 +373,7 @@ export function sanitizeContentHtml(raw: string): string {
       }
 
       const parts: string[] = [];
+      if (safeId) parts.push(`id="${escapeAttr(safeId)}"`);
       if (safeStyle) parts.push(`style="${safeStyle}"`);
       else if (safeAlign) parts.push(`style="text-align: ${safeAlign}"`);
       return parts.length ? `<${t} ${parts.join(" ")}>` : `<${t}>`;
@@ -342,13 +382,24 @@ export function sanitizeContentHtml(raw: string): string {
 
   // Si un h2/h3/h4 envuelve párrafos u otros bloques (pegado del editor),
   // quitar el heading envolvente para no aplicar tipografía de título al cuerpo.
-  html = html.replace(/<h([1-4])>([\s\S]*?)<\/h\1>/gi, (full, _lvl, inner) => {
-    if (/<(?:p|div|ul|ol|h[1-6]|blockquote)\b/i.test(inner)) {
-      return String(inner);
+  // Si el heading tenía id de ancla, moverlo al primer bloque hijo.
+  html = html.replace(
+    /<h([1-4])(\s[^>]*)?>([\s\S]*?)<\/h\1>/gi,
+    (full, _lvl, attrs: string | undefined, inner: string) => {
+      if (/<(?:p|div|ul|ol|h[1-6]|blockquote)\b/i.test(inner)) {
+        const id = extractSafeId(attrs || "");
+        if (!id) return inner;
+        return inner.replace(
+          /^(\s*)<(p|div|h[2-4])(\s[^>]*)?>/i,
+          (m, ws: string, tag: string, childAttrs = "") => {
+            if (extractSafeId(childAttrs)) return m;
+            return `${ws}<${tag}${childAttrs} id="${escapeAttr(id)}">`;
+          }
+        );
+      }
+      return full;
     }
-    return full;
-  });
-
+  );
   // <font> vacío de atributos → dejar solo el contenido tipográfico base.
   html = html.replace(/<font>([\s\S]*?)<\/font>/gi, "$1");
 
