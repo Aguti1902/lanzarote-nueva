@@ -90,7 +90,7 @@ export type StripeCheckoutOptions = {
   cancelUrl?: string;
   /**
    * Minutos hasta que expire la sesión (mín. 31, máx. 1439 ≈ 24 h).
-   * Por defecto 31.
+   * Si se omite, Stripe usa 24 h (checkout clásico).
    */
   expiresInMinutes?: number;
 };
@@ -162,12 +162,6 @@ export async function createStripeCheckoutForPayment(
     locale: checkoutLocale,
     customer_email: safeEmail,
     client_reference_id: payment.id.slice(0, 200),
-    expires_at:
-      Math.floor(Date.now() / 1000) +
-      Math.min(
-        Math.max(options?.expiresInMinutes ?? 60, 31),
-        24 * 60 - 1
-      ),
     line_items: [
       {
         quantity: 1,
@@ -195,6 +189,15 @@ export async function createStripeCheckoutForPayment(
     success_url: safeSuccess,
     cancel_url: safeCancel,
   };
+
+  if (options?.expiresInMinutes != null) {
+    const minutes = Math.min(
+      Math.max(options.expiresInMinutes, 31),
+      24 * 60 - 1
+    );
+    // Stripe pide epoch en segundos; el parámetro llega en minutos.
+    sessionParams.expires_at = Math.floor(Date.now() / 1000) + minutes * 60;
+  }
 
   const session = await createCheckoutSession(stripe, sessionParams);
 
