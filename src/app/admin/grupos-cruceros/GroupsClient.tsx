@@ -122,6 +122,7 @@ export function GroupsPanel() {
     null
   );
   const [message, setMessage] = useState("");
+  const [copiedKey, setCopiedKey] = useState("");
 
   const emptyForm = {
     shipName: "",
@@ -236,7 +237,9 @@ export function GroupsPanel() {
     const res = await fetch("/api/admin/extras?resource=groups", {
       method: wasEditing ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(wasEditing ? { id: editingId, ...form } : form),
+      body: JSON.stringify(
+        wasEditing ? { id: editingId, ...form } : { ...form, createdManually: true }
+      ),
     });
     const data = await res.json().catch(() => ({}));
     const createdId = !wasEditing
@@ -285,38 +288,50 @@ export function GroupsPanel() {
     await loadDetail(groupId);
   }
 
-  async function copyText(text: string) {
+  function copyText(text: string, key: string) {
     const value = String(text || "").trim();
     if (!value) {
       setMessage("No hay enlace para copiar");
       return;
     }
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(value);
-        setMessage("Enlace copiado al portapapeles");
-        return;
-      }
-    } catch {
-      /* fallback abajo */
-    }
+    const markCopied = () => {
+      setCopiedKey(key);
+      setMessage("Enlace copiado al portapapeles");
+      window.setTimeout(() => {
+        setCopiedKey((current) => (current === key ? "" : current));
+      }, 2000);
+    };
+    let synced = false;
     try {
       const ta = document.createElement("textarea");
       ta.value = value;
       ta.setAttribute("readonly", "");
       ta.style.position = "fixed";
-      ta.style.left = "-9999px";
+      ta.style.top = "0";
+      ta.style.left = "0";
+      ta.style.fontSize = "16px";
       document.body.appendChild(ta);
+      ta.focus();
       ta.select();
       ta.setSelectionRange(0, value.length);
-      const ok = document.execCommand("copy");
+      synced = document.execCommand("copy");
       document.body.removeChild(ta);
-      setMessage(
-        ok ? "Enlace copiado al portapapeles" : "No se pudo copiar el enlace"
-      );
     } catch {
-      setMessage("No se pudo copiar el enlace");
+      synced = false;
     }
+    if (synced) {
+      markCopied();
+      void navigator.clipboard?.writeText(value).catch(() => undefined);
+      return;
+    }
+    const pending = navigator.clipboard?.writeText(value);
+    if (!pending) {
+      setMessage("No se pudo copiar. Selecciona el enlace y usa Ctrl+C.");
+      return;
+    }
+    void pending.then(markCopied).catch(() => {
+      setMessage("No se pudo copiar. Selecciona el enlace y usa Ctrl+C.");
+    });
   }
 
   async function remove(id: string) {
@@ -552,24 +567,29 @@ export function GroupsPanel() {
                 <h2 className="text-sm font-bold uppercase tracking-wide">
                   Enlaces de pago (enviar manualmente)
                 </h2>
-                <button
-                  type="button"
-                  onClick={() => ensurePaymentLinks(g.id, true)}
-                  className="text-xs font-bold text-ocean hover:underline"
-                >
-                  Regenerar enlaces por persona
-                </button>
+                {g.createdManually && (
+                  <button
+                    type="button"
+                    onClick={() => ensurePaymentLinks(g.id, true)}
+                    className="text-xs font-bold text-ocean hover:underline"
+                  >
+                    Regenerar enlaces por persona
+                  </button>
+                )}
               </div>
               {(() => {
                 const links = (detail.paymentLinks || []).filter(
                   (p) => p.status !== "cancelled"
                 );
                 const groupAll = links.find((p) => p.mode === "group_all");
-                const perPerson = links
-                  .filter((p) => p.mode === "per_person")
-                  .sort(
-                    (a, b) => (a.personIndex || 0) - (b.personIndex || 0)
-                  );
+                const showPerPerson = g.createdManually === true;
+                const perPerson = showPerPerson
+                  ? links
+                      .filter((p) => p.mode === "per_person")
+                      .sort(
+                        (a, b) => (a.personIndex || 0) - (b.personIndex || 0)
+                      )
+                  : [];
                 const maxPax = g.maxPax ?? g.minPax ?? 0;
                 const remaining =
                   detail.paymentRemaining ??
@@ -619,10 +639,14 @@ export function GroupsPanel() {
                             </a>
                             <button
                               type="button"
-                              onClick={() => copyText(groupAll.url || "")}
+                              onMouseDown={(e) => e.preventDefault()}
+                              onClick={() =>
+                                copyText(groupAll.url || "", groupAll.id)
+                              }
                               className="inline-flex shrink-0 items-center gap-1 rounded border border-ocean/40 px-2 py-1 text-xs font-bold text-ocean hover:bg-white"
                             >
-                              <Copy className="h-3.5 w-3.5" /> Copiar
+                              <Copy className="h-3.5 w-3.5" />
+                              {copiedKey === groupAll.id ? "Copiado" : "Copiar"}
                             </button>
                           </div>
                         )}
@@ -674,10 +698,14 @@ export function GroupsPanel() {
                               {p.url && p.status !== "paid" && (
                                 <button
                                   type="button"
-                                  onClick={() => copyText(p.url || "")}
+                                  onMouseDown={(e) => e.preventDefault()}
+                                  onClick={() => copyText(p.url || "", p.id)}
                                   className="inline-flex shrink-0 items-center gap-1 rounded border border-ocean/40 px-2 py-1 text-xs font-bold text-ocean hover:bg-white"
                                 >
-                                  <Copy className="h-3.5 w-3.5" /> Copiar enlace
+                                  <Copy className="h-3.5 w-3.5" />
+                                  {copiedKey === p.id
+                                    ? "Copiado"
+                                    : "Copiar enlace"}
                                 </button>
                               )}
                             </li>

@@ -301,8 +301,16 @@ export async function ensureGroupPaymentLinks(
   const paidPerPerson = perPerson.filter((p) => p.status === "paid");
   let pendingPerPerson = perPerson.filter((p) => p.status === "pending");
 
-  // Plazas pendientes de enlace = remaining (ya descuenta paidSolo en occupiedPax)
-  // Si occupiedPax no incluye paidSolo y usamos personCount legacy, remaining ya es el objetivo de pendientes+por crear
+  // «Uno a uno» solo si el grupo se creó a mano en el panel.
+  // Un grupo nacido de una reserva online no debe inventar plazas sueltas.
+  const includePerPerson = group.createdManually === true;
+  if (!includePerPerson) {
+    for (const p of pendingPerPerson) {
+      await upsertPaymentLink({ ...p, status: "cancelled" });
+    }
+    return { groupAll, perPerson: paidPerPerson };
+  }
+
   const targetPending = remaining;
 
   if (options?.forcePerPerson) {
@@ -560,6 +568,7 @@ export async function upsertCruiseGroup(
     departureDate: input.departureDate || undefined,
     sailingId: input.sailingId || undefined,
     notes: input.notes || "",
+    createdManually: input.createdManually === true,
     spawnedFromId: input.spawnedFromId || undefined,
     seriesIndex:
       input.seriesIndex != null ? Number(input.seriesIndex) : 1,

@@ -193,6 +193,7 @@ export async function syncCruiseGroupCapacity(
           : `Grupo automático #${seriesIndex} — cupo lleno en ${group.id}`,
         spawnedFromId: group.id,
         seriesIndex,
+        createdManually: false,
       });
       // Enlaces listos en detalles para enviar el pago manualmente
       try {
@@ -281,6 +282,7 @@ async function createOpenCruiseGroupForBooking(
     status: "open",
     seriesIndex: 1,
     notes: `Creado automáticamente desde ${booking.id}`,
+    createdManually: false,
   });
 
   try {

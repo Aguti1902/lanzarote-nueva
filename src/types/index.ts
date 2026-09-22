@@ -384,6 +384,11 @@ export interface CruiseGroup {
   departureDate?: string;
   sailingId?: string;
   notes?: string;
+  /**
+   * Alta hecha en el panel. Los enlaces «uno a uno» solo existen en este caso.
+   * Los grupos creados al reservar online no los llevan.
+   */
+  createdManually?: boolean;
   /** When auto-spawned after another group hit maxPax. */
   spawnedFromId?: string;
   /** Display ordinal within the same ship/date/excursion series (1, 2, …). */

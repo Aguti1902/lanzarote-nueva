@@ -50,7 +50,8 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
+            value:
+              "camera=(), microphone=(), geolocation=(), clipboard-write=(self), clipboard-read=(self)",
           },
           {
             key: "Strict-Transport-Security",
