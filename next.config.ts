@@ -179,6 +179,47 @@ const nextConfig: NextConfig = {
         destination: "/de/kreuzfahrt/:path*",
         statusCode: 301,
       },
+      // URLs sin idioma (Google / bookmarks) → locale canónico
+      {
+        source: "/excursiones/:path*",
+        destination: "/es/excursiones/:path*",
+        statusCode: 301,
+      },
+      {
+        source: "/excursiones-cruceros/:path*",
+        destination: "/es/excursiones-cruceros/:path*",
+        statusCode: 301,
+      },
+      {
+        source: "/blog/:path*",
+        destination: "/es/blog/:path*",
+        statusCode: 301,
+      },
+      {
+        source: "/excursions/:path*",
+        destination: "/en/excursions/:path*",
+        statusCode: 301,
+      },
+      {
+        source: "/shore-excursions/:path*",
+        destination: "/en/shore-excursions/:path*",
+        statusCode: 301,
+      },
+      {
+        source: "/cruise-excursions/:path*",
+        destination: "/en/shore-excursions/:path*",
+        statusCode: 301,
+      },
+      {
+        source: "/ausfluege/:path*",
+        destination: "/de/ausfluege/:path*",
+        statusCode: 301,
+      },
+      {
+        source: "/kreuzfahrtausfluege/:path*",
+        destination: "/de/kreuzfahrtausfluege/:path*",
+        statusCode: 301,
+      },
     ];
   },
 };

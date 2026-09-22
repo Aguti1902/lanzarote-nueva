@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 import { defaultLocale, isLocale, locales } from "@/i18n/config";
 import {
   canonicalLocalizedPathname,
+  detectSlugLocale,
   rewriteToInternalPathname,
 } from "@/i18n/path";
 import { resolveLegacyRedirect } from "@/lib/legacy-redirects";
@@ -146,11 +147,15 @@ export async function middleware(request: NextRequest) {
     return securityHeaders(NextResponse.next());
   }
 
-  const locale = detectLocale(request);
+  const locale =
+    pathname === "/"
+      ? detectLocale(request)
+      : detectSlugLocale(pathname) || defaultLocale;
   const url = request.nextUrl.clone();
   url.pathname =
     pathname === "/" ? `/${locale}` : `/${locale}${pathname}`;
-  const response = NextResponse.redirect(url);
+  // 301: Google indexa y consolida en la URL con idioma (el 307 temporal no basta).
+  const response = NextResponse.redirect(url, 301);
   response.cookies.set("NEXT_LOCALE", locale, { path: "/" });
   return securityHeaders(response);
 }

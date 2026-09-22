@@ -9,9 +9,71 @@ import { buildTourSlugRedirects } from "../i18n/tour-slugs";
  * Valor: destino absoluto (con locale y slugs del idioma).
  */
 export const LEGACY_PATH_REDIRECTS: Record<string, string> = {
-  // —— Secciones ES (sin locale en la antigua / sitelinks Google) ——
-  "/casas-vacacionales": "/es/casas",
+  // —— Secciones ES (sin locale: sitelinks / indexación Google) ——
+  "/excursiones": "/es/excursiones",
+  "/excursiones-cruceros": "/es/excursiones-cruceros",
+  "/traslados-aeropuerto-lanzarote": "/es/traslados-aeropuerto-lanzarote",
   "/traslados-aeropuerto": "/es/traslados-aeropuerto-lanzarote",
+  "/traslados": "/es/traslados-aeropuerto-lanzarote",
+  "/cruceristas": "/es/cruceristas",
+  "/cruceros": "/es/excursiones-cruceros",
+  "/casas": "/es/casas",
+  "/casas-vacacionales": "/es/casas",
+  "/sobre-nosotros": "/es/sobre-nosotros",
+  "/contacto": "/es/contacto",
+  "/blog": "/es/blog",
+  "/carrito": "/es/carrito",
+  "/gestionar-reserva": "/es/gestionar-reserva",
+  "/cancelar-reserva": "/es/cancelar-reserva",
+  "/aviso-legal": "/es/aviso-legal",
+  "/politica-privacidad": "/es/politica-privacidad",
+  "/politica-cookies": "/es/politica-cookies",
+  "/condiciones-contratacion": "/es/condiciones-contratacion",
+  "/politica-cancelacion": "/es/politica-cancelacion",
+
+  // —— Secciones EN sin locale ——
+  "/excursions": "/en/excursions",
+  "/shore-excursions": "/en/shore-excursions",
+  "/cruise-excursions": "/en/shore-excursions",
+  "/airport-transfers": "/en/airport-transfers",
+  "/transfers-airport": "/en/airport-transfers",
+  "/cruise-passengers": "/en/cruise-passengers",
+  "/cruises": "/en/shore-excursions",
+  "/holiday-homes": "/en/holiday-homes",
+  "/vacation-homes": "/en/holiday-homes",
+  "/about-us": "/en/about-us",
+  "/contact": "/en/contact",
+  "/cart": "/en/cart",
+  "/manage-booking": "/en/manage-booking",
+  "/cancel-booking": "/en/cancel-booking",
+  "/privacy-policy": "/en/privacy-policy",
+  "/cookie-policy": "/en/cookie-policy",
+  "/terms-and-conditions": "/en/terms-and-conditions",
+  "/cancellation-policy": "/en/cancellation-policy",
+  "/legal-notice": "/en/legal-notice",
+
+  // —— Secciones DE sin locale ——
+  "/ausfluege": "/de/ausfluege",
+  "/ausflüge": "/de/ausfluege",
+  "/kreuzfahrtausfluege": "/de/kreuzfahrtausfluege",
+  "/kreuzfahrtausflüge": "/de/kreuzfahrtausfluege",
+  "/flughafen-transfer": "/de/flughafen-transfer",
+  "/kreuzfahrtgaeste": "/de/kreuzfahrtgaeste",
+  "/kreuzfahrten": "/de/kreuzfahrtausfluege",
+  "/ferienhaeuser": "/de/ferienhaeuser",
+  "/ferienhäuser": "/de/ferienhaeuser",
+  "/ferienhauser": "/de/ferienhaeuser",
+  "/uber-uns": "/de/uber-uns",
+  "/über-uns": "/de/uber-uns",
+  "/kontakt": "/de/kontakt",
+  "/warenkorb": "/de/warenkorb",
+  "/buchung-verwalten": "/de/buchung-verwalten",
+  "/buchung-stornieren": "/de/buchung-stornieren",
+  "/datenschutz": "/de/datenschutz",
+  "/cookie-richtlinie": "/de/cookie-richtlinie",
+  "/agb": "/de/agb",
+  "/stornobedingungen": "/de/stornobedingungen",
+  "/impressum": "/de/impressum",
 
   // —— ES con locale (aliases EN → ES canónico) ——
   "/es/about-us": "/es/sobre-nosotros",
@@ -86,6 +148,28 @@ export const LEGACY_PREFIX_REWRITES: Array<{
   fromPrefix: string;
   toPrefix: string;
 }> = [
+  // Sin locale → con locale (subpáginas indexadas por Google)
+  { fromPrefix: "/excursiones/", toPrefix: "/es/excursiones/" },
+  {
+    fromPrefix: "/excursiones-cruceros/",
+    toPrefix: "/es/excursiones-cruceros/",
+  },
+  { fromPrefix: "/blog/", toPrefix: "/es/blog/" },
+  { fromPrefix: "/crucero/", toPrefix: "/es/crucero/" },
+  { fromPrefix: "/casas/", toPrefix: "/es/casas/" },
+  { fromPrefix: "/excursions/", toPrefix: "/en/excursions/" },
+  { fromPrefix: "/shore-excursions/", toPrefix: "/en/shore-excursions/" },
+  { fromPrefix: "/cruise-excursions/", toPrefix: "/en/shore-excursions/" },
+  { fromPrefix: "/cruise/", toPrefix: "/en/cruise/" },
+  { fromPrefix: "/holiday-homes/", toPrefix: "/en/holiday-homes/" },
+  { fromPrefix: "/ausfluege/", toPrefix: "/de/ausfluege/" },
+  {
+    fromPrefix: "/kreuzfahrtausfluege/",
+    toPrefix: "/de/kreuzfahrtausfluege/",
+  },
+  { fromPrefix: "/kreuzfahrt/", toPrefix: "/de/kreuzfahrt/" },
+  { fromPrefix: "/ferienhaeuser/", toPrefix: "/de/ferienhaeuser/" },
+
   { fromPrefix: "/en/excursions/", toPrefix: "/en/excursions/" },
   { fromPrefix: "/de/ausfluge/", toPrefix: "/de/ausfluege/" },
   { fromPrefix: "/de/ausflüge/", toPrefix: "/de/ausfluege/" },
