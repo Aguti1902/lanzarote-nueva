@@ -129,7 +129,7 @@ function matchRoute(
 }
 
 /** Detecta en qué “idioma de slug” está escrito el path (sin locale). */
-function detectSlugLocale(pathname: string): Locale | null {
+export function detectSlugLocale(pathname: string): Locale | null {
   const path = applyAlias(normalizePathname(pathname));
   for (const locale of ["es", "en", "de"] as Locale[]) {
     if (matchRoute(path, locale)) return locale;
