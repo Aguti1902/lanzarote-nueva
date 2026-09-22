@@ -77,13 +77,13 @@ export function BookingWidget({ tour }: { tour: Tour }) {
         id: "deposit_20" as const,
         label: dict.booking.deposit,
         icon: <Percent className="h-4 w-4 shrink-0" />,
-        show: tour.allowCard && !isPrivate,
+        show: tour.allowCard,
       },
       {
         id: "pay_on_day" as const,
         label: dict.booking.payOnDay,
         icon: <Wallet className="h-4 w-4 shrink-0" />,
-        // Privados: solo pago online. Sin efectivo el día del tour.
+        // Privados: sin efectivo el día del tour; sí 100% o depósito 20%.
         show: tour.allowPayOnDay && !isPrivate,
       },
     ] as const
