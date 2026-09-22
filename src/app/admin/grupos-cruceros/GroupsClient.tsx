@@ -34,6 +34,7 @@ type GroupDetail = {
     stops: CruiseItineraryStop[];
   } | null;
   livePax: number;
+  paymentRemaining?: number;
   paymentLinks?: GroupPaymentLink[];
 };
 
@@ -285,9 +286,34 @@ export function GroupsPanel() {
   }
 
   async function copyText(text: string) {
+    const value = String(text || "").trim();
+    if (!value) {
+      setMessage("No hay enlace para copiar");
+      return;
+    }
     try {
-      await navigator.clipboard.writeText(text);
-      setMessage("Enlace copiado al portapapeles");
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(value);
+        setMessage("Enlace copiado al portapapeles");
+        return;
+      }
+    } catch {
+      /* fallback abajo */
+    }
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = value;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, value.length);
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      setMessage(
+        ok ? "Enlace copiado al portapapeles" : "No se pudo copiar el enlace"
+      );
     } catch {
       setMessage("No se pudo copiar el enlace");
     }
@@ -535,45 +561,66 @@ export function GroupsPanel() {
                 </button>
               </div>
               {(() => {
-                const links = detail.paymentLinks || [];
+                const links = (detail.paymentLinks || []).filter(
+                  (p) => p.status !== "cancelled"
+                );
                 const groupAll = links.find((p) => p.mode === "group_all");
                 const perPerson = links
                   .filter((p) => p.mode === "per_person")
                   .sort(
                     (a, b) => (a.personIndex || 0) - (b.personIndex || 0)
                   );
+                const maxPax = g.maxPax ?? g.minPax ?? 0;
+                const remaining =
+                  detail.paymentRemaining ??
+                  Math.max(0, maxPax - (detail.livePax || 0));
                 if (!groupAll && perPerson.length === 0) {
                   return (
                     <p className="text-sm text-ink-muted">
-                      Aún no hay enlaces. Pulsa «Generar enlaces de pago».
+                      {remaining <= 0
+                        ? "No quedan plazas pendientes de pago (el cupo ya está cubierto por reservas)."
+                        : "Aún no hay enlaces. Pulsa «Generar enlaces de pago»."}
                     </p>
                   );
                 }
                 return (
                   <div className="space-y-4">
-                    {groupAll && (
+                    <p className="text-sm text-ink-muted">
+                      Plazas pendientes de pago:{" "}
+                      <span className="font-semibold text-ink">
+                        {remaining}
+                      </span>
+                      {" · "}
+                      Máx. {maxPax} − {detail.livePax || 0} inscritas
+                    </p>
+                    {groupAll && groupAll.status !== "cancelled" && (
                       <div className="rounded-lg bg-sky-soft/60 p-4 ring-1 ring-sand-line">
                         <p className="text-xs font-bold uppercase tracking-wide text-ocean">
-                          Pagar todo el grupo
+                          Pagar plazas pendientes del grupo
                         </p>
                         <p className="mt-1 text-sm font-semibold">
                           {formatPrice(groupAll.amount)} · {groupAll.locator} ·{" "}
                           {groupAll.status === "paid" ? "Pagado" : "Pendiente"}
                         </p>
+                        <p className="mt-1 text-xs text-ink-muted">
+                          Importe = {remaining} plaza(s) ×{" "}
+                          {formatPrice(g.pricePerPerson || 0)} (restando las ya
+                          reservadas)
+                        </p>
                         {groupAll.url && groupAll.status !== "paid" && (
-                          <div className="mt-2 flex flex-wrap items-center gap-2">
+                          <div className="mt-2 flex flex-wrap items-start gap-2">
                             <a
                               href={groupAll.url}
                               target="_blank"
                               rel="noreferrer"
-                              className="break-all text-sm text-ocean hover:underline"
+                              className="min-w-0 flex-1 break-all text-sm text-ocean hover:underline"
                             >
                               {groupAll.url}
                             </a>
                             <button
                               type="button"
-                              onClick={() => copyText(groupAll.url!)}
-                              className="inline-flex items-center gap-1 text-xs font-bold text-ocean"
+                              onClick={() => copyText(groupAll.url || "")}
+                              className="inline-flex shrink-0 items-center gap-1 rounded border border-ocean/40 px-2 py-1 text-xs font-bold text-ocean hover:bg-white"
                             >
                               <Copy className="h-3.5 w-3.5" /> Copiar
                             </button>
@@ -590,30 +637,45 @@ export function GroupsPanel() {
                           {perPerson.map((p) => (
                             <li
                               key={p.id}
-                              className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-sm"
+                              className="flex flex-col gap-2 px-4 py-3 text-sm sm:flex-row sm:items-center sm:justify-between"
                             >
-                              <div>
-                                <span className="font-semibold">
-                                  {p.personLabel || `Persona ${p.personIndex}`}
-                                </span>
-                                <span className="ml-2 text-ink-muted">
-                                  {formatPrice(p.amount)} · {p.locator}
-                                </span>
-                                <span
-                                  className={`ml-2 text-xs font-bold ${
-                                    p.status === "paid"
-                                      ? "text-emerald-700"
-                                      : "text-rose-700"
-                                  }`}
-                                >
-                                  {p.status === "paid" ? "Pagado" : "Pendiente"}
-                                </span>
+                              <div className="min-w-0">
+                                <div>
+                                  <span className="font-semibold">
+                                    {p.personLabel ||
+                                      `Persona ${p.personIndex}`}
+                                  </span>
+                                  <span className="ml-2 text-ink-muted">
+                                    {formatPrice(p.amount)} · {p.locator}
+                                  </span>
+                                  <span
+                                    className={`ml-2 text-xs font-bold ${
+                                      p.status === "paid"
+                                        ? "text-emerald-700"
+                                        : "text-rose-700"
+                                    }`}
+                                  >
+                                    {p.status === "paid"
+                                      ? "Pagado"
+                                      : "Pendiente"}
+                                  </span>
+                                </div>
+                                {p.url && p.status !== "paid" && (
+                                  <a
+                                    href={p.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="mt-1 block break-all text-xs text-ocean hover:underline"
+                                  >
+                                    {p.url}
+                                  </a>
+                                )}
                               </div>
                               {p.url && p.status !== "paid" && (
                                 <button
                                   type="button"
-                                  onClick={() => copyText(p.url!)}
-                                  className="inline-flex items-center gap-1 text-xs font-bold text-ocean"
+                                  onClick={() => copyText(p.url || "")}
+                                  className="inline-flex shrink-0 items-center gap-1 rounded border border-ocean/40 px-2 py-1 text-xs font-bold text-ocean hover:bg-white"
                                 >
                                   <Copy className="h-3.5 w-3.5" /> Copiar enlace
                                 </button>

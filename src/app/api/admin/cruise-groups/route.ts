@@ -14,8 +14,29 @@ import {
 } from "@/lib/cruise-groups";
 import { getBookings } from "@/lib/bookings";
 import { findSailingForPortCall } from "@/lib/cruise-itineraries";
+import { resolvePublicOrigin } from "@/lib/voucher";
 
 export const dynamic = "force-dynamic";
+
+function paymentOriginFromRequest(
+  request: Request,
+  explicit?: string | null
+): string {
+  if (explicit?.trim()) return resolvePublicOrigin(explicit);
+  const site = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (site) return resolvePublicOrigin(site);
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  if (forwardedHost) {
+    return resolvePublicOrigin(
+      `${request.headers.get("x-forwarded-proto") || "https"}://${forwardedHost}`
+    );
+  }
+  try {
+    return resolvePublicOrigin(new URL(request.url).origin);
+  } catch {
+    return resolvePublicOrigin();
+  }
+}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -39,16 +60,26 @@ export async function GET(request: Request) {
   });
 
   const livePax = livePaxForGroup(group, bookings, groups);
-  const paymentLinks = (await getPaymentLinks()).filter(
-    (p) => p.groupId === group.id && p.status !== "cancelled"
+  const origin = paymentOriginFromRequest(
+    request,
+    searchParams.get("origin")
   );
 
-  const forwardedHost = request.headers.get("x-forwarded-host");
-  const origin =
-    searchParams.get("origin") ||
-    (forwardedHost
-      ? `${request.headers.get("x-forwarded-proto") || "https"}://${forwardedHost}`
-      : new URL(request.url).origin);
+  // Sincroniza enlaces con plazas realmente pendientes (restar reservas)
+  let synced;
+  try {
+    synced = await ensureGroupPaymentLinks(group, { bookedPax: livePax });
+  } catch {
+    synced = null;
+  }
+
+  const paymentLinks = (
+    synced
+      ? [synced.groupAll, ...synced.perPerson]
+      : (await getPaymentLinks()).filter(
+          (p) => p.groupId === group.id && p.status !== "cancelled"
+        )
+  ).filter((p) => p.status !== "cancelled");
 
   return NextResponse.json({
     group,
@@ -64,6 +95,12 @@ export async function GET(request: Request) {
         }
       : null,
     livePax,
+    paymentRemaining: Math.max(
+      0,
+      (group.maxPax != null && Number(group.maxPax) > 0
+        ? Number(group.maxPax)
+        : Number(group.minPax) || 0) - livePax
+    ),
     paymentLinks: paymentLinks.map((p) => ({
       ...p,
       url: buildPaymentUrl(p, origin),
@@ -92,25 +129,36 @@ export async function POST(request: Request) {
     }
 
     if (action === "ensure-links") {
+      const bookings = await getBookings();
+      const livePax = livePaxForGroup(group, bookings, groups);
+      const bookedPax =
+        body.bookedPax != null ? Number(body.bookedPax) : livePax;
       const links = await ensureGroupPaymentLinks(group, {
         forcePerPerson: Boolean(body.forcePerPerson),
-        personCount:
-          body.personCount != null ? Number(body.personCount) : undefined,
+        bookedPax,
       });
-      const origin =
-        String(body.origin || "") ||
-        (request.headers.get("x-forwarded-host")
-          ? `${request.headers.get("x-forwarded-proto") || "https"}://${request.headers.get("x-forwarded-host")}`
-          : new URL(request.url).origin);
+      const origin = paymentOriginFromRequest(
+        request,
+        body.origin ? String(body.origin) : null
+      );
       return NextResponse.json({
         groupAll: {
           ...links.groupAll,
           url: buildPaymentUrl(links.groupAll, origin),
         },
-        perPerson: links.perPerson.map((p) => ({
-          ...p,
-          url: buildPaymentUrl(p, origin),
-        })),
+        perPerson: links.perPerson
+          .filter((p) => p.status !== "cancelled")
+          .map((p) => ({
+            ...p,
+            url: buildPaymentUrl(p, origin),
+          })),
+        bookedPax,
+        remaining: Math.max(
+          0,
+          (group.maxPax != null && Number(group.maxPax) > 0
+            ? Number(group.maxPax)
+            : Number(group.minPax) || 0) - bookedPax
+        ),
       });
     }
 

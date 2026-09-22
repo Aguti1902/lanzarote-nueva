@@ -196,7 +196,7 @@ export async function syncCruiseGroupCapacity(
       });
       // Enlaces listos en detalles para enviar el pago manualmente
       try {
-        await ensureGroupPaymentLinks(spawned);
+        await ensureGroupPaymentLinks(spawned, { bookedPax: 0 });
       } catch {
         // No bloquear el cupo si fallan los enlaces; se pueden regenerar en el panel
       }
@@ -215,6 +215,13 @@ export async function syncCruiseGroupCapacity(
       nextStatus === "full",
     seriesIndex: group.seriesIndex ?? 1,
   });
+
+  // Ajustar enlaces de pago a las plazas que quedan libres
+  try {
+    await ensureGroupPaymentLinks(updated, { bookedPax: livePax });
+  } catch {
+    // No bloquear el sync de cupo
+  }
 
   return { group: updated, spawned };
 }
@@ -277,7 +284,7 @@ async function createOpenCruiseGroupForBooking(
   });
 
   try {
-    await ensureGroupPaymentLinks(created);
+    await ensureGroupPaymentLinks(created, { bookedPax: 0 });
   } catch {
     // Se pueden regenerar en el panel
   }

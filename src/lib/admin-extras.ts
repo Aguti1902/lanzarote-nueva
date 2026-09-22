@@ -7,6 +7,7 @@ import type {
   SeoRedirect,
 } from "@/types";
 import { readCmsJsonFresh, writeCmsJson } from "@/lib/supabase/cms-store";
+import { resolvePublicOrigin } from "@/lib/voucher";
 
 export type AdminExtrasData = {
   paymentLinks: PaymentLink[];
@@ -140,76 +141,236 @@ export function buildPaymentUrl(
   item: PaymentLink,
   origin: string
 ): string {
+  const base = resolvePublicOrigin(origin);
   const locale = item.customerLocale || "es";
   const hash = item.paymentHash || item.id;
-  const email = encodeURIComponent(item.customerEmail || "");
-  return `${origin}/${locale}/gateway/?h=${hash}&email=${email}&ref=${encodeURIComponent(item.locator)}`;
+  const params = new URLSearchParams();
+  params.set("h", hash);
+  if (item.customerEmail) params.set("email", item.customerEmail);
+  params.set("ref", item.locator);
+  return `${base}/${locale}/gateway/?${params.toString()}`;
 }
 
-/** Create group_all + per_person payment links for a cruise group (manual share). */
+/** Capacidad máxima del grupo para generar enlaces de pago. */
+export function groupPaymentMaxPax(group: CruiseGroup): number {
+  return Math.max(
+    1,
+    Number(
+      group.maxPax != null && Number(group.maxPax) > 0
+        ? group.maxPax
+        : group.minPax
+    ) || 1
+  );
+}
+
+/**
+ * Plazas que ya no deben tener enlace de pago pendiente:
+ * reservas activas del grupo + cobros individuales ya pagados por enlace.
+ */
+export function occupiedPaxForGroupPayments(
+  bookedPax: number,
+  links: PaymentLink[]
+): number {
+  const paidSolo = links.filter(
+    (p) =>
+      p.mode === "per_person" &&
+      p.status === "paid" &&
+      p.groupId
+  ).length;
+  return Math.max(0, Number(bookedPax) || 0) + paidSolo;
+}
+
+/** Create/sync group_all + per_person payment links for a cruise group. */
 export async function ensureGroupPaymentLinks(
   group: CruiseGroup,
-  options?: { forcePerPerson?: boolean; personCount?: number }
+  options?: {
+    forcePerPerson?: boolean;
+    /** @deprecated Preferir bookedPax; si se pasa solo, se interpreta como plazas pendientes. */
+    personCount?: number;
+    /** Personas ya inscritas por reserva (sin contar pagos sueltos por enlace). */
+    bookedPax?: number;
+    /** @deprecated Preferir bookedPax (ocupación total ya calculada). */
+    occupiedPax?: number;
+  }
 ): Promise<{ groupAll: PaymentLink; perPerson: PaymentLink[] }> {
   const data = await readData();
   const existing = data.paymentLinks.filter(
     (p) => p.groupId === group.id && p.status !== "cancelled"
   );
   const price = Number(group.pricePerPerson) || 0;
-  const maxPax = Math.max(
-    1,
-    Number(
-      options?.personCount ??
-        (group.maxPax != null && Number(group.maxPax) > 0
-          ? group.maxPax
-          : group.minPax) ??
-        1
-    ) || 1
-  );
+  const maxPax = groupPaymentMaxPax(group);
+  const paidSoloCount = existing.filter(
+    (p) => p.mode === "per_person" && p.status === "paid"
+  ).length;
+
+  let remaining: number;
+  if (options?.bookedPax != null) {
+    remaining = Math.max(
+      0,
+      maxPax -
+        Math.max(0, Math.floor(Number(options.bookedPax) || 0)) -
+        paidSoloCount
+    );
+  } else if (options?.occupiedPax != null) {
+    remaining = Math.max(
+      0,
+      maxPax - Math.max(0, Math.floor(Number(options.occupiedPax) || 0))
+    );
+  } else if (options?.personCount != null) {
+    remaining = Math.max(
+      0,
+      Math.min(maxPax, Math.floor(Number(options.personCount) || 0))
+    );
+  } else {
+    remaining = Math.max(0, maxPax - paidSoloCount);
+  }
+
+  const amountGroup = Math.round(price * remaining * 100) / 100;
   const seriesLabel =
     group.seriesIndex && group.seriesIndex > 1
       ? ` · Grupo ${group.seriesIndex}`
       : "";
+  const shortId = group.id.replace(/^grp-/, "").slice(0, 10).toUpperCase();
+  const shortIdP = group.id.replace(/^grp-/, "").slice(0, 8).toUpperCase();
 
-  let groupAll = existing.find((p) => p.mode === "group_all");
+  let groupAll =
+    existing.find((p) => p.mode === "group_all") ||
+    data.paymentLinks.find(
+      (p) => p.groupId === group.id && p.mode === "group_all"
+    );
   if (!groupAll) {
-    groupAll = await upsertPaymentLink({
-      concept: `Grupo ${group.shipName} — ${group.excursionTitle} (${group.date})${seriesLabel} · pago completo`,
-      amount: Math.round(price * maxPax * 100) / 100,
-      customerName: group.shipName,
-      customerLocale: "es",
-      notes: `Pago de todas las plazas del grupo ${group.id}`,
-      groupId: group.id,
-      mode: "group_all",
-      locator: `GRP-${group.id.replace(/^grp-/, "").slice(0, 10).toUpperCase()}`,
-    });
+    if (remaining > 0) {
+      groupAll = await upsertPaymentLink({
+        concept: `Grupo ${group.shipName} — ${group.excursionTitle} (${group.date})${seriesLabel} · plazas pendientes`,
+        amount: amountGroup,
+        customerName: group.shipName,
+        customerLocale: "es",
+        notes: `Pago de las ${remaining} plaza(s) pendientes del grupo ${group.id} (máx. ${maxPax})`,
+        groupId: group.id,
+        mode: "group_all",
+        locator: `GRP-${shortId}`,
+        chargeFull: true,
+      });
+    } else {
+      // Grupo lleno: no crear enlace cobrable
+      groupAll = await upsertPaymentLink({
+        concept: `Grupo ${group.shipName} — ${group.excursionTitle} (${group.date})${seriesLabel} · sin plazas pendientes`,
+        amount: 0,
+        customerName: group.shipName,
+        customerLocale: "es",
+        notes: `Sin plazas pendientes de pago · grupo ${group.id}`,
+        groupId: group.id,
+        mode: "group_all",
+        locator: `GRP-${shortId}`,
+        status: "cancelled",
+        chargeFull: true,
+      });
+    }
+  } else if (groupAll.status !== "paid") {
+    const amountChanged = Math.abs(Number(groupAll.amount) - amountGroup) > 0.009;
+    if (remaining <= 0) {
+      groupAll = await upsertPaymentLink({
+        ...groupAll,
+        amount: 0,
+        status: "cancelled",
+        concept: `Grupo ${group.shipName} — ${group.excursionTitle} (${group.date})${seriesLabel} · sin plazas pendientes`,
+        notes: `Sin plazas pendientes de pago · grupo ${group.id}`,
+        stripeCheckoutUrl: "",
+      });
+    } else if (
+      amountChanged ||
+      groupAll.status === "cancelled" ||
+      options?.forcePerPerson
+    ) {
+      groupAll = await upsertPaymentLink({
+        ...groupAll,
+        amount: amountGroup,
+        status: "pending",
+        concept: `Grupo ${group.shipName} — ${group.excursionTitle} (${group.date})${seriesLabel} · plazas pendientes`,
+        notes: `Pago de las ${remaining} plaza(s) pendientes del grupo ${group.id} (máx. ${maxPax})`,
+        chargeFull: true,
+        ...(amountChanged ? { stripeCheckoutUrl: "" } : {}),
+      });
+    }
   }
 
   let perPerson = existing
     .filter((p) => p.mode === "per_person")
     .sort((a, b) => (a.personIndex || 0) - (b.personIndex || 0));
 
-  if (options?.forcePerPerson || perPerson.length === 0) {
+  const paidPerPerson = perPerson.filter((p) => p.status === "paid");
+  let pendingPerPerson = perPerson.filter((p) => p.status === "pending");
+
+  // Plazas pendientes de enlace = remaining (ya descuenta paidSolo en occupiedPax)
+  // Si occupiedPax no incluye paidSolo y usamos personCount legacy, remaining ya es el objetivo de pendientes+por crear
+  const targetPending = remaining;
+
+  if (options?.forcePerPerson) {
+    for (const p of pendingPerPerson) {
+      await upsertPaymentLink({ ...p, status: "cancelled" });
+    }
+    pendingPerPerson = [];
+  } else if (pendingPerPerson.length > targetPending) {
+    const extras = pendingPerPerson.slice(targetPending);
+    for (const p of extras) {
+      await upsertPaymentLink({ ...p, status: "cancelled" });
+    }
+    pendingPerPerson = pendingPerPerson.slice(0, targetPending);
+  }
+
+  if (pendingPerPerson.length < targetPending) {
     const created: PaymentLink[] = [];
-    const start = perPerson.length + 1;
-    for (let i = start; i <= maxPax; i++) {
+    const start = pendingPerPerson.length + 1;
+    for (let i = start; i <= targetPending; i++) {
       const link = await upsertPaymentLink({
         concept: `Grupo ${group.shipName} — ${group.excursionTitle} (${group.date})${seriesLabel} · persona ${i}`,
         amount: price,
         customerLocale: "es",
-        notes: `Pago individual #${i} del grupo ${group.id}`,
+        notes: `Pago individual #${i} del grupo ${group.id} (${remaining} pendientes)`,
         groupId: group.id,
         mode: "per_person",
         personIndex: i,
         personLabel: `Persona ${i}`,
-        locator: `GRP-${group.id.replace(/^grp-/, "").slice(0, 8).toUpperCase()}-P${i}`,
+        locator: `GRP-${shortIdP}-P${i}`,
+        chargeFull: true,
       });
       created.push(link);
     }
-    perPerson = [...perPerson, ...created].sort(
-      (a, b) => (a.personIndex || 0) - (b.personIndex || 0)
-    );
+    pendingPerPerson = [...pendingPerPerson, ...created];
   }
+
+  // Renumerar etiquetas de pendientes 1..N para que coincidan con plazas libres
+  const renumbered: PaymentLink[] = [];
+  for (let i = 0; i < pendingPerPerson.length; i++) {
+    const idx = i + 1;
+    const p = pendingPerPerson[i];
+    if (
+      p.personIndex !== idx ||
+      p.personLabel !== `Persona ${idx}` ||
+      Math.abs(Number(p.amount) - price) > 0.009
+    ) {
+      renumbered.push(
+        await upsertPaymentLink({
+          ...p,
+          personIndex: idx,
+          personLabel: `Persona ${idx}`,
+          amount: price,
+          concept: `Grupo ${group.shipName} — ${group.excursionTitle} (${group.date})${seriesLabel} · persona ${idx}`,
+          notes: `Pago individual #${idx} del grupo ${group.id}`,
+          locator: `GRP-${shortIdP}-P${idx}`,
+          ...(Math.abs(Number(p.amount) - price) > 0.009
+            ? { stripeCheckoutUrl: "" }
+            : {}),
+        })
+      );
+    } else {
+      renumbered.push(p);
+    }
+  }
+
+  perPerson = [...paidPerPerson, ...renumbered].sort(
+    (a, b) => (a.personIndex || 0) - (b.personIndex || 0)
+  );
 
   return { groupAll, perPerson };
 }
