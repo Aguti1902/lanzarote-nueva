@@ -58,6 +58,7 @@ import {
   resolveCreateBookingLocale,
 } from "@/lib/booking-locale";
 import { normalizeBookingPhone } from "@/lib/phone";
+import { isCruiseBooking } from "@/lib/booking-ids";
 
 export const maxDuration = 60;
 
@@ -343,6 +344,25 @@ export async function POST(request: Request) {
       );
     }
 
+    if (tourId && method === "pay_on_day") {
+      const tourForPay = await getTourById(String(tourId));
+      if (tourForPay && isFlatPriceTour(tourForPay)) {
+        return NextResponse.json(
+          {
+            error:
+              "En tours privados el pago es online con tarjeta. No está disponible el pago el día del tour.",
+          },
+          { status: 400 }
+        );
+      }
+    }
+
+    const explicitSource =
+      typeof source === "string" && source.trim() ? source.trim() : undefined;
+    // Nunca inferir crucero solo por el texto del barco: las fichas normales
+    // ya no lo piden; el origen "cruise" solo viene del flujo shore.
+    const bookingSource = explicitSource;
+
     let booking = await addBooking({
       type,
       tourId,
@@ -364,17 +384,15 @@ export async function POST(request: Request) {
           ? pickupZone.trim()
           : undefined,
       groupId: groupId ? String(groupId) : undefined,
-      source:
-        typeof source === "string" && source.trim()
-          ? source.trim()
-          : customer?.cruiseShip
-            ? "cruise"
-            : undefined,
+      source: bookingSource,
     });
 
     const awaitingStripe = onlineCheckout && status === "pending";
 
-    if (!awaitingStripe && (customer?.cruiseShip || booking.groupId)) {
+    if (
+      !awaitingStripe &&
+      (isCruiseBooking(booking) || booking.groupId)
+    ) {
       const assigned = await assignBookingToCruiseGroup(booking);
       booking = assigned.booking;
     }
@@ -639,7 +657,7 @@ export async function PATCH(request: Request) {
       if (!booking) {
         return NextResponse.json({ error: "No encontrada" }, { status: 404 });
       }
-      if (booking.customer?.cruiseShip && !booking.groupId) {
+      if (isCruiseBooking(booking) && !booking.groupId) {
         try {
           const assigned = await assignBookingToCruiseGroup(booking);
           return NextResponse.json({ booking: assigned.booking });

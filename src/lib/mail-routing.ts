@@ -36,7 +36,6 @@ export function resolveBookingMailbox(input: {
   const source = String(input.source || "").toLowerCase();
   const tourId = String(input.tourId || "");
   const bookingId = String(input.bookingId || "");
-  const cruiseShip = String(input.cruiseShip || "").trim();
   const groupId = String(input.groupId || "").trim();
 
   // Excursión bajo petición / solicitar reserva
@@ -44,7 +43,7 @@ export function resolveBookingMailbox(input: {
     return MAILBOX.info;
   }
 
-  // Cruceristas / shore / grupo de crucero
+  // Cruceristas / shore / grupo de crucero (no por solo escribir un barco)
   if (
     source === "cruise" ||
     source === "shore" ||
@@ -52,7 +51,8 @@ export function resolveBookingMailbox(input: {
     isCruiseBooking({
       tourId,
       id: bookingId,
-      customer: { cruiseShip, notes: input.notes },
+      source,
+      groupId,
     })
   ) {
     return MAILBOX.cruise;

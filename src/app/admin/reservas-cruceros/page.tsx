@@ -72,13 +72,8 @@ export default function AdminReservasCrucerosPage() {
   }
 
   const cruiseBookings = useMemo(() => {
-    return bookings.filter((b) => {
-      // Nueva: CR-1001 · Antigua: CR28060278
-      if (/^CR-?\d/i.test(b.id)) return true;
-      const ship = b.customer?.cruiseShip?.trim();
-      const notes = b.customer?.notes || "";
-      return Boolean(ship) || /crucero|escala|ship|shore/i.test(notes);
-    });
+    // Solo localizadores CR (no R aunque alguien escribiera un barco).
+    return bookings.filter((b) => /^CR-?\d/i.test(b.id));
   }, [bookings]);
 
   const filtered = useMemo(() => {

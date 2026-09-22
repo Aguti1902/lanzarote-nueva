@@ -192,14 +192,15 @@ export default function AdminReservasPage() {
   }
 
   const tabCounts = useMemo(() => {
+    const nonCruise = bookings.filter((b) => !/^CR-?\d/i.test(b.id));
     const counts: Record<ReservasTab, number> = {
-      all: bookings.length,
+      all: nonCruise.length,
       current: 0,
       done: 0,
       incomplete: 0,
       cancelled: 0,
     };
-    for (const b of bookings) {
+    for (const b of nonCruise) {
       if (matchesTab(b, "current")) counts.current += 1;
       if (matchesTab(b, "done")) counts.done += 1;
       if (matchesTab(b, "incomplete")) counts.incomplete += 1;
@@ -211,6 +212,8 @@ export default function AdminReservasPage() {
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     const list = bookings.filter((b) => {
+      // Las CR van solo a Reservas cruceros
+      if (/^CR-?\d/i.test(b.id)) return false;
       if (!matchesTab(b, tab)) return false;
       const dateValue = dateField === "service" ? b.date : b.createdAt;
       if (!inDateRange(dateValue, range)) return false;
@@ -254,8 +257,11 @@ export default function AdminReservasPage() {
             Reservas
           </h1>
           <p className="mt-1 text-sm text-ink-muted">
-            Pulse el localizador para ver todos los detalles · {bookings.length}{" "}
+            Pulse el localizador para ver todos los detalles · {tabCounts.all}{" "}
             en total
+            {bookings.some((b) => /^CR-?\d/i.test(b.id))
+              ? " (sin reservas de crucero CR)"
+              : ""}
           </p>
           {syncMsg && (
             <p className="mt-1 text-xs text-ocean-deep">{syncMsg}</p>

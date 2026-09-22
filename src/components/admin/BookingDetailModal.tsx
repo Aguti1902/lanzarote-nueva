@@ -76,9 +76,11 @@ function voucherHtml(b: Booking) {
 
 function isCruiseBooking(b: Booking) {
   return (
-    b.id.startsWith("CR-") ||
-    Boolean(b.customer.cruiseShip?.trim()) ||
-    /crucero|escala|ship/i.test(b.customer.notes || "")
+    /^CR-?\d/i.test(b.id) ||
+    b.source === "cruise" ||
+    b.source === "shore" ||
+    Boolean(b.groupId) ||
+    Boolean(b.tourId?.startsWith("cruise-") || b.tourId?.startsWith("shore-"))
   );
 }
 

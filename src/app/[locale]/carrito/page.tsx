@@ -44,12 +44,13 @@ export default function CarritoPage() {
   const hasCruiseItem = items.some(
     (item) => item.source === "cruise" || Boolean(item.cruiseShip)
   );
+  const hasPrivateItem = items.some((item) => item.pricingMode === "flat");
 
   useEffect(() => {
-    if (hasCruiseItem && paymentMethod === "pay_on_day") {
+    if ((hasCruiseItem || hasPrivateItem) && paymentMethod === "pay_on_day") {
       setPaymentMethod("card");
     }
-  }, [hasCruiseItem, paymentMethod]);
+  }, [hasCruiseItem, hasPrivateItem, paymentMethod]);
 
   async function handleCheckout(e: FormEvent) {
     e.preventDefault();
@@ -58,6 +59,12 @@ export default function CarritoPage() {
     if (hasCruiseItem && paymentMethod === "pay_on_day") {
       setError(
         "En excursiones de crucero no está disponible el pago el día del tour."
+      );
+      return;
+    }
+    if (hasPrivateItem && paymentMethod === "pay_on_day") {
+      setError(
+        "En tours privados el pago es online con tarjeta. No está disponible el pago el día del tour."
       );
       return;
     }
@@ -300,7 +307,7 @@ export default function CarritoPage() {
                         id: "pay_on_day" as const,
                         label: dict.booking.payOnDay,
                         icon: <Wallet className="h-4 w-4 shrink-0" />,
-                        show: !hasCruiseItem,
+                        show: !hasCruiseItem && !hasPrivateItem,
                       },
                     ] as const
                   )

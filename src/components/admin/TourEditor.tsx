@@ -586,6 +586,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
                     isPrivateActivity: yes,
                     category: (yes ? "private" : "excursion") as TourCategory,
                     paxPerPrice: yes ? 0 : prev.paxPerPrice,
+                    ...(yes ? { allowPayOnDay: false } : {}),
                   }));
                 }}
               >
@@ -778,7 +779,18 @@ export function TourEditor({ initial }: { initial?: Tour }) {
                 ["cruiseFriendly", "Visible para cruceristas"],
                 ["featured", "Destacada en inicio"],
               ] as const
-            ).map(([key, label]) => (
+            )
+              .filter(([key]) => {
+                // Privados: no ofrecer pago el día del tour
+                if (
+                  key === "allowPayOnDay" &&
+                  (tour.category === "private" || tour.isPrivateActivity)
+                ) {
+                  return false;
+                }
+                return true;
+              })
+              .map(([key, label]) => (
               <label key={key} className="flex items-center gap-2 text-sm">
                 <input
                   type="checkbox"
