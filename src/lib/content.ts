@@ -192,7 +192,11 @@ export async function createTour(
       "Cancelación gratuita hasta 48 horas antes de la recogida.",
     maxGroup: input.maxGroup ?? 14,
     languages: input.languages || ["Español"],
-    allowPayOnDay: input.allowPayOnDay ?? input.groupSize === "large",
+    allowPayOnDay:
+      input.allowPayOnDay ??
+      (input.category === "private" || input.isPrivateActivity
+        ? false
+        : input.groupSize === "large"),
     allowCard: input.allowCard ?? true,
     allowBizum: input.allowBizum ?? true,
     cruiseFriendly: input.cruiseFriendly ?? true,

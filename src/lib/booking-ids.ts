@@ -21,26 +21,40 @@ export function isAffiliateTour(tourId?: string, tourTitle?: string): boolean {
   );
 }
 
+/**
+ * Reserva de crucero “de verdad”: localizador CR, origen shore/cruise,
+ * o ficha de excursión shore. No usar solo el campo barco: en excursiones
+ * normales la gente lo rellenaba y acababan en Reservas cruceros.
+ */
 export function isCruiseBooking(input: {
   type?: BookingType;
   tourId?: string;
+  source?: string;
   customer?: { cruiseShip?: string; notes?: string };
   id?: string;
+  groupId?: string;
 }): boolean {
   if (input.id && /^CR-?\d/i.test(input.id)) return true;
-  if (input.customer?.cruiseShip?.trim()) return true;
-  const notes = input.customer?.notes || "";
-  if (/crucero|escala|shore|all.?aboard/i.test(notes)) return true;
+  const source = String(input.source || "").toLowerCase();
+  if (source === "cruise" || source === "shore") return true;
+  if (input.groupId?.trim()) return true;
   if (input.tourId?.startsWith("cruise-") || input.tourId?.startsWith("shore-")) {
     return true;
   }
   return false;
 }
 
+/** Solo localizadores CR (panel Reservas cruceros). */
+export function isCruiseBookingId(id?: string): boolean {
+  return Boolean(id && /^CR-?\d/i.test(id));
+}
+
 export function resolveBookingPrefix(input: {
   type?: BookingType;
   tourId?: string;
   tourTitle?: string;
+  source?: string;
+  groupId?: string;
   customer?: { cruiseShip?: string; notes?: string };
 }): BookingIdPrefix {
   if (input.type === "transfer") return "T";
@@ -71,6 +85,8 @@ export function buildBookingId(
     type?: BookingType;
     tourId?: string;
     tourTitle?: string;
+    source?: string;
+    groupId?: string;
     customer?: { cruiseShip?: string; notes?: string };
   }
 ): string {

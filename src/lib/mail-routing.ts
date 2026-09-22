@@ -44,7 +44,7 @@ export function resolveBookingMailbox(input: {
     return MAILBOX.info;
   }
 
-  // Cruceristas / shore / grupo de crucero
+  // Cruceristas / shore / grupo de crucero (no por solo escribir un barco)
   if (
     source === "cruise" ||
     source === "shore" ||
@@ -52,7 +52,8 @@ export function resolveBookingMailbox(input: {
     isCruiseBooking({
       tourId,
       id: bookingId,
-      customer: { cruiseShip, notes: input.notes },
+      source,
+      groupId,
     })
   ) {
     return MAILBOX.cruise;
