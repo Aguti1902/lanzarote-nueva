@@ -1006,7 +1006,7 @@ const es: Dictionary = {
       "Debe reservar con al menos 48 horas de antelación para evitar overbooking.",
     pickupTimeNote:
       "La hora de recogida se confirma por WhatsApp / email según su zona.",
-    moreDetails: "Hotel, barco y notas (opcional)",
+    moreDetails: "Hotel y notas (opcional)",
   },
   transferForm: {
     title: "Reservar traslado",
@@ -1588,7 +1588,7 @@ const en: Dictionary = {
       "Bookings require at least 48 hours' notice to avoid overbooking.",
     pickupTimeNote:
       "Pick-up time is confirmed by WhatsApp / email according to your area.",
-    moreDetails: "Hotel, ship and notes (optional)",
+    moreDetails: "Hotel and notes (optional)",
   },
   transferForm: {
     title: "Book a transfer",
@@ -2179,7 +2179,7 @@ const de: Dictionary = {
       "Buchungen sind nur mit mindestens 48 Stunden Vorlauf möglich, um Overbooking zu vermeiden.",
     pickupTimeNote:
       "Die Abholzeit wird per WhatsApp / E-Mail je nach Zone bestätigt.",
-    moreDetails: "Hotel, Schiff und Notizen (optional)",
+    moreDetails: "Hotel und Notizen (optional)",
   },
   transferForm: {
     title: "Transfer buchen",
