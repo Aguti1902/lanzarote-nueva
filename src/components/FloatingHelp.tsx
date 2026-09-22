@@ -115,7 +115,7 @@ export function FloatingHelp() {
               type="button"
               onClick={() => setPanel(null)}
               className="rounded p-1.5 hover:bg-white/10"
-              aria-label="Close"
+              aria-label={dict.common.close}
             >
               <X className="h-4 w-4" />
             </button>
@@ -198,7 +198,7 @@ export function FloatingHelp() {
               type="button"
               onClick={() => setPanel(null)}
               className="absolute top-2 right-2 rounded p-1 hover:bg-white/10"
-              aria-label="Close"
+              aria-label={dict.common.close}
             >
               <X className="h-4 w-4" />
             </button>
@@ -302,7 +302,7 @@ export function FloatingHelp() {
         className="inline-flex items-center gap-2 rounded-full bg-ocean px-5 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-ocean-deep"
         aria-expanded={fabOpen}
         aria-haspopup="menu"
-        aria-label={fabOpen ? "Close" : dict.helpFab.label}
+        aria-label={fabOpen ? dict.common.close : dict.helpFab.label}
       >
         {fabOpen ? (
           <X className="h-4 w-4" />
