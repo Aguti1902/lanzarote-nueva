@@ -521,27 +521,55 @@ const CRUISE_GROUPS_RESET_AT = "2026-09-01";
 
 async function getLocalCruiseGroups() {
   const data = await readData();
-  // One-shot: wipe historical past groups and keep only current/future.
+  const today = new Date().toISOString().slice(0, 10);
+  // Solo filtra en memoria. Nunca reescribe el CMS (evita borrar grupos reales).
   if (data.cruiseGroupsResetAt !== CRUISE_GROUPS_RESET_AT) {
-    const today = new Date().toISOString().slice(0, 10);
-    const kept = data.cruiseGroups.filter(
-      (g) => (g.date || "").slice(0, 10) >= today
-    );
-    data.cruiseGroups = kept;
-    data.cruiseGroupsResetAt = CRUISE_GROUPS_RESET_AT;
-    await writeData(data);
-    return kept;
+    return data.cruiseGroups.filter((g) => (g.date || "").slice(0, 10) >= today);
   }
   return data.cruiseGroups;
 }
 
+function cruiseGroupKey(group: CruiseGroup) {
+  return [
+    (group.date || "").slice(0, 10),
+    (group.shipName || "").toLowerCase(),
+    (group.excursionTitle || "").toLowerCase(),
+    String(group.seriesIndex ?? 1),
+  ].join("|");
+}
+
+async function persistMissingCruiseGroups(groups: CruiseGroup[]) {
+  try {
+    const stored = await readCmsJsonFresh<Partial<AdminExtrasData>>(
+      "adminExtras.json"
+    );
+    if (!stored || typeof stored !== "object") return;
+    const current = stored.cruiseGroups || [];
+    const ids = new Set(current.map((g) => g.id));
+    const keys = new Set(current.map(cruiseGroupKey));
+    const next = [...current];
+    for (const group of groups) {
+      if (!group?.id || ids.has(group.id) || keys.has(cruiseGroupKey(group))) {
+        continue;
+      }
+      next.push(group);
+      ids.add(group.id);
+      keys.add(cruiseGroupKey(group));
+    }
+    if (next.length === current.length) return;
+    await writeData({ ...empty, ...stored, cruiseGroups: next });
+  } catch {
+    // Si el CMS no responde, no se reescribe nada.
+  }
+}
+
 export async function getCruiseGroups() {
-  const { isHubConfigured } = await import("@/lib/hub/config");
   const { syncAndListHubCruiseGroups } = await import("@/lib/hub/cruise-groups");
   const local = await getLocalCruiseGroups();
-  if (!isHubConfigured()) return local;
   const shared = await syncAndListHubCruiseGroups(local);
-  return shared ?? local;
+  const items = shared ?? local;
+  await persistMissingCruiseGroups(items);
+  return items;
 }
 
 export async function upsertCruiseGroup(
