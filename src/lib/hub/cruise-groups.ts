@@ -193,7 +193,7 @@ function mergeGroupLists(...lists: CruiseGroup[][]): CruiseGroup[] {
   return [...new Map([...byId.values()].map((g) => [g.id, g])).values()];
 }
 
-/** Une local + hub + grupos recuperados. Nunca sustituye un listado más corto. */
+/** Une local + hub + grupos recuperados. Solo escribe en el hub lo que aún no está. */
 export async function syncAndListHubCruiseGroups(
   localGroups: CruiseGroup[]
 ): Promise<CruiseGroup[] | null> {
@@ -201,17 +201,36 @@ export async function syncAndListHubCruiseGroups(
     return mergeGroupLists(localGroups, RECOVERED_CRUISE_GROUPS);
   }
 
-  const remote = await listHubCruiseGroups();
-  const incoming = mergeGroupLists(
-    remote || [],
-    localGroups,
-    RECOVERED_CRUISE_GROUPS
+  const remote = (await listHubCruiseGroups()) || [];
+  const byId = new Set(remote.map((g) => g.id));
+  const byKey = new Set(remote.map(groupDedupeKey));
+  const missing = mergeGroupLists(localGroups, RECOVERED_CRUISE_GROUPS).filter(
+    (group) => !byId.has(group.id) && !byKey.has(groupDedupeKey(group))
   );
 
-  for (const group of incoming) {
-    await upsertHubCruiseGroup(group);
+  if (missing.length) {
+    const { error } = await getHubAdmin()
+      .from("hub_cruise_groups")
+      .upsert(
+        missing.map((group) => ({
+          id: group.id,
+          payload: group,
+          updated_at: new Date().toISOString(),
+        })),
+        { onConflict: "id" }
+      );
+    if (error) {
+      console.error("[hub] cruise groups batch upsert failed", error.message);
+      return mergeGroupLists(remote, localGroups, RECOVERED_CRUISE_GROUPS);
+    }
+    const refreshed = await listHubCruiseGroups();
+    return mergeGroupLists(
+      refreshed || remote,
+      missing,
+      localGroups,
+      RECOVERED_CRUISE_GROUPS
+    );
   }
 
-  const refreshed = await listHubCruiseGroups();
-  return mergeGroupLists(refreshed || [], incoming);
+  return mergeGroupLists(remote, localGroups, RECOVERED_CRUISE_GROUPS);
 }

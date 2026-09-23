@@ -19,8 +19,6 @@ import {
   upsertPaymentLink,
   upsertRedirect,
 } from "@/lib/admin-extras";
-import { backfillUnassignedCruiseGroups } from "@/lib/cruise-groups";
-
 export const dynamic = "force-dynamic";
 
 type Resource =
@@ -61,22 +59,26 @@ export async function GET(request: Request) {
       return NextResponse.json({ items: await getFeedback() });
     case "ports":
       return NextResponse.json({ items: await getCruisePorts() });
-    case "groups":
-      try {
-        await backfillUnassignedCruiseGroups();
-      } catch (err) {
-        console.error("[cruise-groups] backfill failed", err);
-      }
-      {
-        const { getHubCruiseGroupsStatus } = await import(
-          "@/lib/hub/cruise-groups"
-        );
-        const items = await getCruiseGroups();
-        return NextResponse.json({
-          items,
-          hub: await getHubCruiseGroupsStatus(),
-        });
-      }
+    case "groups": {
+      const { getHubHost, getHubSiteId, isHubConfigured } = await import(
+        "@/lib/hub/config"
+      );
+      const items = await getCruiseGroups();
+      const configured = isHubConfigured();
+      return NextResponse.json({
+        items,
+        hub: {
+          configured,
+          ok: configured,
+          siteId: getHubSiteId(),
+          host: getHubHost(),
+          count: items.length,
+          error: configured
+            ? null
+            : "Faltan HUB_SUPABASE_URL y HUB_SUPABASE_SERVICE_ROLE_KEY",
+        },
+      });
+    }
     case "redirects":
       return NextResponse.json({ items: await getRedirects() });
   }
