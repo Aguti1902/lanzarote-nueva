@@ -94,3 +94,21 @@ export function buildBookingId(
   const num = nextBookingNumber(bookings, prefix);
   return `${prefix}-${num}`;
 }
+
+export async function allocateBookingId(
+  bookings: Pick<Booking, "id">[],
+  input: {
+    type?: BookingType;
+    tourId?: string;
+    tourTitle?: string;
+    source?: string;
+    groupId?: string;
+    customer?: { cruiseShip?: string; notes?: string };
+  }
+): Promise<string> {
+  const prefix = resolveBookingPrefix(input);
+  const localNext = nextBookingNumber(bookings, prefix);
+  const { tryHubNextNumber } = await import("@/lib/hub/sequences");
+  const hubNum = await tryHubNextNumber(`booking_${prefix}`, localNext);
+  return `${prefix}-${hubNum ?? localNext}`;
+}

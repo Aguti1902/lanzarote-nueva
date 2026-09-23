@@ -519,7 +519,7 @@ export async function deleteCruisePort(id: string) {
 /* ── Cruise groups ── */
 const CRUISE_GROUPS_RESET_AT = "2026-09-01";
 
-export async function getCruiseGroups() {
+async function getLocalCruiseGroups() {
   const data = await readData();
   // One-shot: wipe historical past groups and keep only current/future.
   if (data.cruiseGroupsResetAt !== CRUISE_GROUPS_RESET_AT) {
@@ -535,10 +535,56 @@ export async function getCruiseGroups() {
   return data.cruiseGroups;
 }
 
+export async function getCruiseGroups() {
+  const { isHubConfigured } = await import("@/lib/hub/config");
+  const { syncAndListHubCruiseGroups } = await import("@/lib/hub/cruise-groups");
+  const local = await getLocalCruiseGroups();
+  if (!isHubConfigured()) return local;
+  const shared = await syncAndListHubCruiseGroups(local);
+  return shared ?? local;
+}
+
 export async function upsertCruiseGroup(
   input: Partial<CruiseGroup> &
     Pick<CruiseGroup, "shipName" | "date" | "excursionTitle">
 ) {
+  const { isHubConfigured } = await import("@/lib/hub/config");
+  const { listHubCruiseGroups, upsertHubCruiseGroup } = await import(
+    "@/lib/hub/cruise-groups"
+  );
+  if (isHubConfigured()) {
+    const remote = (await listHubCruiseGroups()) || [];
+    if (input.id) {
+      const current = remote.find((g) => g.id === input.id);
+      if (current) {
+        const merged = { ...current, ...input } as CruiseGroup;
+        return (await upsertHubCruiseGroup(merged)) || merged;
+      }
+    }
+    const created: CruiseGroup = {
+      id: input.id || uid("grp"),
+      status: input.status || "open",
+      shipName: input.shipName,
+      company: input.company || "",
+      date: input.date,
+      port: input.port || "Lanzarote",
+      excursionTitle: input.excursionTitle,
+      complete: input.complete ?? false,
+      minPax: Number(input.minPax) || 0,
+      maxPax: input.maxPax != null ? Number(input.maxPax) : undefined,
+      pax: Number(input.pax) || 0,
+      pricePerPerson:
+        input.pricePerPerson != null ? Number(input.pricePerPerson) : undefined,
+      departureDate: input.departureDate || undefined,
+      sailingId: input.sailingId || undefined,
+      notes: input.notes || "",
+      createdManually: input.createdManually === true,
+      spawnedFromId: input.spawnedFromId || undefined,
+      seriesIndex: input.seriesIndex != null ? Number(input.seriesIndex) : 1,
+    };
+    return (await upsertHubCruiseGroup(created)) || created;
+  }
+
   const data = await readData();
   if (input.id) {
     const idx = data.cruiseGroups.findIndex((g) => g.id === input.id);
@@ -579,6 +625,12 @@ export async function upsertCruiseGroup(
 }
 
 export async function deleteCruiseGroup(id: string) {
+  const { isHubConfigured } = await import("@/lib/hub/config");
+  const { deleteHubCruiseGroup } = await import("@/lib/hub/cruise-groups");
+  if (isHubConfigured()) {
+    const ok = await deleteHubCruiseGroup(id);
+    return ok === true;
+  }
   const data = await readData();
   const next = data.cruiseGroups.filter((g) => g.id !== id);
   if (next.length === data.cruiseGroups.length) return false;

@@ -1,5 +1,5 @@
 import type { Booking, BookingStatus, CashStatus } from "@/types";
-import { buildBookingId } from "@/lib/booking-ids";
+import { allocateBookingId } from "@/lib/booking-ids";
 import { isAwaitingOnlinePayment, splitPaymentAmounts } from "@/lib/payments";
 import {
   readCmsJson,
@@ -79,11 +79,16 @@ async function resolveBookingsList(): Promise<Booking[]> {
 
 export async function getBookings(): Promise<Booking[]> {
   const list = await resolveBookingsList();
-  return list.map(normalizeBooking);
+  const normalized = list.map(normalizeBooking);
+  const { raiseHubBookingFloors } = await import("@/lib/hub/floors");
+  await raiseHubBookingFloors(normalized);
+  return normalized;
 }
 
 export async function saveBookings(bookings: Booking[]): Promise<void> {
   await writeCmsJson("bookings.json", bookings);
+  const { syncBookingsToHub } = await import("@/lib/hub/bookings");
+  await syncBookingsToHub(bookings);
 }
 
 /** Fuerza subir el bookings.json del deploy a Supabase Storage. */
@@ -142,7 +147,7 @@ export async function addBooking(
   }
 ): Promise<Booking> {
   const bookings = await getBookings();
-  const id = buildBookingId(bookings, booking);
+  const id = await allocateBookingId(bookings, booking);
   const split = splitPaymentAmounts(booking.totalPrice, booking.paymentMethod);
   const forcedUnpaid =
     booking.paymentStatus === "unpaid" &&

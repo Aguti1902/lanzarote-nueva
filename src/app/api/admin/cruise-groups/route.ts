@@ -12,7 +12,8 @@ import {
   livePaxForGroup,
   backfillUnassignedCruiseGroups,
 } from "@/lib/cruise-groups";
-import { getBookings } from "@/lib/bookings";
+import { getBookingsForCruiseGroups } from "@/lib/hub/bookings";
+import { getHubSiteId } from "@/lib/hub/config";
 import { findSailingForPortCall } from "@/lib/cruise-itineraries";
 import { resolvePublicOrigin } from "@/lib/voucher";
 
@@ -51,7 +52,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Grupo no encontrado" }, { status: 404 });
   }
 
-  const bookings = await getBookings();
+  const bookings = await getBookingsForCruiseGroups();
   const groupBookings = bookingsForGroup(group, bookings, groups);
   const sailing = await findSailingForPortCall({
     shipName: group.shipName,
@@ -83,6 +84,7 @@ export async function GET(request: Request) {
 
   return NextResponse.json({
     group,
+    currentSiteId: getHubSiteId(),
     bookings: groupBookings,
     sailing: sailing
       ? {
@@ -129,7 +131,7 @@ export async function POST(request: Request) {
     }
 
     if (action === "ensure-links") {
-      const bookings = await getBookings();
+      const bookings = await getBookingsForCruiseGroups();
       const livePax = livePaxForGroup(group, bookings, groups);
       const bookedPax =
         body.bookedPax != null ? Number(body.bookedPax) : livePax;

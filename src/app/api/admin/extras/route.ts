@@ -67,7 +67,16 @@ export async function GET(request: Request) {
       } catch (err) {
         console.error("[cruise-groups] backfill failed", err);
       }
-      return NextResponse.json({ items: await getCruiseGroups() });
+      {
+        const { getHubCruiseGroupsStatus } = await import(
+          "@/lib/hub/cruise-groups"
+        );
+        const items = await getCruiseGroups();
+        return NextResponse.json({
+          items,
+          hub: await getHubCruiseGroupsStatus(),
+        });
+      }
     case "redirects":
       return NextResponse.json({ items: await getRedirects() });
   }
