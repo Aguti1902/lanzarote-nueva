@@ -19,6 +19,7 @@ import { useLocale } from "@/components/LocaleProvider";
 import { ShoreMeetingPointButton } from "@/components/ShoreMeetingPointButton";
 import { PhoneWithPrefix } from "@/components/PhoneWithPrefix";
 import { isValidBookingPhone } from "@/lib/phone";
+import { readResponseJson } from "@/lib/read-response-json";
 
 const inputClass =
   "w-full rounded border border-sand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20";
@@ -190,7 +191,7 @@ export function CruiseTourBooking({
           },
         }),
       });
-      const data = await res.json();
+      const data = await readResponseJson(res);
       if (data.checkoutUrl) {
         window.location.href = data.checkoutUrl;
         return;

@@ -70,7 +70,6 @@ export async function getBookingsForCruiseGroups(): Promise<Booking[]> {
   const local = await getBookings();
   if (!isHubConfigured()) return local;
 
-  await syncBookingsToHub(local);
   const hub = await listHubBookings();
   if (!hub) return local;
 

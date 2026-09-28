@@ -85,10 +85,23 @@ export async function getBookings(): Promise<Booking[]> {
   return normalized;
 }
 
-export async function saveBookings(bookings: Booking[]): Promise<void> {
+/**
+ * Guarda el listado. Si se pasan `touched`, solo esas reservas se reflejan
+ * en el hub. Nunca reenviar las ~7.000: eso agotaba el tiempo de la función
+ * y el cliente veía «Unexpected token A / An error occurred».
+ */
+export async function saveBookings(
+  bookings: Booking[],
+  touched?: Booking[]
+): Promise<void> {
   await writeCmsJson("bookings.json", bookings);
-  const { syncBookingsToHub } = await import("@/lib/hub/bookings");
-  await syncBookingsToHub(bookings);
+  if (!touched?.length) return;
+  try {
+    const { syncBookingsToHub } = await import("@/lib/hub/bookings");
+    await syncBookingsToHub(touched);
+  } catch (err) {
+    console.error("[hub] mirror bookings failed", err);
+  }
 }
 
 /** Fuerza subir el bookings.json del deploy a Supabase Storage. */
@@ -120,7 +133,7 @@ export async function upsertBookings(
   const merged = [...map.values()].sort((a, b) =>
     a.createdAt < b.createdAt ? 1 : -1
   );
-  await saveBookings(merged);
+  await saveBookings(merged, normalized);
   return { upserted: normalized.length, total: merged.length };
 }
 
@@ -167,7 +180,7 @@ export async function addBooking(
     status: booking.status ?? "confirmed",
   };
   bookings.unshift(created);
-  await saveBookings(bookings);
+  await saveBookings(bookings, [created]);
   return created;
 }
 
@@ -179,7 +192,7 @@ export async function updateBookingStatus(
   const idx = bookings.findIndex((b) => b.id === id);
   if (idx === -1) return null;
   bookings[idx] = { ...bookings[idx], status };
-  await saveBookings(bookings);
+  await saveBookings(bookings, [bookings[idx]]);
   return bookings[idx];
 }
 
@@ -202,7 +215,7 @@ export async function updateBooking(
   const idx = bookings.findIndex((b) => b.id === id);
   if (idx === -1) return null;
   bookings[idx] = { ...bookings[idx], ...patch };
-  await saveBookings(bookings);
+  await saveBookings(bookings, [bookings[idx]]);
   return bookings[idx];
 }
 
@@ -224,7 +237,10 @@ export async function persistInferredBookingLocales(): Promise<{
     return { ...booking, locale: inferred };
   });
   if (filled > 0) {
-    await saveBookings(next);
+    await saveBookings(
+      next,
+      next.filter((booking, i) => booking !== bookings[i])
+    );
   }
   return { filled, bookings: next };
 }
@@ -251,7 +267,7 @@ export async function markCashCollected(id: string): Promise<Booking | null> {
     cashStatus: "collected",
     paymentStatus: "paid",
   };
-  await saveBookings(bookings);
+  await saveBookings(bookings, [bookings[idx]]);
   return bookings[idx];
 }
 

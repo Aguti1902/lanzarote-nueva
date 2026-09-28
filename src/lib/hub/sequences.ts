@@ -25,7 +25,12 @@ export async function tryHubNextNumber(
   minNext: number
 ): Promise<number | null> {
   if (!isHubConfigured()) return null;
-  return hubNextNumber(key, minNext);
+  try {
+    return await hubNextNumber(key, minNext);
+  } catch (err) {
+    console.error("[hub] next number failed", key, err);
+    return null;
+  }
 }
 
 export async function hubRaiseFloor(key: string, lastIssued: number): Promise<void> {

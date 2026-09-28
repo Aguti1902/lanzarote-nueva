@@ -13,6 +13,7 @@ import { isServiceDateWithinLeadTime } from "@/lib/booking-lead-time";
 import { expectedOnlineCharge, splitPaymentAmounts } from "@/lib/payments";
 import { PhoneWithPrefix } from "@/components/PhoneWithPrefix";
 import { isValidBookingPhone } from "@/lib/phone";
+import { readResponseJson } from "@/lib/read-response-json";
 
 const inputClass =
   "w-full rounded border border-sand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20";
@@ -115,8 +116,10 @@ export default function CarritoPage() {
             },
           }),
         });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Error");
+        const data = await readResponseJson(res);
+        if (!res.ok || !data.booking?.id) {
+          throw new Error(data.error || "Error");
+        }
         createdIds.push(data.booking.id);
       }
 

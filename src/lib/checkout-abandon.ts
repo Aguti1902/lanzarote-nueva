@@ -190,6 +190,7 @@ export async function cancelUnpaidConfirmedCheckouts(): Promise<number> {
   if (!pendingLinks.length) return 0;
 
   let changed = 0;
+  const touched: Booking[] = [];
   const next: Booking[] = bookings.map((booking) => {
     if (booking.status !== "confirmed") return booking;
     if (!isOnlineCardMethod(booking.paymentMethod)) return booking;
@@ -218,16 +219,18 @@ export async function cancelUnpaidConfirmedCheckouts(): Promise<number> {
       return booking;
     }
     changed += 1;
-    return {
+    const cancelled: Booking = {
       ...booking,
       status: "cancelled",
       cancelledAt: new Date().toISOString(),
       cancellationReason: "Pago online no completado",
     };
+    touched.push(cancelled);
+    return cancelled;
   });
 
   if (changed > 0) {
-    await saveBookings(next);
+    await saveBookings(next, touched);
     for (const payment of pendingLinks) {
       const related = idsFromPaymentLink(payment);
       const cancelledNow = next.filter(

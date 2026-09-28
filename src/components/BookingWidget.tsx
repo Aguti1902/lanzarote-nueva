@@ -12,6 +12,7 @@ import { expectedOnlineCharge, splitPaymentAmounts } from "@/lib/payments";
 import { TourDatePicker } from "@/components/TourDatePicker";
 import { PhoneWithPrefix } from "@/components/PhoneWithPrefix";
 import { isValidBookingPhone } from "@/lib/phone";
+import { readResponseJson } from "@/lib/read-response-json";
 import { isServiceDateWithinLeadTime } from "@/lib/booking-lead-time";
 import {
   effectiveAdultPrice,
@@ -164,7 +165,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
           minibus: isMinibus ? { hours } : undefined,
         }),
       });
-      const data = await res.json();
+      const data = await readResponseJson(res);
       if (data.checkoutUrl) {
         window.location.href = data.checkoutUrl;
         return;
