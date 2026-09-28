@@ -206,7 +206,19 @@ function invalidateCmsCache(file: string) {
  * On Vercel, local write may be ephemeral; Storage is the durable source.
  * Antes de sobrescribir, guarda una copia en `backups/<file>.<timestamp>.json`.
  */
-export async function writeCmsJson(file: string, data: unknown): Promise<void> {
+export async function writeCmsJson(
+  file: string,
+  data: unknown,
+  options?: { backup?: boolean; pretty?: boolean }
+): Promise<void> {
+  const withBackup = options?.backup !== false;
+  const pretty = options?.pretty !== false;
+  const encode = (value: unknown) =>
+    Buffer.from(
+      (pretty ? JSON.stringify(value, null, 2) : JSON.stringify(value)) + "\n",
+      "utf-8"
+    );
+
   if (!isSupabaseConfigured()) {
     await writeLocalJson(file, data);
     invalidateCmsCache(file);
@@ -216,44 +228,52 @@ export async function writeCmsJson(file: string, data: unknown): Promise<void> {
   try {
     await ensureCmsBucket();
     const sb = getSupabaseAdmin();
-    const payload = Buffer.from(JSON.stringify(data, null, 2) + "\n", "utf-8");
-    const options = {
+    const payload = encode(data);
+    const uploadOptions = {
       upsert: true,
       contentType: "application/json",
       cacheControl: "0",
     } as const;
 
     // Backup del contenido actual (si existe) para poder recuperar ediciones del panel.
-    try {
-      const existing = await fetchStorageJson<unknown>(file, {
-        allowMissing: true,
-      });
-      if (existing == null) {
-        throw new Error("missing");
+    // En ficheros grandes (reservas) se omite: volver a bajar y subir ~5 MB
+    // retrasa la redirección al checkout.
+    if (withBackup) {
+      try {
+        const existing = await fetchStorageJson<unknown>(file, {
+          allowMissing: true,
+        });
+        if (existing == null) {
+          throw new Error("missing");
+        }
+        const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+        const bakPath = `backups/${file.replace(/\//g, "__")}.${stamp}.json`;
+        const bakBuf = encode(existing);
+        const { error: bakErr } = await sb.storage
+          .from(CMS_BUCKET)
+          .upload(bakPath, bakBuf, {
+            upsert: false,
+            contentType: "application/json",
+            cacheControl: "0",
+          });
+        if (bakErr) {
+          console.warn(`[cms] backup puntual falló (${file}): ${bakErr.message}`);
+        }
+      } catch (bakCatch) {
+        console.warn(
+          `[cms] backup puntual falló (${file}):`,
+          bakCatch instanceof Error ? bakCatch.message : bakCatch
+        );
       }
-      const stamp = new Date().toISOString().replace(/[:.]/g, "-");
-      const bakPath = `backups/${file.replace(/\//g, "__")}.${stamp}.json`;
-      const bakBuf = Buffer.from(JSON.stringify(existing, null, 2) + "\n", "utf-8");
-      const { error: bakErr } = await sb.storage.from(CMS_BUCKET).upload(bakPath, bakBuf, {
-        upsert: false,
-        contentType: "application/json",
-        cacheControl: "0",
-      });
-      if (bakErr) {
-        console.warn(`[cms] backup puntual falló (${file}): ${bakErr.message}`);
-      }
-    } catch (bakCatch) {
-      console.warn(
-        `[cms] backup puntual falló (${file}):`,
-        bakCatch instanceof Error ? bakCatch.message : bakCatch
-      );
     }
 
-    const updated = await sb.storage.from(CMS_BUCKET).update(file, payload, options);
+    const updated = await sb.storage
+      .from(CMS_BUCKET)
+      .update(file, payload, uploadOptions);
     if (updated.error) {
       const uploaded = await sb.storage
         .from(CMS_BUCKET)
-        .upload(file, payload, options);
+        .upload(file, payload, uploadOptions);
       if (uploaded.error) throw uploaded.error;
     }
 
@@ -264,11 +284,11 @@ export async function writeCmsJson(file: string, data: unknown): Promise<void> {
       const protectedStamp = `backups/protected/shoreTours.${stamp}.json`;
       const latestUp = await sb.storage
         .from(CMS_BUCKET)
-        .update(protectedLatest, payload, options);
+        .update(protectedLatest, payload, uploadOptions);
       if (latestUp.error) {
         const uploaded = await sb.storage
           .from(CMS_BUCKET)
-          .upload(protectedLatest, payload, options);
+          .upload(protectedLatest, payload, uploadOptions);
         if (uploaded.error) {
           console.warn(`[cms] snapshot protegido latest: ${uploaded.error.message}`);
         }

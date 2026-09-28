@@ -94,14 +94,15 @@ export async function saveBookings(
   bookings: Booking[],
   touched?: Booking[]
 ): Promise<void> {
-  await writeCmsJson("bookings.json", bookings);
+  await writeCmsJson("bookings.json", bookings, {
+    backup: false,
+    pretty: false,
+  });
   if (!touched?.length) return;
-  try {
-    const { syncBookingsToHub } = await import("@/lib/hub/bookings");
-    await syncBookingsToHub(touched);
-  } catch (err) {
-    console.error("[hub] mirror bookings failed", err);
-  }
+  // No esperar al hub: el checkout no debe quedarse detrás de esa copia.
+  void import("@/lib/hub/bookings")
+    .then(({ syncBookingsToHub }) => syncBookingsToHub(touched))
+    .catch((err) => console.error("[hub] mirror bookings failed", err));
 }
 
 /** Fuerza subir el bookings.json del deploy a Supabase Storage. */
