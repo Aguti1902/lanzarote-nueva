@@ -385,6 +385,7 @@ export type Dictionary = {
     minLeadTime: string;
     pickupTimeNote: string;
     moreDetails: string;
+    hotelPlaceholder: string;
   };
   transferForm: {
     title: string;
@@ -1007,6 +1008,7 @@ const es: Dictionary = {
     pickupTimeNote:
       "La hora de recogida se confirma por WhatsApp / email según su zona.",
     moreDetails: "Hotel y notas (opcional)",
+    hotelPlaceholder: "Nombre del hotel, apartamento o punto de recogida",
   },
   transferForm: {
     title: "Reservar traslado",
@@ -1589,6 +1591,7 @@ const en: Dictionary = {
     pickupTimeNote:
       "Pick-up time is confirmed by WhatsApp / email according to your area.",
     moreDetails: "Hotel and notes (optional)",
+    hotelPlaceholder: "Hotel, apartment or pick-up point",
   },
   transferForm: {
     title: "Book a transfer",
@@ -2180,6 +2183,7 @@ const de: Dictionary = {
     pickupTimeNote:
       "Die Abholzeit wird per WhatsApp / E-Mail je nach Zone bestätigt.",
     moreDetails: "Hotel und Notizen (optional)",
+    hotelPlaceholder: "Hotel, Apartment oder Abholpunkt",
   },
   transferForm: {
     title: "Transfer buchen",

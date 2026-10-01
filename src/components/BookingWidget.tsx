@@ -41,7 +41,6 @@ export function BookingWidget({ tour }: { tour: Tour }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [cartMsg, setCartMsg] = useState("");
-  const [showExtras, setShowExtras] = useState(false);
 
   const isMinibus = tour.category === "minibus";
   const isPrivate = isFlatPriceTour(tour);
@@ -115,7 +114,13 @@ export function BookingWidget({ tour }: { tour: Tour }) {
       setError(dict.booking.dateUnavailable);
       return false;
     }
-    if (requireContact && (!name || !email || !isValidBookingPhone(phone))) {
+    if (
+      requireContact &&
+      (!name.trim() ||
+        !email.trim() ||
+        !isValidBookingPhone(phone) ||
+        !hotel.trim())
+    ) {
       setError(dict.booking.fillRequired);
       return false;
     }
@@ -161,7 +166,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
             ? tour.bookingMethod || "request"
             : "online",
           locale,
-          customer: { name, email, phone, hotel, notes },
+          customer: { name, email, phone, hotel: hotel.trim(), notes },
           minibus: isMinibus ? { hours } : undefined,
         }),
       });
@@ -333,34 +338,26 @@ export function BookingWidget({ tour }: { tour: Tour }) {
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setShowExtras((v) => !v)}
-          className="flex w-full items-center justify-between rounded border border-dashed border-sand-line px-2.5 py-1.5 text-[11px] font-semibold text-ink-muted transition hover:border-ocean/40 hover:text-ink"
-        >
-          <span>{dict.booking.moreDetails}</span>
-          <span className="text-ocean">{showExtras ? "−" : "+"}</span>
-        </button>
-
-        {showExtras ? (
-          <div className="space-y-2 rounded-lg bg-sky-soft/50 p-2 ring-1 ring-sand-line">
-            <Field label={dict.booking.hotel}>
-              <input
-                className={inputClass}
-                value={hotel}
-                onChange={(e) => setHotel(e.target.value)}
-              />
-            </Field>
-            <Field label={dict.booking.notes}>
-              <textarea
-                className={`${inputClass} min-h-[52px] resize-y`}
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                rows={2}
-              />
-            </Field>
-          </div>
-        ) : null}
+        <div className="rounded-lg bg-sky-soft/80 p-2.5 ring-1 ring-ocean/40">
+          <Field label={`${dict.booking.hotel} *`}>
+            <input
+              className={`${inputClass} bg-white py-2`}
+              value={hotel}
+              onChange={(e) => setHotel(e.target.value)}
+              required
+              autoComplete="off"
+              placeholder={dict.booking.hotelPlaceholder}
+            />
+          </Field>
+        </div>
+        <Field label={dict.booking.notes}>
+          <textarea
+            className={`${inputClass} min-h-[52px] resize-y bg-white`}
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            rows={2}
+          />
+        </Field>
 
         {isOnRequest ? (
           <p className="rounded-lg bg-sky-soft/80 px-2.5 py-2 text-xs text-ink-muted ring-1 ring-sand-line">

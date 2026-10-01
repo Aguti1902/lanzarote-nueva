@@ -246,9 +246,31 @@ export async function POST(request: Request) {
                 rawPrefix,
                 localeNorm
               ),
+              hotel: String(
+                (rest as { hotel?: string }).hotel || ""
+              ).trim(),
             };
           })()
         : customer;
+
+    const hotelValue = String(
+      (customerNorm as { hotel?: string } | undefined)?.hotel || ""
+    ).trim();
+    const shoreBooking =
+      source === "cruise" ||
+      source === "shore" ||
+      String(tourId || "").startsWith("shore-") ||
+      String(tourId || "").startsWith("cruise-");
+    if (
+      (type === "tour" || type === "minibus") &&
+      !shoreBooking &&
+      !hotelValue
+    ) {
+      return NextResponse.json(
+        { error: "Indica el hotel o el punto de recogida." },
+        { status: 400 }
+      );
+    }
 
     if (shoreTourForPricing) {
       const pax = adultsNum + childrenNum;

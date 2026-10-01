@@ -76,7 +76,15 @@ export default function CarritoPage() {
       setError(dict.booking.minLeadTime);
       return;
     }
-    if (!name || !email || !isValidBookingPhone(phone)) {
+    const needsHotel = items.some(
+      (item) => item.source !== "cruise" && !item.cruiseShip
+    );
+    if (
+      !name ||
+      !email ||
+      !isValidBookingPhone(phone) ||
+      (needsHotel && !hotel.trim())
+    ) {
       setError(dict.booking.fillRequired);
       return;
     }
@@ -110,7 +118,7 @@ export default function CarritoPage() {
               name,
               email,
               phone,
-              hotel,
+              hotel: hotel.trim(),
               cruiseShip: item.cruiseShip,
               notes: item.notes,
             },
@@ -281,12 +289,26 @@ export default function CarritoPage() {
                   placeholder={dict.common.phonePlaceholder}
                 />
               </div>
-              <input
-                className={inputClass}
-                placeholder={dict.cart.hotel}
-                value={hotel}
-                onChange={(e) => setHotel(e.target.value)}
-              />
+              <label className="block">
+                <span className="mb-1 block text-sm font-medium text-ink">
+                  {dict.booking.hotel}
+                  {items.some(
+                    (item) => item.source !== "cruise" && !item.cruiseShip
+                  )
+                    ? " *"
+                    : ""}
+                </span>
+                <input
+                  className={inputClass}
+                  placeholder={dict.booking.hotelPlaceholder}
+                  value={hotel}
+                  onChange={(e) => setHotel(e.target.value)}
+                  required={items.some(
+                    (item) => item.source !== "cruise" && !item.cruiseShip
+                  )}
+                  autoComplete="off"
+                />
+              </label>
               <div>
                 <p className="mb-2 text-sm font-medium text-ink">
                   {dict.booking.paymentMethod}
