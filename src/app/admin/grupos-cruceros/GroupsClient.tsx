@@ -400,8 +400,7 @@ export function GroupsPanel() {
   if (detailId) {
     const g = detail?.group;
     const livePax = detail?.livePax ?? g?.pax ?? 0;
-    const isComplete =
-      Boolean(g?.complete) || livePax >= (g?.minPax || 0);
+    const isComplete = (g?.minPax || 0) > 0 && livePax >= (g?.minPax || 0);
 
     return (
       <div className="space-y-6">
@@ -606,9 +605,11 @@ export function GroupsPanel() {
                 if (!groupAll && perPerson.length === 0) {
                   return (
                     <p className="text-sm text-ink-muted">
-                      {remaining <= 0
-                        ? "No quedan plazas pendientes de pago (el cupo ya está cubierto por reservas)."
-                        : "Aún no hay enlaces. Pulsa «Generar enlaces de pago»."}
+                      {!g.createdManually && (detail.livePax || 0) === 0
+                        ? "Este grupo se abrió solo y todavía no tiene reservas confirmadas. No se cobra el bus vacío. El enlace aparece cuando haya alguien inscrito, o si el grupo se crea a mano."
+                        : remaining <= 0
+                          ? "No quedan plazas pendientes de pago (el cupo ya está cubierto por reservas)."
+                          : "Aún no hay enlaces. Pulsa «Generar enlaces de pago»."}
                     </p>
                   );
                 }
@@ -1054,7 +1055,7 @@ export function GroupsPanel() {
               </tr>
             )}
             {filtered.map((g) => {
-              const complete = g.complete || g.pax >= g.minPax;
+              const complete = (g.minPax || 0) > 0 && g.pax >= g.minPax;
               return (
                 <tr key={g.id} className="border-b border-sand-line">
                   <td className="px-4 py-3">

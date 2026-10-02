@@ -15,6 +15,19 @@ import {
 } from "lucide-react";
 import type { Booking } from "@/types";
 import { formatDate, formatPrice, paymentLabel } from "@/lib/format";
+
+function bookingAdminHref(booking: Booking): string {
+  const q = encodeURIComponent(booking.id);
+  if (/^CR-?\d/i.test(booking.id)) return `/admin/reservas-cruceros?q=${q}`;
+  return `/admin/reservas?q=${q}`;
+}
+
+function bookingKind(booking: Booking): string {
+  if (/^CR-?\d/i.test(booking.id)) return "Crucero";
+  if (booking.type === "transfer" || /^T-/i.test(booking.id)) return "Traslado";
+  if (booking.type === "minibus") return "Minibús";
+  return "Excursión";
+}
 import {
   DateRangeFilter,
   lastNDaysRange,
@@ -253,24 +266,27 @@ export default function AdminDashboard() {
                   <li className="text-ink-muted">Sin salidas próximas</li>
                 )}
                 {stats.upcoming.map((b) => (
-                  <li
-                    key={b.id}
-                    className="flex justify-between gap-3 border-b border-sand-line pb-2"
-                  >
-                    <div>
-                      <p className="font-medium">{b.tourTitle}</p>
-                      <p className="text-xs text-ink-muted">
-                        {b.customer.name} · {paymentLabel(b.paymentMethod)}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold">{formatDate(b.date)}</p>
-                      {(b.amountDueCash ?? 0) > 0 && (
-                        <p className="text-xs text-ocean">
-                          Ef. {formatPrice(b.amountDueCash)}
+                  <li key={b.id} className="border-b border-sand-line pb-2">
+                    <Link
+                      href={bookingAdminHref(b)}
+                      className="flex justify-between gap-3 rounded hover:bg-sand/40"
+                    >
+                      <div>
+                        <p className="font-medium">{b.tourTitle}</p>
+                        <p className="text-xs text-ink-muted">
+                          {b.id} · {b.customer.name} · {bookingKind(b)} ·{" "}
+                          {paymentLabel(b.paymentMethod)}
                         </p>
-                      )}
-                    </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold">{formatDate(b.date)}</p>
+                        {(b.amountDueCash ?? 0) > 0 && (
+                          <p className="text-xs text-ocean">
+                            Ef. {formatPrice(b.amountDueCash)}
+                          </p>
+                        )}
+                      </div>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -280,10 +296,10 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-bold">Actividad reciente</h2>
                 <Link
-                  href="/admin/estadisticas"
+                  href="/admin/reservas"
                   className="text-xs font-bold text-ocean"
                 >
-                  Estadísticas
+                  Ver reservas
                 </Link>
               </div>
               <ul className="mt-4 space-y-3 text-sm">
@@ -291,24 +307,27 @@ export default function AdminDashboard() {
                   <li className="text-ink-muted">Sin actividad en este rango</li>
                 )}
                 {stats.recent.map((b) => (
-                  <li
-                    key={b.id}
-                    className="flex justify-between gap-3 border-b border-sand-line pb-2"
-                  >
-                    <div>
-                      <p className="font-medium">{b.id}</p>
-                      <p className="text-xs text-ink-muted">
-                        {b.customer.name}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold">
-                        {formatPrice(b.amountTotal ?? b.totalPrice)}
-                      </p>
-                      <p className="text-xs capitalize text-ink-muted">
-                        {b.status}
-                      </p>
-                    </div>
+                  <li key={b.id} className="border-b border-sand-line pb-2">
+                    <Link
+                      href={bookingAdminHref(b)}
+                      className="flex justify-between gap-3 rounded hover:bg-sand/40"
+                    >
+                      <div>
+                        <p className="font-medium">{b.id}</p>
+                        <p className="text-xs text-ink-muted">
+                          {b.customer.name} · {bookingKind(b)}
+                          {b.date ? ` · ${formatDate(b.date)}` : ""}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold">
+                          {formatPrice(b.amountTotal ?? b.totalPrice)}
+                        </p>
+                        <p className="text-xs capitalize text-ink-muted">
+                          {b.status}
+                        </p>
+                      </div>
+                    </Link>
                   </li>
                 ))}
               </ul>

@@ -11,6 +11,7 @@ import {
   bookingsForGroup,
   livePaxForGroup,
   backfillUnassignedCruiseGroups,
+  syncCruiseGroupCapacity,
 } from "@/lib/cruise-groups";
 import { getBookingsForCruiseGroups } from "@/lib/hub/bookings";
 import { getHubSiteId } from "@/lib/hub/config";
@@ -52,24 +53,36 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Grupo no encontrado" }, { status: 404 });
   }
 
+  // Recalcula plazas reales (sin intentos de pago sin cobrar) y ajusta enlaces.
+  let activeGroup = group;
+  try {
+    activeGroup = (await syncCruiseGroupCapacity(group.id)).group;
+  } catch {
+    activeGroup = group;
+  }
+
+  const groupsNow = await getCruiseGroups();
   const bookings = await getBookingsForCruiseGroups();
-  const groupBookings = bookingsForGroup(group, bookings, groups);
+  const groupBookings = bookingsForGroup(activeGroup, bookings, groupsNow);
   const sailing = await findSailingForPortCall({
-    shipName: group.shipName,
-    company: group.company,
-    date: group.date,
+    shipName: activeGroup.shipName,
+    company: activeGroup.company,
+    date: activeGroup.date,
   });
 
-  const livePax = livePaxForGroup(group, bookings, groups);
+  const livePax = livePaxForGroup(activeGroup, bookings, groupsNow);
   const origin = paymentOriginFromRequest(
     request,
     searchParams.get("origin")
   );
 
-  // Sincroniza enlaces con plazas realmente pendientes (restar reservas)
+  // syncCruiseGroupCapacity ya dejó los enlaces al día. Si falló, se reintentan.
   let synced;
   try {
-    synced = await ensureGroupPaymentLinks(group, { bookedPax: livePax });
+    synced =
+      activeGroup === group
+        ? await ensureGroupPaymentLinks(activeGroup, { bookedPax: livePax })
+        : null;
   } catch {
     synced = null;
   }
@@ -83,7 +96,7 @@ export async function GET(request: Request) {
   ).filter((p) => p.status !== "cancelled");
 
   return NextResponse.json({
-    group,
+    group: activeGroup,
     currentSiteId: getHubSiteId(),
     bookings: groupBookings,
     sailing: sailing

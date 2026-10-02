@@ -203,6 +203,16 @@ export async function ensureGroupPaymentLinks(
     (p) => p.mode === "per_person" && p.status === "paid"
   ).length;
 
+  const bookedKnown = options?.bookedPax != null;
+  const bookedCount = bookedKnown
+    ? Math.max(0, Math.floor(Number(options?.bookedPax) || 0))
+    : 0;
+  // Un grupo nacido de una reserva online, todavía vacío, no debe cobrar
+  // el minibús entero. El enlace de las plazas libres es para un grupo
+  // creado a mano, o para uno que ya tiene gente inscrita.
+  const offerGroupAll =
+    group.createdManually === true || !bookedKnown || bookedCount > 0;
+
   let remaining: number;
   if (options?.bookedPax != null) {
     remaining = Math.max(
@@ -238,8 +248,9 @@ export async function ensureGroupPaymentLinks(
     data.paymentLinks.find(
       (p) => p.groupId === group.id && p.mode === "group_all"
     );
+  const sellRemaining = remaining > 0 && offerGroupAll;
   if (!groupAll) {
-    if (remaining > 0) {
+    if (sellRemaining) {
       groupAll = await upsertPaymentLink({
         concept: `Grupo ${group.shipName} — ${group.excursionTitle} (${group.date})${seriesLabel} · plazas pendientes`,
         amount: amountGroup,
@@ -268,7 +279,7 @@ export async function ensureGroupPaymentLinks(
     }
   } else if (groupAll.status !== "paid") {
     const amountChanged = Math.abs(Number(groupAll.amount) - amountGroup) > 0.009;
-    if (remaining <= 0) {
+    if (!sellRemaining) {
       groupAll = await upsertPaymentLink({
         ...groupAll,
         amount: 0,

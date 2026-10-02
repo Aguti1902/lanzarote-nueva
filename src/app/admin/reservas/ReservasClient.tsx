@@ -102,6 +102,14 @@ export default function AdminReservasPage() {
     load();
   }, [load]);
 
+  useEffect(() => {
+    const q = searchParams.get("q");
+    if (q) {
+      setQuery(q);
+      setPage(1);
+    }
+  }, [searchParams]);
+
   function setTab(next: ReservasTab) {
     setTabState(next);
     setPage(1);
@@ -376,6 +384,17 @@ export default function AdminReservasPage() {
               <tr>
                 <td colSpan={8} className="px-4 py-8 text-center text-ink-muted">
                   No hay reservas en esta vista
+                  {/^CR-?\d/i.test(query.trim()) ? (
+                    <>
+                      . {query.trim()} es una reserva de crucero.{" "}
+                      <Link
+                        href={`/admin/reservas-cruceros?q=${encodeURIComponent(query.trim())}`}
+                        className="font-bold text-ocean hover:underline"
+                      >
+                        Abrir en Reservas de cruceros
+                      </Link>
+                    </>
+                  ) : null}
                 </td>
               </tr>
             )}

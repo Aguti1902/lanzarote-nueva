@@ -361,7 +361,9 @@ export function getStats(bookings: Booking[]) {
       .sort((a, b) => a[0].localeCompare(b[0]))
       .map(([month, amount]) => ({ month, amount })),
     upcoming: upcoming.slice(0, 8),
-    recent: [...bookings].slice(0, 6),
+    recent: [...bookings]
+      .sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""))
+      .slice(0, 8),
     cashPendingList: cashPending
       .sort((a, b) => a.date.localeCompare(b.date))
       .slice(0, 50),

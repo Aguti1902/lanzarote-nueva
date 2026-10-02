@@ -1,6 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import type { Booking, BookingStatus } from "@/types";
 import { formatDate, formatPrice, paymentLabel } from "@/lib/format";
 import { compareBookingsByServiceNearest } from "@/lib/booking-display";
@@ -18,7 +20,8 @@ import {
   bookingRowClassName,
 } from "@/components/admin/BookingStatusBadge";
 
-export default function AdminReservasCrucerosPage() {
+function AdminReservasCrucerosPage() {
+  const searchParams = useSearchParams();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [tab, setTab] = useState<"all" | "current" | "done" | "cancelled">(
     "all"
@@ -28,7 +31,7 @@ export default function AdminReservasCrucerosPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [modalView, setModalView] = useState<"details" | "cancel">("details");
   const [loading, setLoading] = useState(true);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(() => searchParams.get("q") || "");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -41,6 +44,11 @@ export default function AdminReservasCrucerosPage() {
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    const q = searchParams.get("q");
+    if (q) setQuery(q);
+  }, [searchParams]);
 
   async function setStatus(
     id: string,
@@ -230,6 +238,17 @@ export default function AdminReservasCrucerosPage() {
               <tr>
                 <td colSpan={10} className="px-4 py-6 text-ink-muted">
                   No hay reservas de crucero en este filtro
+                  {/^(T|R|BK)-/i.test(query.trim()) ? (
+                    <>
+                      . {query.trim()} es un traslado o una excursión.{" "}
+                      <Link
+                        href={`/admin/reservas?q=${encodeURIComponent(query.trim())}`}
+                        className="font-bold text-ocean hover:underline"
+                      >
+                        Abrir en Reservas
+                      </Link>
+                    </>
+                  ) : null}
                 </td>
               </tr>
             )}
@@ -334,5 +353,15 @@ export default function AdminReservasCrucerosPage() {
         />
       )}
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense
+      fallback={<p className="text-ink-muted">Cargando reservas de crucero…</p>}
+    >
+      <AdminReservasCrucerosPage />
+    </Suspense>
   );
 }

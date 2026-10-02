@@ -67,8 +67,19 @@ export function shipMatchesBooking(
   return a.includes(b) || b.includes(a);
 }
 
+/**
+ * Un intento de tarjeta sin cobrar no ocupa plaza.
+ * Si se cuenta, varios reintentos del mismo cliente llenan el grupo,
+ * lo marcan completo y abren otro grupo vacío con enlace de cobro.
+ */
+export function bookingOccupiesCruiseSeat(booking: Booking): boolean {
+  if (booking.status === "cancelled") return false;
+  if (isAwaitingOnlinePayment(booking)) return false;
+  return true;
+}
+
 export function bookingPax(booking: Booking): number {
-  if (booking.status === "cancelled") return 0;
+  if (!bookingOccupiesCruiseSeat(booking)) return 0;
   return (booking.adults || 0) + (booking.children || 0);
 }
 
@@ -95,6 +106,7 @@ export function bookingsForGroup(
     siblings.find((g) => g.status === "open") || siblings[0] || group;
 
   return bookings.filter((b) => {
+    if (!bookingOccupiesCruiseSeat(b)) return false;
     if (b.groupId) return b.groupId === group.id;
     if (!shipMatchesBooking(b, group) || bookingServiceDate(b) !== (group.date || "").slice(0, 10)) return false;
     // Optional: also require excursion title match when present on booking
@@ -212,9 +224,7 @@ export async function syncCruiseGroupCapacity(
     pax: livePax,
     status: nextStatus,
     complete:
-      group.complete ||
-      (group.minPax > 0 && livePax >= group.minPax) ||
-      nextStatus === "full",
+      (group.minPax > 0 && livePax >= group.minPax) || nextStatus === "full",
     seriesIndex: group.seriesIndex ?? 1,
   });
 

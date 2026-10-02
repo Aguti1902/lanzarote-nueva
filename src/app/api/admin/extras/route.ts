@@ -63,7 +63,19 @@ export async function GET(request: Request) {
       const { getHubHost, getHubSiteId, isHubConfigured } = await import(
         "@/lib/hub/config"
       );
-      const items = await getCruiseGroups();
+      const { livePaxForGroup } = await import("@/lib/cruise-groups");
+      const { getBookingsForCruiseGroups } = await import("@/lib/hub/bookings");
+      const groups = await getCruiseGroups();
+      let items = groups;
+      try {
+        const bookings = await getBookingsForCruiseGroups();
+        items = groups.map((g) => ({
+          ...g,
+          pax: livePaxForGroup(g, bookings, groups),
+        }));
+      } catch {
+        items = groups;
+      }
       const configured = isHubConfigured();
       return NextResponse.json({
         items,
