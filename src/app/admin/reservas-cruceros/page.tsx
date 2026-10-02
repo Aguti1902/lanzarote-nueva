@@ -86,17 +86,25 @@ function AdminReservasCrucerosPage() {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
+    const locatorSearch = /^(?:cr|bk|r|t)-?\d{3,}$/i.test(q.replace(/\s+/g, ""));
     const list = cruiseBookings.filter((b) => {
-      if (isAwaitingOnlinePayment(b)) return false;
-      if (tab === "cancelled") {
+      if (
+        !locatorSearch &&
+        isAwaitingOnlinePayment(b) &&
+        tab !== "all" &&
+        tab !== "current"
+      ) {
+        return false;
+      }
+      if (!locatorSearch && tab === "cancelled") {
         if (b.status !== "cancelled") return false;
-      } else if (tab === "done") {
+      } else if (!locatorSearch && tab === "done") {
         if (b.status !== "completed") return false;
-      } else if (tab === "current") {
+      } else if (!locatorSearch && tab === "current") {
         if (!(b.status === "pending" || b.status === "confirmed")) return false;
       }
       const dateValue = dateField === "service" ? b.date : b.createdAt;
-      if (!inDateRange(dateValue, range)) return false;
+      if (!locatorSearch && !inDateRange(dateValue, range)) return false;
       if (!q) return true;
       const hay = [
         b.id,

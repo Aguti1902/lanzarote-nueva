@@ -52,18 +52,23 @@ function parseTab(value: string | null): ReservasTab {
   return "all";
 }
 
+/** T-1030, CR-1015, R31105028… buscar el localizador no depende de la pestaña. */
+function isLocatorQuery(query: string): boolean {
+  return /^(?:cr|bk|r|t)-?\d{3,}$/i.test(query.replace(/\s+/g, ""));
+}
+
 function matchesTab(booking: Booking, tab: ReservasTab): boolean {
-  if (isAwaitingOnlinePayment(booking)) return false;
+  const awaiting = isAwaitingOnlinePayment(booking);
   switch (tab) {
     case "all":
       return true;
     case "current":
-      return booking.status === "confirmed";
+      return !awaiting && booking.status === "confirmed";
     case "done":
       return booking.status === "completed";
     case "incomplete":
-      // Pendientes (incl. fecha de servicio ya pasada)
-      return booking.status === "pending";
+      // Pendientes y checkouts de tarjeta todavía sin cobrar
+      return awaiting || booking.status === "pending";
     case "cancelled":
       return booking.status === "cancelled";
   }
@@ -219,12 +224,14 @@ export default function AdminReservasPage() {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
+    const locatorSearch = isLocatorQuery(q);
+    const qCompact = q.replace(/[-\s]/g, "");
     const list = bookings.filter((b) => {
       // Las CR van solo a Reservas cruceros
       if (/^CR-?\d/i.test(b.id)) return false;
-      if (!matchesTab(b, tab)) return false;
+      if (!locatorSearch && !matchesTab(b, tab)) return false;
       const dateValue = dateField === "service" ? b.date : b.createdAt;
-      if (!inDateRange(dateValue, range)) return false;
+      if (!locatorSearch && !inDateRange(dateValue, range)) return false;
       if (!q) return true;
       const hay = [
         b.id,
@@ -240,7 +247,8 @@ export default function AdminReservasPage() {
         .filter(Boolean)
         .join(" ")
         .toLowerCase();
-      return hay.includes(q);
+      if (hay.includes(q)) return true;
+      return qCompact.length >= 4 && hay.replace(/[-\s]/g, "").includes(qCompact);
     });
     return [...list].sort(compareBookingsByServiceNearest);
   }, [bookings, tab, dateField, range, query]);
@@ -419,6 +427,11 @@ export default function AdminReservasPage() {
                       <div className="mt-1.5">
                         <BookingStatusBadge status="cancelled" size="sm" />
                       </div>
+                    )}
+                    {isAwaitingOnlinePayment(b) && (
+                      <p className="mt-1 text-[11px] font-bold text-amber-800">
+                        Pago online sin completar
+                      </p>
                     )}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">
