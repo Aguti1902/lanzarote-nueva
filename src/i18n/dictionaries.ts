@@ -167,6 +167,8 @@ export type Dictionary = {
     callDay: string;
     seaDay: string;
     atSea: string;
+    shipArrival: string;
+    shipDeparture: string;
     noToursYet: string;
     moreInfo: string;
     meetingPoint: string;
@@ -733,6 +735,8 @@ const es: Dictionary = {
     callDay: "Día de escala",
     seaDay: "Día",
     atSea: "Navegando",
+    shipArrival: "Hora de llegada del barco",
+    shipDeparture: "Hora de salida del barco",
     noToursYet:
       "Aún no ofrecemos excursiones en {port}. Estamos trabajando con otras agencias de confianza para ofrecerle las mejores experiencias en cada puerto.",
     moreInfo: "Más información",
@@ -1323,6 +1327,8 @@ const en: Dictionary = {
     callDay: "Port day",
     seaDay: "Day",
     atSea: "At sea",
+    shipArrival: "Ship arrival time",
+    shipDeparture: "Ship departure time",
     noToursYet:
       "We do not yet offer excursions in {port}. We are working with trusted partners to bring you the best experiences in every port.",
     moreInfo: "More information",
@@ -1911,6 +1917,8 @@ const de: Dictionary = {
     callDay: "Hafentag",
     seaDay: "Tag",
     atSea: "Auf See",
+    shipArrival: "Ankunftszeit des Schiffes",
+    shipDeparture: "Abfahrtszeit des Schiffes",
     noToursYet:
       "In {port} bieten wir noch keine Ausflüge an. Wir arbeiten mit vertrauenswürdigen Partnern, um Ihnen in jedem Hafen die besten Erlebnisse zu bieten.",
     moreInfo: "Mehr Infos",
