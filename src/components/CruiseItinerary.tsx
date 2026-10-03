@@ -13,6 +13,7 @@ import {
   shoreTourPublicHighlights,
 } from "@/lib/shore-tour-display";
 import { resolveShoreToursForStop } from "@/lib/cruise-shore-match";
+import { formatShipCallTimes } from "@/lib/cruise-ship-times";
 import { useLocale } from "@/components/LocaleProvider";
 import { CruiseTourBooking } from "@/components/CruiseTourBooking";
 import { MeetingPointModal } from "@/components/MeetingPointModal";
@@ -101,6 +102,10 @@ export function CruiseItinerary({ sailing, tours }: Props) {
               tours
             );
             const portLabel = formatCruisePortName(stop.port, locale);
+            const shipTimes = formatShipCallTimes(stop, {
+              arrival: dict.cruises.shipArrival,
+              departure: dict.cruises.shipDeparture,
+            });
 
             return (
               <li key={`${stop.day}-${stop.date}-${stop.portKey}`}>
@@ -128,8 +133,8 @@ export function CruiseItinerary({ sailing, tours }: Props) {
                       <h3 className="text-xl font-bold text-ink">
                         {stop.isSeaDay ? dict.cruises.atSea : portLabel}
                       </h3>
-                      {stop.time ? (
-                        <p className="mt-1 text-sm text-ink-muted">{stop.time}</p>
+                      {shipTimes ? (
+                        <p className="mt-1 text-sm text-ink-muted">{shipTimes}</p>
                       ) : null}
 
                       {stop.isSeaDay ? null : stopTours.length > 0 ? (
