@@ -281,6 +281,7 @@ export type Dictionary = {
     serviceDate: string;
     passengers: string;
     freeCancel: string;
+    noPaymentCancel: string;
     feeCancel: string;
     reasonTitle: string;
     reasons: { id: string; label: string }[];
@@ -884,6 +885,8 @@ const es: Dictionary = {
     serviceDate: "Fecha del servicio",
     passengers: "pasajeros",
     freeCancel: "Cancelación gratuita (más de 48 h antes del servicio).",
+    noPaymentCancel:
+      "No hay ningún pago registrado. Cancelar no devuelve dinero ni genera cargo.",
     feeCancel:
       "La cancelación de este servicio tiene un cargo de {fee}",
     reasonTitle:
@@ -1469,6 +1472,8 @@ const en: Dictionary = {
     serviceDate: "Service date",
     passengers: "passengers",
     freeCancel: "Free cancellation (more than 48 h before the service).",
+    noPaymentCancel:
+      "No payment was recorded. Cancelling does not refund money or add a charge.",
     feeCancel: "Cancelling this service has a charge of {fee}",
     reasonTitle: "We would like to know why you wish to cancel your booking",
     reasons: [
@@ -2058,6 +2063,8 @@ const de: Dictionary = {
     serviceDate: "Servicedatum",
     passengers: "Passagiere",
     freeCancel: "Kostenlose Stornierung (mehr als 48 Std. vor dem Service).",
+    noPaymentCancel:
+      "Es liegt keine Zahlung vor. Beim Stornieren gibt es keine Erstattung und keine Gebühr.",
     feeCancel: "Die Stornierung dieses Services kostet {fee}",
     reasonTitle: "Wir möchten gerne den Grund Ihrer Stornierung wissen",
     reasons: [

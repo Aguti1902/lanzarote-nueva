@@ -85,6 +85,7 @@ const COPY = {
     cruise: "Crucero",
     fee: "Cargo de cancelación",
     refund: "Importe a devolver",
+    noPayment: "No había pago. Sin cargo y sin devolución.",
     freeCancel: "Cancelación gratuita",
     reason: "Motivo",
     viewVoucher: "Ver voucher",
@@ -148,6 +149,7 @@ const COPY = {
     cruise: "Cruise ship",
     fee: "Cancellation fee",
     refund: "Refund amount",
+    noPayment: "Nothing was paid. No fee and no refund.",
     freeCancel: "Free cancellation",
     reason: "Reason",
     viewVoucher: "View voucher",
@@ -211,6 +213,7 @@ const COPY = {
     cruise: "Kreuzfahrtschiff",
     fee: "Stornogebühr",
     refund: "Rückerstattung",
+    noPayment: "Keine Zahlung. Keine Gebühr und keine Erstattung.",
     freeCancel: "Kostenlose Stornierung",
     reason: "Grund",
     viewVoucher: "Voucher ansehen",
@@ -415,7 +418,9 @@ export async function sendCustomerBookingEmail(
     subject = c.cancellationSubject(booking.id);
     const assessment = options?.assessment;
     if (assessment) {
-      if (assessment.free) {
+      if (assessment.amountPaid <= 0) {
+        extraRows += emailRow(c.fee, escapeHtml(c.noPayment));
+      } else if (assessment.free) {
         extraRows += emailRow(c.fee, escapeHtml(c.freeCancel));
       } else {
         extraRows += emailRow(
@@ -537,7 +542,9 @@ export async function notifyOpsCancellation(
     `Cliente: ${booking.customer.name} <${booking.customer.email}>`,
     `Teléfono: ${formatInternationalPhone(booking.customer.phone) || booking.customer.phone || "—"}`,
     assessment
-      ? `Cargo: ${assessment.fee} € · Devolución: ${assessment.refundAmount} €`
+      ? assessment.amountPaid <= 0
+        ? "Sin pago registrado. Sin cargo y sin devolución."
+        : `Cargo: ${assessment.fee} € · Devolución: ${assessment.refundAmount} €`
       : "",
     booking.cancellationReason
       ? `Motivo: ${booking.cancellationReason}`
@@ -570,7 +577,11 @@ export async function notifyOpsCancellation(
     assessment
       ? emailRow(
           "Cargo / devolución",
-          escapeHtml(`${assessment.fee} € / ${assessment.refundAmount} €`)
+          escapeHtml(
+            assessment.amountPaid <= 0
+              ? "Sin pago. Sin cargo y sin devolución."
+              : `${assessment.fee} € / ${assessment.refundAmount} €`
+          )
         )
       : "",
     booking.cancellationReason

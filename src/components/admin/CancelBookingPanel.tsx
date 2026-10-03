@@ -117,7 +117,12 @@ export function CancelBookingPanel({
               {" · "}
               Estado: {statusLabel(booking.status)}
             </span>
-            {assessment.refundAmount > 0 ? (
+            {assessment.amountPaid <= 0 ? (
+              <span className="mt-2 block font-bold text-ink">
+                Este cliente no ha pagado nada. No se devuelve dinero ni se
+                aplica cargo.
+              </span>
+            ) : assessment.refundAmount > 0 ? (
               <span className="mt-2 block font-bold text-success">
                 Corresponde devolver {money(assessment.refundAmount)}
                 {isOnlineCardMethod(booking.paymentMethod) &&

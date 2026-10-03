@@ -248,7 +248,11 @@ function CancelarReservaContent() {
                     {" · "}
                     {dict.manage.status}: {statusLabel(booking.status)}
                   </span>
-                  {assessment.free ? (
+                  {assessment.amountPaid <= 0 ? (
+                    <span className="mt-2 block text-sm font-bold text-ink">
+                      {c.noPaymentCancel}
+                    </span>
+                  ) : assessment.free ? (
                     <span className="mt-2 block text-sm font-bold text-success">
                       {c.freeCancel}
                     </span>

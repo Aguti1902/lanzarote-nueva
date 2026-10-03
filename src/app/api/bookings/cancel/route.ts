@@ -107,11 +107,13 @@ export async function POST(request: Request) {
       assessment,
       creditNote,
       message:
-        assessment.refundAmount > 0
-          ? `Reserva cancelada. Se ha emitido factura en negativo (abono) por ${assessment.refundAmount.toFixed(2)} €.`
-          : assessment.free
-            ? "Reserva cancelada. No había cobros que devolver."
-            : `Reserva cancelada. Aplica cargo de cancelación de ${assessment.fee.toFixed(2)} €.`,
+        assessment.amountPaid <= 0
+          ? "Reserva cancelada. El cliente no había pagado: no hay devolución ni cargo."
+          : assessment.refundAmount > 0
+            ? `Reserva cancelada. Se ha emitido factura en negativo (abono) por ${assessment.refundAmount.toFixed(2)} €.`
+            : assessment.free
+              ? "Reserva cancelada. No había cobros que devolver."
+              : `Reserva cancelada. Se retiene el cargo de ${assessment.fee.toFixed(2)} € sobre lo ya cobrado. No hay devolución.`,
     });
   } catch {
     return NextResponse.json(

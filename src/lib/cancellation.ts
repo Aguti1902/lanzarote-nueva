@@ -49,7 +49,9 @@ export function assessCancellation(
   const hoursUntilService =
     (service.getTime() - now.getTime()) / (1000 * 60 * 60);
   const free = hoursUntilService >= FREE_CANCEL_HOURS;
-  const fee = free ? 0 : total;
+  // El cargo solo puede retener dinero ya cobrado. Quien no pagó
+  // no genera cargo ni devolución, aunque el precio de la ficha sea 240 €.
+  const fee = Math.min(free ? 0 : total, amountPaid);
   const refundAmount = Math.max(
     0,
     Math.round((amountPaid - fee) * 100) / 100

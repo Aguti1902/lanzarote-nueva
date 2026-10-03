@@ -564,13 +564,24 @@ export function BookingDetailModal({
                       value={booking.cancellationReason}
                     />
                   )}
-                  {booking.cancellationFee != null &&
-                    booking.status === "cancelled" && (
-                      <Row
-                        label="Cargo cancelación"
-                        value={money(booking.cancellationFee)}
-                      />
-                    )}
+                  {booking.status === "cancelled" && (
+                    <Row
+                      label="Cargo cancelación"
+                      value={
+                        (booking.amountPaidCard || 0) +
+                          (booking.amountPaidCash || 0) <=
+                        0
+                          ? "0,00 € · no había pago, no hay devolución"
+                          : money(
+                              Math.min(
+                                booking.cancellationFee ?? 0,
+                                (booking.amountPaidCard || 0) +
+                                  (booking.amountPaidCash || 0)
+                              )
+                            )
+                      }
+                    />
+                  )}
                   {booking.stripePaymentIntentId && (
                     <Row
                       label="Stripe PI"
