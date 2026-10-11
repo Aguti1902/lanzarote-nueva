@@ -6,7 +6,7 @@ import {
   CruisePortCalendar,
   type CalendarCall,
 } from "@/components/CruisePortCalendar";
-import { getCruiseCompanies, buildPortCallSailingLinks, dedupePortCalls } from "@/lib/cruise-itineraries";
+import { getCruiseCompanies, buildPortCallSailingLinks, dedupePortCalls, withItineraryPortCalls } from "@/lib/cruise-itineraries";
 import { getCruiseCalls, getCruisesData, getSettings } from "@/lib/content";
 import { localizeSettings } from "@/lib/localize-content";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -39,9 +39,13 @@ export default async function ExcursionesCrucerosPage({ params }: Props) {
     getCruiseCalls({ publishedOnly: true, fromDate: today }),
   ]);
 
-  const sailingLinks = await buildPortCallSailingLinks(cruiseCalls);
+  const portCalls = await withItineraryPortCalls(cruiseCalls, {
+    fromDate: today,
+    season: cruiseData.season,
+  });
+  const sailingLinks = await buildPortCallSailingLinks(portCalls);
   const calendarCalls: CalendarCall[] = dedupePortCalls(
-    cruiseCalls.map((call) => ({
+    portCalls.map((call) => ({
       id: call.id,
       date: call.date,
       port: call.port,
@@ -53,7 +57,8 @@ export default async function ExcursionesCrucerosPage({ params }: Props) {
       season: call.season,
       published: call.published,
       notes: call.notes,
-      sailingHref: sailingLinks[call.id],
+      sailingHref:
+        ("sailingHref" in call && call.sailingHref) || sailingLinks[call.id],
     }))
   );
 

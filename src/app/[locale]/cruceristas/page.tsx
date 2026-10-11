@@ -8,7 +8,7 @@ import { PageFaqs } from "@/components/PageFaqs";
 import { PageHero } from "@/components/PageHero";
 import { TourCard } from "@/components/TourCard";
 import { getCruiseCalls, getCruisesData, getCruiseTours, getSettings } from "@/lib/content";
-import { buildPortCallSailingLinks, dedupePortCalls } from "@/lib/cruise-itineraries";
+import { buildPortCallSailingLinks, dedupePortCalls, withItineraryPortCalls } from "@/lib/cruise-itineraries";
 import {
   localizeSettings,
   localizeTours,
@@ -45,8 +45,18 @@ export default async function CruceristasPage({ params }: Props) {
   const tours = allCruise.filter((t) => t.category === "excursion");
   const privateTours = allCruise.filter((t) => t.category === "private");
 
-  const sailingLinks = await buildPortCallSailingLinks(cruiseCalls);
-  const scheduleCalls = dedupePortCalls(cruiseCalls);
+  const portCalls = await withItineraryPortCalls(cruiseCalls, {
+    fromDate: today,
+    season: cruiseData.season,
+  });
+  const linked = await buildPortCallSailingLinks(portCalls);
+  const sailingLinks = { ...linked };
+  for (const call of portCalls) {
+    if ("sailingHref" in call && call.sailingHref) {
+      sailingLinks[call.id] = call.sailingHref;
+    }
+  }
+  const scheduleCalls = dedupePortCalls(portCalls);
 
   const pillars = [
     {

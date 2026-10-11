@@ -11,6 +11,11 @@ import { cruiseCompanyDisplayName } from "@/lib/cruise-company-display";
 import { getCruiseCalls } from "@/lib/content";
 import { readCmsJson, readCmsJsonFresh, readCmsJsonIfExists, writeCmsJson } from "@/lib/supabase/cms-store";
 import { applyShoreTourPaymentPolicy } from "@/lib/shore-tour-display";
+import {
+  callsFromItinerarySailings,
+  itinerarySailingsMissingFromCalls,
+  type ItineraryPortCall,
+} from "@/lib/cruise-calendar-calls";
 
 const emptyData: CruiseItinerariesData = {
   updatedAt: "",
@@ -227,15 +232,40 @@ export async function getSailingsByCompany(
   companySlug: string
 ): Promise<CruiseSailing[]> {
   const fromExcel = await lanzaroteCallSailingsForCompany(companySlug);
-  if (fromExcel.length) {
-    return fromExcel.sort((a, b) =>
-      a.departureDate.localeCompare(b.departureDate)
-    );
-  }
   const data = await getCruiseItinerariesData();
-  return data.sailings
-    .filter((s) => s.companySlug === companySlug)
-    .sort((a, b) => a.departureDate.localeCompare(b.departureDate));
+  if (!fromExcel.length) {
+    return data.sailings
+      .filter((s) => s.companySlug === companySlug)
+      .sort((a, b) => a.departureDate.localeCompare(b.departureDate));
+  }
+  const today = new Date().toISOString().slice(0, 10);
+  const extra = itinerarySailingsMissingFromCalls(
+    data.sailings,
+    fromExcel.map((sailing) => ({
+      id: sailing.id,
+      date: sailing.departureDate,
+      shipName: sailing.shipName,
+    })),
+    companySlug,
+    today
+  );
+  return [...fromExcel, ...extra].sort((a, b) =>
+    a.departureDate.localeCompare(b.departureDate)
+  );
+}
+
+/**
+ * El calendario público sale del Excel de escalas. Un crucero creado en
+ * Compañías (por ejemplo MSC Europa el 21/11) no está en ese Excel y hay
+ * que sumar su día en Lanzarote.
+ */
+export async function withItineraryPortCalls<T extends CruiseCall>(
+  calls: T[],
+  options?: { fromDate?: string; season?: string }
+): Promise<Array<T | ItineraryPortCall>> {
+  const data = await getCruiseItinerariesData();
+  const extra = callsFromItinerarySailings(data.sailings, calls, options);
+  return [...calls, ...extra];
 }
 
 export async function getCruiseSailing(
