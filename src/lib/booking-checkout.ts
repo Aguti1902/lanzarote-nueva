@@ -1,9 +1,6 @@
 import type { Booking, PaymentLink } from "@/types";
 import { buildPaymentLinkDraft, upsertPaymentLink } from "@/lib/admin-extras";
-import {
-  expectedOnlineCharge,
-  isOnlineCardMethod,
-} from "@/lib/payments";
+import { outstandingOnlineAmount } from "@/lib/payments";
 import {
   absoluteUrl,
   createStripeCheckoutForPayment,
@@ -51,19 +48,17 @@ export async function createStripeCheckoutForBookings(
 } | null> {
   if (!isStripeConfigured()) return null;
 
-  const payable = bookings.filter(
-    (b) =>
-      b.status !== "cancelled" &&
-      isOnlineCardMethod(b.paymentMethod) &&
-      (b.paymentStatus === "unpaid" || !b.paymentStatus) &&
-      (b.amountPaidCard || 0) <= 0
-  );
+  const payable = bookings.filter((b) => {
+    if (outstandingOnlineAmount(b) <= 0) return false;
+    const payOnDay =
+      b.paymentMethod === "pay_on_day" || b.paymentStatus === "pay_on_day";
+    if (payOnDay && b.status !== "confirmed") return false;
+    return true;
+  });
   if (!payable.length) return null;
 
   const amount = payable.reduce(
-    (sum, b) =>
-      sum +
-      expectedOnlineCharge(b.amountTotal ?? b.totalPrice, b.paymentMethod),
+    (sum, b) => sum + outstandingOnlineAmount(b),
     0
   );
   if (amount <= 0) return null;
@@ -77,8 +72,12 @@ export async function createStripeCheckoutForBookings(
 
   const ids = payable.map((b) => b.id);
   const chargeFull = payable.every(
-    (b) => b.paymentMethod === "card" || b.paymentMethod === "bizum"
+    (b) =>
+      b.paymentMethod === "card" ||
+      b.paymentMethod === "bizum" ||
+      b.paymentMethod === "pay_on_day"
   );
+  const laterPay = payable.every((b) => b.paymentMethod === "pay_on_day");
 
   const concept =
     payable.length === 1
@@ -109,7 +108,9 @@ export async function createStripeCheckoutForBookings(
       ? `${localePath(localeNorm as Locale, "/reserva/confirmacion")}?id=${encodeURIComponent(primary.id)}&paid=1`
       : `${localePath(localeNorm as Locale, "/reserva/confirmacion")}?id=${encodeURIComponent(primary.id)}&paid=1&multi=1`;
 
-  const cancelPath = `${localePath(localeNorm as Locale, "/reserva/confirmacion")}?id=${encodeURIComponent(primary.id)}&cancelled=1`;
+  const cancelPath = laterPay
+    ? `${localePath(localeNorm as Locale, "/gestionar-reserva")}?id=${encodeURIComponent(primary.id)}&email=${encodeURIComponent(primary.customer.email)}`
+    : `${localePath(localeNorm as Locale, "/reserva/confirmacion")}?id=${encodeURIComponent(primary.id)}&cancelled=1`;
 
   const checkout = await createStripeCheckoutForPayment(paymentDraft, {
     origin: options?.origin,

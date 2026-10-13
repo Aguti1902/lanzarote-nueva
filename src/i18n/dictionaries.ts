@@ -271,6 +271,10 @@ export type Dictionary = {
     viewVoucher: string;
     cancelBooking: string;
     printVoucher: string;
+    payNow: string;
+    payInstead: string;
+    paying: string;
+    payError: string;
   };
   cancel: {
     title: string;
@@ -875,6 +879,11 @@ const es: Dictionary = {
     viewVoucher: "Ver voucher",
     cancelBooking: "Cancelar reserva",
     printVoucher: "Imprimir voucher",
+    payNow: "Pagar ahora",
+    payInstead:
+      "Puede pagar ahora con tarjeta y no llevar efectivo el día de la excursión.",
+    paying: "Redirigiendo al pago…",
+    payError: "No se pudo iniciar el pago. Inténtelo de nuevo.",
   },
   cancel: {
     title: "Cancelar reserva",
@@ -1465,6 +1474,11 @@ const en: Dictionary = {
     viewVoucher: "View voucher",
     cancelBooking: "Cancel booking",
     printVoucher: "Print voucher",
+    payNow: "Pay now",
+    payInstead:
+      "You can pay by card now and you will not need cash on the day of the excursion.",
+    paying: "Redirecting to payment…",
+    payError: "We could not start the payment. Please try again.",
   },
   cancel: {
     title: "Cancel booking",
@@ -2057,6 +2071,11 @@ const de: Dictionary = {
     viewVoucher: "Voucher ansehen",
     cancelBooking: "Buchung stornieren",
     printVoucher: "Voucher drucken",
+    payNow: "Jetzt bezahlen",
+    payInstead:
+      "Sie können jetzt mit Karte zahlen und brauchen am Ausflugstag kein Bargeld.",
+    paying: "Weiterleitung zur Zahlung…",
+    payError: "Die Zahlung konnte nicht gestartet werden. Bitte versuchen Sie es erneut.",
   },
   cancel: {
     title: "Buchung stornieren",

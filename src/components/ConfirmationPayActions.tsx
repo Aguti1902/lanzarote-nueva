@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CreditCard, FileText } from "lucide-react";
 import { formatPrice } from "@/lib/format";
-import { expectedOnlineCharge } from "@/lib/payments";
+import { outstandingOnlineAmount } from "@/lib/payments";
 import type { Booking } from "@/types";
 import { isLocale, type Locale } from "@/i18n/config";
 import { localePath } from "@/i18n/path";
+import { useLocale } from "@/components/LocaleProvider";
 
 export function ConfirmationPayActions({
   booking,
@@ -26,18 +27,20 @@ export function ConfirmationPayActions({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [waitingStripe, setWaitingStripe] = useState(Boolean(paidFlag));
+  const { dict, locale: uiLocale } = useLocale();
 
-  const dueOnline = expectedOnlineCharge(
-    booking.amountTotal ?? booking.totalPrice,
-    booking.paymentMethod
-  );
+  const dueOnline = outstandingOnlineAmount({
+    ...booking,
+    paymentStatus: status,
+    amountPaidCard: paidCard,
+  });
+  const payOnDay =
+    booking.paymentMethod === "pay_on_day" || status === "pay_on_day";
   const needsPay =
     dueOnline > 0 &&
-    paidCard <= 0 &&
-    status !== "paid" &&
-    status !== "partial" &&
-    status !== "pay_on_day" &&
-    booking.status !== "cancelled";
+    booking.status !== "cancelled" &&
+    booking.status !== "completed" &&
+    (booking.status === "confirmed" || !payOnDay);
 
   async function ensureInvoice(fresh: Booking) {
     if (fresh.invoiceId) {
@@ -136,19 +139,20 @@ export function ConfirmationPayActions({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           bookingIds: [booking.id],
-          locale: booking.locale || locale || "es",
+          email: booking.customer.email,
+          locale: booking.locale || locale || uiLocale || "es",
           origin: window.location.origin,
         }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "No se pudo iniciar el pago");
+      if (!res.ok) throw new Error(data.error || dict.manage.payError);
       if (data.checkoutUrl) {
         window.location.href = data.checkoutUrl;
         return;
       }
-      throw new Error("Stripe no devolvió URL de pago");
+      throw new Error(dict.manage.payError);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error de pago");
+      setError(err instanceof Error ? err.message : dict.manage.payError);
     } finally {
       setLoading(false);
     }
@@ -198,7 +202,8 @@ export function ConfirmationPayActions({
       {needsPay ? (
         <div className="space-y-2">
           <p className="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-900 ring-1 ring-amber-200">
-            Pendiente de pago online: <b>{formatPrice(dueOnline)}</b>
+            {dict.manage.payInstead}{" "}
+            <b>{formatPrice(dueOnline, "EUR", uiLocale)}</b>
           </p>
           {error && <p className="text-sm text-red-600">{error}</p>}
           <button
@@ -208,7 +213,9 @@ export function ConfirmationPayActions({
             className="inline-flex w-full items-center justify-center gap-2 rounded bg-ocean px-4 py-3 text-sm font-bold text-white hover:bg-ocean-deep disabled:opacity-60"
           >
             <CreditCard className="h-4 w-4" />
-            {loading ? "Redirigiendo…" : `Pagar ${formatPrice(dueOnline)}`}
+            {loading
+              ? dict.manage.paying
+              : `${dict.manage.payNow} · ${formatPrice(dueOnline, "EUR", uiLocale)}`}
           </button>
         </div>
       ) : null}

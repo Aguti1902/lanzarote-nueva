@@ -77,7 +77,12 @@ export async function notifyContactMessage(input: {
 
 export async function notifyNewBooking(
   booking: Booking,
-  meta?: { bookingMethod?: string; source?: string }
+  meta?: {
+    bookingMethod?: string;
+    source?: string;
+    /** Cobro online posterior de una reserva ya confirmada (pago el día). */
+    notice?: "online_payment";
+  }
 ) {
   const to = resolveBookingMailbox({
     type: booking.type,
@@ -90,8 +95,10 @@ export async function notifyNewBooking(
     bookingId: booking.id,
   });
 
-  const kindLabel =
-    to === MAILBOX.info
+  const laterPayment = meta?.notice === "online_payment";
+  const kindLabel = laterPayment
+    ? "Pago online recibido"
+    : to === MAILBOX.info
       ? "Solicitud bajo petición"
       : to === MAILBOX.cruise
         ? "Reserva crucerista"
@@ -213,7 +220,9 @@ export async function notifyNewBooking(
       preheader: `${kindLabel} · ${booking.id} · ${booking.tourTitle}`,
       bodyHtml: emailBody({
         title: kindLabel,
-        lead: "Notificación interna de nueva reserva o solicitud recibida en la web.",
+        lead: laterPayment
+          ? "El cliente ha pagado online una reserva que estaba pendiente de cobro el día del servicio. Ya no hay que cobrarla en efectivo."
+          : "Notificación interna de nueva reserva o solicitud recibida en la web.",
         rowsHtml,
         actionsHtml: emailCta(adminUrl, "Abrir en el panel", true),
       }),

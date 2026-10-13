@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 import { getPaymentLinks, upsertPaymentLink } from "@/lib/admin-extras";
 import { persistBookingLocaleIfMissing, updateBooking } from "@/lib/bookings";
 import { createInvoiceForBooking } from "@/lib/invoices";
-import { applyCollectedOnlinePayment, expectedOnlineCharge } from "@/lib/payments";
+import {
+  applyCollectedOnlinePayment,
+  expectedOnlineCharge,
+  outstandingOnlineAmount,
+} from "@/lib/payments";
 import { customerFacingNotes } from "@/lib/customer-notes";
 import { sendCustomerBookingEmail } from "@/lib/customer-emails";
 import { getStripe, isStripeConfigured } from "@/lib/stripe";
@@ -58,9 +62,11 @@ async function markBookingsPaidFromStripe(
 
   if (!targets.length) return;
 
-  const expectedParts = targets.map((b) =>
-    expectedOnlineCharge(b.amountTotal ?? b.totalPrice, b.paymentMethod)
-  );
+  const expectedParts = targets.map((b) => {
+    const outstanding = outstandingOnlineAmount(b);
+    if (outstanding > 0) return outstanding;
+    return expectedOnlineCharge(b.amountTotal ?? b.totalPrice, b.paymentMethod);
+  });
   const expectedSum = expectedParts.reduce((a, b) => a + b, 0) || 1;
 
   for (let i = 0; i < targets.length; i++) {
@@ -68,6 +74,9 @@ async function markBookingsPaidFromStripe(
     const alreadyCollected =
       booking.paymentStatus === "paid" ||
       (booking.paymentStatus === "partial" && (booking.amountPaidCard || 0) > 0);
+    const wasPayOnDay =
+      booking.paymentMethod === "pay_on_day" ||
+      booking.paymentStatus === "pay_on_day";
 
     let updated = booking;
     if (!alreadyCollected) {
@@ -78,11 +87,15 @@ async function markBookingsPaidFromStripe(
           : undefined;
       const collected = applyCollectedOnlinePayment(
         booking.amountTotal ?? booking.totalPrice,
-        booking.paymentMethod,
+        wasPayOnDay ? "card" : booking.paymentMethod,
         share
       );
       const next = await updateBooking(booking.id, {
         ...collected,
+        ...(wasPayOnDay ? { paymentMethod: "card" as const } : {}),
+        ...(wasPayOnDay && (booking.amountPaidCash || 0) > 0
+          ? { cashStatus: "collected" as const }
+          : {}),
         status: booking.status === "cancelled" ? "cancelled" : "confirmed",
         ...(stripeMeta.sessionId
           ? { stripeCheckoutSessionId: stripeMeta.sessionId }
@@ -146,6 +159,9 @@ async function markBookingsPaidFromStripe(
       try {
         await notifyNewBooking(updated, {
           source: cruise ? "cruise" : updated.source,
+          ...(wasPayOnDay && booking.status === "confirmed"
+            ? { notice: "online_payment" as const }
+            : {}),
         });
       } catch (err) {
         console.error("[stripe-webhook] notify failed", updated.id, err);

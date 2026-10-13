@@ -3,13 +3,14 @@
 import { FormEvent, Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import type { Booking } from "@/types";
+import type { Booking, PaymentMethod } from "@/types";
 import {
   bookingReturnDate,
   bookingReturnTime,
   bookingServiceTime,
 } from "@/lib/booking-time";
 import { formatDateShort, formatPrice } from "@/lib/format";
+import { outstandingOnlineAmount } from "@/lib/payments";
 import { PageHero } from "@/components/PageHero";
 import { useLocale } from "@/components/LocaleProvider";
 import { useSettingsHero } from "@/hooks/useSettingsHero";
@@ -18,7 +19,7 @@ const inputClass =
   "w-full rounded border border-sand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20";
 
 function GestionarReservaContent() {
-  const { dict, href } = useLocale();
+  const { dict, href, locale } = useLocale();
   const searchParams = useSearchParams();
   const hero = useSettingsHero("excursions");
   const [bookingId, setBookingId] = useState("");
@@ -27,9 +28,12 @@ function GestionarReservaContent() {
   const [error, setError] = useState("");
   const [booking, setBooking] = useState<Booking | null>(null);
   const [autoTried, setAutoTried] = useState(false);
+  const [paying, setPaying] = useState(false);
+  const [payError, setPayError] = useState("");
 
   async function lookup(idValue: string, emailValue: string) {
     setError("");
+    setPayError("");
     setBooking(null);
     setLoading(true);
     try {
@@ -64,6 +68,55 @@ function GestionarReservaContent() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     await lookup(bookingId, email);
+  }
+
+  const dueOnline = booking ? outstandingOnlineAmount(booking) : 0;
+  const canPay =
+    Boolean(booking) &&
+    dueOnline > 0 &&
+    booking?.status === "confirmed";
+
+  function statusLabel(status: string) {
+    if (status === "confirmed") return dict.cancel.statusConfirmed;
+    if (status === "pending") return dict.cancel.statusPending;
+    if (status === "completed") return dict.cancel.statusCompleted;
+    if (status === "cancelled") return dict.cancel.statusCancelled;
+    return status;
+  }
+
+  function paymentLabel(current: Booking) {
+    if (current.paymentStatus === "paid") return dict.confirmation.paidOnline;
+    const method = current.paymentMethod as PaymentMethod;
+    if (method && method in dict.payments) return dict.payments[method];
+    return current.paymentStatus;
+  }
+
+  async function payNow() {
+    if (!booking) return;
+    setPaying(true);
+    setPayError("");
+    try {
+      const res = await fetch("/api/payments/stripe/checkout-bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bookingIds: [booking.id],
+          email: booking.customer.email,
+          locale: booking.locale || locale,
+          origin: window.location.origin,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || dict.manage.payError);
+      if (data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+        return;
+      }
+      throw new Error(dict.manage.payError);
+    } catch (err) {
+      setPayError(err instanceof Error ? err.message : dict.manage.payError);
+      setPaying(false);
+    }
   }
 
   const cancelHref = booking
@@ -177,13 +230,32 @@ function GestionarReservaContent() {
               </div>
               <div className="flex justify-between gap-4">
                 <dt className="text-ink-muted">{dict.manage.status}</dt>
-                <dd className="font-bold uppercase">{booking.status}</dd>
+                <dd className="font-bold">{statusLabel(booking.status)}</dd>
               </div>
               <div className="flex justify-between gap-4">
                 <dt className="text-ink-muted">{dict.manage.payment}</dt>
-                <dd className="font-bold">{booking.paymentStatus}</dd>
+                <dd className="text-right font-bold">{paymentLabel(booking)}</dd>
               </div>
             </dl>
+
+            {canPay && (
+              <div className="mt-6 space-y-2">
+                <p className="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-900 ring-1 ring-amber-200">
+                  {dict.manage.payInstead}
+                </p>
+                {payError && <p className="text-sm text-red-600">{payError}</p>}
+                <button
+                  type="button"
+                  onClick={payNow}
+                  disabled={paying}
+                  className="btn-primary w-full justify-center disabled:opacity-60"
+                >
+                  {paying
+                    ? dict.manage.paying
+                    : `${dict.manage.payNow} · ${formatPrice(dueOnline, "EUR", locale)}`}
+                </button>
+              </div>
+            )}
 
             <div className="mt-6 grid gap-2 sm:grid-cols-2">
               <Link

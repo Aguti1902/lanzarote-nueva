@@ -106,6 +106,60 @@ export function splitPaymentAmounts(
   };
 }
 
+/**
+ * Importe que el cliente todavía puede pagar online.
+ * pay_on_day: el saldo pendiente (puede pagar más tarde con tarjeta).
+ * tarjeta / bizum / depósito: solo el cobro online inicial, si sigue sin cobrarse.
+ * El resto de un depósito ya cobrado se queda en efectivo.
+ */
+export function outstandingOnlineAmount(booking: {
+  status?: string;
+  paymentMethod?: string;
+  paymentStatus?: string;
+  cashStatus?: string;
+  amountTotal?: number;
+  totalPrice?: number;
+  amountDueCash?: number;
+  amountPaidCard?: number;
+  amountPaidCash?: number;
+}): number {
+  if (booking.status === "cancelled" || booking.status === "completed") {
+    return 0;
+  }
+  if (
+    booking.paymentStatus === "paid" ||
+    booking.paymentStatus === "refunded"
+  ) {
+    return 0;
+  }
+
+  const total = roundMoney(booking.amountTotal ?? booking.totalPrice ?? 0);
+  const paidCard = roundMoney(Number(booking.amountPaidCard) || 0);
+  const paidCash = roundMoney(Number(booking.amountPaidCash) || 0);
+  const method = booking.paymentMethod || "";
+
+  if (method === "pay_on_day" || booking.paymentStatus === "pay_on_day") {
+    if (
+      booking.cashStatus === "waived" ||
+      booking.cashStatus === "collected"
+    ) {
+      return 0;
+    }
+    if (typeof booking.amountDueCash === "number") {
+      return roundMoney(Math.max(0, booking.amountDueCash));
+    }
+    return roundMoney(Math.max(0, total - paidCard - paidCash));
+  }
+
+  if (booking.paymentStatus === "partial" && paidCard > 0) return 0;
+
+  if (isOnlineCardMethod(method) && paidCard <= 0) {
+    return expectedOnlineCharge(total, method);
+  }
+
+  return 0;
+}
+
 /** Aplica un cobro online confirmado (webhook Stripe). */
 export function applyCollectedOnlinePayment(
   total: number,
