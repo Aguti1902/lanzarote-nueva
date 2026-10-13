@@ -26,6 +26,7 @@ type Stats = {
   };
   topTours: { title: string; count: number; revenue: number }[];
   byMonth: { month: string; amount: number }[];
+  unpaidCheckouts?: number;
 };
 
 type InvoiceStats = {
@@ -105,6 +106,13 @@ export default function AdminEstadisticasPage() {
         }
         resultCount={stats?.totalBookings}
       />
+
+      {(stats?.unpaidCheckouts || 0) > 0 && (
+        <p className="text-sm text-ink-muted">
+          {stats?.unpaidCheckouts} pagos online sin completar en este periodo.
+          No entran en reservas, ingresos ni efectivo pendiente.
+        </p>
+      )}
 
       {loading && !stats && (
         <p className="text-ink-muted">Cargando estadísticas…</p>
