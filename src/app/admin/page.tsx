@@ -49,7 +49,25 @@ type Stats = {
   };
   upcoming: Booking[];
   recent: Booking[];
+  unpaidCheckouts?: number;
 };
+
+function bookingStatusLabel(status: string): string {
+  if (status === "confirmed") return "Confirmada";
+  if (status === "completed") return "Completada";
+  if (status === "cancelled") return "Cancelada";
+  if (status === "pending") return "Pendiente";
+  return status;
+}
+
+function bookingMoneyLabel(booking: Booking): string {
+  const paid = (booking.amountPaidCard || 0) + (booking.amountPaidCash || 0);
+  if (paid > 0) return formatPrice(paid);
+  if ((booking.amountDueCash || 0) > 0) {
+    return `Por cobrar ${formatPrice(booking.amountDueCash)}`;
+  }
+  return formatPrice(booking.amountTotal ?? booking.totalPrice);
+}
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
@@ -293,18 +311,42 @@ export default function AdminDashboard() {
             </section>
 
             <section className="rounded-lg bg-white p-5 ring-1 ring-sand-line">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-bold">Actividad reciente</h2>
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-lg font-bold">
+                  {dateField === "created"
+                    ? "Reservas hechas en estas fechas"
+                    : "Reservas del periodo"}
+                </h2>
                 <Link
                   href="/admin/reservas"
-                  className="text-xs font-bold text-ocean"
+                  className="shrink-0 text-xs font-bold text-ocean"
                 >
                   Ver reservas
                 </Link>
               </div>
-              <ul className="mt-4 space-y-3 text-sm">
+              <p className="mt-1 text-xs text-ink-muted">
+                Ordenadas por el día en que reservaron. Los pagos online sin
+                completar no entran aquí ni en las cifras de arriba.
+                {stats.recent.length < stats.totalBookings
+                  ? ` Mostrando las ${stats.recent.length} más recientes de ${stats.totalBookings}.`
+                  : ""}
+              </p>
+              {(stats.unpaidCheckouts || 0) > 0 && (
+                <p className="mt-2 text-xs text-ocean">
+                  {stats.unpaidCheckouts}{" "}
+                  {stats.unpaidCheckouts === 1
+                    ? "intento de pago online sin completar"
+                    : "intentos de pago online sin completar"}{" "}
+                  en este periodo. Siguen en Reservas, marcados como pago sin
+                  completar, y no suman reservas, ingresos ni efectivo
+                  pendiente.
+                </p>
+              )}
+              <ul className="mt-4 max-h-[28rem] space-y-3 overflow-y-auto text-sm">
                 {stats.recent.length === 0 && (
-                  <li className="text-ink-muted">Sin actividad en este rango</li>
+                  <li className="text-ink-muted">
+                    No hay reservas hechas en este rango
+                  </li>
                 )}
                 {stats.recent.map((b) => (
                   <li key={b.id} className="border-b border-sand-line pb-2">
@@ -313,18 +355,21 @@ export default function AdminDashboard() {
                       className="flex justify-between gap-3 rounded hover:bg-sand/40"
                     >
                       <div>
-                        <p className="font-medium">{b.id}</p>
+                        <p className="font-medium">
+                          {b.createdAt
+                            ? formatDate(b.createdAt)
+                            : "Sin fecha de reserva"}
+                        </p>
                         <p className="text-xs text-ink-muted">
-                          {b.customer.name} · {bookingKind(b)}
-                          {b.date ? ` · ${formatDate(b.date)}` : ""}
+                          {b.id} · {b.customer.name} · {bookingKind(b)}
+                          {b.tourTitle ? ` · ${b.tourTitle}` : ""}
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold">
-                          {formatPrice(b.amountTotal ?? b.totalPrice)}
-                        </p>
-                        <p className="text-xs capitalize text-ink-muted">
-                          {b.status}
+                        <p className="font-bold">{bookingMoneyLabel(b)}</p>
+                        <p className="text-xs text-ink-muted">
+                          {bookingStatusLabel(b.status)}
+                          {b.date ? ` · servicio ${formatDate(b.date)}` : ""}
                         </p>
                       </div>
                     </Link>
