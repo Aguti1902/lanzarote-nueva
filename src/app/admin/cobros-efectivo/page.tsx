@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Booking } from "@/types";
 import { formatDate, formatPrice, paymentLabel } from "@/lib/format";
+import { isAwaitingOnlinePayment } from "@/lib/payments";
 import {
   DateRangeFilter,
   emptyDateRange,
@@ -40,6 +41,7 @@ function isTestBooking(b: Booking) {
 
 function isCashRelevant(b: Booking) {
   if (b.status === "cancelled") return false;
+  if (isAwaitingOnlinePayment(b)) return false;
   if (isTestBooking(b)) return false;
   const day = serviceDay(b);
   if (!isValidServiceDate(day)) return false;
