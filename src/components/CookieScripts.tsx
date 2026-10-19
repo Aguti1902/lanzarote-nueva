@@ -7,18 +7,13 @@ import {
   readCookieConsent,
   type CookieConsent,
 } from "@/lib/cookie-consent";
+import { SITE_GA_MEASUREMENT_ID, safeGaMeasurementId } from "@/lib/ga-id";
 
-const ENV_GA_ID = process.env.NEXT_PUBLIC_GA_ID?.trim().toUpperCase() || "";
-const GA_PATTERN = /^G-[A-Z0-9]{6,12}$/;
-
-function safeGaId(value: string): string {
-  const id = value.trim().toUpperCase();
-  return GA_PATTERN.test(id) ? id : "";
-}
+const ENV_GA_ID = safeGaMeasurementId(process.env.NEXT_PUBLIC_GA_ID || "");
 
 export function CookieScripts() {
   const [consent, setConsent] = useState<CookieConsent | null>(null);
-  const [gaId, setGaId] = useState(safeGaId(ENV_GA_ID));
+  const [gaId, setGaId] = useState(ENV_GA_ID || SITE_GA_MEASUREMENT_ID);
 
   useEffect(() => {
     setConsent(readCookieConsent());
@@ -31,16 +26,16 @@ export function CookieScripts() {
   }, []);
 
   useEffect(() => {
-    if (safeGaId(ENV_GA_ID) || !consent?.analytics) return;
+    if (ENV_GA_ID || !consent?.analytics) return;
     let cancel = false;
     fetch("/api/seo/config")
       .then((response) => response.json())
       .then((data: { measurementId?: string }) => {
         if (cancel) return;
-        setGaId(safeGaId(String(data.measurementId || "")));
+        setGaId(safeGaMeasurementId(String(data.measurementId || "")) || SITE_GA_MEASUREMENT_ID);
       })
       .catch(() => {
-        if (!cancel) setGaId("");
+        if (!cancel) setGaId(SITE_GA_MEASUREMENT_ID);
       });
     return () => {
       cancel = true;

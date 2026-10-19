@@ -1,4 +1,5 @@
 import { getBookings } from "@/lib/bookings";
+import { SITE_GA_MEASUREMENT_ID, safeGaMeasurementId } from "@/lib/ga-id";
 import { getTours } from "@/lib/content";
 import { isAwaitingOnlinePayment } from "@/lib/payments";
 import {
@@ -125,8 +126,6 @@ export type FichaCopy = {
   de: LocaleCopyView;
 };
 
-const GA_ID = /^G-[A-Z0-9]{6,12}$/;
-
 const STOP = new Set(
   `el la los las un una de del en con por para que y o a al su sus se es son
   desde mas muy esta este esto esa ese hay ser como todo toda todos todas
@@ -143,14 +142,12 @@ export function emptyDesk(): SeoDeskFile {
 }
 
 export function normalizeGaId(raw: string): string | null {
-  const id = raw.trim().toUpperCase();
-  if (!id) return "";
-  return GA_ID.test(id) ? id : null;
+  if (!raw.trim()) return "";
+  return safeGaMeasurementId(raw) || null;
 }
 
 export function measurementIdFromEnv(): string {
-  const id = normalizeGaId(process.env.NEXT_PUBLIC_GA_ID || "");
-  return id || "";
+  return safeGaMeasurementId(process.env.NEXT_PUBLIC_GA_ID || "");
 }
 
 export function kindLabel(kind: string): string {
@@ -583,7 +580,7 @@ export async function publicMeasurementId(): Promise<string> {
   const fromEnv = measurementIdFromEnv();
   if (fromEnv) return fromEnv;
   const desk = await loadDesk();
-  return normalizeGaId(desk.gaMeasurementId) || "";
+  return normalizeGaId(desk.gaMeasurementId) || SITE_GA_MEASUREMENT_ID;
 }
 
 export async function saveDeskNote(text: string, now = new Date()): Promise<SeoJournalEntry> {
@@ -650,7 +647,7 @@ export async function seoDeskView(now = new Date()) {
   const tour = tourId ? tours.find((item) => item.id === tourId) : undefined;
   const envId = measurementIdFromEnv();
   const panelId = normalizeGaId(desk.gaMeasurementId) || "";
-  const measurementId = envId || panelId;
+  const measurementId = envId || panelId || SITE_GA_MEASUREMENT_ID;
   return {
     programStart: PROGRAM_START,
     slugPolicy: "Las URLs y los slugs se quedan igual. Solo se redactan H1, title, descripción y párrafos.",
@@ -661,7 +658,7 @@ export async function seoDeskView(now = new Date()) {
     kindLabels: KIND_LABEL,
     ga: {
       measurementId,
-      source: envId ? "env" : panelId ? "panel" : "none",
+      source: envId ? "env" : panelId ? "panel" : "sitio",
       envLocksPanel: Boolean(envId),
       trackingReady: Boolean(measurementId),
       numbers: "sin dato" as const,

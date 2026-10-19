@@ -30,7 +30,7 @@ type Desk = {
   kindLabels: Record<string, string>;
   ga: {
     measurementId: string;
-    source: "env" | "panel" | "none";
+    source: "env" | "panel" | "sitio" | "none";
     envLocksPanel: boolean;
     trackingReady: boolean;
     numbers: "sin dato";
@@ -475,10 +475,11 @@ export default function AdminSeoPage() {
           <section className="rounded-lg bg-white p-5 ring-1 ring-sand-line">
             <h2 className="text-lg font-bold">Conectar Google Analytics</h2>
             <p className="mt-1 text-sm leading-relaxed text-ink-muted">
-              En la web publicada no hay etiqueta de Analytics. Pega el ID de medición
-              de tu propiedad (empieza por G-). El código solo se carga si la persona acepta
-              cookies de analítica. Esto no trae las cifras al panel: para ver visitas aquí
-              haría falta la API de Google, y hoy sigue en «sin dato».
+              La web carga la etiqueta de Google con {desk.ga.measurementId || "el ID de la propiedad"}.
+              Solo se activa si la persona acepta las cookies de analítica. Las visitas de este
+              panel siguen en «sin dato»: hace falta la API de Google para traer las cifras.
+              Si guardas otro ID que empiece por G-, la web usa ese. Si lo dejas vacío, vuelve
+              al ID de la web.
             </p>
             {desk.ga.envLocksPanel && (
               <p className="mt-3 text-sm">
