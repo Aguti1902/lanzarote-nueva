@@ -18,6 +18,7 @@ export const PROTECTED_LIVE_CMS = [
   "shoreTours.json",
   "adminExtras.json",
   "uiTranslations.json",
+  "seo-desk.json",
   "i18n/en.json",
   "i18n/de.json",
 ] as const;

@@ -26,6 +26,7 @@ import {
   Link2,
   Menu,
   Megaphone,
+  Search,
   Settings,
   Ship,
   Upload,
@@ -51,6 +52,7 @@ const nav: NavItem[] = [
   { href: "/admin/cobros-efectivo", label: "Cobros efectivo", icon: Banknote },
   { href: "/admin/facturas", label: "Facturas", icon: FileText },
   { href: "/admin/estadisticas", label: "Estadísticas", icon: BarChart3 },
+  { href: "/admin/seo", label: "SEO", icon: Search },
   { href: "/admin/excursiones", label: "Excursiones", icon: Map },
   {
     href: "/admin/excursiones-shore",

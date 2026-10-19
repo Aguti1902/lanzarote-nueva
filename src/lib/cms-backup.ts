@@ -19,6 +19,7 @@ export const CMS_BACKUP_FILES = [
   "shoreTours.json",
   "adminExtras.json",
   "uiTranslations.json",
+  "seo-desk.json",
   "reviews.json",
   "tripadvisor.json",
   "i18n/en.json",
