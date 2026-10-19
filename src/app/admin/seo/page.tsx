@@ -475,8 +475,7 @@ export default function AdminSeoPage() {
           <section className="rounded-lg bg-white p-5 ring-1 ring-sand-line">
             <h2 className="text-lg font-bold">Conectar Google Analytics</h2>
             <p className="mt-1 text-sm leading-relaxed text-ink-muted">
-              La web carga la etiqueta de Google con {desk.ga.measurementId || "el ID de la propiedad"}.
-              Solo se activa si la persona acepta las cookies de analítica. Las visitas de este
+              La web lleva la etiqueta de Google ({desk.ga.measurementId || "el ID de la propiedad"}) en el HTML, para que Google pueda detectarla. Las cookies de analítica solo se guardan si la persona acepta el aviso. Las visitas de este
               panel siguen en «sin dato»: hace falta la API de Google para traer las cifras.
               Si guardas otro ID que empiece por G-, la web usa ese. Si lo dejas vacío, vuelve
               al ID de la web.

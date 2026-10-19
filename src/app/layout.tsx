@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Outfit, Syne } from "next/font/google";
 import { AppLoadingProvider } from "@/components/AppLoadingProvider";
 import { CartProvider } from "@/components/CartProvider";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { googleSiteVerification } from "@/lib/seo";
 import { resolvePublicOrigin } from "@/lib/voucher";
 import "./globals.css";
@@ -53,6 +54,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${outfit.variable} ${syne.variable} h-full`}>
       <body className="flex min-h-full flex-col font-sans antialiased">
+        <GoogleAnalytics />
         <AppLoadingProvider>
           <CartProvider>{children}</CartProvider>
         </AppLoadingProvider>

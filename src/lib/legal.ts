@@ -208,7 +208,7 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
         {
           heading: "4. Analítica (opcional)",
           paragraphs: [
-            "Solo se activan si usted las acepta. Permiten entender qué páginas se visitan, de forma agregada, para mejorar el sitio. Si está configurado Google Analytics, se cargará únicamente con este permiso.",
+            "La etiqueta de Google Analytics está en la página para que Google pueda reconocerla. Hasta que usted acepte, el consentimiento queda denegado: no se guardan cookies de analítica. Si acepta, esas cookies se activan y las visitas se miden de forma agregada.",
           ],
         },
         {
@@ -475,7 +475,7 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
         {
           heading: "4. Analytics (optional)",
           paragraphs: [
-            "Used only with your consent to see, in aggregate, which pages are used. If Google Analytics is configured, it loads only with this permission.",
+            "The Google Analytics tag is on the page so Google can recognise it. Until you accept, consent stays denied and no analytics cookies are stored. If you accept, those cookies turn on and visits are measured in aggregate.",
           ],
         },
         {
@@ -742,7 +742,7 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
         {
           heading: "4. Analyse (optional)",
           paragraphs: [
-            "Nur mit Ihrer Zustimmung, um aggregiert zu sehen, welche Seiten genutzt werden. Ist Google Analytics hinterlegt, wird es nur mit dieser Erlaubnis geladen.",
+            "Das Google-Analytics-Tag steht auf der Seite, damit Google es erkennt. Bis Sie zustimmen, bleibt die Einwilligung verweigert und es werden keine Analyse-Cookies gespeichert. Mit Zustimmung werden diese Cookies aktiv und Besuche aggregiert gemessen.",
           ],
         },
         {

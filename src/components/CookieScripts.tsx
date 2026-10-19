@@ -1,19 +1,29 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Script from "next/script";
 import {
   COOKIE_CONSENT_EVENT,
   readCookieConsent,
   type CookieConsent,
 } from "@/lib/cookie-consent";
-import { SITE_GA_MEASUREMENT_ID, safeGaMeasurementId } from "@/lib/ga-id";
 
-const ENV_GA_ID = safeGaMeasurementId(process.env.NEXT_PUBLIC_GA_ID || "");
+type Gtag = (...args: unknown[]) => void;
+
+function applyConsent(consent: CookieConsent | null) {
+  const gtag = (window as Window & { gtag?: Gtag }).gtag;
+  if (typeof gtag !== "function") return;
+  const analytics = consent?.analytics ? "granted" : "denied";
+  const marketing = consent?.marketing ? "granted" : "denied";
+  gtag("consent", "update", {
+    analytics_storage: analytics,
+    ad_storage: marketing,
+    ad_user_data: marketing,
+    ad_personalization: marketing,
+  });
+}
 
 export function CookieScripts() {
   const [consent, setConsent] = useState<CookieConsent | null>(null);
-  const [gaId, setGaId] = useState(ENV_GA_ID || SITE_GA_MEASUREMENT_ID);
 
   useEffect(() => {
     setConsent(readCookieConsent());
@@ -26,33 +36,8 @@ export function CookieScripts() {
   }, []);
 
   useEffect(() => {
-    if (ENV_GA_ID || !consent?.analytics) return;
-    let cancel = false;
-    fetch("/api/seo/config")
-      .then((response) => response.json())
-      .then((data: { measurementId?: string }) => {
-        if (cancel) return;
-        setGaId(safeGaMeasurementId(String(data.measurementId || "")) || SITE_GA_MEASUREMENT_ID);
-      })
-      .catch(() => {
-        if (!cancel) setGaId(SITE_GA_MEASUREMENT_ID);
-      });
-    return () => {
-      cancel = true;
-    };
-  }, [consent?.analytics]);
+    applyConsent(consent);
+  }, [consent]);
 
-  if (!consent?.analytics || !gaId) return null;
-
-  return (
-    <>
-      <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-        strategy="afterInteractive"
-      />
-      <Script id="ga-consent" strategy="afterInteractive">
-        {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${gaId}',{anonymize_ip:true});`}
-      </Script>
-    </>
-  );
+  return null;
 }
