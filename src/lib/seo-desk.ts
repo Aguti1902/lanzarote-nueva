@@ -1,5 +1,14 @@
 import { getBookings } from "@/lib/bookings";
 import { SITE_GA_MEASUREMENT_ID, safeGaMeasurementId } from "@/lib/ga-id";
+import {
+  analyticsStatus,
+  clearGaReportCache,
+  credentialsFromEnv,
+  normalizePropertyId,
+  parseServiceAccount,
+  type GaAnalyticsStatus,
+  type GaServiceAccount,
+} from "@/lib/ga-report";
 import { getTours } from "@/lib/content";
 import { isAwaitingOnlinePayment } from "@/lib/payments";
 import {
@@ -72,6 +81,8 @@ export type SeoSnapshots = {
 
 export type SeoDeskFile = {
   gaMeasurementId: string;
+  gaPropertyId: string;
+  gaServiceAccount: GaServiceAccount | null;
   journal: SeoJournalEntry[];
   snapshots: SeoSnapshots | null;
 };
@@ -138,7 +149,13 @@ const STOP = new Set(
 );
 
 export function emptyDesk(): SeoDeskFile {
-  return { gaMeasurementId: "", journal: [], snapshots: null };
+  return {
+    gaMeasurementId: "",
+    gaPropertyId: "",
+    gaServiceAccount: null,
+    journal: [],
+    snapshots: null,
+  };
 }
 
 export function normalizeGaId(raw: string): string | null {
@@ -552,8 +569,18 @@ function analysisSummary(input: {
 export async function loadDesk(): Promise<SeoDeskFile> {
   const raw = await readCmsJsonIfExists<SeoDeskFile>(SEO_DESK_FILE);
   if (!raw || typeof raw !== "object") return emptyDesk();
+  const account = raw.gaServiceAccount;
+  const saved =
+    account &&
+    typeof account.clientEmail === "string" &&
+    typeof account.privateKey === "string" &&
+    account.privateKey.includes("BEGIN PRIVATE KEY")
+      ? { clientEmail: account.clientEmail, privateKey: account.privateKey }
+      : null;
   return {
     gaMeasurementId: typeof raw.gaMeasurementId === "string" ? raw.gaMeasurementId : "",
+    gaPropertyId: normalizePropertyId(raw.gaPropertyId || "") || "",
+    gaServiceAccount: saved,
     journal: Array.isArray(raw.journal) ? raw.journal.slice(-400) : [],
     snapshots:
       raw.snapshots && Array.isArray(raw.snapshots.pages) ? raw.snapshots : null,
@@ -574,6 +601,48 @@ export async function saveMeasurementId(raw: string): Promise<string> {
   desk.gaMeasurementId = id;
   await saveDesk(desk);
   return id;
+}
+
+export async function saveGaCredentials(
+  propertyRaw: string,
+  serviceAccountRaw: string
+): Promise<void> {
+  const propertyId = normalizePropertyId(propertyRaw);
+  if (propertyId == null) {
+    throw new Error(
+      "El ID de la propiedad es el número de Analytics, no el que empieza por G-."
+    );
+  }
+  const desk = await loadDesk();
+  const parsed = serviceAccountRaw.trim()
+    ? parseServiceAccount(serviceAccountRaw)
+    : desk.gaServiceAccount;
+  if (!propertyId || !parsed) {
+    throw new Error("Hacen falta el ID numérico de la propiedad y el JSON de la cuenta de servicio.");
+  }
+  desk.gaPropertyId = propertyId;
+  desk.gaServiceAccount = parsed;
+  clearGaReportCache();
+  await saveDesk(desk);
+}
+
+async function analyticsForDesk(
+  desk: SeoDeskFile,
+  fresh = false
+): Promise<GaAnalyticsStatus> {
+  const fromEnv = credentialsFromEnv();
+  if (fromEnv) {
+    return analyticsStatus({ ...fromEnv, source: "env", fresh });
+  }
+  if (desk.gaPropertyId && desk.gaServiceAccount) {
+    return analyticsStatus({
+      propertyId: desk.gaPropertyId,
+      account: desk.gaServiceAccount,
+      source: "panel",
+      fresh,
+    });
+  }
+  return analyticsStatus({ propertyId: "", account: null, source: "none" });
 }
 
 export async function publicMeasurementId(): Promise<string> {
@@ -618,7 +687,13 @@ export async function runDailyAnalysis(now = new Date()): Promise<{
   ]);
   const bookings = bookingInsight(bookingsRaw, tours, now);
   const keywords = keywordReport(snapshots.pages, tours);
-  const summary = analysisSummary({ step, bookings, keywords, pages: snapshots.pages });
+  const desk = await loadDesk();
+  const analytics = await analyticsForDesk(desk, true);
+  let summary = analysisSummary({ step, bookings, keywords, pages: snapshots.pages });
+  if (analytics.report) {
+    const current = analytics.report.current;
+    summary += ` Analytics, últimos 28 días: ${current.activeUsers} usuarios activos, ${current.sessions} sesiones y ${current.screenPageViews} páginas vistas.`;
+  }
   const entry: SeoJournalEntry = {
     id: `${step.date}-analisis`,
     date: step.date,
@@ -628,7 +703,6 @@ export async function runDailyAnalysis(now = new Date()): Promise<{
     summary,
     createdAt: now.toISOString(),
   };
-  const desk = await loadDesk();
   desk.snapshots = snapshots;
   desk.journal = desk.journal.filter((item) => item.id !== entry.id);
   desk.journal.push(entry);
@@ -648,6 +722,7 @@ export async function seoDeskView(now = new Date()) {
   const envId = measurementIdFromEnv();
   const panelId = normalizeGaId(desk.gaMeasurementId) || "";
   const measurementId = envId || panelId || SITE_GA_MEASUREMENT_ID;
+  const analytics = await analyticsForDesk(desk);
   return {
     programStart: PROGRAM_START,
     slugPolicy: "Las URLs y los slugs se quedan igual. Solo se redactan H1, title, descripción y párrafos.",
@@ -663,6 +738,7 @@ export async function seoDeskView(now = new Date()) {
       trackingReady: Boolean(measurementId),
       numbers: "sin dato" as const,
     },
+    analytics,
     searchConsole: "sin dato" as const,
     journal: [...desk.journal].reverse(),
     snapshots: desk.snapshots,

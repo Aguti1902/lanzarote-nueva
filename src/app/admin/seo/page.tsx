@@ -4,6 +4,59 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { formatPrice } from "@/lib/format";
 
+type GaTotals = {
+  activeUsers: number;
+  sessions: number;
+  screenPageViews: number;
+  engagementRate: number;
+  averageSessionDuration: number;
+};
+
+type GaReport = {
+  current: GaTotals;
+  previous: GaTotals;
+  byDay: { date: string; activeUsers: number; sessions: number; screenPageViews: number }[];
+  topPages: { path: string; views: number; users: number }[];
+  channels: { name: string; sessions: number; users: number }[];
+  countries: { name: string; users: number }[];
+  devices: { name: string; sessions: number }[];
+};
+
+function formatDuration(seconds: number) {
+  const total = Math.round(seconds);
+  const minutes = Math.floor(total / 60);
+  const rest = total % 60;
+  if (minutes <= 0) return `${rest} s`;
+  return `${minutes} min ${rest} s`;
+}
+
+function formatRate(rate: number) {
+  return `${Math.round(rate * 1000) / 10} %`;
+}
+
+function formatDelta(current: number, previous: number) {
+  if (previous <= 0) return "";
+  const pct = Math.round(((current - previous) / previous) * 100);
+  if (pct === 0) return "igual que los 28 días anteriores";
+  return `${pct > 0 ? "+" : ""}${pct} % frente a los 28 días anteriores`;
+}
+
+const CHANNEL_LABEL: Record<string, string> = {
+  "Organic Search": "Búsqueda orgánica",
+  Direct: "Directo",
+  Referral: "Enlaces",
+  "Organic Social": "Redes",
+  "Paid Search": "Búsqueda de pago",
+  Email: "Correo",
+  Unassigned: "Sin asignar",
+};
+
+const DEVICE_LABEL: Record<string, string> = {
+  mobile: "Móvil",
+  desktop: "Ordenador",
+  tablet: "Tablet",
+};
+
 type PhraseHit = { phrase: string; count: number; sites: string[] };
 
 type Desk = {
@@ -34,6 +87,14 @@ type Desk = {
     envLocksPanel: boolean;
     trackingReady: boolean;
     numbers: "sin dato";
+  };
+  analytics: {
+    connected: boolean;
+    propertyId: string;
+    clientEmail: string;
+    source: "panel" | "env" | "none";
+    report: GaReport | null;
+    error: string;
   };
   searchConsole: "sin dato";
   journal: {
@@ -99,6 +160,8 @@ export default function AdminSeoPage() {
   const [busy, setBusy] = useState("");
   const [note, setNote] = useState("");
   const [gaId, setGaId] = useState("");
+  const [propertyId, setPropertyId] = useState("");
+  const [serviceJson, setServiceJson] = useState("");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -109,6 +172,8 @@ export default function AdminSeoPage() {
       if (!response.ok) throw new Error(data.error || "No se pudo cargar el SEO");
       setDesk(data);
       setGaId(data.ga?.source === "panel" ? data.ga.measurementId : data.ga?.measurementId || "");
+      setPropertyId(data.analytics?.propertyId || "");
+      setServiceJson("");
     } catch (err) {
       setError(err instanceof Error ? err.message : "No se pudo cargar el SEO");
     } finally {
@@ -138,6 +203,8 @@ export default function AdminSeoPage() {
             ? data.desk.ga.measurementId
             : data.desk.ga?.measurementId || ""
         );
+        setPropertyId(data.desk.analytics?.propertyId || "");
+        setServiceJson("");
       } else {
         await load();
       }
@@ -194,16 +261,175 @@ export default function AdminSeoPage() {
             </article>
             <article className="rounded-lg bg-white p-5 ring-1 ring-sand-line">
               <p className="text-xs text-ink-muted">Google Analytics</p>
-              <p className="mt-2 text-lg font-bold">
-                {desk.ga.trackingReady ? "Código listo" : "Sin conectar"}
+              <p className="mt-2 text-2xl font-bold">
+                {desk.analytics.report
+                  ? desk.analytics.report.current.activeUsers
+                  : "Sin dato"}
               </p>
-              <p className="mt-1 text-sm text-ink-muted">Visitas: sin dato</p>
+              <p className="mt-1 text-sm text-ink-muted">
+                {desk.analytics.report
+                  ? "Usuarios, últimos 28 días"
+                  : "Visitas aún sin leer"}
+              </p>
             </article>
             <article className="rounded-lg bg-white p-5 ring-1 ring-sand-line">
               <p className="text-xs text-ink-muted">Search Console</p>
               <p className="mt-2 text-lg font-bold">Sin dato</p>
               <p className="mt-1 text-sm text-ink-muted">No hay puestos anotados</p>
             </article>
+          </section>
+
+          <section className="rounded-lg bg-white p-5 ring-1 ring-sand-line">
+            <h2 className="text-lg font-bold">Visitas de Google Analytics</h2>
+            <p className="mt-1 text-sm text-ink-muted">
+              Últimos 28 días, hasta ayer. La etiqueta de la web es {desk.ga.measurementId}. Estas cifras salen de la API de Analytics, no del aviso de cookies.
+            </p>
+            {!desk.analytics.connected && (
+              <p className="mt-3 text-sm">
+                Sin dato. El código G- solo mide. Para ver las visitas aquí hace falta el ID numérico de la propiedad y una cuenta de servicio de Google con permiso de Lector.
+              </p>
+            )}
+            {desk.analytics.error && (
+              <p className="mt-3 text-sm text-coral">{desk.analytics.error}</p>
+            )}
+            {desk.analytics.report && (
+              <>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  {[
+                    {
+                      label: "Usuarios",
+                      value: String(desk.analytics.report.current.activeUsers),
+                      hint: formatDelta(
+                        desk.analytics.report.current.activeUsers,
+                        desk.analytics.report.previous.activeUsers
+                      ),
+                    },
+                    {
+                      label: "Sesiones",
+                      value: String(desk.analytics.report.current.sessions),
+                      hint: formatDelta(
+                        desk.analytics.report.current.sessions,
+                        desk.analytics.report.previous.sessions
+                      ),
+                    },
+                    {
+                      label: "Páginas vistas",
+                      value: String(desk.analytics.report.current.screenPageViews),
+                      hint: formatDelta(
+                        desk.analytics.report.current.screenPageViews,
+                        desk.analytics.report.previous.screenPageViews
+                      ),
+                    },
+                    {
+                      label: "Interacción",
+                      value: formatRate(desk.analytics.report.current.engagementRate),
+                      hint: `Duración media ${formatDuration(desk.analytics.report.current.averageSessionDuration)}`,
+                    },
+                  ].map((item) => (
+                    <article key={item.label} className="rounded-md bg-sky-mist p-3">
+                      <p className="text-xs text-ink-muted">{item.label}</p>
+                      <p className="mt-1 text-2xl font-bold">{item.value}</p>
+                      {item.hint && <p className="mt-1 text-xs text-ink-muted">{item.hint}</p>}
+                    </article>
+                  ))}
+                </div>
+                <div className="mt-6 grid gap-6 lg:grid-cols-2">
+                  <div>
+                    <h3 className="text-sm font-bold">Páginas más vistas</h3>
+                    <ul className="mt-2 space-y-1 text-sm">
+                      {desk.analytics.report.topPages.length === 0 && <li>Sin páginas en este periodo.</li>}
+                      {desk.analytics.report.topPages.map((page) => (
+                        <li key={page.path} className="flex justify-between gap-3">
+                          <span className="break-all">{page.path}</span>
+                          <b className="shrink-0">{page.views}</b>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold">De dónde llegan</h3>
+                    <ul className="mt-2 space-y-1 text-sm">
+                      {desk.analytics.report.channels.length === 0 && <li>Sin canales en este periodo.</li>}
+                      {desk.analytics.report.channels.map((channel) => (
+                        <li key={channel.name} className="flex justify-between gap-3">
+                          <span>{CHANNEL_LABEL[channel.name] || channel.name}</span>
+                          <b>{channel.sessions} sesiones</b>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold">Países</h3>
+                    <ul className="mt-2 space-y-1 text-sm">
+                      {desk.analytics.report.countries.length === 0 && <li>Sin países en este periodo.</li>}
+                      {desk.analytics.report.countries.map((country) => (
+                        <li key={country.name} className="flex justify-between gap-3">
+                          <span>{country.name}</span>
+                          <b>{country.users}</b>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold">Dispositivo</h3>
+                    <ul className="mt-2 space-y-1 text-sm">
+                      {desk.analytics.report.devices.length === 0 && <li>Sin dispositivos en este periodo.</li>}
+                      {desk.analytics.report.devices.map((device) => (
+                        <li key={device.name} className="flex justify-between gap-3">
+                          <span>{DEVICE_LABEL[device.name] || device.name}</span>
+                          <b>{device.sessions} sesiones</b>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </>
+            )}
+            <form
+              className="mt-6 space-y-3 border-t border-sand-line pt-4"
+              onSubmit={(event) => {
+                event.preventDefault();
+                post("ga-report", {
+                  propertyId,
+                  serviceAccountJson: serviceJson,
+                });
+              }}
+            >
+              <h3 className="text-sm font-bold">Leer las cifras de la propiedad</h3>
+              <p className="text-sm text-ink-muted">
+                En Analytics: Administrar → Detalles de la propiedad, copia el ID numérico. En Google Cloud crea una cuenta de servicio, descarga el JSON y añade su correo como Lector de la propiedad. La clave no se vuelve a mostrar.
+              </p>
+              {desk.analytics.clientEmail && (
+                <p className="text-sm">
+                  Conectada: {desk.analytics.clientEmail}
+                  {desk.analytics.propertyId ? ` · propiedad ${desk.analytics.propertyId}` : ""}
+                </p>
+              )}
+              <input
+                value={propertyId}
+                onChange={(event) => setPropertyId(event.target.value)}
+                placeholder="ID numérico de la propiedad"
+                className="w-full max-w-xs rounded border border-sand-line bg-white px-3 py-2 text-sm"
+                autoComplete="off"
+                spellCheck={false}
+              />
+              <textarea
+                value={serviceJson}
+                onChange={(event) => setServiceJson(event.target.value)}
+                rows={4}
+                placeholder="Pega el JSON de la cuenta de servicio. Si ya está guardado, puedes dejarlo vacío."
+                className="w-full rounded border border-sand-line bg-white px-3 py-2 font-mono text-xs"
+                autoComplete="off"
+                spellCheck={false}
+              />
+              <button
+                type="submit"
+                disabled={busy === "ga-report"}
+                className="rounded border border-sand-line bg-white px-3 py-2 text-sm font-medium hover:ring-1 hover:ring-ocean/30 disabled:opacity-60"
+              >
+                {busy === "ga-report" ? "Leyendo Analytics…" : "Guardar y cargar visitas"}
+              </button>
+            </form>
           </section>
 
           <section className="rounded-lg bg-white p-5 ring-1 ring-sand-line">
@@ -475,8 +701,7 @@ export default function AdminSeoPage() {
           <section className="rounded-lg bg-white p-5 ring-1 ring-sand-line">
             <h2 className="text-lg font-bold">Conectar Google Analytics</h2>
             <p className="mt-1 text-sm leading-relaxed text-ink-muted">
-              La web lleva la etiqueta de Google ({desk.ga.measurementId || "el ID de la propiedad"}) en el HTML, para que Google pueda detectarla. Las cookies de analítica solo se guardan si la persona acepta el aviso. Las visitas de este
-              panel siguen en «sin dato»: hace falta la API de Google para traer las cifras.
+              La web lleva la etiqueta de Google ({desk.ga.measurementId || "el ID de la propiedad"}) en el HTML, para que Google pueda detectarla. Las cookies de analítica solo se guardan si la persona acepta el aviso. Las visitas se leen arriba, con la cuenta de servicio.
               Si guardas otro ID que empiece por G-, la web usa ese. Si lo dejas vacío, vuelve
               al ID de la web.
             </p>

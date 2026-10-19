@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import {
   runDailyAnalysis,
   saveDeskNote,
+  saveGaCredentials,
   saveMeasurementId,
   seoDeskView,
 } from "@/lib/seo-desk";
@@ -37,6 +38,14 @@ export async function POST(request: Request) {
     if (body.action === "ga") {
       const measurementId = await saveMeasurementId(String(body.measurementId || ""));
       return NextResponse.json({ ok: true, measurementId, desk: await seoDeskView() });
+    }
+    if (body.action === "ga-report") {
+      const extra = body as { propertyId?: string; serviceAccountJson?: string };
+      await saveGaCredentials(
+        String(extra.propertyId || ""),
+        String(extra.serviceAccountJson || "")
+      );
+      return NextResponse.json({ ok: true, desk: await seoDeskView() });
     }
     return NextResponse.json({ error: "Acción desconocida" }, { status: 400 });
   } catch (error) {
