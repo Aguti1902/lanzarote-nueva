@@ -6,12 +6,20 @@ import { blogSlugForLocale } from "@/i18n/blog-slugs";
 import type { BlogPost } from "@/types";
 import { resolvePublicOrigin } from "@/lib/voucher";
 
-/** Meta de verificación de Google Search Console (token vía env). */
+/** Meta de verificación de Google Search Console. El token es público. */
+export const SITE_GOOGLE_VERIFICATION =
+  "4pc5qO5bDsXn69iB7cfnjEWbIqsPC4zfunTVb2te1P8";
+
+function verificationToken(raw: string): string {
+  const token = raw.trim().replace(/^google-site-verification=/i, "");
+  return /^[A-Za-z0-9_-]{20,120}$/.test(token) ? token : "";
+}
+
 export function googleSiteVerification(): Metadata["verification"] | undefined {
   const token =
-    process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim() ||
-    process.env.GOOGLE_SITE_VERIFICATION?.trim() ||
-    "";
+    verificationToken(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "") ||
+    verificationToken(process.env.GOOGLE_SITE_VERIFICATION || "") ||
+    SITE_GOOGLE_VERIFICATION;
   if (!token) return undefined;
   return { google: token };
 }
