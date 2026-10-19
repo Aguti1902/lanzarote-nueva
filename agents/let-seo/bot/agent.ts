@@ -10,4 +10,13 @@ export default defineAgent({
       { id: "fast", value: "true" },
     ],
   },
+  hosting: {
+    egressDomains: [
+      "www.lanzaroteexperiencetours.com",
+      "lanzaroteexperiencetours.com",
+      "www.excursioneslanzarote.com",
+      "excursioneslanzarote.com",
+      "lanzaroteactive.com",
+    ],
+  },
 });

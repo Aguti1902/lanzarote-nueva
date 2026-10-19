@@ -1,6 +1,6 @@
 ---
 name: metodologia
-description: Cómo redactar fichas en ES, EN y DE y el informe de una página, sin inventar datos ni cambiar URL.
+description: Cómo redactar el H1 y el texto de una ficha en ES, EN y DE sin cambiar el slug.
 ---
 
 # Método SEO
@@ -15,12 +15,12 @@ Tres búsquedas, tres respuestas:
 
 En cada ficha, por idioma:
 
-- Título de unos 55–60 caracteres, con lo importante al principio.
+- H1 de unos 55–60 caracteres, con lo importante al principio. El title puede coincidir con el H1.
 - Descripción de unos 150 caracteres, con precio «desde».
 - Primer párrafo con duración, precio, grupo y cancelación.
 - Una sola versión del idioma del guía. Si la web se contradice, preguntar.
 - Qué no incluye, antes de reservar.
-- La URL se queda igual.
+- El slug y la ruta se quedan igual. No se propone otra dirección.
 
 Datos de negocio, iguales en todas partes: Lanzarote Experience Tours, +34 646 08 05 85, info de la web.
 

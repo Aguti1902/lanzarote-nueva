@@ -2,7 +2,7 @@ import { defineAgent } from "@cursor/bdk";
 
 export default defineAgent({
   description:
-    "Redacta título, descripción y primer párrafo de una ficha en español, inglés y alemán, sin cambiar la URL.",
+    "Redacta el H1, el title, la descripción y el primer párrafo en español, inglés y alemán. No cambia el slug.",
   model: {
     id: "grok-4.5",
     params: [

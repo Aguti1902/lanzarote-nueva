@@ -283,9 +283,9 @@ function goalFor(kind: StepKind, ficha: Ficha, monthNumber: number): string {
     case "medir":
       return "Medir: 15 búsquedas de control (aparece o no en la primera página y en el mapa, sin anotar un puesto fijo) y qué hay que mirar en Search Console por /es/, /en/ y /de/.";
     case "titulos":
-      return `Títulos y descripciones de «${name}» en ES, EN y DE. Unos 55–60 caracteres el título, unos 150 la descripción, con precio desde, duración y grupo. No cambiar la URL.`;
+      return `H1, title y descripción de «${name}» en ES, EN y DE. Unos 55–60 caracteres el H1, unos 150 la descripción, con precio desde, duración y grupo. El slug y la ruta se quedan igual.`;
     case "parrafo":
-      return `Primer párrafo de «${name}» en ES, EN y DE: qué es, duración, precio, tamaño del grupo y cancelación. El resto del texto que ya está bien se queda debajo.`;
+      return `Primer párrafo de «${name}» en ES, EN y DE: qué es, duración, precio, tamaño del grupo y cancelación. El resto del texto que ya está bien se queda debajo. El slug no se toca.`;
     case "competencia":
       return `Competencia pública de «${name}»: leer solo lo que devuelva public-snapshots. Comparar título, precio si está escrito y a quién se dirige. No copiar sus textos.`;
     case "ficha-clara":
@@ -295,13 +295,13 @@ function goalFor(kind: StepKind, ficha: Ficha, monthNumber: number): string {
     case "informe-semana":
       return "Cierre de la semana en una página corta: fichas tocadas, borradores listos, fotos pedidas, reseñas pendientes de una persona y contactos que aún no se envían.";
     default:
-      return `Trabajar «${name}» sin cambiar la URL.`;
+      return `Trabajar el H1 y el texto de «${name}». El slug de la página se queda igual.`;
   }
 }
 
 export const RULES = [
   "No prometer posición en Google.",
-  "No cambiar URL que ya reciben visitas.",
+  "No cambiar el slug ni la ruta de ninguna página. Solo H1, title, descripción y párrafos.",
   "No publicar fichas vacías en inglés o alemán.",
   "No repetir la palabra clave para rellenar.",
   "No inventar estrellas ni marcar el 4,7 de Tripadvisor como reseña propia.",
@@ -334,14 +334,17 @@ const FORBIDDEN = [
   /regalo por (la |una )?reseña/i,
   /descuento a cambio/i,
   /aggregaterating/i,
-  /cambiar (la|las) url/i,
+  /cambiar (el|la|las|los) (url|urls|slug|slugs|ruta|rutas)/i,
+  /nuevo slug/i,
+  /slug nuevo/i,
 ];
 
 export function forbiddenReason(text: string): string | null {
   const cleaned = text
-    .replace(/sin cambiar (la|las) urls?/gi, "")
-    .replace(/no cambiar (la|las) urls?/gi, "")
-    .replace(/sin cambiar la url/gi, "");
+    .replace(/sin cambiar (el|la|las|los) (url|urls|slug|slugs|ruta|rutas)/gi, "")
+    .replace(/no (cambiar|tocar) (el|la|las|los) (url|urls|slug|slugs|ruta|rutas)/gi, "")
+    .replace(/el slug[^.]{0,40}se queda igual/gi, "")
+    .replace(/slug[^.]{0,20}no se toca/gi, "");
   const hit = FORBIDDEN.find((rule) => rule.test(cleaned));
   return hit
     ? "Ese paso incumple la propuesta: sin enlaces comprados, sin reseñas falsas, sin incentivos y sin cambiar URL."
