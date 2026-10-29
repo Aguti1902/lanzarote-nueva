@@ -235,6 +235,89 @@ function googleError(status: number, body: string): string {
   return message || `Google ha respondido ${status}.`;
 }
 
+type GaBatchRequest = Record<string, unknown>;
+
+/** Google admite como máximo 5 informes por llamada. */
+function reportRequests(): GaBatchRequest[] {
+  const range = [{ startDate: "28daysAgo", endDate: "yesterday" }];
+  return [
+    {
+      dateRanges: [
+        { startDate: "28daysAgo", endDate: "yesterday", name: "current" },
+        { startDate: "56daysAgo", endDate: "29daysAgo", name: "previous" },
+      ],
+      metrics: [
+        { name: "activeUsers" },
+        { name: "sessions" },
+        { name: "screenPageViews" },
+        { name: "engagementRate" },
+        { name: "averageSessionDuration" },
+      ],
+    },
+    {
+      dateRanges: range,
+      dimensions: [{ name: "date" }],
+      metrics: [
+        { name: "activeUsers" },
+        { name: "sessions" },
+        { name: "screenPageViews" },
+      ],
+      orderBys: [{ dimension: { dimensionName: "date" } }],
+      limit: "31",
+    },
+    {
+      dateRanges: range,
+      dimensions: [{ name: "pagePath" }],
+      metrics: [{ name: "screenPageViews" }, { name: "activeUsers" }],
+      orderBys: [{ metric: { metricName: "screenPageViews" }, desc: true }],
+      limit: "8",
+    },
+    {
+      dateRanges: range,
+      dimensions: [{ name: "sessionDefaultChannelGroup" }],
+      metrics: [{ name: "sessions" }, { name: "activeUsers" }],
+      orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+      limit: "8",
+    },
+    {
+      dateRanges: range,
+      dimensions: [{ name: "country" }],
+      metrics: [{ name: "activeUsers" }],
+      orderBys: [{ metric: { metricName: "activeUsers" }, desc: true }],
+      limit: "8",
+    },
+    {
+      dateRanges: range,
+      dimensions: [{ name: "deviceCategory" }],
+      metrics: [{ name: "sessions" }],
+      orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+      limit: "6",
+    },
+  ];
+}
+
+async function runGaBatch(
+  propertyId: string,
+  token: string,
+  requests: GaBatchRequest[]
+): Promise<ApiReport[]> {
+  const response = await fetch(
+    `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:batchRunReports`,
+    {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${token}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ requests }),
+    }
+  );
+  const body = await response.text();
+  if (!response.ok) throw new Error(googleError(response.status, body));
+  const data = JSON.parse(body) as { reports?: ApiReport[] };
+  return data.reports || [];
+}
+
 const cache = new Map<string, { at: number; report: GaReport }>();
 const CACHE_MS = 10 * 60 * 1000;
 
@@ -252,76 +335,17 @@ export async function fetchGaReport(
   if (!options?.fresh && hit && Date.now() - hit.at < CACHE_MS) return hit.report;
 
   const token = await accessToken(account);
-  const response = await fetch(
-    `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:batchRunReports`,
-    {
-      method: "POST",
-      headers: {
-        authorization: `Bearer ${token}`,
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        requests: [
-          {
-            dateRanges: [
-              { startDate: "28daysAgo", endDate: "yesterday", name: "current" },
-              { startDate: "56daysAgo", endDate: "29daysAgo", name: "previous" },
-            ],
-            metrics: [
-              { name: "activeUsers" },
-              { name: "sessions" },
-              { name: "screenPageViews" },
-              { name: "engagementRate" },
-              { name: "averageSessionDuration" },
-            ],
-          },
-          {
-            dateRanges: [{ startDate: "28daysAgo", endDate: "yesterday" }],
-            dimensions: [{ name: "date" }],
-            metrics: [
-              { name: "activeUsers" },
-              { name: "sessions" },
-              { name: "screenPageViews" },
-            ],
-            orderBys: [{ dimension: { dimensionName: "date" } }],
-            limit: "31",
-          },
-          {
-            dateRanges: [{ startDate: "28daysAgo", endDate: "yesterday" }],
-            dimensions: [{ name: "pagePath" }],
-            metrics: [{ name: "screenPageViews" }, { name: "activeUsers" }],
-            orderBys: [{ metric: { metricName: "screenPageViews" }, desc: true }],
-            limit: "8",
-          },
-          {
-            dateRanges: [{ startDate: "28daysAgo", endDate: "yesterday" }],
-            dimensions: [{ name: "sessionDefaultChannelGroup" }],
-            metrics: [{ name: "sessions" }, { name: "activeUsers" }],
-            orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
-            limit: "8",
-          },
-          {
-            dateRanges: [{ startDate: "28daysAgo", endDate: "yesterday" }],
-            dimensions: [{ name: "country" }],
-            metrics: [{ name: "activeUsers" }],
-            orderBys: [{ metric: { metricName: "activeUsers" }, desc: true }],
-            limit: "8",
-          },
-          {
-            dateRanges: [{ startDate: "28daysAgo", endDate: "yesterday" }],
-            dimensions: [{ name: "deviceCategory" }],
-            metrics: [{ name: "sessions" }],
-            orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
-            limit: "6",
-          },
-        ],
-      }),
-    }
-  );
-  const body = await response.text();
-  if (!response.ok) throw new Error(googleError(response.status, body));
-  const data = JSON.parse(body) as { reports?: ApiReport[] };
-  const report = parseGaBatch(data.reports || []);
+  const requests = reportRequests();
+  const reports: ApiReport[] = [];
+  for (let index = 0; index < requests.length; index += 5) {
+    const part = await runGaBatch(
+      propertyId,
+      token,
+      requests.slice(index, index + 5)
+    );
+    reports.push(...part);
+  }
+  const report = parseGaBatch(reports);
   cache.set(key, { at: Date.now(), report });
   return report;
 }
