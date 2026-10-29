@@ -11,7 +11,7 @@ export default function EditarExcursionPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("/api/tours")
+    fetch("/api/tours", { cache: "no-store" })
       .then((r) => r.json())
       .then((d) => {
         const found = (d.tours as Tour[]).find((t) => t.id === params.id);

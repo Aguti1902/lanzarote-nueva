@@ -32,6 +32,7 @@ import {
   normalizeBlogTranslations,
 } from "@/lib/blog-locale";
 import { tourMatchesSlug } from "@/i18n/tour-slugs";
+import { normalizeBlockedDates } from "@/lib/sales-closure";
 import {
   blogAllSlugs,
   blogMatchesSlug,
@@ -117,10 +118,17 @@ export async function saveTours(tours: Tour[]): Promise<void> {
 export async function upsertTour(tour: Tour): Promise<Tour> {
   const tours = await readJsonFresh<Tour[]>("tours.json");
   const idx = tours.findIndex((t) => t.id === tour.id);
-  if (idx === -1) tours.push(tour);
-  else tours[idx] = tour;
+  const prev = idx === -1 ? undefined : tours[idx];
+  const next: Tour = {
+    ...tour,
+    blockedDates: Array.isArray(tour.blockedDates)
+      ? normalizeBlockedDates(tour.blockedDates)
+      : prev?.blockedDates || [],
+  };
+  if (idx === -1) tours.push(next);
+  else tours[idx] = next;
   await saveTours(tours);
-  return tour;
+  return next;
 }
 
 export async function createTour(
@@ -215,7 +223,7 @@ export async function createTour(
     youtubeUrl: input.youtubeUrl || "",
     mapUrl: input.mapUrl || "",
     schedule: input.schedule || defaultSchedule,
-    blockedDates: input.blockedDates || [],
+    blockedDates: normalizeBlockedDates(input.blockedDates),
     seo: input.seo || { title: "", description: "", keywords: "" },
     translations: input.translations || { en: {}, de: {} },
   };

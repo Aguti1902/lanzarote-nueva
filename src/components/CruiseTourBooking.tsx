@@ -20,6 +20,7 @@ import { ShoreMeetingPointButton } from "@/components/ShoreMeetingPointButton";
 import { PhoneWithPrefix } from "@/components/PhoneWithPrefix";
 import { isValidBookingPhone } from "@/lib/phone";
 import { readResponseJson } from "@/lib/read-response-json";
+import { isSalesDateClosed } from "@/lib/sales-closure";
 
 const inputClass =
   "w-full rounded border border-sand-line bg-white px-3 py-2.5 text-sm outline-none focus:border-ocean focus:ring-2 focus:ring-ocean/20";
@@ -48,10 +49,9 @@ export function CruiseTourBooking({
   const dateBlocked = useMemo(
     () =>
       Boolean(
-        callDate &&
-          (tour.blockedDates || []).some((b) => b.date === callDate)
+        callDate && isSalesDateClosed(callDate, tour.blockedDates, locale)
       ),
-    [callDate, tour.blockedDates]
+    [callDate, locale, tour.blockedDates]
   );
   const tooSoon = useMemo(
     () => Boolean(callDate) && !isServiceDateWithinLeadTime(callDate),

@@ -134,7 +134,7 @@ export function TourDatePicker({
   }, [open]);
 
   function select(iso: string) {
-    if (!isTourDateBookable(tour, iso)) {
+    if (!isTourDateBookable(tour, iso, locale)) {
       setHint(unavailableLabel);
       return;
     }
@@ -186,7 +186,7 @@ export function TourDatePicker({
             <div className="grid grid-cols-7 gap-0.5">
               {cells.map((iso, i) => {
                 if (!iso) return <span key={`e-${i}`} />;
-                const bookable = isTourDateBookable(tour, iso);
+                const bookable = isTourDateBookable(tour, iso, locale);
                 const selected = value === iso;
                 const dayNum = Number(iso.slice(8, 10));
                 return (

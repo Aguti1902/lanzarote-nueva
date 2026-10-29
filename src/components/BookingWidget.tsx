@@ -49,7 +49,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
   const priceAdult = effectiveAdultPrice(tour);
   const priceChild = effectiveChildPrice(tour);
   const showChildren = !isMinibus && (!isPrivate || priceChild > 0);
-  const canBookDate = !date || isTourDateBookable(tour, date);
+  const canBookDate = !date || isTourDateBookable(tour, date, locale);
 
   const total = useMemo(() => {
     if (isMinibus) return priceAdult + Math.max(0, hours - 4) * 60;
@@ -110,7 +110,7 @@ export function BookingWidget({ tour }: { tour: Tour }) {
       setError(dict.booking.minLeadTime);
       return false;
     }
-    if (!isTourDateBookable(tour, date)) {
+    if (!isTourDateBookable(tour, date, locale)) {
       setError(dict.booking.dateUnavailable);
       return false;
     }

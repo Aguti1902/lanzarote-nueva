@@ -3,6 +3,7 @@ import {
   isServiceDateWithinLeadTime,
   minBookableDateIso,
 } from "@/lib/booking-lead-time";
+import { isSalesDateClosed } from "@/lib/sales-closure";
 
 /** JS getDay() Sunday=0 → Monday-first index 0..6 used in tour.schedule. */
 export function weekdayIndexMon0(isoDate: string): number {
@@ -11,9 +12,12 @@ export function weekdayIndexMon0(isoDate: string): number {
   return day === 0 ? 6 : day - 1;
 }
 
-export function isTourDateBlocked(tour: Tour, isoDate: string): boolean {
-  const date = isoDate.slice(0, 10);
-  return (tour.blockedDates || []).some((b) => b.date === date);
+export function isTourDateBlocked(
+  tour: Tour,
+  isoDate: string,
+  locale?: string
+): boolean {
+  return isSalesDateClosed(isoDate, tour.blockedDates, locale);
 }
 
 /**
@@ -21,9 +25,13 @@ export function isTourDateBlocked(tour: Tour, isoDate: string): boolean {
  * (any pickup zone / morning|afternoon|evening slot marked).
  * If there is no schedule data at all, allow the day (legacy fallback).
  */
-export function isTourOperatingDay(tour: Tour, isoDate: string): boolean {
+export function isTourOperatingDay(
+  tour: Tour,
+  isoDate: string,
+  locale?: string
+): boolean {
   const date = isoDate.slice(0, 10);
-  if (isTourDateBlocked(tour, date)) return false;
+  if (isTourDateBlocked(tour, date, locale)) return false;
 
   const schedule = tour.schedule;
   if (!schedule) return true;
@@ -48,14 +56,22 @@ export function isTourOperatingDay(tour: Tour, isoDate: string): boolean {
   return !hasAnySlotConfigured;
 }
 
-export function isTourDateBookable(tour: Tour, isoDate: string): boolean {
+export function isTourDateBookable(
+  tour: Tour,
+  isoDate: string,
+  locale?: string
+): boolean {
   const date = isoDate.slice(0, 10);
   if (!isServiceDateWithinLeadTime(date)) return false;
-  return isTourOperatingDay(tour, date);
+  return isTourOperatingDay(tour, date, locale);
 }
 
 /** Next N bookable ISO dates from the minimum lead-time date. */
-export function nextBookableDates(tour: Tour, count = 12): string[] {
+export function nextBookableDates(
+  tour: Tour,
+  count = 12,
+  locale?: string
+): string[] {
   const out: string[] = [];
   const cursor = new Date(`${minBookableDateIso()}T12:00:00`);
   for (let i = 0; i < 120 && out.length < count; i++) {
@@ -63,7 +79,7 @@ export function nextBookableDates(tour: Tour, count = 12): string[] {
     const m = String(cursor.getMonth() + 1).padStart(2, "0");
     const d = String(cursor.getDate()).padStart(2, "0");
     const iso = `${y}-${m}-${d}`;
-    if (isTourDateBookable(tour, iso)) out.push(iso);
+    if (isTourDateBookable(tour, iso, locale)) out.push(iso);
     cursor.setDate(cursor.getDate() + 1);
   }
   return out;

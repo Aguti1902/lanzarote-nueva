@@ -10,6 +10,7 @@ import { useLocale } from "@/components/LocaleProvider";
 import { formatPrice } from "@/lib/format";
 import type { PaymentMethod } from "@/types";
 import { isServiceDateWithinLeadTime } from "@/lib/booking-lead-time";
+import { isGlobalSalesClosure } from "@/lib/sales-closure";
 import { expectedOnlineCharge, splitPaymentAmounts } from "@/lib/payments";
 import { PhoneWithPrefix } from "@/components/PhoneWithPrefix";
 import { isValidBookingPhone } from "@/lib/phone";
@@ -74,6 +75,11 @@ export default function CarritoPage() {
     );
     if (tooSoon) {
       setError(dict.booking.minLeadTime);
+      return;
+    }
+    const closed = items.find((item) => isGlobalSalesClosure(item.date));
+    if (closed) {
+      setError(dict.booking.dateUnavailable);
       return;
     }
     const needsHotel = items.some(

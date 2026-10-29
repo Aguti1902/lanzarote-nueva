@@ -13,6 +13,7 @@ import type {
   CruiseShoreTour,
 } from "@/types";
 import { syncShoreTourStructuredFields, applyShoreTourPaymentPolicy } from "@/lib/shore-tour-display";
+import { normalizeBlockedDates } from "@/lib/sales-closure";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -304,7 +305,7 @@ export async function POST(request: Request) {
           ? body.meetingPointImages
           : [],
         schedule: body.schedule || undefined,
-        blockedDates: body.blockedDates || [],
+        blockedDates: normalizeBlockedDates(body.blockedDates),
         seo: body.seo || { title: "", description: "", keywords: "" },
         translations: body.translations || {},
       };
@@ -474,6 +475,15 @@ export async function PUT(request: Request) {
           image,
           gallery: orderedGallery,
           meetingPointImages,
+          blockedDates: Array.isArray(rest.blockedDates)
+            ? normalizeBlockedDates(
+                rest.blockedDates as Array<{
+                  date: string;
+                  language?: string;
+                  seats?: number;
+                }>
+              )
+            : prev.blockedDates || [],
         }) as CruiseShoreTour
       );
       await saveShore(data);

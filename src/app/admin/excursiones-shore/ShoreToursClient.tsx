@@ -18,6 +18,11 @@ import {
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { syncShoreTourStructuredFields } from "@/lib/shore-tour-display";
+import { SalesClosureNotice } from "@/components/admin/SalesClosureNotice";
+import {
+  isGlobalSalesClosure,
+  normalizeBlockedDates,
+} from "@/lib/sales-closure";
 
 type DetailTab =
   | "details"
@@ -518,17 +523,29 @@ export function ShoreToursPanel() {
       setMessage("Selecciona un día para bloquear");
       return;
     }
-    const next = [
+    if (isGlobalSalesClosure(blockDate)) {
+      setBlockDate("");
+      setMessage(
+        "Ese día ya está cerrado en todas las excursiones (4–15 diciembre)."
+      );
+      return;
+    }
+    const next = normalizeBlockedDates([
       ...(draft.blockedDates || []),
       {
         date: blockDate,
         language: blockLang,
         seats: blockSeats,
       },
-    ].sort((a, b) => a.date.localeCompare(b.date));
-    setDraft({ ...draft, blockedDates: next });
+    ]);
+    const nextDraft = { ...draft, blockedDates: next };
+    setDraft(nextDraft);
     setBlockDate("");
-    setMessage("Fecha bloqueada (guarda para aplicar)");
+    void save(nextDraft).then((ok) => {
+      if (ok) {
+        setMessage("Fecha guardada. Ese día ya no se puede reservar en la web.");
+      }
+    });
   }
 
   const translationFields = useMemo(() => {
@@ -555,7 +572,9 @@ export function ShoreToursPanel() {
   const upcomingBlocked = useMemo(() => {
     if (!draft?.blockedDates) return [];
     const today = new Date().toISOString().slice(0, 10);
-    return draft.blockedDates.filter((d) => d.date >= today);
+    return draft.blockedDates.filter(
+      (d) => d.date >= today && !isGlobalSalesClosure(d.date)
+    );
   }, [draft]);
 
   if (draft) {
@@ -1077,13 +1096,16 @@ export function ShoreToursPanel() {
                 onClick={addBlockedDate}
                 className="self-end rounded-md bg-ocean px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-white hover:bg-ocean-deep"
               >
-                Bloquear fecha
+                Bloquear y guardar
               </button>
             </div>
 
+            <SalesClosureNotice />
+
             {upcomingBlocked.length === 0 ? (
-              <p className="rounded-md bg-sky-soft px-4 py-3 text-sm text-ocean-deep">
-                No hay próximas fechas bloqueadas
+              <p className="rounded-md bg-bg px-4 py-3 text-sm text-ink-muted">
+                No hay más fechas bloqueadas solo en esta excursión. El cierre
+                del 4 al 15 de diciembre vale para todas.
               </p>
             ) : (
               <ul className="divide-y divide-sand-line rounded-lg ring-1 ring-sand-line">
@@ -1091,9 +1113,10 @@ export function ShoreToursPanel() {
                   if (item.date < new Date().toISOString().slice(0, 10)) {
                     return null;
                   }
+                  if (isGlobalSalesClosure(item.date)) return null;
                   return (
                     <li
-                      key={`${item.date}-${idx}`}
+                      key={`${item.date}-${item.language || "todos"}-${idx}`}
                       className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-sm"
                     >
                       <span>
@@ -1103,14 +1126,18 @@ export function ShoreToursPanel() {
                       <button
                         type="button"
                         className="text-coral hover:underline"
-                        onClick={() =>
-                          setDraft({
+                        onClick={() => {
+                          const nextDraft = {
                             ...draft,
                             blockedDates: (draft.blockedDates || []).filter(
                               (_, i) => i !== idx
                             ),
-                          })
-                        }
+                          };
+                          setDraft(nextDraft);
+                          void save(nextDraft).then((ok) => {
+                            if (ok) setMessage("Fecha quitada y guardada");
+                          });
+                        }}
                       >
                         Quitar
                       </button>

@@ -14,6 +14,8 @@ import { Field, adminInput, adminTextarea, arrayToLines, linesToArray } from "@/
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { isFlatPriceTour } from "@/lib/tour-pricing";
+import { SalesClosureNotice } from "@/components/admin/SalesClosureNotice";
+import { isGlobalSalesClosure, normalizeBlockedDates } from "@/lib/sales-closure";
 
 type EditorTab =
   | "details"
@@ -281,29 +283,44 @@ export function TourEditor({ initial }: { initial?: Tour }) {
       setError("Selecciona un día para bloquear");
       return;
     }
-    const next = [
+    if (isGlobalSalesClosure(blockDate)) {
+      setError("");
+      setBlockDate("");
+      setMessage(
+        "Ese día ya está cerrado en todas las excursiones (4–15 diciembre)."
+      );
+      return;
+    }
+    const next = normalizeBlockedDates([
       ...(tour.blockedDates || []),
       {
         date: blockDate,
         language: blockLang,
         seats: blockSeats,
       },
-    ].sort((a, b) => a.date.localeCompare(b.date));
-    set("blockedDates", next);
+    ]);
     setBlockDate("");
-    setMessage("Fecha bloqueada");
+    void handleSave(
+      { ...tour, blockedDates: next },
+      "Fecha guardada. Ese día ya no se puede reservar en la web."
+    );
   }
 
-  async function handleSave() {
+  async function handleSave(
+    source?: Partial<Tour>,
+    successMessage = "Datos actualizados"
+  ) {
+    const current = source || tour;
+    if (source) setTour(source);
     setSaving(true);
     setError("");
     setMessage("");
     try {
-      if (!tour.title || !tour.shortTitle) {
+      if (!current.title || !current.shortTitle) {
         throw new Error("Título y título corto son obligatorios");
       }
       const cleanLocale = (locale: "en" | "de") => {
-        const raw = tour.translations?.[locale] || {};
+        const raw = current.translations?.[locale] || {};
         const next: TourTranslation = {};
         if (raw.title?.trim()) next.title = raw.title.trim();
         if (raw.shortTitle?.trim()) next.shortTitle = raw.shortTitle.trim();
@@ -329,21 +346,23 @@ export function TourEditor({ initial }: { initial?: Tour }) {
         return next;
       };
       const payload = {
-        ...tour,
-        category: (tour.category || "excursion") as TourCategory,
+        ...current,
+        category: (current.category || "excursion") as TourCategory,
         duration:
-          tour.duration ||
-          (tour.durationHours
-            ? `${tour.durationHours} horas aprox.`
+          current.duration ||
+          (current.durationHours
+            ? `${current.durationHours} horas aprox.`
             : "5 horas aprox."),
-        gallery: tour.gallery?.length
-          ? tour.gallery
-          : tour.image
-            ? [tour.image]
+        gallery: current.gallery?.length
+          ? current.gallery
+          : current.image
+            ? [current.image]
             : [],
-        image: tour.image || tour.gallery?.[0] || "/images/tours/coast-1.jpg",
-        schedule: normalizeSchedule(tour.schedule),
-        smallGroup: tour.groupSize === "small" || tour.smallGroup,
+        image:
+          current.image || current.gallery?.[0] || "/images/tours/coast-1.jpg",
+        schedule: normalizeSchedule(current.schedule),
+        smallGroup: current.groupSize === "small" || current.smallGroup,
+        blockedDates: normalizeBlockedDates(current.blockedDates),
         translations: {
           en: cleanLocale("en"),
           de: cleanLocale("de"),
@@ -357,7 +376,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error al guardar");
-      setMessage("Datos actualizados");
+      setMessage(successMessage);
       if (!isEdit && data.tour?.id) {
         router.push(`/admin/excursiones/${data.tour.id}`);
         router.refresh();
@@ -368,6 +387,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
           ...emptyTour(),
           ...data.tour,
           schedule: normalizeSchedule(data.tour.schedule),
+          blockedDates: normalizeBlockedDates(data.tour.blockedDates),
         });
       }
     } catch (err) {
@@ -379,7 +399,9 @@ export function TourEditor({ initial }: { initial?: Tour }) {
 
   const upcomingBlocked = useMemo(() => {
     const today = new Date().toISOString().slice(0, 10);
-    return (tour.blockedDates || []).filter((d) => d.date >= today);
+    return (tour.blockedDates || []).filter(
+      (d) => d.date >= today && !isGlobalSalesClosure(d.date)
+    );
   }, [tour.blockedDates]);
 
   const translationFields =
@@ -805,7 +827,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
 
           <button
             type="button"
-            onClick={handleSave}
+            onClick={() => void handleSave()}
             disabled={saving}
             className="rounded-md bg-rose-600 px-6 py-2.5 text-sm font-bold uppercase tracking-wide text-white hover:bg-rose-700 disabled:opacity-60"
           >
@@ -959,7 +981,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
 
           <button
             type="button"
-            onClick={handleSave}
+            onClick={() => void handleSave()}
             disabled={saving}
             className="rounded-md bg-ocean px-6 py-2.5 text-sm font-bold uppercase tracking-wide text-white hover:bg-ocean-deep disabled:opacity-60"
           >
@@ -1025,7 +1047,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
           </table>
           <button
             type="button"
-            onClick={handleSave}
+            onClick={() => void handleSave()}
             disabled={saving}
             className="rounded-md bg-ocean px-6 py-2.5 text-sm font-bold uppercase tracking-wide text-white hover:bg-ocean-deep disabled:opacity-60"
           >
@@ -1039,6 +1061,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
           <h2 className="text-lg font-bold">
             Días bloqueados para este tour
           </h2>
+          <SalesClosureNotice />
           <div className="grid gap-4 rounded-lg bg-bg p-4 md:grid-cols-4">
             <Field label="Día">
               <input
@@ -1073,15 +1096,17 @@ export function TourEditor({ initial }: { initial?: Tour }) {
             <button
               type="button"
               onClick={addBlockedDate}
-              className="self-end rounded-md bg-ocean px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-white hover:bg-ocean-deep"
+              disabled={saving}
+              className="self-end rounded-md bg-ocean px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-white hover:bg-ocean-deep disabled:opacity-60"
             >
-              Bloquear fecha
+              {saving ? "Guardando…" : "Bloquear y guardar"}
             </button>
           </div>
 
           {upcomingBlocked.length === 0 ? (
-            <p className="rounded-md bg-sky-soft px-4 py-3 text-sm text-ocean-deep">
-              No hay próximas fechas bloqueadas
+            <p className="rounded-md bg-bg px-4 py-3 text-sm text-ink-muted">
+              No hay más fechas bloqueadas solo en esta excursión. El cierre
+              del 4 al 15 de diciembre vale para todas.
             </p>
           ) : (
             <ul className="divide-y divide-sand-line rounded-lg ring-1 ring-sand-line">
@@ -1089,9 +1114,10 @@ export function TourEditor({ initial }: { initial?: Tour }) {
                 if (item.date < new Date().toISOString().slice(0, 10)) {
                   return null;
                 }
+                if (isGlobalSalesClosure(item.date)) return null;
                 return (
                   <li
-                    key={`${item.date}-${idx}`}
+                    key={`${item.date}-${item.language || "todos"}-${idx}`}
                     className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-sm"
                   >
                     <span>
@@ -1101,12 +1127,16 @@ export function TourEditor({ initial }: { initial?: Tour }) {
                     <button
                       type="button"
                       className="text-coral hover:underline"
-                      onClick={() =>
-                        set(
-                          "blockedDates",
-                          (tour.blockedDates || []).filter((_, i) => i !== idx)
-                        )
-                      }
+                      disabled={saving}
+                      onClick={() => {
+                        const next = (tour.blockedDates || []).filter(
+                          (_, i) => i !== idx
+                        );
+                        void handleSave(
+                          { ...tour, blockedDates: next },
+                          "Fecha quitada y guardada"
+                        );
+                      }}
                     >
                       Quitar
                     </button>
@@ -1118,7 +1148,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
 
           <button
             type="button"
-            onClick={handleSave}
+            onClick={() => void handleSave()}
             disabled={saving}
             className="rounded-md bg-ocean px-6 py-2.5 text-sm font-bold uppercase tracking-wide text-white hover:bg-ocean-deep disabled:opacity-60"
           >
@@ -1236,7 +1266,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
           </Field>
           <button
             type="button"
-            onClick={handleSave}
+            onClick={() => void handleSave()}
             disabled={saving}
             className="rounded-md bg-ocean px-6 py-2.5 text-sm font-bold uppercase tracking-wide text-white hover:bg-ocean-deep disabled:opacity-60"
           >
@@ -1348,7 +1378,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
 
           <button
             type="button"
-            onClick={handleSave}
+            onClick={() => void handleSave()}
             disabled={saving}
             className="rounded-md bg-ocean px-6 py-2.5 text-sm font-bold uppercase tracking-wide text-white hover:bg-ocean-deep disabled:opacity-60"
           >

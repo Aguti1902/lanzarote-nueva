@@ -49,6 +49,7 @@ import {
   isTourDateBookable,
 } from "@/lib/tour-availability";
 import { isFlatPriceTour } from "@/lib/tour-pricing";
+import { isSalesDateClosed } from "@/lib/sales-closure";
 import { isStripeConfigured } from "@/lib/stripe";
 import { checkoutOriginFromRequest } from "@/lib/voucher";
 import type { BookingStatus, PaymentMethod } from "@/types";
@@ -70,11 +71,11 @@ function shouldAutoIssueInvoice(booking: {
 }
 
 function isDateBlocked(
-  blockedDates: Array<{ date: string; seats?: number }> | undefined,
-  date: string
+  blockedDates: Array<{ date: string; language?: string; seats?: number }> | undefined,
+  date: string,
+  locale?: string
 ): boolean {
-  if (!blockedDates?.length) return false;
-  return blockedDates.some((b) => b.date === date);
+  return isSalesDateClosed(date, blockedDates, locale);
 }
 
 export async function GET(request: Request) {
@@ -159,7 +160,14 @@ export async function POST(request: Request) {
       const tourIdStr = String(tourId);
       const shoreTour = await getCruiseShoreTourById(tourIdStr);
       shoreTourForPricing = shoreTour;
-      if (shoreTour && isDateBlocked(shoreTour.blockedDates, String(date))) {
+      if (
+        shoreTour &&
+        isDateBlocked(
+          shoreTour.blockedDates,
+          String(date),
+          typeof locale === "string" ? locale : undefined
+        )
+      ) {
         return NextResponse.json(
           { error: "Esta fecha no está disponible para la excursión" },
           { status: 400 }
@@ -168,7 +176,14 @@ export async function POST(request: Request) {
 
       if (!shoreTour && (type === "tour" || type === "minibus")) {
         const tour = await getTourById(tourIdStr);
-        if (tour && !isTourDateBookable(tour, String(date))) {
+        if (
+          tour &&
+          !isTourDateBookable(
+            tour,
+            String(date),
+            typeof locale === "string" ? locale : undefined
+          )
+        ) {
           return NextResponse.json(
             {
               error:
