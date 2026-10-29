@@ -1,61 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import {
+  AnalyticsBoard,
+  type AnalyticsRange,
+  type AnalyticsReport,
+} from "@/components/admin/AnalyticsBoard";
 import { formatPrice } from "@/lib/format";
-
-type GaTotals = {
-  activeUsers: number;
-  sessions: number;
-  screenPageViews: number;
-  engagementRate: number;
-  averageSessionDuration: number;
-};
-
-type GaReport = {
-  current: GaTotals;
-  previous: GaTotals;
-  byDay: { date: string; activeUsers: number; sessions: number; screenPageViews: number }[];
-  topPages: { path: string; views: number; users: number }[];
-  channels: { name: string; sessions: number; users: number }[];
-  countries: { name: string; users: number }[];
-  devices: { name: string; sessions: number }[];
-};
-
-function formatDuration(seconds: number) {
-  const total = Math.round(seconds);
-  const minutes = Math.floor(total / 60);
-  const rest = total % 60;
-  if (minutes <= 0) return `${rest} s`;
-  return `${minutes} min ${rest} s`;
-}
-
-function formatRate(rate: number) {
-  return `${Math.round(rate * 1000) / 10} %`;
-}
-
-function formatDelta(current: number, previous: number) {
-  if (previous <= 0) return "";
-  const pct = Math.round(((current - previous) / previous) * 100);
-  if (pct === 0) return "igual que los 28 días anteriores";
-  return `${pct > 0 ? "+" : ""}${pct} % frente a los 28 días anteriores`;
-}
-
-const CHANNEL_LABEL: Record<string, string> = {
-  "Organic Search": "Búsqueda orgánica",
-  Direct: "Directo",
-  Referral: "Enlaces",
-  "Organic Social": "Redes",
-  "Paid Search": "Búsqueda de pago",
-  Email: "Correo",
-  Unassigned: "Sin asignar",
-};
-
-const DEVICE_LABEL: Record<string, string> = {
-  mobile: "Móvil",
-  desktop: "Ordenador",
-  tablet: "Tablet",
-};
 
 type PhraseHit = { phrase: string; count: number; sites: string[] };
 
@@ -93,7 +45,7 @@ type Desk = {
     propertyId: string;
     clientEmail: string;
     source: "panel" | "env" | "none";
-    report: GaReport | null;
+    report: AnalyticsReport | null;
     error: string;
   };
   searchConsole: "sin dato";
@@ -162,6 +114,9 @@ export default function AdminSeoPage() {
   const [gaId, setGaId] = useState("");
   const [propertyId, setPropertyId] = useState("");
   const [serviceJson, setServiceJson] = useState("");
+  const [days, setDays] = useState<AnalyticsRange>(28);
+  const [rangeBusy, setRangeBusy] = useState(false);
+  const daysRef = useRef<AnalyticsRange>(28);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -185,6 +140,26 @@ export default function AdminSeoPage() {
     load();
   }, [load]);
 
+  const loadRange = useCallback(async (next: AnalyticsRange) => {
+    const previous = daysRef.current;
+    daysRef.current = next;
+    setDays(next);
+    setRangeBusy(true);
+    setError("");
+    try {
+      const response = await fetch(`/api/admin/seo?range=${next}`);
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "No se pudo cargar el periodo");
+      setDesk(data);
+    } catch (err) {
+      daysRef.current = previous;
+      setDays(previous);
+      setError(err instanceof Error ? err.message : "No se pudo cargar el periodo");
+    } finally {
+      setRangeBusy(false);
+    }
+  }, []);
+
   async function post(action: string, extra: Record<string, string> = {}) {
     setBusy(action);
     setError("");
@@ -192,7 +167,7 @@ export default function AdminSeoPage() {
       const response = await fetch("/api/admin/seo", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action, ...extra }),
+        body: JSON.stringify({ action, range: String(days), ...extra }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "No se pudo guardar");
@@ -222,9 +197,8 @@ export default function AdminSeoPage() {
         <div>
           <h1 className="text-3xl font-bold text-ink">SEO</h1>
           <p className="mt-1 max-w-2xl text-sm text-ink-muted">
-            Calendario diario, reservas reales y títulos públicos de la competencia.
-            Las posiciones de Google y las visitas siguen en «sin dato» hasta conectar
-            Search Console y la API de Analytics.
+            Calendario diario, reservas reales y visitas de Analytics. Las posiciones
+            de Google se consultan en Search Console.
           </p>
         </div>
         <button
@@ -268,21 +242,21 @@ export default function AdminSeoPage() {
               </p>
               <p className="mt-1 text-sm text-ink-muted">
                 {desk.analytics.report
-                  ? "Usuarios, últimos 28 días"
+                  ? `Usuarios, últimos ${desk.analytics.report.days} días`
                   : "Visitas aún sin leer"}
               </p>
             </article>
             <article className="rounded-lg bg-white p-5 ring-1 ring-sand-line">
               <p className="text-xs text-ink-muted">Search Console</p>
-              <p className="mt-2 text-lg font-bold">Sin dato</p>
-              <p className="mt-1 text-sm text-ink-muted">No hay puestos anotados</p>
+              <p className="mt-2 text-lg font-bold">Posiciones en Google</p>
+              <p className="mt-1 text-sm text-ink-muted">Se leen en Search Console</p>
             </article>
           </section>
 
           <section className="rounded-lg bg-white p-5 ring-1 ring-sand-line">
             <h2 className="text-lg font-bold">Visitas de Google Analytics</h2>
             <p className="mt-1 text-sm text-ink-muted">
-              Últimos 28 días, hasta ayer. La etiqueta de la web es {desk.ga.measurementId}. Estas cifras salen de la API de Analytics, no del aviso de cookies.
+              Hasta ayer. La etiqueta de la web es {desk.ga.measurementId}. Estas cifras salen de la API de Analytics, no del aviso de cookies.
             </p>
             {!desk.analytics.connected && (
               <p className="mt-3 text-sm">
@@ -293,97 +267,12 @@ export default function AdminSeoPage() {
               <p className="mt-3 text-sm text-coral">{desk.analytics.error}</p>
             )}
             {desk.analytics.report && (
-              <>
-                <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                  {[
-                    {
-                      label: "Usuarios",
-                      value: String(desk.analytics.report.current.activeUsers),
-                      hint: formatDelta(
-                        desk.analytics.report.current.activeUsers,
-                        desk.analytics.report.previous.activeUsers
-                      ),
-                    },
-                    {
-                      label: "Sesiones",
-                      value: String(desk.analytics.report.current.sessions),
-                      hint: formatDelta(
-                        desk.analytics.report.current.sessions,
-                        desk.analytics.report.previous.sessions
-                      ),
-                    },
-                    {
-                      label: "Páginas vistas",
-                      value: String(desk.analytics.report.current.screenPageViews),
-                      hint: formatDelta(
-                        desk.analytics.report.current.screenPageViews,
-                        desk.analytics.report.previous.screenPageViews
-                      ),
-                    },
-                    {
-                      label: "Interacción",
-                      value: formatRate(desk.analytics.report.current.engagementRate),
-                      hint: `Duración media ${formatDuration(desk.analytics.report.current.averageSessionDuration)}`,
-                    },
-                  ].map((item) => (
-                    <article key={item.label} className="rounded-md bg-sky-mist p-3">
-                      <p className="text-xs text-ink-muted">{item.label}</p>
-                      <p className="mt-1 text-2xl font-bold">{item.value}</p>
-                      {item.hint && <p className="mt-1 text-xs text-ink-muted">{item.hint}</p>}
-                    </article>
-                  ))}
-                </div>
-                <div className="mt-6 grid gap-6 lg:grid-cols-2">
-                  <div>
-                    <h3 className="text-sm font-bold">Páginas más vistas</h3>
-                    <ul className="mt-2 space-y-1 text-sm">
-                      {desk.analytics.report.topPages.length === 0 && <li>Sin páginas en este periodo.</li>}
-                      {desk.analytics.report.topPages.map((page) => (
-                        <li key={page.path} className="flex justify-between gap-3">
-                          <span className="break-all">{page.path}</span>
-                          <b className="shrink-0">{page.views}</b>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-bold">De dónde llegan</h3>
-                    <ul className="mt-2 space-y-1 text-sm">
-                      {desk.analytics.report.channels.length === 0 && <li>Sin canales en este periodo.</li>}
-                      {desk.analytics.report.channels.map((channel) => (
-                        <li key={channel.name} className="flex justify-between gap-3">
-                          <span>{CHANNEL_LABEL[channel.name] || channel.name}</span>
-                          <b>{channel.sessions} sesiones</b>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-bold">Países</h3>
-                    <ul className="mt-2 space-y-1 text-sm">
-                      {desk.analytics.report.countries.length === 0 && <li>Sin países en este periodo.</li>}
-                      {desk.analytics.report.countries.map((country) => (
-                        <li key={country.name} className="flex justify-between gap-3">
-                          <span>{country.name}</span>
-                          <b>{country.users}</b>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-bold">Dispositivo</h3>
-                    <ul className="mt-2 space-y-1 text-sm">
-                      {desk.analytics.report.devices.length === 0 && <li>Sin dispositivos en este periodo.</li>}
-                      {desk.analytics.report.devices.map((device) => (
-                        <li key={device.name} className="flex justify-between gap-3">
-                          <span>{DEVICE_LABEL[device.name] || device.name}</span>
-                          <b>{device.sessions} sesiones</b>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </>
+              <AnalyticsBoard
+                report={desk.analytics.report}
+                days={days}
+                loading={rangeBusy}
+                onDaysChange={(next) => void loadRange(next)}
+              />
             )}
             <form
               className="mt-6 space-y-3 border-t border-sand-line pt-4"
@@ -433,6 +322,33 @@ export default function AdminSeoPage() {
           </section>
 
           <section className="rounded-lg bg-white p-5 ring-1 ring-sand-line">
+            <h2 className="text-lg font-bold">Google Search Console</h2>
+            <p className="mt-1 text-sm leading-relaxed text-ink-muted">
+              La etiqueta de verificación ya está en la web. Este panel no muestra puestos: las posiciones se leen en Search Console, en Rendimiento.
+            </p>
+            <ol className="mt-4 list-decimal space-y-3 pl-5 text-sm leading-relaxed [overflow-wrap:anywhere]">
+              <li>
+                Deja la propiedad antigua. Ahí está el historial de las urls que ya se enviaron. Esas direcciones siguen activas: la web nueva responde con una redirección permanente a la página equivalente, así que se conservan.
+              </li>
+              <li>
+                Añade una propiedad de prefijo de URL{" "}
+                <b className="[overflow-wrap:anywhere]">https://www.lanzaroteexperiencetours.com/</b>. Elige la verificación por etiqueta HTML: ya está publicada. Pulsa Verificar.
+              </li>
+              <li>
+                Si en cambio usas una propiedad de dominio, en Strato añade el TXT nuevo y deja los que ya existen. El valor es{" "}
+                <span className="break-all font-mono text-xs">
+                  google-site-verification=4pc5qO5bDsXn69iB7cfnjEWbIqsPC4zfunTVb2te1P8
+                </span>
+                .
+              </li>
+              <li>
+                En la propiedad nueva envía el sitemap{" "}
+                <b className="[overflow-wrap:anywhere]">https://www.lanzaroteexperiencetours.com/sitemap.xml</b>. Ese archivo sustituye al listado antiguo e incluye español, inglés y alemán.
+              </li>
+            </ol>
+          </section>
+
+          <section className="rounded-lg bg-white p-5 ring-1 ring-sand-line">
             <p className="text-xs font-semibold uppercase tracking-wide text-ocean">
               {desk.today.monthLabel}
             </p>
@@ -445,7 +361,7 @@ export default function AdminSeoPage() {
                 {(["es", "en", "de"] as const).map((locale) => (
                   <li key={locale}>
                     <a
-                      className="text-ocean underline"
+                      className="break-all text-ocean underline"
                       href={desk.today.ficha.urls?.[locale]}
                       target="_blank"
                       rel="noreferrer"

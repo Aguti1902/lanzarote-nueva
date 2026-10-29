@@ -16,12 +16,29 @@ export type GaTotals = {
   averageSessionDuration: number;
 };
 
+export type GaDayPoint = {
+  date: string;
+  activeUsers: number;
+  sessions: number;
+  screenPageViews: number;
+};
+
+export type GaRangeDays = 7 | 28 | 90;
+
+export function normalizeGaDays(raw: unknown): GaRangeDays {
+  const days = Number(raw);
+  if (days === 7 || days === 90) return days;
+  return 28;
+}
+
 export type GaReport = {
+  days: GaRangeDays;
   from: string;
   to: string;
   current: GaTotals;
   previous: GaTotals;
-  byDay: { date: string; activeUsers: number; sessions: number; screenPageViews: number }[];
+  byDay: GaDayPoint[];
+  previousByDay: GaDayPoint[];
   topPages: { path: string; views: number; users: number }[];
   channels: { name: string; sessions: number; users: number }[];
   countries: { name: string; users: number }[];
@@ -165,26 +182,33 @@ function formatGaDate(raw: string): string {
   return raw;
 }
 
-export function parseGaBatch(reports: ApiReport[]): GaReport {
+function daySeries(report: ApiReport | undefined): GaDayPoint[] {
+  return rowsOf(report)
+    .map((row) => ({
+      date: formatGaDate(row.date || ""),
+      activeUsers: num(row.activeUsers),
+      sessions: num(row.sessions),
+      screenPageViews: num(row.screenPageViews),
+    }))
+    .filter((row) => row.date)
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+export function parseGaBatch(reports: ApiReport[], days: GaRangeDays = 28): GaReport {
   const totalRows = rowsOf(reports[0]);
   const current =
     totalRows.find((row) => row.dateRange === "current") || totalRows[0];
   const previous =
     totalRows.find((row) => row.dateRange === "previous") || totalRows[1];
   return {
-    from: "28daysAgo",
+    days,
+    from: `${days}daysAgo`,
     to: "yesterday",
     current: totalsFrom(current),
     previous: totalsFrom(previous),
-    byDay: rowsOf(reports[1])
-      .map((row) => ({
-        date: formatGaDate(row.date || ""),
-        activeUsers: num(row.activeUsers),
-        sessions: num(row.sessions),
-        screenPageViews: num(row.screenPageViews),
-      }))
-      .sort((a, b) => a.date.localeCompare(b.date)),
-    topPages: rowsOf(reports[2])
+    byDay: daySeries(reports[1]),
+    previousByDay: daySeries(reports[2]),
+    topPages: rowsOf(reports[3])
       .filter((row) => row.pagePath && row.pagePath !== "(not set)")
       .slice(0, 8)
       .map((row) => ({
@@ -192,7 +216,7 @@ export function parseGaBatch(reports: ApiReport[]): GaReport {
         views: num(row.screenPageViews),
         users: num(row.activeUsers),
       })),
-    channels: rowsOf(reports[3])
+    channels: rowsOf(reports[4])
       .filter((row) => row.sessionDefaultChannelGroup)
       .slice(0, 8)
       .map((row) => ({
@@ -200,14 +224,14 @@ export function parseGaBatch(reports: ApiReport[]): GaReport {
         sessions: num(row.sessions),
         users: num(row.activeUsers),
       })),
-    countries: rowsOf(reports[4])
+    countries: rowsOf(reports[5])
       .filter((row) => row.country)
       .slice(0, 8)
       .map((row) => ({
         name: row.country,
         users: num(row.activeUsers),
       })),
-    devices: rowsOf(reports[5])
+    devices: rowsOf(reports[6])
       .filter((row) => row.deviceCategory)
       .map((row) => ({
         name: row.deviceCategory,
@@ -238,13 +262,27 @@ function googleError(status: number, body: string): string {
 type GaBatchRequest = Record<string, unknown>;
 
 /** Google admite como máximo 5 informes por llamada. */
-function reportRequests(): GaBatchRequest[] {
-  const range = [{ startDate: "28daysAgo", endDate: "yesterday" }];
+function reportRequests(days: GaRangeDays): GaBatchRequest[] {
+  const current = [{ startDate: `${days}daysAgo`, endDate: "yesterday" }];
+  const previous = [{ startDate: `${days * 2}daysAgo`, endDate: `${days + 1}daysAgo` }];
+  const dayMetrics = [
+    { name: "activeUsers" },
+    { name: "sessions" },
+    { name: "screenPageViews" },
+  ];
+  const byDay = (range: { startDate: string; endDate: string }[]): GaBatchRequest => ({
+    dateRanges: range,
+    dimensions: [{ name: "date" }],
+    metrics: dayMetrics,
+    orderBys: [{ dimension: { dimensionName: "date" } }],
+    keepEmptyRows: true,
+    limit: String(days + 2),
+  });
   return [
     {
       dateRanges: [
-        { startDate: "28daysAgo", endDate: "yesterday", name: "current" },
-        { startDate: "56daysAgo", endDate: "29daysAgo", name: "previous" },
+        { startDate: `${days}daysAgo`, endDate: "yesterday", name: "current" },
+        { startDate: `${days * 2}daysAgo`, endDate: `${days + 1}daysAgo`, name: "previous" },
       ],
       metrics: [
         { name: "activeUsers" },
@@ -254,40 +292,31 @@ function reportRequests(): GaBatchRequest[] {
         { name: "averageSessionDuration" },
       ],
     },
+    byDay(current),
+    byDay(previous),
     {
-      dateRanges: range,
-      dimensions: [{ name: "date" }],
-      metrics: [
-        { name: "activeUsers" },
-        { name: "sessions" },
-        { name: "screenPageViews" },
-      ],
-      orderBys: [{ dimension: { dimensionName: "date" } }],
-      limit: "31",
-    },
-    {
-      dateRanges: range,
+      dateRanges: current,
       dimensions: [{ name: "pagePath" }],
       metrics: [{ name: "screenPageViews" }, { name: "activeUsers" }],
       orderBys: [{ metric: { metricName: "screenPageViews" }, desc: true }],
       limit: "8",
     },
     {
-      dateRanges: range,
+      dateRanges: current,
       dimensions: [{ name: "sessionDefaultChannelGroup" }],
       metrics: [{ name: "sessions" }, { name: "activeUsers" }],
       orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
       limit: "8",
     },
     {
-      dateRanges: range,
+      dateRanges: current,
       dimensions: [{ name: "country" }],
       metrics: [{ name: "activeUsers" }],
       orderBys: [{ metric: { metricName: "activeUsers" }, desc: true }],
       limit: "8",
     },
     {
-      dateRanges: range,
+      dateRanges: current,
       dimensions: [{ name: "deviceCategory" }],
       metrics: [{ name: "sessions" }],
       orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
@@ -328,14 +357,15 @@ export function clearGaReportCache() {
 export async function fetchGaReport(
   propertyId: string,
   account: GaServiceAccount,
-  options?: { fresh?: boolean }
+  options?: { fresh?: boolean; days?: GaRangeDays }
 ): Promise<GaReport> {
-  const key = `${propertyId}:${account.clientEmail}`;
+  const days = normalizeGaDays(options?.days);
+  const key = `${propertyId}:${account.clientEmail}:${days}`;
   const hit = cache.get(key);
   if (!options?.fresh && hit && Date.now() - hit.at < CACHE_MS) return hit.report;
 
   const token = await accessToken(account);
-  const requests = reportRequests();
+  const requests = reportRequests(days);
   const reports: ApiReport[] = [];
   for (let index = 0; index < requests.length; index += 5) {
     const part = await runGaBatch(
@@ -345,7 +375,7 @@ export async function fetchGaReport(
     );
     reports.push(...part);
   }
-  const report = parseGaBatch(reports);
+  const report = parseGaBatch(reports, days);
   cache.set(key, { at: Date.now(), report });
   return report;
 }
@@ -371,6 +401,7 @@ export async function analyticsStatus(input: {
   account: GaServiceAccount | null;
   source: "panel" | "env" | "none";
   fresh?: boolean;
+  days?: GaRangeDays;
 }): Promise<GaAnalyticsStatus> {
   if (!input.propertyId || !input.account || input.source === "none") {
     return {
@@ -385,6 +416,7 @@ export async function analyticsStatus(input: {
   try {
     const report = await fetchGaReport(input.propertyId, input.account, {
       fresh: input.fresh,
+      days: input.days,
     });
     return {
       connected: true,

@@ -7,6 +7,7 @@ import {
   normalizePropertyId,
   parseServiceAccount,
   type GaAnalyticsStatus,
+  type GaRangeDays,
   type GaServiceAccount,
 } from "@/lib/ga-report";
 import { getTours } from "@/lib/content";
@@ -628,11 +629,12 @@ export async function saveGaCredentials(
 
 async function analyticsForDesk(
   desk: SeoDeskFile,
-  fresh = false
+  fresh = false,
+  days: GaRangeDays = 28
 ): Promise<GaAnalyticsStatus> {
   const fromEnv = credentialsFromEnv();
   if (fromEnv) {
-    return analyticsStatus({ ...fromEnv, source: "env", fresh });
+    return analyticsStatus({ ...fromEnv, source: "env", fresh, days });
   }
   if (desk.gaPropertyId && desk.gaServiceAccount) {
     return analyticsStatus({
@@ -640,9 +642,10 @@ async function analyticsForDesk(
       account: desk.gaServiceAccount,
       source: "panel",
       fresh,
+      days,
     });
   }
-  return analyticsStatus({ propertyId: "", account: null, source: "none" });
+  return analyticsStatus({ propertyId: "", account: null, source: "none", days });
 }
 
 export async function publicMeasurementId(): Promise<string> {
@@ -688,11 +691,11 @@ export async function runDailyAnalysis(now = new Date()): Promise<{
   const bookings = bookingInsight(bookingsRaw, tours, now);
   const keywords = keywordReport(snapshots.pages, tours);
   const desk = await loadDesk();
-  const analytics = await analyticsForDesk(desk, true);
+  const analytics = await analyticsForDesk(desk, true, 28);
   let summary = analysisSummary({ step, bookings, keywords, pages: snapshots.pages });
   if (analytics.report) {
     const current = analytics.report.current;
-    summary += ` Analytics, últimos 28 días: ${current.activeUsers} usuarios activos, ${current.sessions} sesiones y ${current.screenPageViews} páginas vistas.`;
+    summary += ` Analytics, últimos ${analytics.report.days} días: ${current.activeUsers} usuarios activos, ${current.sessions} sesiones y ${current.screenPageViews} páginas vistas.`;
   }
   const entry: SeoJournalEntry = {
     id: `${step.date}-analisis`,
@@ -710,7 +713,7 @@ export async function runDailyAnalysis(now = new Date()): Promise<{
   return { entry, snapshots, keywords, bookings };
 }
 
-export async function seoDeskView(now = new Date()) {
+export async function seoDeskView(now = new Date(), days: GaRangeDays = 28) {
   const [desk, bookingsRaw, tours] = await Promise.all([
     loadDesk(),
     getBookings(),
@@ -722,7 +725,7 @@ export async function seoDeskView(now = new Date()) {
   const envId = measurementIdFromEnv();
   const panelId = normalizeGaId(desk.gaMeasurementId) || "";
   const measurementId = envId || panelId || SITE_GA_MEASUREMENT_ID;
-  const analytics = await analyticsForDesk(desk);
+  const analytics = await analyticsForDesk(desk, false, days);
   return {
     programStart: PROGRAM_START,
     slugPolicy: "Las URLs y los slugs se quedan igual. Solo se redactan H1, title, descripción y párrafos.",
