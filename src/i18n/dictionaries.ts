@@ -183,6 +183,7 @@ export type Dictionary = {
     seeExcursionsForShip: string;
     calendarHint: string;
     bookTourTitle: string;
+    dateClosed: string;
     selectPassengers: string;
     passengerSingular: string;
     passengerPlural: string;
@@ -758,6 +759,7 @@ const es: Dictionary = {
     calendarHint:
       "También puede buscar su barco en el calendario de escalas en Lanzarote.",
     bookTourTitle: "Reservar esta excursión",
+    dateClosed: "Esta fecha no está disponible para la excursión.",
     selectPassengers: "Seleccione el número de pasajeros",
     passengerSingular: "pasajero",
     passengerPlural: "pasajeros",
@@ -1355,6 +1357,7 @@ const en: Dictionary = {
     calendarHint:
       "You can also find your ship in the Lanzarote port-call calendar.",
     bookTourTitle: "Book this excursion",
+    dateClosed: "This date is not available for this excursion.",
     selectPassengers: "Select number of passengers",
     passengerSingular: "passenger",
     passengerPlural: "passengers",
@@ -1950,6 +1953,7 @@ const de: Dictionary = {
     calendarHint:
       "Sie finden Ihr Schiff auch im Lanzarote-Hafenkalender.",
     bookTourTitle: "Diesen Ausflug buchen",
+    dateClosed: "Dieses Datum ist für diesen Ausflug nicht verfügbar.",
     selectPassengers: "Anzahl der Passagiere wählen",
     passengerSingular: "Passagier",
     passengerPlural: "Passagiere",

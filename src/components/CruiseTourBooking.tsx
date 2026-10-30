@@ -246,7 +246,7 @@ export function CruiseTourBooking({
         </p>
       ) : dateBlocked ? (
         <p className="mt-4 rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-800 ring-1 ring-rose-200">
-          Esta fecha no está disponible para la excursión.
+          {dict.cruises.dateClosed}
         </p>
       ) : null}
 
@@ -307,7 +307,7 @@ export function CruiseTourBooking({
         <p className="mt-3 text-sm font-semibold text-rose-700">
           {tooSoon
             ? dict.booking.minLeadTime
-            : "Esta fecha no está disponible para reservar."}
+            : dict.cruises.dateClosed}
         </p>
       )}
 
