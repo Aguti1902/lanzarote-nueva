@@ -10,9 +10,11 @@ import type {
 import {
   readCmsJson,
   readCmsJsonFresh,
+  readCmsJsonIfExists,
   readLocalCmsJson,
   writeCmsJson,
 } from "@/lib/supabase/cms-store";
+import { looksLikeHtml } from "@/lib/sanitize-html";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import {
   mergeSettingsOverlay,
@@ -96,6 +98,39 @@ const emptyContentTranslations = (): ContentTranslations => ({
   cruise: { seaDayLabel: "At sea" },
 });
 
+/** Bloque de la página de cruceros en francés (fórmula regular / privada). */
+const FRENCH_CRUISE_FORMULA_HEADING =
+  "Excursions à Lanzarote : choisissez la formule qui vous convient";
+
+const FRENCH_CRUISE_FORMULA_HTML =
+  `<h3>${FRENCH_CRUISE_FORMULA_HEADING}</h3>` +
+  "<p>Nos excursions régulières sont proposées en espagnol, en anglais et en allemand, avec des groupes séparés selon la langue.</p>" +
+  "<p>Vous souhaitez découvrir Lanzarote avec un guide francophone ? Nous proposons également des excursions privées sur mesure, sous réserve de disponibilité.</p>" +
+  "<p>L'itinéraire et la durée de chaque excursion sont adaptés au temps dont vous disposez pendant votre escale.</p>";
+
+function ensureFrenchCruiseFormula(text: string): string {
+  if (text.includes(FRENCH_CRUISE_FORMULA_HEADING)) return text;
+  const trimmed = text.trim();
+  if (!trimmed) return FRENCH_CRUISE_FORMULA_HTML;
+  if (looksLikeHtml(trimmed)) return `${trimmed}${FRENCH_CRUISE_FORMULA_HTML}`;
+  return `${trimmed}\n\n${FRENCH_CRUISE_FORMULA_HTML}`;
+}
+
+function normalizeContentTranslations(
+  data: Partial<ContentTranslations> | null | undefined
+): ContentTranslations {
+  return {
+    ...emptyContentTranslations(),
+    ...(data || {}),
+    settings: data?.settings || {},
+    tours: data?.tours || {},
+    blog: data?.blog || {},
+    transfers: data?.transfers || { highlights: [] },
+    shoreTours: data?.shoreTours || {},
+    cruise: data?.cruise || emptyContentTranslations().cruise,
+  };
+}
+
 const translationCache = new Map<
   TranslatedLocale,
   Promise<ContentTranslations>
@@ -149,12 +184,38 @@ export async function saveContentTranslations(
   clearContentTranslationCache();
 }
 
-/** Merge/replace settings text overlay for EN or DE without touching tours/blog/etc. */
+/**
+ * Lectura para guardar traducciones. Si el fichero aún no está en Storage
+ * (el francés se publicó primero en el repo), parte de la copia local y
+ * el guardado siguiente lo sube. Un error real de Storage no se sustituye
+ * por el repo, para no pisar textos ya editados en el panel.
+ */
+async function loadTranslationsForPatch(
+  locale: TranslatedLocale
+): Promise<ContentTranslations> {
+  if (!isSupabaseConfigured()) {
+    return loadTranslations(locale, { fresh: true });
+  }
+  const remote = await readCmsJsonIfExists<ContentTranslations>(
+    `i18n/${locale}.json`
+  );
+  if (remote) return normalizeContentTranslations(remote);
+  try {
+    const local = await readLocalCmsJson<ContentTranslations>(
+      `i18n/${locale}.json`
+    );
+    return normalizeContentTranslations(local);
+  } catch {
+    return emptyContentTranslations();
+  }
+}
+
+/** Merge/replace settings text overlay without touching tours/blog/etc. */
 export async function patchSettingsTranslations(
   locale: TranslatedLocale,
   settingsPatch: Partial<SiteSettings>
 ): Promise<ContentTranslations> {
-  const data = await loadTranslations(locale, { fresh: true });
+  const data = await loadTranslationsForPatch(locale);
   const picked = pickSettingsTranslations(settingsPatch);
   data.settings = {
     ...data.settings,
@@ -317,6 +378,10 @@ export async function localizeSettings(
     }
   }
 
+  if (locale === "fr") {
+    merged.cruiseText = ensureFrenchCruiseFormula(merged.cruiseText || "");
+  }
+
   return merged;
 }
 
@@ -453,7 +518,7 @@ export async function localizeTransfers(
   const looksLegacy =
     !highlights?.length ||
     highlights.some((h) =>
-      /Air-conditioned vehicle(?!s)|Flight tracking(?! &)|Airport\s*→\s*hotel|Klimatisierter Wagen|Flugüberwachung(?! in Echtzeit)|Flughafen\s*→/i.test(
+      /Air-conditioned vehicle(?!s)|Flight tracking(?! &)|Airport\s*→\s*hotel|Klimatisierter Wagen|Flugüberwachung(?! in Echtzeit)|Flughafen\s*→|Suivi des vols en temps réel et ajustement automatique/i.test(
         h
       )
     );
