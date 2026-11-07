@@ -276,6 +276,9 @@ export function getCashPending(bookings: Booking[]): Booking[] {
   const today = new Date().toISOString().slice(0, 10);
   return bookings.filter((b) => {
     if (b.status === "cancelled") return false;
+    // Checkout de tarjeta o depósito abierto y no cobrado: el resto en
+    // efectivo todavía no existe. No es un cobro pendiente real.
+    if (isAwaitingOnlinePayment(b)) return false;
     if (b.cashStatus !== "pending") return false;
     if ((b.amountDueCash ?? 0) <= 0) return false;
     const day = (b.date || "").slice(0, 10);
@@ -361,9 +364,10 @@ export function getStats(bookings: Booking[]) {
       .sort((a, b) => a[0].localeCompare(b[0]))
       .map(([month, amount]) => ({ month, amount })),
     upcoming: upcoming.slice(0, 8),
-    recent: [...bookings]
+    unpaidCheckouts: bookings.filter((b) => isAwaitingOnlinePayment(b)).length,
+    recent: [...active]
       .sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""))
-      .slice(0, 8),
+      .slice(0, 40),
     cashPendingList: cashPending
       .sort((a, b) => a.date.localeCompare(b.date))
       .slice(0, 50),

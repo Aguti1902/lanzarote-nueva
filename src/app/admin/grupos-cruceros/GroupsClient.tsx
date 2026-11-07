@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Check, Copy, Pencil, Trash2, X } from "lucide-react";
 import type { Booking, CruiseGroup, CruiseItineraryStop, PaymentLink } from "@/types";
+import { isAwaitingOnlinePayment } from "@/lib/payments";
 import { formatDate, formatDateShort, formatPrice } from "@/lib/format";
 import { Field, adminInput } from "@/components/admin/Field";
 import {
@@ -370,7 +371,9 @@ export function GroupsPanel() {
   }
 
   function sendConfirmations(group: CruiseGroup, bookings: Booking[]) {
-    const active = bookings.filter((b) => b.status !== "cancelled");
+    const active = bookings.filter(
+      (b) => b.status !== "cancelled" && !isAwaitingOnlinePayment(b)
+    );
     const href = confirmationsMailto(
       active,
       `Confirmación grupo ${group.shipName} — ${group.date}`
