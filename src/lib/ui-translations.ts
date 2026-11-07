@@ -3,16 +3,25 @@ import type { Locale } from "@/i18n/config";
 import { locales } from "@/i18n/config";
 import { readCmsJson, readCmsJsonFresh, writeCmsJson } from "@/lib/supabase/cms-store";
 
-export type UiTranslationOverrides = {
-  es: Record<string, string>;
-  en: Record<string, string>;
-  de: Record<string, string>;
-};
-
-const empty: UiTranslationOverrides = { es: {}, en: {}, de: {} };
+export type UiTranslationOverrides = Record<Locale, Record<string, string>>;
 
 function emptyMaps(): UiTranslationOverrides {
-  return { es: {}, en: {}, de: {} };
+  return Object.fromEntries(
+    locales.map((locale) => [locale, {}])
+  ) as UiTranslationOverrides;
+}
+
+const empty: UiTranslationOverrides = emptyMaps();
+
+function withLocales(
+  data: Partial<UiTranslationOverrides> | null | undefined
+): UiTranslationOverrides {
+  const out = emptyMaps();
+  for (const locale of locales) {
+    const block = data?.[locale];
+    out[locale] = block && typeof block === "object" ? { ...block } : {};
+  }
+  return out;
 }
 
 export async function getUiTranslationOverrides(): Promise<UiTranslationOverrides> {
@@ -20,11 +29,7 @@ export async function getUiTranslationOverrides(): Promise<UiTranslationOverride
     const data = await readCmsJson<Partial<UiTranslationOverrides>>(
       "uiTranslations.json"
     );
-    return {
-      es: data.es || {},
-      en: data.en || {},
-      de: data.de || {},
-    };
+    return withLocales(data);
   } catch {
     return emptyMaps();
   }
@@ -33,11 +38,7 @@ export async function getUiTranslationOverrides(): Promise<UiTranslationOverride
 export async function saveUiTranslationOverrides(
   data: UiTranslationOverrides
 ): Promise<void> {
-  await writeCmsJson("uiTranslations.json", {
-    es: data.es || {},
-    en: data.en || {},
-    de: data.de || {},
-  });
+  await writeCmsJson("uiTranslations.json", withLocales(data));
 }
 
 export async function updateUiTranslations(
@@ -52,11 +53,7 @@ export async function updateUiTranslations(
     const raw = await readCmsJsonFresh<Partial<UiTranslationOverrides>>(
       "uiTranslations.json"
     );
-    data = {
-      es: raw.es || {},
-      en: raw.en || {},
-      de: raw.de || {},
-    };
+    data = withLocales(raw);
   } catch {
     data = emptyMaps();
   }

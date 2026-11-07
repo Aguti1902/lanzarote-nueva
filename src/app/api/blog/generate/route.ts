@@ -11,11 +11,20 @@ export async function POST(request: Request) {
     const topic = String(body.topic || body.title || "").trim();
     const localeRaw = String(body.locale || "es").toLowerCase();
     const locale =
-      localeRaw === "en" || localeRaw === "de" || localeRaw === "es"
+      localeRaw === "en" ||
+      localeRaw === "de" ||
+      localeRaw === "fr" ||
+      localeRaw === "es"
         ? localeRaw
         : "es";
     const languageLabel =
-      locale === "en" ? "inglés" : locale === "de" ? "alemán" : "español";
+      locale === "en"
+        ? "inglés"
+        : locale === "de"
+          ? "alemán"
+          : locale === "fr"
+            ? "francés"
+            : "español";
     if (!topic) {
       return NextResponse.json(
         { error: "Indique un tema o título" },

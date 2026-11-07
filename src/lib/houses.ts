@@ -20,7 +20,7 @@ function normalizeTranslations(
 ): VacationHouse["translations"] | undefined {
   if (!translations || typeof translations !== "object") return undefined;
   const next: NonNullable<VacationHouse["translations"]> = {};
-  for (const locale of ["en", "de"] as const) {
+  for (const locale of ["en", "de", "fr"] as const) {
     const block = translations[locale];
     if (!block || typeof block !== "object") continue;
     const title = String(block.title || "").trim();
@@ -74,6 +74,7 @@ async function mergeTranslationSeeds(
       const merged = normalizeTranslations({
         en: { ...seedT.en, ...current?.en },
         de: { ...seedT.de, ...current?.de },
+        fr: { ...seedT.fr, ...current?.fr },
       });
       if (!merged) return house;
       return { ...house, translations: merged };

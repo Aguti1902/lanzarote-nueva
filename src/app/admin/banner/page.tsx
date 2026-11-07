@@ -8,6 +8,7 @@ export default function AdminBannerPage() {
   const [bannerEs, setBannerEs] = useState("");
   const [bannerEn, setBannerEn] = useState("");
   const [bannerDe, setBannerDe] = useState("");
+  const [bannerFr, setBannerFr] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
@@ -20,6 +21,7 @@ export default function AdminBannerPage() {
         setBannerEs(s.bannerEs || "");
         setBannerEn(s.bannerEn || "");
         setBannerDe(s.bannerDe || "");
+        setBannerFr(s.bannerFr || "");
         setLoading(false);
       });
   }, []);
@@ -34,6 +36,7 @@ export default function AdminBannerPage() {
       bannerEs,
       bannerEn,
       bannerDe,
+      bannerFr,
     };
     const res = await fetch("/api/settings", {
       method: "PUT",
@@ -89,6 +92,13 @@ export default function AdminBannerPage() {
             className={adminTextarea}
             value={bannerDe}
             onChange={(e) => setBannerDe(e.target.value)}
+          />
+        </Field>
+        <Field label="Francés">
+          <textarea
+            className={adminTextarea}
+            value={bannerFr}
+            onChange={(e) => setBannerFr(e.target.value)}
           />
         </Field>
         <button

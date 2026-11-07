@@ -93,6 +93,7 @@ type Desk = {
     es: { h1: string; seoTitle: string; seoDescription: string };
     en: { h1: string; seoTitle: string; seoDescription: string };
     de: { h1: string; seoTitle: string; seoDescription: string };
+    fr: { h1: string; seoTitle: string; seoDescription: string };
   } | null;
   approvedCopy: {
     title: { es: string; en: string; de: string };
@@ -383,8 +384,8 @@ export default function AdminSeoPage() {
             <section className="rounded-lg bg-white p-5 ring-1 ring-sand-line">
               <h2 className="text-lg font-bold">Texto que está publicado</h2>
               <p className="mt-1 text-sm text-ink-muted">{desk.fichaCopy.priceNote}</p>
-              <div className="mt-4 grid gap-4 lg:grid-cols-3">
-                {(["es", "en", "de"] as const).map((locale) => {
+              <div className="mt-4 grid gap-4 lg:grid-cols-4">
+                {(["es", "en", "de", "fr"] as const).map((locale) => {
                   const copy = desk.fichaCopy?.[locale];
                   return (
                     <article key={locale} className="rounded-md bg-sky-mist p-3 text-sm">

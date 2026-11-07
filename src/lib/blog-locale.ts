@@ -59,7 +59,8 @@ export function isPrimaryBlogPost(
 ): boolean {
   if (
     hasTranslationContent(post.translations?.en) ||
-    hasTranslationContent(post.translations?.de)
+    hasTranslationContent(post.translations?.de) ||
+    hasTranslationContent(post.translations?.fr)
   ) {
     return true;
   }
@@ -113,7 +114,7 @@ export function normalizeBlogTranslations(
 ): BlogPost["translations"] | undefined {
   if (!translations || typeof translations !== "object") return undefined;
   const next: NonNullable<BlogPost["translations"]> = {};
-  for (const locale of ["en", "de"] as const) {
+  for (const locale of ["en", "de", "fr"] as const) {
     const block = translations[locale];
     if (!hasTranslationContent(block)) continue;
     const seo = normalizeBlogSeo(block?.seo);
@@ -143,6 +144,7 @@ export function getBlogPostLanguageCoverage(post: BlogPost): Locale[] {
     if (post.title?.trim() || post.content?.trim()) covered.push("es");
     if (hasTranslationContent(post.translations?.en)) covered.push("en");
     if (hasTranslationContent(post.translations?.de)) covered.push("de");
+    if (hasTranslationContent(post.translations?.fr)) covered.push("fr");
     return covered.length ? covered : ["es"];
   }
 

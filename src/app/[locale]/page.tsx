@@ -83,7 +83,9 @@ export default async function HomePage({ params }: Props) {
       ? settings.bannerEn
       : locale === "de"
         ? settings.bannerDe
-        : settings.bannerEs) || dict.home.marquee;
+        : locale === "fr"
+          ? settings.bannerFr
+          : settings.bannerEs) || dict.home.marquee;
 
   return (
     <>

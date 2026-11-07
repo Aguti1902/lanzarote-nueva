@@ -6,11 +6,12 @@ import {
   type SettingsStringKey,
   type SettingsTranslatableKey,
 } from "@/lib/settings-i18n";
+import type { TranslationLocale } from "@/i18n/config";
 import type { SiteSettings } from "@/types";
 
 export const dynamic = "force-dynamic";
 
-type TargetLocale = "en" | "de";
+type TargetLocale = TranslationLocale;
 
 function emptyOverlay(): Partial<SiteSettings> {
   const out: Partial<SiteSettings> = {};
@@ -45,7 +46,9 @@ async function translateWithOpenAI(
   }
 
   if (Object.keys(payload).length === 0) {
-    return { en: emptyOverlay(), de: emptyOverlay() };
+    const out = {} as Record<TargetLocale, Partial<SiteSettings>>;
+    for (const t of targets) out[t] = emptyOverlay();
+    return out;
   }
 
   if (!apiKey) {
@@ -59,6 +62,7 @@ async function translateWithOpenAI(
   const langNames: Record<TargetLocale, string> = {
     en: "English",
     de: "German",
+    fr: "French",
   };
 
   const res = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -75,7 +79,7 @@ async function translateWithOpenAI(
         {
           role: "system",
           content: `You translate website copy for Lanzarote Experience Tours (family-run guided tours in Lanzarote, Spanish-only small groups).
-Return ONLY valid JSON with this shape: { "en": { ...keys }, "de": { ...keys } }.
+Return ONLY valid JSON with one object per requested language: { "en": { ...keys }, "de": { ...keys }, "fr": { ...keys } }. Include every language you are asked for.
 Rules:
 - Preserve meaning, tone and structure (paragraph breaks with blank lines, one value per line in aboutValues).
 - Do not invent new marketing claims.
@@ -121,7 +125,7 @@ export async function POST(request: Request) {
         : [...SETTINGS_STRING_KEYS]
     ) as SettingsTranslatableKey[];
 
-    const targets: TargetLocale[] = ["en", "de"];
+    const targets: TargetLocale[] = ["en", "de", "fr"];
     const translations = await translateWithOpenAI(source, targets, keys);
 
     return NextResponse.json({

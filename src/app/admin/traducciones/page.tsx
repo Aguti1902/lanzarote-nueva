@@ -19,6 +19,7 @@ const localeTabs: { id: Locale; label: string }[] = [
   { id: "es", label: "Español" },
   { id: "en", label: "Inglés" },
   { id: "de", label: "Alemán" },
+  { id: "fr", label: "Francés" },
 ];
 
 export default function AdminTraduccionesPage() {
@@ -122,7 +123,7 @@ export default function AdminTraduccionesPage() {
         <div>
           <h1 className="text-3xl font-bold">Traducciones UI</h1>
           <p className="mt-1 max-w-2xl text-sm text-ink-muted">
-            Todos los textos de la interfaz pública (ES / EN / DE) son editables.
+            Todos los textos de la interfaz pública (ES / EN / DE / FR) son editables.
             Vaciar un campo restaura el valor base del código. Las claves anidadas
             (p. ej. <code className="text-xs">home.advantages.0.text</code>) también
             se pueden editar.

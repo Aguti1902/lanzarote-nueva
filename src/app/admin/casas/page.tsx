@@ -11,7 +11,13 @@ import {
   Trash2,
 } from "lucide-react";
 import type { VacationHouse } from "@/types";
-import { Field, adminInput, adminTextarea } from "@/components/admin/Field";
+import {
+  AdminLangTabs,
+  type AdminLang,
+  Field,
+  adminInput,
+  adminTextarea,
+} from "@/components/admin/Field";
 
 type HouseForm = {
   id?: string;
@@ -21,6 +27,8 @@ type HouseForm = {
   summaryEn: string;
   titleDe: string;
   summaryDe: string;
+  titleFr: string;
+  summaryFr: string;
   location: string;
   guests: string;
   bedrooms: string;
@@ -39,6 +47,8 @@ const emptyForm = (): HouseForm => ({
   summaryEn: "",
   titleDe: "",
   summaryDe: "",
+  titleFr: "",
+  summaryFr: "",
   location: "",
   guests: "",
   bedrooms: "",
@@ -59,6 +69,8 @@ function toForm(house: VacationHouse): HouseForm {
     summaryEn: house.translations?.en?.summary || "",
     titleDe: house.translations?.de?.title || "",
     summaryDe: house.translations?.de?.summary || "",
+    titleFr: house.translations?.fr?.title || "",
+    summaryFr: house.translations?.fr?.summary || "",
     location: house.location || "",
     guests: house.guests != null ? String(house.guests) : "",
     bedrooms: house.bedrooms != null ? String(house.bedrooms) : "",
@@ -79,6 +91,7 @@ export default function AdminCasasPage() {
   const [houses, setHouses] = useState<VacationHouse[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
+  const [textLang, setTextLang] = useState<AdminLang>("es");
   const [form, setForm] = useState<HouseForm>(emptyForm());
   const [message, setMessage] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -98,12 +111,14 @@ export default function AdminCasasPage() {
 
   function startCreate() {
     setEditing(true);
+    setTextLang("es");
     setForm(emptyForm());
     setMessage("");
   }
 
   function startEdit(house: VacationHouse) {
     setEditing(true);
+    setTextLang("es");
     setForm(toForm(house));
     setMessage("");
   }
@@ -180,6 +195,10 @@ export default function AdminCasasPage() {
           title: form.titleDe.trim() || undefined,
           summary: form.summaryDe.trim() || undefined,
         },
+        fr: {
+          title: form.titleFr.trim() || undefined,
+          summary: form.summaryFr.trim() || undefined,
+        },
       },
     };
     const res = await fetch("/api/houses", {
@@ -242,12 +261,34 @@ export default function AdminCasasPage() {
           <h2 className="flex items-center gap-2 font-bold md:col-span-2">
             {form.id ? "Editar casa" : "Nueva casa"}
           </h2>
-          <Field label="Título (ES)">
+          <div className="md:col-span-2">
+            <AdminLangTabs value={textLang} onChange={setTextLang} />
+          </div>
+          <Field label={textLang === "es" ? "Título" : `Título (${textLang.toUpperCase()})`}>
             <input
-              required
+              required={textLang === "es"}
               className={adminInput}
-              value={form.title}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
+              value={
+                textLang === "es"
+                  ? form.title
+                  : textLang === "en"
+                    ? form.titleEn
+                    : textLang === "de"
+                      ? form.titleDe
+                      : form.titleFr
+              }
+              onChange={(e) => {
+                const value = e.target.value;
+                setForm((prev) =>
+                  textLang === "es"
+                    ? { ...prev, title: value }
+                    : textLang === "en"
+                      ? { ...prev, titleEn: value }
+                      : textLang === "de"
+                        ? { ...prev, titleDe: value }
+                        : { ...prev, titleFr: value }
+                );
+              }}
             />
           </Field>
           <Field label="URL de redirección (reserva externa)">
@@ -263,50 +304,31 @@ export default function AdminCasasPage() {
             />
           </Field>
           <div className="md:col-span-2">
-            <Field label="Resumen (ES)">
+            <Field label={textLang === "es" ? "Resumen" : `Resumen (${textLang.toUpperCase()})`}>
               <textarea
                 rows={4}
                 className={adminTextarea}
-                value={form.summary}
-                onChange={(e) => setForm({ ...form, summary: e.target.value })}
-              />
-            </Field>
-          </div>
-          <Field label="Título (EN)">
-            <input
-              className={adminInput}
-              value={form.titleEn}
-              onChange={(e) => setForm({ ...form, titleEn: e.target.value })}
-            />
-          </Field>
-          <Field label="Título (DE)">
-            <input
-              className={adminInput}
-              value={form.titleDe}
-              onChange={(e) => setForm({ ...form, titleDe: e.target.value })}
-            />
-          </Field>
-          <div className="md:col-span-2">
-            <Field label="Resumen (EN)">
-              <textarea
-                rows={3}
-                className={adminTextarea}
-                value={form.summaryEn}
-                onChange={(e) =>
-                  setForm({ ...form, summaryEn: e.target.value })
+                value={
+                  textLang === "es"
+                    ? form.summary
+                    : textLang === "en"
+                      ? form.summaryEn
+                      : textLang === "de"
+                        ? form.summaryDe
+                        : form.summaryFr
                 }
-              />
-            </Field>
-          </div>
-          <div className="md:col-span-2">
-            <Field label="Resumen (DE)">
-              <textarea
-                rows={3}
-                className={adminTextarea}
-                value={form.summaryDe}
-                onChange={(e) =>
-                  setForm({ ...form, summaryDe: e.target.value })
-                }
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setForm((prev) =>
+                    textLang === "es"
+                      ? { ...prev, summary: value }
+                      : textLang === "en"
+                        ? { ...prev, summaryEn: value }
+                        : textLang === "de"
+                          ? { ...prev, summaryDe: value }
+                          : { ...prev, summaryFr: value }
+                  );
+                }}
               />
             </Field>
           </div>

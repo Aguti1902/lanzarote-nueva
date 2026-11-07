@@ -63,7 +63,7 @@ export default function AdminBlogPage() {
         <div>
           <h1 className="font-display text-3xl text-ink">Blog</h1>
           <p className="mt-1 text-sm text-ink-muted">
-            Un artículo = ES + EN + DE. Use el ojo para ocultar o mostrar en la
+            Un artículo = ES + EN + DE + FR. Use el ojo para ocultar o mostrar en la
             web sin eliminar.
           </p>
         </div>
@@ -121,6 +121,9 @@ export default function AdminBlogPage() {
                           : ""}
                         {p.translations?.de?.slug
                           ? ` · DE /blog/${p.translations.de.slug}`
+                          : ""}
+                        {p.translations?.fr?.slug
+                          ? ` · FR /blog/${p.translations.fr.slug}`
                           : ""}
                       </p>
                     </td>

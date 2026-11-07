@@ -10,7 +10,7 @@ import {
   useState,
 } from "react";
 import { usePathname } from "next/navigation";
-import { localeLabels, type Locale } from "@/i18n/config";
+import { isLocale, localeLabels, type Locale } from "@/i18n/config";
 import { BrandLoadingPanel } from "@/components/BrandLoadingPanel";
 
 type LanguageLoading = {
@@ -30,17 +30,19 @@ const languageCopy: Record<Locale, { switching: string; to: string }> = {
   es: { switching: "Cambiando el idioma", to: "a Español" },
   en: { switching: "Switching language", to: "to English" },
   de: { switching: "Sprache wird gewechselt", to: "zu Deutsch" },
+  fr: { switching: "Changement de langue", to: "vers le français" },
 };
 
-const navCopyByPathLocale: Record<string, string> = {
+const navCopyByPathLocale: Record<Locale, string> = {
   es: "Cargando página…",
   en: "Loading page…",
   de: "Seite wird geladen…",
+  fr: "Chargement de la page…",
 };
 
 function localeFromPath(pathname: string): Locale {
   const seg = pathname.split("/")[1];
-  if (seg === "en" || seg === "de" || seg === "es") return seg;
+  if (seg && isLocale(seg)) return seg;
   return "es";
 }
 

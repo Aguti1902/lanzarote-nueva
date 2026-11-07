@@ -196,7 +196,10 @@ export function buildVoucherHtml(
 
   const origin = resolvePublicOrigin(options?.origin);
   const locale =
-    options?.locale === "en" || options?.locale === "de" || options?.locale === "es"
+    options?.locale === "en" ||
+    options?.locale === "de" ||
+    options?.locale === "fr" ||
+    options?.locale === "es"
       ? options.locale
       : resolveCustomerEmailLocale(booking);
   // Always embed logo as data URI so print/download/blob windows never break,

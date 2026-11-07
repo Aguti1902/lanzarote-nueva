@@ -1,4 +1,4 @@
-import type { Locale } from "./config";
+import { locales, type Locale } from "./config";
 
 export type TourSlugSource = {
   id: string;
@@ -6,6 +6,7 @@ export type TourSlugSource = {
   translations?: {
     en?: { slug?: string };
     de?: { slug?: string };
+    fr?: { slug?: string };
   };
 };
 
@@ -13,6 +14,7 @@ export type TourLocaleSlugs = {
   es: string;
   en: string;
   de: string;
+  fr: string;
   /** Slugs antiguos u otras variantes → redirigen al canónico del idioma. */
   aliases?: string[];
 };
@@ -26,6 +28,7 @@ export const TOUR_LOCALE_SLUGS: Record<string, TourLocaleSlugs> = {
     es: "excursion-timanfaya-sur-lanzarote-tour",
     en: "timanfaya-national-park-south-lanzarote-tour",
     de: "timanfaya-nationalpark-sued-lanzarote-ausflug",
+    fr: "parc-national-timanfaya-excursion-sud-lanzarote",
     aliases: [
       "tour-parque-nacional-de-timanfaya-montanas-del-fuego",
       "excursion-timanfaya-sur-lanzarote",
@@ -39,6 +42,7 @@ export const TOUR_LOCALE_SLUGS: Record<string, TourLocaleSlugs> = {
     es: "excursion-grand-tour-lanzarote",
     en: "lanzarote-grand-tour",
     de: "lanzarote-inselrundfahrt-grand-tour",
+    fr: "grand-tour-lanzarote",
     aliases: [
       "excursion-completa-lanzarote",
       "excursion-gran-tour-lanzarote-jameos-del-agua-cueva-verdes-jardin-de-cactus-timanfaya",
@@ -52,6 +56,7 @@ export const TOUR_LOCALE_SLUGS: Record<string, TourLocaleSlugs> = {
     es: "excursion-privada-lanzarote",
     en: "private-tour-lanzarote",
     de: "individueller-ausflug-lanzarote-private-tour",
+    fr: "excursion-privee-lanzarote",
     aliases: [
       "excursion-privada-lanzarote-tours-privados-senderismo-excursiones-para-cruceros",
     ],
@@ -60,6 +65,7 @@ export const TOUR_LOCALE_SLUGS: Record<string, TourLocaleSlugs> = {
     es: "excursion-cesar-manrique-lanzarote",
     en: "cesar-manrique-lanzarote-tour",
     de: "cesar-manrique-lanzarote-tour",
+    fr: "excursion-cesar-manrique-lanzarote",
     aliases: [
       "tour-cesar-manrique",
       "excursion-cesar-manrique",
@@ -70,12 +76,14 @@ export const TOUR_LOCALE_SLUGS: Record<string, TourLocaleSlugs> = {
     es: "mercadillo-de-teguise-domingos-lanzarote",
     en: "teguise-market-lanzarote",
     de: "teguise-markt-lanzarote",
+    fr: "marche-teguise-lanzarote",
     aliases: ["teguise-markt-lanzarote-ausflug"],
   },
   "visitar-el-parque-nacional-de-timanfaya-sin-hacer-colas-de-coches": {
     es: "timanfaya-express",
     en: "timanfaya-express",
     de: "timanfaya-express",
+    fr: "timanfaya-express",
     aliases: [
       "visitar-el-parque-nacional-de-timanfaya-sin-hacer-colas-de-coches",
     ],
@@ -103,6 +111,7 @@ for (const [tourId, slugs] of Object.entries(TOUR_LOCALE_SLUGS)) {
   indexSlug(slugs.es, entry);
   indexSlug(slugs.en, entry);
   indexSlug(slugs.de, entry);
+  indexSlug(slugs.fr, entry);
   for (const alias of slugs.aliases || []) indexSlug(alias, entry);
 }
 
@@ -124,11 +133,9 @@ export function canonicalTourSlug(slug: string, locale: Locale): string {
 export function tourSlugForLocale(tour: TourSlugSource, locale: Locale): string {
   const mapped = TOUR_LOCALE_SLUGS[tour.id];
   if (mapped) return mapped[locale];
-  if (locale === "en" && tour.translations?.en?.slug) {
-    return norm(tour.translations.en.slug);
-  }
-  if (locale === "de" && tour.translations?.de?.slug) {
-    return norm(tour.translations.de.slug);
+  if (locale !== "es") {
+    const translated = tour.translations?.[locale]?.slug;
+    if (translated) return norm(translated);
   }
   return tour.slug;
 }
@@ -139,9 +146,16 @@ export function tourMatchesSlug(tour: TourSlugSource, slug: string): boolean {
   if (norm(tour.slug) === key) return true;
   if (norm(tour.translations?.en?.slug || "") === key) return true;
   if (norm(tour.translations?.de?.slug || "") === key) return true;
+  if (norm(tour.translations?.fr?.slug || "") === key) return true;
   const mapped = TOUR_LOCALE_SLUGS[tour.id];
   if (!mapped) return false;
-  if (mapped.es === key || mapped.en === key || mapped.de === key) return true;
+  if (
+    mapped.es === key ||
+    mapped.en === key ||
+    mapped.de === key ||
+    mapped.fr === key
+  )
+    return true;
   return (mapped.aliases || []).some((alias) => alias === key);
 }
 
@@ -166,6 +180,7 @@ const SECTION_BY_LOCALE: Record<Locale, string> = {
   es: "/excursiones",
   en: "/excursions",
   de: "/ausfluege",
+  fr: "/excursions",
 };
 
 /**
@@ -186,13 +201,19 @@ export function buildTourSlugRedirects(): Record<string, string> {
       slugs.es,
       slugs.en,
       slugs.de,
+      slugs.fr,
       ...(slugs.aliases || []),
     ]);
-    for (const locale of ["es", "en", "de"] as Locale[]) {
+    for (const locale of locales) {
       const dest = `/${locale}${SECTION_BY_LOCALE[locale]}/${slugs[locale]}`;
       for (const slug of all) {
         add(`/${locale}${SECTION_BY_LOCALE[locale]}/${slug}`, dest);
-        add(`/${locale}/excursiones/${slug}`, dest);
+        // El middleware reescribe la URL pública a /{locale}/excursiones/{slug canónico}.
+        // Un 301 estático desde esa ruta interna vuelve a la pública y, en el
+        // servidor de desarrollo, entra en bucle. Esa URL la canonicaliza el middleware.
+        if (slug !== slugs[locale]) {
+          add(`/${locale}/excursiones/${slug}`, dest);
+        }
         if (locale === "es") {
           add(`/excursiones/${slug}`, dest);
         }

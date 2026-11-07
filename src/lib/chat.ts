@@ -119,6 +119,33 @@ const labels = {
     extra: "weitere Person",
     upTo4: "bis 4 Fahrgäste",
   },
+  fr: {
+    company: "Entreprise",
+    phone: "Téléphone",
+    email: "E-mail",
+    hours: "Horaires",
+    tours: "EXCURSIONS",
+    transfers: "TRANSFERTS PRIVÉS (panneau avec le nom au terminal)",
+    perks: "Avantages",
+    cruises: "CROISIÉRISTES",
+    calendar: "Calendrier des escales",
+    calls: "escales",
+    examples: "Prochaines escales",
+    shore: "Excursions croisière",
+    key: "INFOS CLÉS",
+    keyLines: [
+      "Paiement en ligne : carte, Apple Pay et Google Pay (Stripe). Pas de PayPal.",
+      "Certaines excursions permettent un acompte de 20 % par carte et le solde en espèces le jour de l'excursion.",
+      "Annulation gratuite en général jusqu'à 48 h avant la prise en charge.",
+      "Croisiéristes : prise en charge au Puerto de Los Mármoles, horaires adaptés à l'escale.",
+    ],
+    closedPrice: "prix fermé (groupe entier)",
+    adult: "adulte",
+    oneway: "aller simple",
+    return: "aller-retour",
+    extra: "personne supplémentaire",
+    upTo4: "jusqu'à 4 passagers",
+  },
 } as const;
 
 async function buildKnowledge(locale: Locale): Promise<string> {
@@ -222,11 +249,13 @@ const copy = {
     es: "¡Hola! Soy el asistente de Lanzarote Experience Tours. Puedo ayudarte con excursiones (Ruta Sur, Grand Tour, privados), traslados al aeropuerto, precios, pagos y opciones para cruceristas. ¿Qué te interesa?",
     en: "Hi! I am the Lanzarote Experience Tours assistant. I can help with excursions (South Route, Grand Tour, private), airport transfers, prices, payments and cruise options. What are you interested in?",
     de: "Hallo! Ich bin der Assistent von Lanzarote Experience Tours. Ich helfe bei Ausflügen (Südroute, Grand Tour, privat), Flughafentransfers, Preisen, Zahlungen und Kreuzfahrtoptionen. Wobei kann ich helfen?",
+    fr: "Bonjour ! Je suis l'assistant de Lanzarote Experience Tours. Je peux vous aider pour les excursions (route du sud, Grand Tour, privées), les transferts aéroport, les prix, les paiements et les options croisière. Qu'est-ce qui vous intéresse ?",
   },
   thanks: {
     es: "¡De nada! Si quieres, te ayudo a elegir entre grupo reducido, grupo grande, tour privado o un traslado. También puedes reservar desde la web.",
     en: "You're welcome! I can help you choose between small group, large group, a private tour or a transfer. You can also book on the website.",
     de: "Gern geschehen! Ich helfe Ihnen gerne bei der Wahl zwischen Kleingruppe, großer Gruppe, Privattour oder Transfer. Sie können auch direkt auf der Website buchen.",
+    fr: "Avec plaisir ! Je peux vous aider à choisir entre petit groupe, grand groupe, excursion privée ou transfert. Vous pouvez aussi réserver sur le site.",
   },
   cruise: {
     es: (extra: string, cruiseUrl: string, calendarUrl: string) =>
@@ -235,6 +264,8 @@ const copy = {
       `If you arrive by cruise in Lanzarote (Puerto de Los Mármoles), we pick you up at the pier and adapt the time to your call.\n\n${extra}Choose cruise line, ship and date at ${cruiseUrl}. The port-call calendar is at ${calendarUrl}. Tell me a date or ship name and I will look it up.`,
     de: (extra: string, cruiseUrl: string, calendarUrl: string) =>
       `Wenn Sie mit dem Kreuzfahrtschiff in Lanzarote (Puerto de Los Mármoles) ankommen, holen wir Sie am Kai ab und passen die Zeit Ihrer Liegezeit an.\n\n${extra}Reederei, Schiff und Datum wählen unter ${cruiseUrl}. Der Liegezeiten-Kalender: ${calendarUrl}. Nennen Sie Datum oder Schiffsnamen, dann suche ich nach.`,
+    fr: (extra: string, cruiseUrl: string, calendarUrl: string) =>
+      `Si vous arrivez en croisière à Lanzarote (Puerto de Los Mármoles), nous venons vous chercher au quai et nous adaptons l'horaire à votre escale.\n\n${extra}Choisissez la compagnie, le navire et la date sur ${cruiseUrl}. Le calendrier des escales est sur ${calendarUrl}. Indiquez une date ou le nom du navire si vous voulez que je le cherche.`,
   },
   transfer: {
     es: (lines: string, url: string) =>
@@ -243,36 +274,44 @@ const copy = {
       `100% private transfers, with a name sign at the terminal.\n\n${lines}\n\nBook at ${url}. Which area are you going to?`,
     de: (lines: string, url: string) =>
       `100 % private Transfers, mit Namensschild am Terminal.\n\n${lines}\n\nBuchung unter ${url}. In welche Gegend fahren Sie?`,
+    fr: (lines: string, url: string) =>
+      `Transferts 100 % privés, avec un panneau à votre nom au terminal.\n\n${lines}\n\nRéservation sur ${url}. Vers quelle zone allez-vous ?`,
   },
   payment: {
     es: "El pago online es con tarjeta, Apple Pay o Google Pay (Stripe). No usamos PayPal. En algunas excursiones puedes dejar un depósito del 20% con tarjeta y el resto en efectivo el día del tour. Los traslados se pagan 100% online.",
     en: "Online payment is by card, Apple Pay or Google Pay (Stripe). We do not use PayPal. On some tours you can pay a 20% card deposit and the rest in cash on the day. Transfers are paid 100% online.",
     de: "Online zahlen Sie per Karte, Apple Pay oder Google Pay (Stripe). Kein PayPal. Bei manchen Ausflügen 20 % Anzahlung per Karte und Rest bar am Tourtag. Transfers werden zu 100 % online bezahlt.",
+    fr: "Le paiement en ligne se fait par carte, Apple Pay ou Google Pay (Stripe). Nous n'utilisons pas PayPal. Pour certaines excursions, vous pouvez verser un acompte de 20 % par carte et le solde en espèces le jour de l'excursion. Les transferts se paient à 100 % en ligne.",
   },
   smallGroup: {
     es: "El grupo reducido es máximo 8 personas: más cercanía con el guía y ritmo flexible. Tenemos Ruta Sur y Grand Tour en este formato. Precio un poco más alto que el grupo grande. ¿Media jornada (Ruta Sur) o día completo (Grand Tour)?",
     en: "The small group is max. 8 people: closer to the guide and a flexible pace. We offer South Route and Grand Tour in this format. Slightly higher price than the large group. Half day (South Route) or full day (Grand Tour)?",
     de: "Die Kleingruppe hat max. 8 Personen: näher am Guide und flexibles Tempo. Südroute und Grand Tour gibt es in diesem Format. Etwas teurer als die große Gruppe. Halbtag (Südroute) oder Ganztag (Grand Tour)?",
+    fr: "Le petit groupe compte 8 personnes maximum : plus de proximité avec le guide et un rythme souple. La route du sud et le Grand Tour existent dans ce format. Le prix est un peu plus élevé que le grand groupe. Demi-journée (route du sud) ou journée complète (Grand Tour) ?",
   },
   largeGroup: {
     es: "El grupo grande (hasta 20 personas) ofrece el mismo itinerario a mejor precio. Puedes pagar online o, en algunos casos, depósito 20% y el resto en efectivo. ¿Ruta Sur (~5 h) o Grand Tour (~9 h)?",
     en: "The large group (up to 20 people) offers the same itinerary at a better price. You can pay online or, on some tours, a 20% deposit and the rest in cash. South Route (~5 h) or Grand Tour (~9 h)?",
     de: "Die große Gruppe (bis 20 Personen) bietet dieselbe Route zum besseren Preis. Zahlung online oder bei manchen Touren 20 % Anzahlung und Rest bar. Südroute (~5 Std.) oder Grand Tour (~9 Std.)?",
+    fr: "Le grand groupe (jusqu'à 20 personnes) propose le même itinéraire à un meilleur prix. Vous pouvez payer en ligne ou, dans certains cas, un acompte de 20 % et le solde en espèces. Route du sud (~5 h) ou Grand Tour (~9 h) ?",
   },
   privateTour: {
     es: "El tour privado incluye minibus y guía oficial en exclusiva (desde ~5 h, hasta 10 pasajeros). También puedes alquilar solo el minibus a disposición con conductor. ¿Prefieres con guía o solo vehículo?",
     en: "A private tour includes exclusive minibus and official guide (from ~5 h, up to 10 passengers). You can also hire only the minibus with driver. Guide included or vehicle only?",
     de: "Eine Privattour inkl. exklusivem Minibus und offiziellem Guide (ab ~5 Std., bis 10 Personen). Sie können auch nur den Minibus mit Fahrer mieten. Mit Guide oder nur Fahrzeug?",
+    fr: "L'excursion privée comprend un minibus et un guide officiel en exclusivité (à partir d'environ 5 h, jusqu'à 10 passagers). Vous pouvez aussi louer seulement le minibus avec chauffeur. Avec guide ou véhicule seul ?",
   },
   south: {
     es: "La Ruta Sur visita Timanfaya, El Golfo, panorámica de Salinas y La Geria (~5 h). Está en grupo reducido y grupo grande. Entradas a Timanfaya incluidas. ¿La quieres más íntima (reducido) o más económica (grande)? Dime la fecha y te oriento a la ficha para reservar.",
     en: "The South Route visits Timanfaya, El Golfo, the Salinas viewpoint and La Geria (~5 h). Available as small or large group. Timanfaya tickets included. Prefer more intimate (small) or better value (large)? Tell me the date and I will point you to the booking page.",
     de: "Die Südroute besucht Timanfaya, El Golfo, Salinas-Aussicht und La Geria (~5 Std.). Als Klein- oder Großgruppe. Timanfaya-Tickets inklusive. Lieber intim (klein) oder günstiger (groß)? Nennen Sie das Datum, dann leite ich Sie zur Buchung.",
+    fr: "La route du sud visite Timanfaya, El Golfo, la vue sur les salines et La Geria (~5 h). Elle existe en petit et en grand groupe. Les entrées de Timanfaya sont incluses. Vous la préférez plus intime (petit groupe) ou plus économique (grand groupe) ? Indiquez la date et je vous oriente vers la fiche pour réserver.",
   },
   grand: {
     es: "El Grand Tour es el día completo (~9 h): Timanfaya, El Golfo, La Geria, Jameos del Agua y Jardín de Cactus, con entradas incluidas. Disponible en grupo reducido y grupo grande. Perfecto si quieres ver lo esencial de la isla en un solo día.",
     en: "The Grand Tour is a full day (~9 h): Timanfaya, El Golfo, La Geria, Jameos del Agua and Cactus Garden, tickets included. Available as small or large group. Perfect if you want the island highlights in one day.",
     de: "Die Grand Tour ist ein Ganztagsausflug (~9 Std.): Timanfaya, El Golfo, La Geria, Jameos del Agua und Kakteengarten, Tickets inklusive. Als Klein- oder Großgruppe. Ideal, wenn Sie die Highlights der Insel an einem Tag sehen möchten.",
+    fr: "Le Grand Tour est une journée complète (~9 h) : Timanfaya, El Golfo, La Geria, Jameos del Agua et le jardin de cactus, entrées incluses. Disponible en petit et en grand groupe. Idéal si vous voulez voir l'essentiel de l'île en une journée.",
   },
   price: {
     es: (bits: string) =>
@@ -281,11 +320,14 @@ const copy = {
       `Current indicative prices:\n\n${bits}\n\nFor transfers, tell me your area. Want a small vs large group comparison?`,
     de: (bits: string) =>
       `Aktuelle Orientierungspreise:\n\n${bits}\n\nFür Transfers nennen Sie Ihre Zone. Soll ich Klein- vs. Großgruppe vergleichen?`,
+    fr: (bits: string) =>
+      `Prix indicatifs actuels :\n\n${bits}\n\nPour un transfert, indiquez votre zone. Voulez-vous comparer petit et grand groupe ?`,
   },
   cancel: {
     es: "En la mayoría de servicios la cancelación es gratuita hasta 48 horas antes de la recogida. Con menos de 48 h normalmente no hay reembolso. Si me dices qué servicio has reservado, te concreto mejor.",
     en: "For most services cancellation is free up to 48 hours before pickup. Within 48 hours there is usually no refund. Tell me which service you booked and I can be more specific.",
     de: "Bei den meisten Leistungen ist die Stornierung bis 48 Stunden vor Abholung kostenlos. Innerhalb von 48 Stunden gibt es in der Regel keine Erstattung. Nennen Sie die gebuchte Leistung, dann werde ich genauer.",
+    fr: "Pour la plupart des prestations, l'annulation est gratuite jusqu'à 48 heures avant la prise en charge. À moins de 48 h, il n'y a en général pas de remboursement. Si vous me dites ce que vous avez réservé, je peux préciser.",
   },
   contact: {
     es: (phone: string, email: string, hours: string) =>
@@ -294,6 +336,8 @@ const copy = {
       `You can reach us at ${phone} or ${email}. Hours: ${hours}. You can also book online on the website.`,
     de: (phone: string, email: string, hours: string) =>
       `Sie erreichen uns unter ${phone} oder ${email}. Öffnungszeiten: ${hours}. Sie können auch online auf der Website buchen.`,
+    fr: (phone: string, email: string, hours: string) =>
+      `Vous pouvez nous joindre au ${phone} ou à ${email}. Horaires : ${hours}. Vous pouvez aussi réserver en ligne sur le site.`,
   },
   book: {
     es: (tourUrl: string, transferUrl: string) =>
@@ -302,11 +346,14 @@ const copy = {
       `You can book online from each excursion page (${tourUrl}) or transfers (${transferUrl}). Choose date and guests and pay by card, Apple Pay or Google Pay. Tell me the date, hotel area or if you arrive by cruise.`,
     de: (tourUrl: string, transferUrl: string) =>
       `Online buchen auf jeder Ausflugsseite (${tourUrl}) oder bei Transfers (${transferUrl}). Datum und Personen wählen; Zahlung per Karte, Apple Pay oder Google Pay. Nennen Sie Datum, Hotelzone oder ob Sie per Kreuzfahrt ankommen.`,
+    fr: (tourUrl: string, transferUrl: string) =>
+      `Vous pouvez réserver en ligne sur chaque fiche (${tourUrl}) ou pour les transferts (${transferUrl}). Choisissez la date, le nombre de personnes et payez par carte, Apple Pay ou Google Pay. Indiquez la date, la zone de l'hôtel ou si vous arrivez en croisière.`,
   },
   fallback: {
     es: "Puedo ayudarte con:\n• Excursiones (Ruta Sur, Grand Tour, privado, minibus)\n• Grupo reducido vs grupo grande\n• Traslados aeropuerto\n• Precios y formas de pago (tarjeta, Apple Pay, Google Pay)\n• Escalas de crucero\n\nPregúntame, por ejemplo: «¿Cuánto cuesta el Grand Tour?» o «Traslado a Playa Blanca».",
     en: "I can help you with:\n• Excursions (South Route, Grand Tour, private, minibus)\n• Small group vs large group\n• Airport transfers\n• Prices and payment (card, Apple Pay, Google Pay)\n• Cruise port calls\n\nAsk me, for example: «How much is the Grand Tour?» or «Transfer to Playa Blanca».",
     de: "Ich kann helfen bei:\n• Ausflügen (Südroute, Grand Tour, privat, Minibus)\n• Kleingruppe vs. große Gruppe\n• Flughafentransfers\n• Preisen und Zahlung (Karte, Apple Pay, Google Pay)\n• Kreuzfahrt-Liegezeiten\n\nFragen Sie z. B.: «Was kostet die Grand Tour?» oder «Transfer nach Playa Blanca».",
+    fr: "Je peux vous aider pour :\n• Les excursions (route du sud, Grand Tour, privée, minibus)\n• Petit groupe ou grand groupe\n• Les transferts aéroport\n• Les prix et le paiement (carte, Apple Pay, Google Pay)\n• Les escales de croisière\n\nPar exemple : « Combien coûte le Grand Tour ? » ou « Transfert vers Playa Blanca ».",
   },
 } as const;
 
@@ -358,7 +405,7 @@ function localReply(message: string, knowledge: string, locale: Locale): string 
   }
 
   if (
-    /traslad|aeropuerto|taxi|recogida|transfer|airport|pickup|pick-up|flughafen|playa blanca|puerto del carmen|costa teguise|arrecife|puerto calero/.test(
+    /traslad|aeropuerto|taxi|recogida|transfer|airport|pickup|pick-up|flughafen|transfert|aeroport|playa blanca|puerto del carmen|costa teguise|arrecife|puerto calero/.test(
       q
     )
   ) {
@@ -366,7 +413,7 @@ function localReply(message: string, knowledge: string, locale: Locale): string 
   }
 
   if (
-    /crucero|crucerista|barco|escala|puerto de los marmoles|cruise|ship|port call|shore excursion|kreuzfahrt|schiff|liegezeit|landausflug/.test(
+    /crucero|crucerista|barco|escala|puerto de los marmoles|cruise|ship|port call|shore excursion|kreuzfahrt|schiff|liegezeit|landausflug|croisiere|navire|escale/.test(
       q
     )
   ) {
@@ -374,7 +421,7 @@ function localReply(message: string, knowledge: string, locale: Locale): string 
   }
 
   if (
-    /paypal|pago|bizum|tarjeta|efectivo|deposito|apple pay|google pay|payment|card|cash|deposit|karte|barzahlung|bezahlen|anzahlung/.test(
+    /paypal|pago|bizum|tarjeta|efectivo|deposito|apple pay|google pay|payment|card|cash|deposit|karte|barzahlung|bezahlen|anzahlung|paiement|carte|especes|acompte/.test(
       q
     )
   ) {
@@ -382,18 +429,18 @@ function localReply(message: string, knowledge: string, locale: Locale): string 
   }
 
   if (
-    /grupo reducido|pequeno|intimo|small group|kleine gruppe|kleingruppe/.test(q)
+    /grupo reducido|pequeno|intimo|small group|kleine gruppe|kleingruppe|petit groupe/.test(q)
   ) {
     return copy.smallGroup[locale];
   }
 
   if (
-    /grupo grande|large group|gro[sß]e gruppe|grossgruppe/.test(q)
+    /grupo grande|large group|gro[sß]e gruppe|grossgruppe|grand groupe/.test(q)
   ) {
     return copy.largeGroup[locale];
   }
 
-  if (/privado|exclusiv|a medida|private tour|privatour|privat tour/.test(q)) {
+  if (/privado|exclusiv|a medida|private tour|privatour|privat tour|privee|privée/.test(q)) {
     return copy.privateTour[locale];
   }
 
@@ -406,40 +453,40 @@ function localReply(message: string, knowledge: string, locale: Locale): string 
   }
 
   if (
-    /grand tour|dia completo|full day|ganztag|jameos|jardin de cactus|cactus garden|kakteengarten/.test(
+    /grand tour|dia completo|full day|ganztag|journee complete|jameos|jardin de cactus|cactus garden|kakteengarten/.test(
       q
     )
   ) {
     return copy.grand[locale];
   }
 
-  if (/precio|cuanto|cuesta|tarif|euro|€|price|cost|how much|preis|kostet/.test(q)) {
+  if (/precio|cuanto|cuesta|tarif|euro|€|price|cost|how much|preis|kostet|prix|combien|coute/.test(q)) {
     const bits = knowledgeLines(knowledge, "TOUR").split("\n").slice(0, 8).join("\n");
     return copy.price[locale](bits);
   }
 
-  if (/cancel|reembol|anular|refund|stornier|erstat/.test(q)) {
+  if (/cancel|reembol|anular|refund|stornier|erstat|annul|rembours/.test(q)) {
     return copy.cancel[locale];
   }
 
   if (
-    /contacto|telefono|llamar|email|correo|whatsapp|horario|contact|phone|call|hours|offnungszeit|anrufen/.test(
+    /contacto|telefono|llamar|email|correo|whatsapp|horario|contact|phone|call|hours|offnungszeit|anrufen|telephone|courriel|horaire/.test(
       q
     )
   ) {
     const phone =
-      knowledge.match(/(?:Teléfono|Phone|Telefon): (.+)/)?.[1] ||
+      knowledge.match(/(?:Teléfono|Phone|Telefon|Téléphone): (.+)/)?.[1] ||
       "+34 646 08 05 85";
     const email =
-      knowledge.match(/(?:Email|E-Mail): (.+)/)?.[1] ||
+      knowledge.match(/(?:Email|E-Mail|E-mail): (.+)/)?.[1] ||
       "hola@lanzarotetravels.com";
     const hours =
-      knowledge.match(/(?:Horario|Hours|Öffnungszeiten): (.+)/)?.[1] ||
+      knowledge.match(/(?:Horario|Hours|Öffnungszeiten|Horaires): (.+)/)?.[1] ||
       "Monday–Sunday · 8:00–20:00";
     return copy.contact[locale](phone, email, hours);
   }
 
-  if (/reserva|reservar|book|booking|contratar|buchen|buchung/.test(q)) {
+  if (/reserva|reservar|book|booking|contratar|buchen|buchung|reserv|réserver/.test(q)) {
     return copy.book[locale](toursUrl, transferUrl);
   }
 
@@ -469,6 +516,11 @@ PFLICHTSPRACHE: antworten Sie VOLLSTÄNDIG auf Deutsch. Keine Sprachen mischen. 
 Zuerst die konkrete Frage beantworten. Kurz und freundlich (max. 130 Wörter, außer Preislisten).
 Nutzen Sie NUR den CONTEXT. Keine Preise, Schiffe, Zeiten oder Verfügbarkeit erfinden. Wenn es nicht im Kontext steht, sagen Sie es und bieten Sie Kontakt oder Buchung auf der Website an.
 Zahlung: Karte, Apple Pay und Google Pay. Niemals PayPal oder Bizum anbieten.`,
+    fr: `Vous êtes l'assistant de réservation de Lanzarote Experience Tours.
+LANGUE OBLIGATOIRE : répondez ENTIÈREMENT en français. Ne mélangez pas les langues. Même si l'utilisateur écrit dans une autre langue, répondez uniquement en français.
+Répondez d'abord à la question précise. Soyez bref et aimable (130 mots maximum, sauf listes de prix).
+Utilisez UNIQUEMENT le CONTEXT. N'inventez pas de prix, de navires, d'horaires ni de disponibilités. Si ce n'est pas dans le contexte, dites-le et proposez le contact ou la réservation sur le site.
+Paiement : carte, Apple Pay et Google Pay. Ne proposez jamais PayPal ni Bizum.`,
   } as const;
   const toursUrl = localePath(locale, "/excursiones");
   const transferUrl = localePath(locale, "/traslados-aeropuerto-lanzarote");

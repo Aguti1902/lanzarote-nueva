@@ -703,6 +703,7 @@ const defaultSettings: SiteSettings = {
     "Excursiones personalizadas · Empresa familiar de Lanzarote · Gracias por apoyar el comercio local · Grupos reducidos",
   bannerEn: "",
   bannerDe: "",
+  bannerFr: "",
   excursionsFaqTitle: DEFAULT_EXCURSIONS_FAQ_TITLE,
   excursionsFaqs: DEFAULT_EXCURSIONS_FAQS,
   excursionsBlocksTitle: DEFAULT_EXCURSIONS_BLOCKS_TITLE,

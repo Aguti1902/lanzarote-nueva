@@ -100,6 +100,7 @@ export interface Tour {
   translations?: {
     en?: TourTranslation;
     de?: TourTranslation;
+    fr?: TourTranslation;
   };
 }
 
@@ -160,6 +161,7 @@ export interface BlogPost {
   translations?: {
     en?: BlogPostTranslation;
     de?: BlogPostTranslation;
+    fr?: BlogPostTranslation;
   };
 }
 
@@ -186,6 +188,7 @@ export interface VacationHouse {
   translations?: {
     en?: VacationHouseTranslation;
     de?: VacationHouseTranslation;
+    fr?: VacationHouseTranslation;
   };
 }
 
@@ -296,6 +299,7 @@ export interface SiteSettings {
   bannerEs?: string;
   bannerEn?: string;
   bannerDe?: string;
+  bannerFr?: string;
 }
 
 export type PaymentLinkMode = "standard" | "group_all" | "per_person";
@@ -311,7 +315,7 @@ export interface PaymentLink {
   status: "pending" | "paid" | "cancelled";
   customerName?: string;
   customerEmail?: string;
-  customerLocale?: "es" | "en" | "de";
+  customerLocale?: "es" | "en" | "de" | "fr";
   notes?: string;
   paidAt?: string;
   paymentMethod?: string;
@@ -398,7 +402,7 @@ export interface CruiseGroup {
 export interface SeoRedirect {
   id: string;
   httpCode: 301 | 302;
-  locale: "es" | "en" | "de";
+  locale: "es" | "en" | "de" | "fr";
   fromSlug: string;
   toSlug: string;
 }
@@ -492,6 +496,7 @@ export interface CruiseShoreTour {
   translations?: {
     en?: CruiseShoreTourTranslation;
     de?: CruiseShoreTourTranslation;
+    fr?: CruiseShoreTourTranslation;
   };
 }
 

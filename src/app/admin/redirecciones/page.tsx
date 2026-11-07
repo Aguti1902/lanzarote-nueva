@@ -104,6 +104,7 @@ export default function AdminRedireccionesPage() {
             <option value="es">Español</option>
             <option value="en">Inglés</option>
             <option value="de">Alemán</option>
+            <option value="fr">Francés</option>
           </select>
         </Field>
         <Field label="Tipo">

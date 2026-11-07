@@ -1,3 +1,40 @@
+export const ADMIN_LANG_TABS = [
+  { id: "es", label: "Español" },
+  { id: "en", label: "Inglés" },
+  { id: "de", label: "Alemán" },
+  { id: "fr", label: "Francés" },
+] as const;
+
+export type AdminLang = (typeof ADMIN_LANG_TABS)[number]["id"];
+
+/** Pestañas de idioma del panel: español, inglés, alemán y francés. */
+export function AdminLangTabs({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (id: AdminLang) => void;
+}) {
+  return (
+    <div className="flex flex-wrap gap-2 border-b border-sand-line pb-3">
+      {ADMIN_LANG_TABS.map((tab) => (
+        <button
+          key={tab.id}
+          type="button"
+          onClick={() => onChange(tab.id)}
+          className={`rounded px-3 py-1.5 text-sm font-semibold transition ${
+            value === tab.id
+              ? "bg-ocean text-white"
+              : "bg-bg text-ink-muted hover:text-ink"
+          }`}
+        >
+          {tab.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export function Field({
   label,
   children,
