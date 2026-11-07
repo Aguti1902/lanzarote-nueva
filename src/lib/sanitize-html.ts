@@ -403,6 +403,16 @@ export function sanitizeContentHtml(raw: string): string {
   // <font> vacío de atributos → dejar solo el contenido tipográfico base.
   html = html.replace(/<font>([\s\S]*?)<\/font>/gi, "$1");
 
+  // El panel a veces recibe Markdown (`### Título`) pegado como párrafo.
+  // Convertirlo a encabezado para que la web lo muestre como título.
+  html = html.replace(
+    /<p>(?:\s|&nbsp;)*(#{1,3})\s+([^<]+)<\/p>/gi,
+    (_full, hashes: string, title: string) => {
+      const tag = hashes.length >= 2 ? "h3" : "h2";
+      return `<${tag}>${title.trim()}</${tag}>`;
+    }
+  );
+
   return html.trim();
 }
 

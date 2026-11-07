@@ -347,13 +347,22 @@ export default function AdminAjustesPage() {
           body: JSON.stringify({ locale: "fr", settings: fr }),
         }),
       ]);
-      if (!enRes.ok || !deRes.ok || !frRes.ok) throw new Error("i18n");
+      const failed = [
+        !enRes.ok ? "inglés" : "",
+        !deRes.ok ? "alemán" : "",
+        !frRes.ok ? "francés" : "",
+      ].filter(Boolean);
+      if (failed.length) throw new Error(failed.join(", "));
 
       setMessage(
         "Ajustes y traducciones guardados. Se reflejan en la web pública (puede tardar unos segundos por la caché)."
       );
-    } catch {
-      setMessage("Error al guardar");
+    } catch (error) {
+      const which =
+        error instanceof Error && error.message && error.message !== "es"
+          ? ` (${error.message})`
+          : "";
+      setMessage(`Error al guardar${which}`);
     } finally {
       setSaving(false);
     }

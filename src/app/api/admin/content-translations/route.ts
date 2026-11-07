@@ -46,7 +46,8 @@ export async function PUT(request: Request) {
       locale,
       settings: pickSettingsTranslations(data.settings),
     });
-  } catch {
+  } catch (error) {
+    console.error("content-translations PUT", error);
     return NextResponse.json(
       { error: "No se pudieron guardar las traducciones" },
       { status: 500 }
