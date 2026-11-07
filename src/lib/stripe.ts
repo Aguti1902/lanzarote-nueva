@@ -155,7 +155,9 @@ export async function createStripeCheckoutForPayment(
   const safeSuccess = assertHttpsCheckoutUrl(successUrl, "success_url");
   const safeCancel = assertHttpsCheckoutUrl(cancelUrl, "cancel_url");
   const checkoutLocale =
-    locale === "en" || locale === "de" || locale === "es" ? locale : "es";
+    locale === "en" || locale === "de" || locale === "fr" || locale === "es"
+      ? locale
+      : "es";
 
   const sessionParams: Stripe.Checkout.SessionCreateParams = {
     mode: "payment",

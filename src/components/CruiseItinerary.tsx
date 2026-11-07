@@ -47,17 +47,24 @@ export function CruiseItinerary({ sailing, tours }: Props) {
 
   const departure = formatDateShort(sailing.departureDate);
   const isLanzaroteOnly = isLanzaroteCallSailingId(sailing.id);
-  const title = isLanzaroteOnly
-    ? locale === "es"
-      ? `Excursiones ${sailing.shipName} (${sailing.companyName}) · escala en Lanzarote ${departure}`
-      : locale === "de"
-        ? `Ausflüge ${sailing.shipName} (${sailing.companyName}) · Anlauf Lanzarote ${departure}`
-        : `Excursions for ${sailing.shipName} (${sailing.companyName}) · Lanzarote port call ${departure}`
-    : locale === "es"
-      ? `Excursiones ${sailing.shipName} (${sailing.companyName}) con salida el ${departure}${nightsLabel ? ` (${nightsLabel})` : ""}`
-      : locale === "de"
-        ? `Ausflüge ${sailing.shipName} (${sailing.companyName}) Abfahrt ${departure}${nightsLabel ? ` (${nightsLabel})` : ""}`
-        : `Excursions for ${sailing.shipName} (${sailing.companyName}) departing ${departure}${nightsLabel ? ` (${nightsLabel})` : ""}`;
+  const shipLabel = `${sailing.shipName} (${sailing.companyName})`;
+  const nights = nightsLabel ? ` (${nightsLabel})` : "";
+  const title =
+    locale === "fr"
+      ? isLanzaroteOnly
+        ? `Excursions ${shipLabel} · escale à Lanzarote ${departure}`
+        : `Excursions ${shipLabel} départ le ${departure}${nights}`
+      : isLanzaroteOnly
+        ? locale === "es"
+          ? `Excursiones ${shipLabel} · escala en Lanzarote ${departure}`
+          : locale === "de"
+            ? `Ausflüge ${shipLabel} · Anlauf Lanzarote ${departure}`
+            : `Excursions for ${shipLabel} · Lanzarote port call ${departure}`
+        : locale === "es"
+          ? `Excursiones ${shipLabel} con salida el ${departure}${nights}`
+          : locale === "de"
+            ? `Ausflüge ${shipLabel} Abfahrt ${departure}${nights}`
+            : `Excursions for ${shipLabel} departing ${departure}${nights}`;
 
   return (
     <div className="space-y-10">

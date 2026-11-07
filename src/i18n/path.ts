@@ -1,4 +1,4 @@
-import { isLocale, type Locale } from "./config";
+import { isLocale, locales, type Locale } from "./config";
 import { remapExcursionPath } from "./tour-slugs";
 
 /**
@@ -12,63 +12,83 @@ export const ROUTE_LOCALES = [
     es: "/excursiones-cruceros",
     en: "/shore-excursions",
     de: "/kreuzfahrtausfluege",
+    fr: "/excursions-croisiere",
   },
   {
     es: "/reserva/confirmacion",
     en: "/booking/confirmation",
     de: "/buchung/bestaetigung",
+    fr: "/reservation/confirmation",
   },
   {
     es: "/gestionar-reserva",
     en: "/manage-booking",
     de: "/buchung-verwalten",
+    fr: "/gerer-reservation",
   },
   {
     es: "/cancelar-reserva",
     en: "/cancel-booking",
     de: "/buchung-stornieren",
+    fr: "/annuler-reservation",
   },
-  { es: "/sobre-nosotros", en: "/about-us", de: "/uber-uns" },
-  { es: "/excursiones", en: "/excursions", de: "/ausfluege" },
+  { es: "/sobre-nosotros", en: "/about-us", de: "/uber-uns", fr: "/a-propos" },
+  { es: "/excursiones", en: "/excursions", de: "/ausfluege", fr: "/excursions" },
   {
     es: "/traslados-aeropuerto-lanzarote",
     en: "/airport-transfers",
     de: "/flughafen-transfer",
+    fr: "/transferts-aeroport",
   },
   {
     es: "/cruceristas",
     en: "/cruise-passengers",
     de: "/kreuzfahrtgaeste",
+    fr: "/passagers-croisiere",
   },
-  { es: "/cruceros", en: "/cruises", de: "/kreuzfahrten" },
-  { es: "/crucero", en: "/cruise", de: "/kreuzfahrt" },
-  { es: "/casas", en: "/holiday-homes", de: "/ferienhaeuser" },
-  { es: "/contacto", en: "/contact", de: "/kontakt" },
-  { es: "/carrito", en: "/cart", de: "/warenkorb" },
-  { es: "/factura", en: "/invoice", de: "/rechnung" },
-  { es: "/voucher", en: "/voucher", de: "/voucher" },
-  { es: "/blog", en: "/blog", de: "/blog" },
-  { es: "/gateway", en: "/gateway", de: "/gateway" },
-  { es: "/aviso-legal", en: "/legal-notice", de: "/impressum" },
+  { es: "/cruceros", en: "/cruises", de: "/kreuzfahrten", fr: "/croisieres" },
+  { es: "/crucero", en: "/cruise", de: "/kreuzfahrt", fr: "/croisiere" },
+  {
+    es: "/casas",
+    en: "/holiday-homes",
+    de: "/ferienhaeuser",
+    fr: "/maisons-de-vacances",
+  },
+  { es: "/contacto", en: "/contact", de: "/kontakt", fr: "/contact" },
+  { es: "/carrito", en: "/cart", de: "/warenkorb", fr: "/panier" },
+  { es: "/factura", en: "/invoice", de: "/rechnung", fr: "/facture" },
+  { es: "/voucher", en: "/voucher", de: "/voucher", fr: "/voucher" },
+  { es: "/blog", en: "/blog", de: "/blog", fr: "/blog" },
+  { es: "/gateway", en: "/gateway", de: "/gateway", fr: "/gateway" },
+  {
+    es: "/aviso-legal",
+    en: "/legal-notice",
+    de: "/impressum",
+    fr: "/mentions-legales",
+  },
   {
     es: "/politica-privacidad",
     en: "/privacy-policy",
     de: "/datenschutz",
+    fr: "/politique-de-confidentialite",
   },
   {
     es: "/politica-cookies",
     en: "/cookie-policy",
     de: "/cookie-richtlinie",
+    fr: "/politique-cookies",
   },
   {
     es: "/condiciones-contratacion",
     en: "/terms-and-conditions",
     de: "/agb",
+    fr: "/conditions-generales",
   },
   {
     es: "/politica-cancelacion",
     en: "/cancellation-policy",
     de: "/stornobedingungen",
+    fr: "/politique-annulation",
   },
 ] as const;
 
@@ -131,7 +151,7 @@ function matchRoute(
 /** Detecta en qué “idioma de slug” está escrito el path (sin locale). */
 export function detectSlugLocale(pathname: string): Locale | null {
   const path = applyAlias(normalizePathname(pathname));
-  for (const locale of ["es", "en", "de"] as Locale[]) {
+  for (const locale of locales) {
     if (matchRoute(path, locale)) return locale;
   }
   return null;
@@ -146,7 +166,7 @@ export function toInternalPath(path: string): string {
   const clean = applyAlias(normalizePathname(pathname));
   if (clean === "/") return search ? `/${search}` : "/";
 
-  for (const locale of ["es", "en", "de"] as Locale[]) {
+  for (const locale of locales) {
     const matched = matchRoute(clean, locale);
     if (matched) {
       return `${matched.route.es}${matched.rest}${search}`;

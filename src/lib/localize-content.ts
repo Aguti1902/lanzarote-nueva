@@ -339,7 +339,7 @@ export async function localizeTour(
   const fileOverlay = (await loadTranslations(locale)).tours[tour.id] as
     | Record<string, unknown>
     | undefined;
-  const embeddedRaw = tour.translations?.[locale as "en" | "de"] as
+  const embeddedRaw = tour.translations?.[locale as TranslatedLocale] as
     | Record<string, unknown>
     | undefined;
   const embedded = hasTranslationContent(embeddedRaw)
@@ -410,7 +410,7 @@ export async function localizeBlogPost(
   }
 
   // 1) Traducciones embebidas en el mismo artículo (modelo actual)
-  const embedded = post.translations?.[locale as "en" | "de"];
+  const embedded = post.translations?.[locale as TranslatedLocale];
   if (embedded) {
     const localizedTags = getBlogTopicTags(embedded.tags);
     return {
@@ -509,7 +509,7 @@ export async function localizeShoreTour(
     overlayMap[SHORE_TOUR_I18N_ALIASES[tour.id] || ""]) as
     | Record<string, unknown>
     | undefined;
-  const embeddedRaw = tour.translations?.[locale as "en" | "de"] as
+  const embeddedRaw = tour.translations?.[locale as TranslatedLocale] as
     | Record<string, unknown>
     | undefined;
   const embedded = hasTranslationContent(embeddedRaw)
@@ -585,7 +585,7 @@ export function localizeHouse(
   locale: Locale
 ): VacationHouse {
   if (locale === "es") return house;
-  const t = house.translations?.[locale as "en" | "de"];
+  const t = house.translations?.[locale as TranslatedLocale];
   if (!t) return house;
   return {
     ...house,

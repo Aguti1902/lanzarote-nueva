@@ -66,6 +66,7 @@ const UPDATED = {
   es: "Última actualización: 10 de septiembre de 2026",
   en: "Last updated: 10 September 2026",
   de: "Letzte Aktualisierung: 10. September 2026",
+  fr: "Dernière mise à jour : 10 septembre 2026",
 } as const;
 
 const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
@@ -865,6 +866,273 @@ const docs: Record<Locale, Record<LegalPageId, LegalDoc>> = {
           heading: "5. Rechnungen und Erstattungen",
           paragraphs: [
             "Kartenerstattungen werden steuerlich dokumentiert. Barzahlungen am Leistungstag werden gesondert behandelt und sind keine Kartenrechnung.",
+          ],
+        },
+      ],
+    },
+  },
+  fr: {
+    aviso: {
+      title: "Mentions légales",
+      updatedLabel: UPDATED.fr,
+      intro:
+        "Informations sur la société et conditions d'utilisation du site de {legalName}, conformément à la loi espagnole sur les services de la société de l'information (LSSI).",
+      sections: [
+        {
+          heading: "1. Identification",
+          paragraphs: [
+            "Titulaire : {legalName}. Numéro fiscal : {taxId}. Adresse : {address}. Téléphones : {phone} et +34 928 52 12 26. E-mail : {email}.",
+            "Immatriculée au Registre du commerce de Lanzarote, tome 420, folio 111, feuille IL-9986, inscription 1.",
+            "Licence d'agence de voyages : {license}. Nom commercial : {brandName}.",
+            "Site web : https://www.lanzaroteexperiencetours.com. {legalName} commercialise, gère, encaisse et facture les produits proposés sur ce site.",
+          ],
+        },
+        {
+          heading: "2. Objet",
+          paragraphs: [
+            "Ce site permet de consulter et de réserver des excursions, des transferts et d'autres prestations touristiques à Lanzarote, ainsi que de s'informer sur notre société.",
+            "L'accès est gratuit, hors coût de votre connexion à internet. Les réservations sont régies par nos conditions de vente et notre politique d'annulation.",
+          ],
+        },
+        {
+          heading: "3. Propriété intellectuelle",
+          paragraphs: [
+            "Les textes, photographies, logos, le design et le code appartiennent à {legalName} ou sont utilisés avec autorisation. Toute reproduction ou communication au public sans consentement préalable est interdite, sauf courte citation avec mention de la source.",
+          ],
+        },
+        {
+          heading: "4. Responsabilité",
+          paragraphs: [
+            "Nous nous efforçons de maintenir des informations exactes et un site disponible, sans pouvoir garantir l'absence totale d'erreurs, d'interruptions ou de problèmes sur les sites tiers vers lesquels nous renvoyons.",
+            "Vous vous engagez à utiliser le site de manière licite et à ne pas y introduire de logiciel malveillant ni accéder à des zones restreintes.",
+          ],
+        },
+        {
+          heading: "5. Liens",
+          paragraphs: [
+            "Les liens vers les prestataires de paiement, Tripadvisor ou les réseaux sociaux sont proposés pour faciliter la navigation. {legalName} ne contrôle pas ces sites ni leurs politiques.",
+          ],
+        },
+        {
+          heading: "6. Droit applicable et juridiction",
+          paragraphs: [
+            "Le droit espagnol s'applique. Les consommateurs peuvent saisir les tribunaux de leur lieu de résidence. À défaut, les tribunaux d'Arrecife (Lanzarote) sont compétents, sauf règle impérative contraire.",
+          ],
+        },
+      ],
+    },
+    privacidad: {
+      title: "Politique de confidentialité",
+      updatedLabel: UPDATED.fr,
+      intro:
+        "{legalName} traite des données à caractère personnel conformément au RGPD de l'Union européenne et à la loi organique espagnole 3/2018.",
+      sections: [
+        {
+          heading: "1. Responsable du traitement",
+          paragraphs: [
+            "{legalName}, numéro fiscal {taxId}, {address}. Contact : {email} · {phone} · +34 928 52 12 26.",
+          ],
+        },
+        {
+          heading: "2. Données que nous collectons",
+          paragraphs: [
+            "Réservations : nom, e-mail, téléphone, langue, hôtel ou navire de croisière, numéro de vol si nécessaire, nombre de voyageurs, date et prestation, notes et données de paiement (Stripe traite la carte ; nous ne conservons pas le numéro complet de la carte).",
+            "Formulaire de contact : nom, e-mail, téléphone et message.",
+            "Navigation : langue préférée, consentement aux cookies et, uniquement si vous l'acceptez, identifiants de mesure d'audience. Les journaux techniques peuvent inclure l'adresse IP, le type de navigateur ou d'appareil, pour la sécurité et le fonctionnement du site.",
+          ],
+        },
+        {
+          heading: "3. Finalités et bases juridiques",
+          paragraphs: [
+            "Exécution de la réservation, du bon, des incidents, des annulations, des factures et des e-mails de service : exécution du contrat (art. 6.1.b du RGPD).",
+            "Réponse aux demandes : mesures précontractuelles ou intérêt légitime (art. 6.1.b et 6.1.f du RGPD).",
+            "Obligations fiscales et comptables (IGIC des îles Canaries) : obligation légale (art. 6.1.c du RGPD).",
+            "Cookies non nécessaires et toute prospection commerciale : consentement (art. 6.1.a du RGPD), que vous pouvez retirer à tout moment.",
+          ],
+        },
+        {
+          heading: "4. Conservation",
+          paragraphs: [
+            "Les données de réservation et de facturation sont conservées pendant la durée exigée par le droit commercial et fiscal (en règle générale, jusqu'à 6 ans après l'exercice concerné).",
+            "Les messages de contact sont conservés uniquement le temps nécessaire pour y répondre et, au plus, 2 ans s'il n'y a pas de contrat.",
+            "Le consentement aux cookies est conservé pendant 180 jours.",
+          ],
+        },
+        {
+          heading: "5. Destinataires",
+          paragraphs: [
+            "Prestataires : hébergement (Vercel), stockage (Supabase), messagerie, paiements (Stripe) et, si vous acceptez la mesure d'audience, Google Analytics.",
+            "Stripe et Google peuvent traiter des données en dehors de l'EEE au moyen de clauses contractuelles types ou d'autres garanties prévues à l'article 46 du RGPD.",
+            "Nous ne vendons pas vos données. Nous ne les communiquons aux autorités que lorsque la loi l'exige.",
+          ],
+        },
+        {
+          heading: "6. Vos droits",
+          paragraphs: [
+            "Vous pouvez exercer vos droits d'accès, de rectification, d'effacement, d'opposition, de limitation et de portabilité en écrivant à {email}, en indiquant le droit exercé et en joignant une pièce d'identité.",
+            "Vous pouvez également introduire une réclamation auprès de l'Agence espagnole de protection des données (www.aepd.es) ou de votre autorité de contrôle locale de l'Union européenne.",
+          ],
+        },
+        {
+          heading: "7. Mineurs",
+          paragraphs: [
+            "Les réservations sont effectuées par des adultes. Si des mineurs voyagent, la personne qui réserve confirme disposer de l'autorisation du titulaire de l'autorité parentale.",
+          ],
+        },
+      ],
+    },
+    cookies: {
+      title: "Politique de cookies",
+      updatedLabel: UPDATED.fr,
+      intro:
+        "La présente politique explique les cookies et technologies similaires de ce site, conformément aux règles espagnoles applicables aux communications électroniques et aux orientations de l'AEPD.",
+      sections: [
+        {
+          heading: "1. Que sont les cookies ?",
+          paragraphs: [
+            "Ce sont de petits fichiers enregistrés sur votre appareil pour qu'un site mémorise des préférences, maintienne une session ou mesure l'usage.",
+          ],
+        },
+        {
+          heading: "2. Comment nous demandons votre consentement",
+          paragraphs: [
+            "Une bannière s'affiche lors de votre première visite. Vous pouvez tout accepter, refuser les cookies non nécessaires ou choisir des catégories. Refuser est aussi simple qu'accepter.",
+            "Vous pouvez modifier ce choix plus tard via « Paramètres des cookies » dans le pied de page. Nous conservons votre choix pendant 180 jours.",
+          ],
+        },
+        {
+          heading: "3. Cookies strictement nécessaires",
+          paragraphs: [
+            "Ils fonctionnent toujours : langue (NEXT_LOCALE), enregistrement de votre consentement (lt_cookie_consent), cookie de session de l'administration et cookies Stripe lorsque vous payez.",
+            "Ils ne nécessitent pas de consentement au titre de l'article 22.2 de la LSSI.",
+          ],
+        },
+        {
+          heading: "4. Mesure d'audience (facultatif)",
+          paragraphs: [
+            "La balise Google Analytics est présente sur la page afin que Google puisse la reconnaître. Tant que vous n'acceptez pas, le consentement reste refusé et aucun cookie de mesure d'audience n'est enregistré. Si vous acceptez, ces cookies s'activent et les visites sont mesurées de façon agrégée.",
+          ],
+        },
+        {
+          heading: "5. Marketing (facultatif)",
+          paragraphs: [
+            "Réservé à de futures campagnes ou à des pixels publicitaires. Nous ne chargeons pas de publicités de tiers, sauf si vous l'autorisez et qu'une intégration est active.",
+          ],
+        },
+        {
+          heading: "6. Réglages du navigateur",
+          paragraphs: [
+            "Vous pouvez supprimer ou bloquer les cookies dans Chrome, Safari, Firefox ou Edge (en général dans Confidentialité ou dans l'aide du navigateur). Bloquer tous les cookies peut empêcher la langue, la réservation ou le paiement de fonctionner correctement.",
+            "Refuser les cookies non nécessaires n'affecte que ce que ce site peut charger avec votre autorisation ; cela n'empêche pas les publicités en ligne ailleurs sur internet.",
+          ],
+        },
+      ],
+    },
+    condiciones: {
+      title: "Conditions générales",
+      updatedLabel: UPDATED.fr,
+      intro:
+        "Les présentes conditions régissent les réservations d'excursions, de transferts et de prestations de {brandName} sur ce site.",
+      sections: [
+        {
+          heading: "1. Le professionnel",
+          paragraphs: [
+            "Les prestations sont fournies par {legalName}, numéro fiscal {taxId}, {address}, licence {license}.",
+            "En réservant, vous confirmez être majeur et que vos informations sont exactes.",
+          ],
+        },
+        {
+          heading: "2. Prestations",
+          paragraphs: [
+            "Nous proposons des excursions guidées, des excursions à terre pour les croisières, des transferts aéroport–hôtel et d'autres prestations touristiques à Lanzarote lorsqu'elles sont publiées.",
+            "La description, la durée, la taille du groupe, la langue, le point de rendez-vous et le prix sont ceux indiqués sur la fiche produit au moment du paiement.",
+          ],
+        },
+        {
+          heading: "3. Prix et paiement",
+          paragraphs: [
+            "Les prix sont indiqués en euros et incluent les taxes des îles Canaries (IGIC), sauf indication contraire.",
+            "Les moyens de paiement sont ceux proposés au moment du paiement pour chaque prestation : carte en ligne (Stripe), un acompte avec le solde en espèces le jour de la prestation, ou d'autres options affichées dans le formulaire.",
+            "Tant que le paiement en ligne exigé n'est pas confirmé, la réservation peut rester en attente ou être annulée automatiquement.",
+          ],
+        },
+        {
+          heading: "4. Préavis minimum",
+          paragraphs: [
+            "Les réservations en ligne doivent être effectuées au moins 48 heures avant la date et l'heure de la prestation, sauf indication contraire sur la fiche produit.",
+          ],
+        },
+        {
+          heading: "5. Bon et participation",
+          paragraphs: [
+            "Après le paiement, vous recevez un e-mail avec le localisateur et le bon. Conservez-le (imprimé ou sur téléphone) et présentez-le au guide ou au chauffeur.",
+            "Le point de rendez-vous et l'heure sont ceux du bon. Pour les excursions de croisière, le rendez-vous a lieu au quai indiqué, après le contrôle de sécurité du port.",
+          ],
+        },
+        {
+          heading: "6. Vos obligations",
+          paragraphs: [
+            "Présentez-vous à l'heure, portez des chaussures adaptées, apportez de l'eau et une protection solaire, et signalez-nous, lors de la réservation, toute mobilité réduite, allergie ou besoin particulier.",
+            "Les soldes impayés, les absences ou les retards qui rendent la prestation impossible ne sont pas remboursables, sauf dans les cas prévus par la politique d'annulation ou par le droit de la consommation.",
+          ],
+        },
+        {
+          heading: "7. Modifications de notre fait",
+          paragraphs: [
+            "Si un nombre minimum de participants, une météo défavorable, la fermeture d'un site ou un cas de force majeure empêche la prestation, nous proposerons une alternative ou le remboursement des sommes versées.",
+            "Pour les passagers de croisière, nous ne sommes pas responsables des changements d'itinéraire, des retards du navire ni d'une heure de retour à bord (all-aboard) avancée fixée par la compagnie. Veuillez surveiller l'horaire de votre navire.",
+          ],
+        },
+        {
+          heading: "8. Droit de rétractation",
+          paragraphs: [
+            "Les prestations de loisirs à une date déterminée peuvent être exclues du droit de rétractation de 14 jours (droit espagnol de la consommation, art. 103.l). Les annulations suivent la politique d'annulation de ce site, sans préjudice de vos droits impératifs de consommateur.",
+          ],
+        },
+        {
+          heading: "9. Réclamations",
+          paragraphs: [
+            "Écrivez à {email} ou appelez le {phone} / +34 928 52 12 26.",
+            "Les formulaires de réclamation sont disponibles du lundi au vendredi, de 09:00 à 13:00, Calle Calderetas 100, 35550 San Bartolomé (Lanzarote).",
+            "Règlement en ligne des litiges de l'Union européenne : https://ec.europa.eu/consumers/odr",
+          ],
+        },
+      ],
+    },
+    cancelacion: {
+      title: "Politique d'annulation",
+      updatedLabel: UPDATED.fr,
+      intro:
+        "Les présentes règles s'appliquent aux réservations effectuées sur ce site, sauf si une fiche produit prévoit des conditions plus strictes ou plus spécifiques.",
+      sections: [
+        {
+          heading: "1. Annulation gratuite",
+          paragraphs: [
+            "Vous pouvez annuler sans frais jusqu'à 48 heures avant le début de la prestation. Les paiements par carte sont remboursés par le même moyen, selon les délais de Stripe et de votre banque.",
+          ],
+        },
+        {
+          heading: "2. Dans les 48 heures",
+          paragraphs: [
+            "Si vous annulez avec un préavis inférieur à 48 heures, si vous ne vous présentez pas ou si vous arrivez trop tard pour que nous puissions assurer la prestation, le montant versé est perdu, sauf si le droit de la consommation impose une autre solution dans votre cas.",
+          ],
+        },
+        {
+          heading: "3. Comment annuler",
+          paragraphs: [
+            "Utilisez la page « Annuler la réservation » avec votre localisateur et votre e-mail, ou écrivez à {email}. Les heures s'entendent à l'heure locale des îles Canaries (WET/WEST).",
+          ],
+        },
+        {
+          heading: "4. Si nous annulons",
+          paragraphs: [
+            "Si nous annulons parce que le minimum de participants n'est pas atteint, ou pour des raisons de météo, de sécurité ou de force majeure, nous remboursons ce que vous avez payé ou proposons une autre date ou une activité équivalente.",
+          ],
+        },
+        {
+          heading: "5. Factures et remboursements",
+          paragraphs: [
+            "Les remboursements de paiements par carte sont documentés à des fins fiscales. Les espèces encaissées le jour de la prestation, le cas échéant, sont traitées à part et ne constituent pas une facture de paiement par carte.",
           ],
         },
       ],

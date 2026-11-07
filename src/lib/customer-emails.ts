@@ -237,6 +237,70 @@ const COPY = {
       "Zur Einhaltung der Verordnung (EU) 2016/679 des Europäischen Parlaments und des Rates vom 27. April 2016 können Sie Ihre Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Widerspruch und Datenübertragbarkeit kostenlos per E-Mail an info@lanzaroteexperiencetours.com oder unter folgender Adresse ausüben: C/ Calderetas, 100, C.P. 35550, San Bartolomé - Lanzarote (Las Palmas).",
     ],
   },
+  fr: {
+    brand: "Lanzarote Experience Tours",
+    greeting: (name: string) => `Bonjour ${name},`,
+    confirmationSubject: (id: string) =>
+      `Confirmation de réservation ${id} · Lanzarote Experience Tours`,
+    confirmationTitle: "Réservation confirmée !",
+    confirmationLead:
+      "Merci pour votre réservation. Vous trouverez ici le récapitulatif et les liens vers le bon, la gestion ou l'annulation.",
+    requestSubject: (id: string) =>
+      `Demande reçue ${id} · Lanzarote Experience Tours`,
+    requestTitle: "Nous avons bien reçu votre demande",
+    requestLead:
+      "Notre équipe examine votre demande et vous répondra dès que possible.",
+    paymentIncompleteSubject: (id: string) =>
+      `Paiement en attente ${id} · Lanzarote Experience Tours`,
+    paymentIncompleteTitle: "Paiement non terminé",
+    paymentIncompleteLead:
+      "Vous avez commencé une réservation sans terminer le paiement en ligne. Votre place n'est pas encore confirmée. Vous pouvez payer maintenant avec le bouton ci-dessous ; sans paiement à temps, la demande sera annulée automatiquement.",
+    payNow: "Terminer le paiement",
+    cancellationSubject: (id: string) =>
+      `Annulation ${id} · Lanzarote Experience Tours`,
+    cancellationTitle: "Réservation annulée",
+    cancellationLead:
+      "Nous confirmons que votre réservation a été annulée. Les détails sont ci-dessous.",
+    locator: "Référence",
+    service: "Prestation",
+    date: "Date de la prestation",
+    time: "Heure",
+    returnDate: "Date de retour",
+    returnTime: "Heure de retour",
+    people: "Personnes",
+    adults: "Adultes",
+    children: "Enfants",
+    total: "Total",
+    payment: "Mode de paiement",
+    paymentStatus: "État du paiement",
+    hotel: "Hôtel / prise en charge",
+    cruise: "Navire de croisière",
+    fee: "Frais d'annulation",
+    refund: "Remboursement",
+    noPayment: "Aucun paiement. Aucun frais et aucun remboursement.",
+    freeCancel: "Annulation gratuite",
+    reason: "Motif",
+    viewVoucher: "Voir le bon",
+    manage: "Gérer la réservation",
+    cancel: "Annuler la réservation",
+    viewInvoice: "Voir la facture",
+    footerHelp:
+      "Pour toute question, répondez à cet e-mail ou appelez le +34 646 08 05 85.",
+    paid: "Payé",
+    unpaid: "En attente",
+    partial: "Partiel",
+    payOnDay: "Paiement le jour de l'excursion",
+    refunded: "Remboursé",
+    cancelPolicyTitle: "Conditions d'annulation",
+    cancelPolicyBody:
+      "Si nous recevons votre demande d'annulation plus de 48 heures avant l'heure de prise en charge de la prestation à annuler, le montant vous sera intégralement remboursé. Si l'annulation intervient moins de 48 heures avant l'heure prévue, aucun montant ne sera remboursé.",
+    legalNotice: [
+      "Ce message est destiné exclusivement à son destinataire et peut contenir des informations confidentielles couvertes par le secret professionnel, dont la divulgation n'est pas autorisée par la loi.",
+      "Si vous avez reçu ce message par erreur, veuillez nous en informer immédiatement par e-mail et le supprimer, ainsi que les documents joints.",
+      "De même, la diffusion, la copie ou l'utilisation de ce message, ou de tout document qui y est joint, à quelque fin que ce soit, est interdite par la loi.",
+      "Conformément au règlement (UE) 2016/679 du Parlement européen et du Conseil du 27 avril 2016, vous pouvez exercer gratuitement vos droits d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité par e-mail à info@lanzaroteexperiencetours.com ou à l'adresse suivante : C/ Calderetas, 100, C.P. 35550, San Bartolomé - Lanzarote (Las Palmas).",
+    ],
+  },
 } as const;
 
 function paymentStatusLabel(
@@ -623,11 +687,13 @@ export async function sendContactAutoReply(input: {
     es: "Hemos recibido su mensaje · Lanzarote Experience Tours",
     en: "We have received your message · Lanzarote Experience Tours",
     de: "Wir haben Ihre Nachricht erhalten · Lanzarote Experience Tours",
+    fr: "Nous avons bien reçu votre message · Lanzarote Experience Tours",
   };
   const bodies = {
     es: `Hola ${input.name},\n\nGracias por escribirnos. Hemos recibido su mensaje y le responderemos lo antes posible.\n\nLanzarote Experience Tours\n+34 646 08 05 85`,
     en: `Hello ${input.name},\n\nThank you for contacting us. We have received your message and will reply as soon as possible.\n\nLanzarote Experience Tours\n+34 646 08 05 85`,
     de: `Hallo ${input.name},\n\nVielen Dank für Ihre Nachricht. Wir melden uns so schnell wie möglich.\n\nLanzarote Experience Tours\n+34 646 08 05 85`,
+    fr: `Bonjour ${input.name},\n\nMerci de nous avoir écrit. Nous avons bien reçu votre message et vous répondrons dès que possible.\n\nLanzarote Experience Tours\n+34 646 08 05 85`,
   };
   const text = bodies[locale];
   return sendEmail({

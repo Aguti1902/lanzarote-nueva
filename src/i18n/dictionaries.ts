@@ -1,4 +1,5 @@
 import type { Locale } from "./config";
+import { fr } from "./dictionary-fr";
 
 export type Dictionary = {
   nav: {
@@ -2320,7 +2321,7 @@ const de: Dictionary = {
   },
 };
 
-const dictionaries: Record<Locale, Dictionary> = { es, en, de };
+const dictionaries: Record<Locale, Dictionary> = { es, en, de, fr };
 
 const OZONE_ADVANTAGE_RE = /ozono|ozone|ozon\b/i;
 

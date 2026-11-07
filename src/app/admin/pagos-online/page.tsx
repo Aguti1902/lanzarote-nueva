@@ -155,7 +155,7 @@ export default function AdminPagosOnlinePage() {
   });
   const [editForm, setEditForm] = useState({
     amount: 0,
-    customerLocale: "es" as "es" | "en" | "de",
+    customerLocale: "es" as "es" | "en" | "de" | "fr",
     customerEmail: "",
     concept: "",
   });
@@ -607,13 +607,14 @@ export default function AdminPagosOnlinePage() {
                     onChange={(e) =>
                       setEditForm({
                         ...editForm,
-                        customerLocale: e.target.value as "es" | "en" | "de",
+                        customerLocale: e.target.value as "es" | "en" | "de" | "fr",
                       })
                     }
                   >
                     <option value="es">Español</option>
                     <option value="en">English</option>
                     <option value="de">Deutsch</option>
+                    <option value="fr">Français</option>
                   </select>
                 </Field>
                 <Field label="Email del cliente">

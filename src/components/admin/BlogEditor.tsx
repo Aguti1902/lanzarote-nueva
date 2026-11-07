@@ -109,6 +109,7 @@ function hydrateFromPost(initial?: BlogPost): {
   es: LangFields;
   en: LangFields;
   de: LangFields;
+  fr: LangFields;
 } {
   const defaultAuthor =
     initial?.author || "Equipo Lanzarote Experience Tours";
@@ -118,11 +119,14 @@ function hydrateFromPost(initial?: BlogPost): {
       es: emptyLang(defaultAuthor),
       en: emptyLang(),
       de: emptyLang(),
+      fr: emptyLang(),
     };
   }
 
   const hasEmbedded =
-    Boolean(initial.translations?.en) || Boolean(initial.translations?.de);
+    Boolean(initial.translations?.en) ||
+    Boolean(initial.translations?.de) ||
+    Boolean(initial.translations?.fr);
   const langTag = getBlogLanguageTag(initial);
 
   if (hasEmbedded || !langTag || langTag === "es") {
@@ -139,46 +143,59 @@ function hydrateFromPost(initial?: BlogPost): {
       },
       en: blockToFields(initial.translations?.en),
       de: blockToFields(initial.translations?.de),
+      fr: blockToFields(initial.translations?.fr),
     };
   }
+
+  const legacyFields: LangFields = {
+    slug: initial.slug || "",
+    title: initial.title || "",
+    excerpt: initial.excerpt || "",
+    content: initial.content || "",
+    author: initial.author || "",
+    tags: tagsToField(initial.tags),
+    imageAlt: initial.imageAlt || "",
+    ...seoToFields(initial.seo),
+  };
 
   if (langTag === "en") {
     return {
       es: emptyLang(defaultAuthor),
-      en: {
-        slug: initial.slug || "",
-        title: initial.title || "",
-        excerpt: initial.excerpt || "",
-        content: initial.content || "",
-        author: initial.author || "",
-        tags: tagsToField(initial.tags),
-        imageAlt: initial.imageAlt || "",
-        ...seoToFields(initial.seo),
-      },
+      en: legacyFields,
       de: blockToFields(initial.translations?.de),
+      fr: blockToFields(initial.translations?.fr),
+    };
+  }
+
+  if (langTag === "fr") {
+    return {
+      es: emptyLang(defaultAuthor),
+      en: blockToFields(initial.translations?.en),
+      de: blockToFields(initial.translations?.de),
+      fr: legacyFields,
     };
   }
 
   return {
     es: emptyLang(defaultAuthor),
     en: blockToFields(initial.translations?.en),
-    de: {
-      slug: initial.slug || "",
-      title: initial.title || "",
-      excerpt: initial.excerpt || "",
-      content: initial.content || "",
-      author: initial.author || "",
-      tags: tagsToField(initial.tags),
-      imageAlt: initial.imageAlt || "",
-      ...seoToFields(initial.seo),
-    },
+    de: legacyFields,
+    fr: blockToFields(initial.translations?.fr),
   };
+}
+
+function localeLabel(
+  locale: Locale,
+  labels: { es: string; en: string; de: string; fr: string }
+): string {
+  return labels[locale];
 }
 
 const LANG_TABS: { id: Locale; label: string }[] = [
   { id: "es", label: "Español" },
   { id: "en", label: "English" },
   { id: "de", label: "Deutsch" },
+  { id: "fr", label: "Français" },
 ];
 
 export function BlogEditor({ initial }: { initial?: BlogPost }) {
@@ -188,20 +205,26 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
   const [es, setEs] = useState<LangFields>(hydrated.es);
   const [en, setEn] = useState<LangFields>(hydrated.en);
   const [de, setDe] = useState<LangFields>(hydrated.de);
+  const [fr, setFr] = useState<LangFields>(hydrated.fr);
   const [meta, setMeta] = useState({
     image: initial?.image || "/images/heroes/blog.jpg",
     date: initial?.date || new Date().toISOString().slice(0, 10),
   });
   const identitySlug = initial?.slug || "";
   const [topic, setTopic] = useState(
-    hydrated.es.title || hydrated.en.title || hydrated.de.title || ""
+    hydrated.es.title ||
+    hydrated.en.title ||
+    hydrated.de.title ||
+    hydrated.fr.title ||
+    ""
   );
   const [saving, setSaving] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState("");
   const isEdit = Boolean(initial);
 
-  const active = editLocale === "es" ? es : editLocale === "en" ? en : de;
+  const active =
+    editLocale === "es" ? es : editLocale === "en" ? en : editLocale === "de" ? de : fr;
 
   /** Actualiza solo el idioma indicado (evita que EN/DE pisen ES por closures o DOM compartido). */
   function patchLang(
@@ -212,7 +235,8 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
       typeof patch === "function" ? patch(prev) : { ...prev, ...patch };
     if (locale === "es") setEs(apply);
     else if (locale === "en") setEn(apply);
-    else setDe(apply);
+    else if (locale === "de") setDe(apply);
+    else setFr(apply);
   }
 
   function switchEditLocale(next: Locale) {
@@ -226,7 +250,13 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
   async function generateWithAI() {
     const locale = editLocale;
     const draftTitle =
-      locale === "es" ? es.title : locale === "en" ? en.title : de.title;
+      locale === "es"
+        ? es.title
+        : locale === "en"
+          ? en.title
+          : locale === "de"
+            ? de.title
+            : fr.title;
     setGenerating(true);
     setError("");
     try {
@@ -271,7 +301,7 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
     try {
       if (!es.title.trim() || !es.excerpt.trim() || !es.content.trim()) {
         throw new Error(
-          "Complete título, extracto y contenido en español (pestaña ES). Las traducciones EN/DE van en el mismo artículo."
+          "Complete título, extracto y contenido en español (pestaña ES). Las traducciones EN, DE y FR van en el mismo artículo."
         );
       }
       const esSeo = fieldsToSeo(es);
@@ -292,6 +322,7 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         translations: {
           en: fieldsToBlock(en),
           de: fieldsToBlock(de),
+          fr: fieldsToBlock(fr),
         },
       };
       const res = await fetch("/api/blog", {
@@ -318,8 +349,8 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
       <div className="rounded-lg bg-sky-soft p-4 ring-1 ring-sand-line">
         <p className="text-sm font-bold text-ink">Generar con IA</p>
         <p className="mt-1 text-xs text-ink-muted">
-          Genera el borrador en el idioma de la pestaña activa. Complete ES, EN
-          y DE en el mismo artículo.
+          Genera el borrador en el idioma de la pestaña activa. Complete ES, EN,
+          DE y FR en el mismo artículo.
         </p>
         <div className="mt-3 flex flex-col gap-2 sm:flex-row">
           <input
@@ -349,7 +380,9 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
               ? Boolean(es.title.trim())
               : tab.id === "en"
                 ? Boolean(en.title.trim() || en.content.trim())
-                : Boolean(de.title.trim() || de.content.trim());
+                : tab.id === "de"
+                  ? Boolean(de.title.trim() || de.content.trim())
+                  : Boolean(fr.title.trim() || fr.content.trim());
           return (
             <button
               key={tab.id}
@@ -370,17 +403,18 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         })}
       </div>
       <p className="text-xs text-ink-muted">
-        Un solo artículo con las tres versiones. Puede definir una URL (slug)
-        distinta en cada idioma; si EN/DE están vacíos, se usa el slug en español.
+        Un solo artículo con las cuatro versiones. Puede definir una URL (slug)
+        distinta en cada idioma; si EN, DE o FR están vacíos, se usa el slug en español.
       </p>
 
       <Field
         label={
-          editLocale === "es"
-            ? "Título (ES) *"
-            : editLocale === "en"
-              ? "Title (EN)"
-              : "Titel (DE)"
+          localeLabel(editLocale, {
+            es: "Título (ES) *",
+            en: "Title (EN)",
+            de: "Titel (DE)",
+            fr: "Titre (FR)",
+          })
         }
       >
         <input
@@ -398,11 +432,12 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
       </Field>
       <Field
         label={
-          editLocale === "es"
-            ? "Slug / URL (ES) *"
-            : editLocale === "en"
-              ? "Slug / URL (EN)"
-              : "Slug / URL (DE)"
+          localeLabel(editLocale, {
+            es: "Slug / URL (ES) *",
+            en: "Slug / URL (EN)",
+            de: "Slug / URL (DE)",
+            fr: "Slug / URL (FR)",
+          })
         }
       >
         <input
@@ -431,11 +466,12 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
       </Field>
       <Field
         label={
-          editLocale === "es"
-            ? "Extracto (ES) *"
-            : editLocale === "en"
-              ? "Excerpt (EN)"
-              : "Auszug (DE)"
+          localeLabel(editLocale, {
+            es: "Extracto (ES) *",
+            en: "Excerpt (EN)",
+            de: "Auszug (DE)",
+            fr: "Extrait (FR)",
+          })
         }
       >
         <RichTextEditor
@@ -450,11 +486,12 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
       </Field>
       <Field
         label={
-          editLocale === "es"
-            ? "Contenido (ES) *"
-            : editLocale === "en"
-              ? "Content (EN)"
-              : "Inhalt (DE)"
+          localeLabel(editLocale, {
+            es: "Contenido (ES) *",
+            en: "Content (EN)",
+            de: "Inhalt (DE)",
+            fr: "Contenu (FR)",
+          })
         }
       >
         <RichTextEditor
@@ -470,11 +507,12 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
       </Field>
       <Field
         label={
-          editLocale === "es"
-            ? "Autor (ES)"
-            : editLocale === "en"
-              ? "Author (EN)"
-              : "Autor (DE)"
+          localeLabel(editLocale, {
+            es: "Autor (ES)",
+            en: "Author (EN)",
+            de: "Autor (DE)",
+            fr: "Auteur (FR)",
+          })
         }
       >
         <input
@@ -558,11 +596,12 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
           </Field>
           <Field
             label={
-              editLocale === "es"
-                ? "Tags temáticos (ES)"
-                : editLocale === "en"
-                  ? "Topic tags (EN)"
-                  : "Themen-Tags (DE)"
+              localeLabel(editLocale, {
+                es: "Tags temáticos (ES)",
+                en: "Topic tags (EN)",
+                de: "Themen-Tags (DE)",
+                fr: "Tags thématiques (FR)",
+              })
             }
           >
             <input
@@ -576,16 +615,17 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
                 }))
               }
               placeholder={
-                editLocale === "es"
-                  ? "Lanzarote, César Manrique, qué ver…"
-                  : editLocale === "en"
-                    ? "empty = use ES tags · Lanzarote, César Manrique…"
-                    : "leer lassen = ES-Tags · Lanzarote, César Manrique…"
+                localeLabel(editLocale, {
+                  es: "Lanzarote, César Manrique, qué ver…",
+                  en: "empty = use ES tags · Lanzarote, César Manrique…",
+                  de: "leer lassen = ES-Tags · Lanzarote, César Manrique…",
+                  fr: "vide = tags ES · Lanzarote, César Manrique…",
+                })
               }
             />
             <p className="mt-1 text-xs text-ink-muted">
               Separados por coma. Cada idioma muestra sus propios tags en la
-              web; si EN/DE están vacíos, se usan los de español.
+              web; si EN, DE o FR están vacíos, se usan los de español.
             </p>
           </Field>
         </div>

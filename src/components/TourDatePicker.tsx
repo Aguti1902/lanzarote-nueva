@@ -9,6 +9,7 @@ import { isTourDateBookable } from "@/lib/tour-availability";
 const WEEKDAYS_ES = ["L", "M", "X", "J", "V", "S", "D"];
 const WEEKDAYS_EN = ["M", "T", "W", "T", "F", "S", "S"];
 const WEEKDAYS_DE = ["M", "D", "M", "D", "F", "S", "S"];
+const WEEKDAYS_FR = ["L", "M", "M", "J", "V", "S", "D"];
 
 type Props = {
   tour: Tour;
@@ -61,14 +62,18 @@ export function TourDatePicker({
   const cells = useMemo(() => monthMatrix(year, month), [year, month]);
   const loc = locale.startsWith("de")
     ? "de-DE"
-    : locale.startsWith("en")
-      ? "en-GB"
-      : "es-ES";
+    : locale.startsWith("fr")
+      ? "fr-FR"
+      : locale.startsWith("en")
+        ? "en-GB"
+        : "es-ES";
   const weekdays = locale.startsWith("de")
     ? WEEKDAYS_DE
-    : locale.startsWith("en")
-      ? WEEKDAYS_EN
-      : WEEKDAYS_ES;
+    : locale.startsWith("fr")
+      ? WEEKDAYS_FR
+      : locale.startsWith("en")
+        ? WEEKDAYS_EN
+        : WEEKDAYS_ES;
   const title = cursor.toLocaleDateString(loc, {
     month: "long",
     year: "numeric",

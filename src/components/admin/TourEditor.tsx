@@ -25,7 +25,14 @@ type EditorTab =
   | "seo"
   | "multimedia";
 
-type LangKey = "es" | "en" | "de";
+type LangKey = "es" | "en" | "de" | "fr";
+
+function adminLangLabel(lang: LangKey): string {
+  if (lang === "es") return "Español";
+  if (lang === "en") return "Inglés";
+  if (lang === "de") return "Alemán";
+  return "Francés";
+}
 
 const ZONES = [
   "Playa Blanca",
@@ -152,7 +159,11 @@ const emptyTour = (): Partial<Tour> => ({
   schedule: emptySchedule(),
   blockedDates: [],
   seo: { title: "", description: "", keywords: "" },
-  translations: { en: emptyTranslation(), de: emptyTranslation() },
+  translations: {
+    en: emptyTranslation(),
+    de: emptyTranslation(),
+    fr: emptyTranslation(),
+  },
 });
 
 export function TourEditor({ initial }: { initial?: Tour }) {
@@ -175,6 +186,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
       translations: {
         en: { ...emptyTranslation(), ...(initial.translations?.en || {}) },
         de: { ...emptyTranslation(), ...(initial.translations?.de || {}) },
+        fr: { ...emptyTranslation(), ...(initial.translations?.fr || {}) },
       },
       gallery: initial.gallery?.length
         ? [...initial.gallery]
@@ -210,7 +222,10 @@ export function TourEditor({ initial }: { initial?: Tour }) {
     setTour((prev) => ({ ...prev, [key]: value }));
   }
 
-  function updateTranslation(locale: "en" | "de", patch: Partial<TourTranslation>) {
+  function updateTranslation(
+    locale: "en" | "de" | "fr",
+    patch: Partial<TourTranslation>
+  ) {
     setTour((prev) => ({
       ...prev,
       translations: {
@@ -319,7 +334,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
       if (!current.title || !current.shortTitle) {
         throw new Error("Título y título corto son obligatorios");
       }
-      const cleanLocale = (locale: "en" | "de") => {
+      const cleanLocale = (locale: "en" | "de" | "fr") => {
         const raw = current.translations?.[locale] || {};
         const next: TourTranslation = {};
         if (raw.title?.trim()) next.title = raw.title.trim();
@@ -366,6 +381,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
         translations: {
           en: cleanLocale("en"),
           de: cleanLocale("de"),
+          fr: cleanLocale("fr"),
         },
       };
 
@@ -848,11 +864,11 @@ export function TourEditor({ initial }: { initial?: Tour }) {
                 <option value="es">Español</option>
                 <option value="en">Inglés</option>
                 <option value="de">Alemán</option>
+                <option value="fr">Francés</option>
               </select>
             </Field>
             <h2 className="pb-2 text-lg font-bold">
-              Traducciones del tour en{" "}
-              {lang === "es" ? "Español" : lang === "en" ? "Inglés" : "Alemán"}
+              Traducciones del tour en {adminLangLabel(lang)}
             </h2>
           </div>
 
@@ -972,7 +988,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
                   }}
                 />
                 <p className="mt-1 text-xs text-ink-muted">
-                  Textos visibles en la ficha pública (ES / EN / DE según la
+                  Textos visibles en la ficha pública (ES / EN / DE / FR según la
                   pestaña). Puedes editarlos aquí sin tocar código.
                 </p>
               </Field>
@@ -1081,6 +1097,7 @@ export function TourEditor({ initial }: { initial?: Tour }) {
                 <option>Español</option>
                 <option>Inglés</option>
                 <option>Alemán</option>
+                <option>Francés</option>
               </select>
             </Field>
             <Field label="Plazas a bloquear (máx 14)">
@@ -1169,17 +1186,17 @@ export function TourEditor({ initial }: { initial?: Tour }) {
                 <option value="es">Español</option>
                 <option value="en">Inglés</option>
                 <option value="de">Alemán</option>
+                <option value="fr">Francés</option>
               </select>
             </Field>
             <h2 className="pb-2 text-lg font-bold">
-              SEO (
-              {lang === "es" ? "Español" : lang === "en" ? "Inglés" : "Alemán"})
+              SEO ({adminLangLabel(lang)})
             </h2>
           </div>
           <div className="rounded-lg bg-sky-soft/60 px-4 py-3 text-sm text-ink-muted ring-1 ring-sand-line">
             <p className="font-semibold text-ink">Cómo rellenar el SEO</p>
             <ol className="mt-2 list-decimal space-y-1 pl-5">
-              <li>Elige el idioma (ES / EN / DE) y completa los 3 campos.</li>
+              <li>Elige el idioma (ES / EN / DE / FR) y completa los 3 campos.</li>
               <li>
                 <strong>Meta title</strong>: ~50–60 caracteres, con la palabra
                 clave principal (ej. «Excursión Timanfaya Lanzarote»).

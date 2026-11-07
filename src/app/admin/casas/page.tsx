@@ -21,6 +21,8 @@ type HouseForm = {
   summaryEn: string;
   titleDe: string;
   summaryDe: string;
+  titleFr: string;
+  summaryFr: string;
   location: string;
   guests: string;
   bedrooms: string;
@@ -39,6 +41,8 @@ const emptyForm = (): HouseForm => ({
   summaryEn: "",
   titleDe: "",
   summaryDe: "",
+  titleFr: "",
+  summaryFr: "",
   location: "",
   guests: "",
   bedrooms: "",
@@ -59,6 +63,8 @@ function toForm(house: VacationHouse): HouseForm {
     summaryEn: house.translations?.en?.summary || "",
     titleDe: house.translations?.de?.title || "",
     summaryDe: house.translations?.de?.summary || "",
+    titleFr: house.translations?.fr?.title || "",
+    summaryFr: house.translations?.fr?.summary || "",
     location: house.location || "",
     guests: house.guests != null ? String(house.guests) : "",
     bedrooms: house.bedrooms != null ? String(house.bedrooms) : "",
@@ -179,6 +185,10 @@ export default function AdminCasasPage() {
         de: {
           title: form.titleDe.trim() || undefined,
           summary: form.summaryDe.trim() || undefined,
+        },
+        fr: {
+          title: form.titleFr.trim() || undefined,
+          summary: form.summaryFr.trim() || undefined,
         },
       },
     };
@@ -306,6 +316,25 @@ export default function AdminCasasPage() {
                 value={form.summaryDe}
                 onChange={(e) =>
                   setForm({ ...form, summaryDe: e.target.value })
+                }
+              />
+            </Field>
+          </div>
+          <Field label="Título (FR)">
+            <input
+              className={adminInput}
+              value={form.titleFr}
+              onChange={(e) => setForm({ ...form, titleFr: e.target.value })}
+            />
+          </Field>
+          <div className="md:col-span-2">
+            <Field label="Resumen (FR)">
+              <textarea
+                rows={3}
+                className={adminTextarea}
+                value={form.summaryFr}
+                onChange={(e) =>
+                  setForm({ ...form, summaryFr: e.target.value })
                 }
               />
             </Field>

@@ -3,6 +3,7 @@ import type { Locale } from "@/i18n/config";
 export function intlLocale(locale: Locale | string = "es"): string {
   if (locale === "en") return "en-GB";
   if (locale === "de") return "de-DE";
+  if (locale === "fr") return "fr-FR";
   return "es-ES";
 }
 
@@ -56,6 +57,7 @@ export function groupSizeLabel(
     es: { small: "Grupo reducido", large: "Grupo grande", private: "Privado" },
     en: { small: "Small group", large: "Large group", private: "Private" },
     de: { small: "Kleine Gruppe", large: "Große Gruppe", private: "Privat" },
+    fr: { small: "Petit groupe", large: "Grand groupe", private: "Privé" },
   } as const;
   const L = map[(locale as Locale) in map ? (locale as Locale) : "es"];
   if (size === "small") return L.small;
@@ -108,6 +110,13 @@ export function paymentLabel(
       deposit_10: "10% Karte + Rest bar",
       deposit_20: "20% Karte + Rest bar",
     },
+    fr: {
+      card: "Paiement 100 % en ligne",
+      bizum: "Paiement 100 % en ligne",
+      pay_on_day: "Paiement le jour de l'excursion",
+      deposit_10: "10 % carte + solde en espèces",
+      deposit_20: "20 % carte + solde en espèces",
+    },
   };
   const L = map[locale as string] || map.es;
   return L[method] ?? method;
@@ -133,6 +142,10 @@ const LANG_LABELS: Record<string, Record<string, string>> = {
     aleman: "Alemán",
     deutsch: "Alemán",
     german: "Alemán",
+    francés: "Francés",
+    frances: "Francés",
+    french: "Francés",
+    francais: "Francés",
   },
   en: {
     es: "Spanish",
@@ -153,6 +166,10 @@ const LANG_LABELS: Record<string, Record<string, string>> = {
     aleman: "German",
     deutsch: "German",
     german: "German",
+    francés: "French",
+    frances: "French",
+    french: "French",
+    francais: "French",
   },
   de: {
     es: "Spanisch",
@@ -173,6 +190,34 @@ const LANG_LABELS: Record<string, Record<string, string>> = {
     aleman: "Deutsch",
     deutsch: "Deutsch",
     german: "Deutsch",
+    francés: "Französisch",
+    frances: "Französisch",
+    french: "Französisch",
+    francais: "Französisch",
+  },
+  fr: {
+    es: "Espagnol",
+    en: "Anglais",
+    de: "Allemand",
+    it: "Italien",
+    fr: "Français",
+    pt: "Portugais",
+    español: "Espagnol",
+    espanol: "Espagnol",
+    spanish: "Espagnol",
+    spanisch: "Espagnol",
+    inglés: "Anglais",
+    ingles: "Anglais",
+    english: "Anglais",
+    englisch: "Anglais",
+    alemán: "Allemand",
+    aleman: "Allemand",
+    deutsch: "Allemand",
+    german: "Allemand",
+    francés: "Français",
+    frances: "Français",
+    french: "Français",
+    francais: "Français",
   },
 };
 
@@ -211,12 +256,14 @@ const DEFAULT_TOUR_CANCELLATION: Record<string, string> = {
   es: "Cancelación gratuita hasta 48 h antes.",
   en: "Free cancellation up to 48 hours before the excursion.",
   de: "Kostenlose Stornierung bis 48 Stunden vor dem Ausflug.",
+  fr: "Annulation gratuite jusqu'à 48 h avant.",
 };
 
 const DEFAULT_24H_CANCELLATION: Record<string, string> = {
   es: "Cancelación gratuita hasta 24 h antes.",
   en: "Free cancellation up to 24 hours before the service.",
   de: "Kostenlose Stornierung bis 24 Stunden vor dem Service.",
+  fr: "Annulation gratuite jusqu'à 24 h avant.",
 };
 
 /** Detecta política de cancelación aún en español (para EN/DE). */

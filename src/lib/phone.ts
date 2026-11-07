@@ -8,76 +8,76 @@ export type PhoneCountry = {
 
 /** Prefijos habituales de clientes de Lanzarote. */
 export const PHONE_COUNTRIES: PhoneCountry[] = [
-  { iso: "ES", dial: "34", names: { es: "España", en: "Spain", de: "Spanien" } },
+  { iso: "ES", dial: "34", names: { es: "España", en: "Spain", de: "Spanien" , fr: "Espagne"} },
   {
     iso: "DE",
     dial: "49",
-    names: { es: "Alemania", en: "Germany", de: "Deutschland" },
+    names: { es: "Alemania", en: "Germany", de: "Deutschland", fr: "Allemagne" },
   },
   {
     iso: "GB",
     dial: "44",
-    names: { es: "Reino Unido", en: "United Kingdom", de: "Vereinigtes Königreich" },
+    names: { es: "Reino Unido", en: "United Kingdom", de: "Vereinigtes Königreich", fr: "Royaume-Uni" },
   },
-  { iso: "IE", dial: "353", names: { es: "Irlanda", en: "Ireland", de: "Irland" } },
-  { iso: "FR", dial: "33", names: { es: "Francia", en: "France", de: "Frankreich" } },
-  { iso: "IT", dial: "39", names: { es: "Italia", en: "Italy", de: "Italien" } },
+  { iso: "IE", dial: "353", names: { es: "Irlanda", en: "Ireland", de: "Irland" , fr: "Irlande"} },
+  { iso: "FR", dial: "33", names: { es: "Francia", en: "France", de: "Frankreich" , fr: "France"} },
+  { iso: "IT", dial: "39", names: { es: "Italia", en: "Italy", de: "Italien" , fr: "Italie"} },
   {
     iso: "NL",
     dial: "31",
-    names: { es: "Países Bajos", en: "Netherlands", de: "Niederlande" },
+    names: { es: "Países Bajos", en: "Netherlands", de: "Niederlande", fr: "Pays-Bas" },
   },
-  { iso: "BE", dial: "32", names: { es: "Bélgica", en: "Belgium", de: "Belgien" } },
-  { iso: "AT", dial: "43", names: { es: "Austria", en: "Austria", de: "Österreich" } },
-  { iso: "CH", dial: "41", names: { es: "Suiza", en: "Switzerland", de: "Schweiz" } },
+  { iso: "BE", dial: "32", names: { es: "Bélgica", en: "Belgium", de: "Belgien" , fr: "Belgique"} },
+  { iso: "AT", dial: "43", names: { es: "Austria", en: "Austria", de: "Österreich" , fr: "Autriche"} },
+  { iso: "CH", dial: "41", names: { es: "Suiza", en: "Switzerland", de: "Schweiz" , fr: "Suisse"} },
   {
     iso: "PT",
     dial: "351",
-    names: { es: "Portugal", en: "Portugal", de: "Portugal" },
+    names: { es: "Portugal", en: "Portugal", de: "Portugal", fr: "Portugal" },
   },
-  { iso: "PL", dial: "48", names: { es: "Polonia", en: "Poland", de: "Polen" } },
-  { iso: "SE", dial: "46", names: { es: "Suecia", en: "Sweden", de: "Schweden" } },
-  { iso: "NO", dial: "47", names: { es: "Noruega", en: "Norway", de: "Norwegen" } },
-  { iso: "DK", dial: "45", names: { es: "Dinamarca", en: "Denmark", de: "Dänemark" } },
-  { iso: "FI", dial: "358", names: { es: "Finlandia", en: "Finland", de: "Finnland" } },
+  { iso: "PL", dial: "48", names: { es: "Polonia", en: "Poland", de: "Polen" , fr: "Pologne"} },
+  { iso: "SE", dial: "46", names: { es: "Suecia", en: "Sweden", de: "Schweden" , fr: "Suède"} },
+  { iso: "NO", dial: "47", names: { es: "Noruega", en: "Norway", de: "Norwegen" , fr: "Norvège"} },
+  { iso: "DK", dial: "45", names: { es: "Dinamarca", en: "Denmark", de: "Dänemark" , fr: "Danemark"} },
+  { iso: "FI", dial: "358", names: { es: "Finlandia", en: "Finland", de: "Finnland" , fr: "Finlande"} },
   {
     iso: "CZ",
     dial: "420",
-    names: { es: "Chequia", en: "Czechia", de: "Tschechien" },
+    names: { es: "Chequia", en: "Czechia", de: "Tschechien", fr: "Tchéquie" },
   },
   {
     iso: "US",
     dial: "1",
-    names: { es: "Estados Unidos", en: "United States", de: "USA" },
+    names: { es: "Estados Unidos", en: "United States", de: "USA", fr: "États-Unis" },
   },
-  { iso: "CA", dial: "1", names: { es: "Canadá", en: "Canada", de: "Kanada" } },
+  { iso: "CA", dial: "1", names: { es: "Canadá", en: "Canada", de: "Kanada" , fr: "Canada"} },
   {
     iso: "AU",
     dial: "61",
-    names: { es: "Australia", en: "Australia", de: "Australien" },
+    names: { es: "Australia", en: "Australia", de: "Australien", fr: "Australie" },
   },
   {
     iso: "LU",
     dial: "352",
-    names: { es: "Luxemburgo", en: "Luxembourg", de: "Luxemburg" },
+    names: { es: "Luxemburgo", en: "Luxembourg", de: "Luxemburg", fr: "Luxembourg" },
   },
-  { iso: "RO", dial: "40", names: { es: "Rumanía", en: "Romania", de: "Rumänien" } },
-  { iso: "HU", dial: "36", names: { es: "Hungría", en: "Hungary", de: "Ungarn" } },
+  { iso: "RO", dial: "40", names: { es: "Rumanía", en: "Romania", de: "Rumänien" , fr: "Roumanie"} },
+  { iso: "HU", dial: "36", names: { es: "Hungría", en: "Hungary", de: "Ungarn" , fr: "Hongrie"} },
   {
     iso: "GR",
     dial: "30",
-    names: { es: "Grecia", en: "Greece", de: "Griechenland" },
+    names: { es: "Grecia", en: "Greece", de: "Griechenland", fr: "Grèce" },
   },
-  { iso: "BR", dial: "55", names: { es: "Brasil", en: "Brazil", de: "Brasilien" } },
-  { iso: "MX", dial: "52", names: { es: "México", en: "Mexico", de: "Mexiko" } },
-  { iso: "AR", dial: "54", names: { es: "Argentina", en: "Argentina", de: "Argentinien" } },
+  { iso: "BR", dial: "55", names: { es: "Brasil", en: "Brazil", de: "Brasilien" , fr: "Brésil"} },
+  { iso: "MX", dial: "52", names: { es: "México", en: "Mexico", de: "Mexiko" , fr: "Mexique"} },
+  { iso: "AR", dial: "54", names: { es: "Argentina", en: "Argentina", de: "Argentinien" , fr: "Argentine"} },
   {
     iso: "AE",
     dial: "971",
-    names: { es: "Emiratos", en: "UAE", de: "VAE" },
+    names: { es: "Emiratos", en: "UAE", de: "VAE", fr: "Émirats" },
   },
-  { iso: "IL", dial: "972", names: { es: "Israel", en: "Israel", de: "Israel" } },
-  { iso: "ZA", dial: "27", names: { es: "Sudáfrica", en: "South Africa", de: "Südafrika" } },
+  { iso: "IL", dial: "972", names: { es: "Israel", en: "Israel", de: "Israel" , fr: "Israël"} },
+  { iso: "ZA", dial: "27", names: { es: "Sudáfrica", en: "South Africa", de: "Südafrika" , fr: "Afrique du Sud"} },
 ];
 
 const DIALS_LONGEST_FIRST = [...new Set(PHONE_COUNTRIES.map((c) => c.dial))].sort(
@@ -86,6 +86,7 @@ const DIALS_LONGEST_FIRST = [...new Set(PHONE_COUNTRIES.map((c) => c.dial))].sor
 
 export function defaultPhoneIso(locale?: string | null): string {
   if (locale === "de") return "DE";
+  if (locale === "fr") return "FR";
   if (locale === "en") return "GB";
   return "ES";
 }

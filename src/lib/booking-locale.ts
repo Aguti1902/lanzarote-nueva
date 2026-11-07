@@ -2,9 +2,9 @@ import type { Booking } from "@/types";
 import { isLocale, type Locale } from "@/i18n/config";
 import { stripLocaleFromPathname } from "@/i18n/path";
 
-export type BookingLocale = "es" | "en" | "de";
+export type BookingLocale = Locale;
 
-/** Normaliza es / en / de, también en-US, de-DE, english, etc. */
+/** Normaliza es / en / de / fr, también en-US, de-DE, fr-FR, english, etc. */
 export function normalizeBookingLocale(
   raw?: string | null
 ): BookingLocale | undefined {
@@ -14,6 +14,9 @@ export function normalizeBookingLocale(
   const primary = value.split("-")[0] || "";
   if (isLocale(primary)) return primary;
   if (value.startsWith("en") || value.includes("english")) return "en";
+  if (value.startsWith("fr") || value.includes("french") || value.includes("francais") || value.includes("français")) {
+    return "fr";
+  }
   if (value.startsWith("de") || value.includes("german") || value.includes("deutsch")) {
     return "de";
   }
@@ -93,6 +96,17 @@ export function inferLocaleFromText(text?: string | null): BookingLocale | undef
     /\bmejor\b/i,
   ].filter((re) => re.test(t)).length;
 
+  const frHits = [
+    /\bexcursion\b/i,
+    /\bpour\b/i,
+    /\bavec\b/i,
+    /\bréservation\b/i,
+    /\breservation\b/i,
+    /\bcroisière\b/i,
+    /\bcroisiere\b/i,
+  ].filter((re) => re.test(t)).length;
+
+  if (frHits >= 2 && frHits >= deHits && frHits >= enHits && frHits >= esHits) return "fr";
   if (deHits >= 2 && deHits >= enHits && deHits >= esHits) return "de";
   if (enHits >= 2 && enHits > esHits) return "en";
   if (esHits >= 2 && esHits > enHits) return "es";

@@ -27,6 +27,10 @@
       "de": {
         "title": "Ferienwohnung 'Playa Honda Holiday Home'",
         "summary": "Gemütliche 60-m²-Wohnung in Playa Honda für 2 Gäste, mit 1 Schlafzimmer, privatem Balkon, Gemeinschaftsgarten und WLAN. Nur 2 Gehminuten vom Strand Guacimeta und ca. 1 km vom Flughafen entfernt."
+      },
+      "fr": {
+        "title": "Appartement de vacances « Playa Honda Holiday Home »",
+        "summary": "Appartement confortable de 60 m² à Playa Honda pour 2 personnes, avec 1 chambre, balcon privatif, jardin partagé et Wi-Fi. À 2 minutes à pied de la plage de Guacimeta et à environ 1 km de l'aéroport."
       }
     }
   },
@@ -58,6 +62,10 @@
       "de": {
         "title": "Ferienhaus \"Casa Cordel\"",
         "summary": "Zweigeschossiges Haus in Playa Honda (90 m²) mit privater überdachter Terrasse und WLAN. 4 Schlafzimmer, 2 Bäder und Platz für 7 Personen. Ideale, komfortable Basis zum Erkunden von Lanzarote."
+      },
+      "fr": {
+        "title": "Maison de vacances « Casa Cordel »",
+        "summary": "Maison de deux étages à Playa Honda (90 m²) avec terrasse couverte privative et Wi-Fi. 4 chambres, 2 salles de bain et de la place pour 7 personnes. Une base confortable et idéale pour explorer Lanzarote."
       }
     }
   }
