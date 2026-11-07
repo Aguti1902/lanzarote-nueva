@@ -10,7 +10,7 @@ import type {
   TourScheduleSlot,
   TourTranslation,
 } from "@/types";
-import { Field, adminInput, adminTextarea, arrayToLines, linesToArray } from "@/components/admin/Field";
+import { AdminLangTabs, Field, adminInput, adminTextarea, arrayToLines, linesToArray } from "@/components/admin/Field";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { isFlatPriceTour } from "@/lib/tour-pricing";
@@ -854,23 +854,10 @@ export function TourEditor({ initial }: { initial?: Tour }) {
 
       {tab === "translations" && (
         <section className="space-y-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
-          <div className="flex flex-wrap items-end gap-4">
-            <Field label="Elegir idioma">
-              <select
-                className={adminInput}
-                value={lang}
-                onChange={(e) => setLang(e.target.value as LangKey)}
-              >
-                <option value="es">Español</option>
-                <option value="en">Inglés</option>
-                <option value="de">Alemán</option>
-                <option value="fr">Francés</option>
-              </select>
-            </Field>
-            <h2 className="pb-2 text-lg font-bold">
-              Traducciones del tour en {adminLangLabel(lang)}
-            </h2>
-          </div>
+          <AdminLangTabs value={lang} onChange={setLang} />
+          <h2 className="text-lg font-bold">
+            Traducciones del tour en {adminLangLabel(lang)}
+          </h2>
 
           <div className="grid gap-4">
             <Field label="Nombre del tour">
@@ -1176,23 +1163,8 @@ export function TourEditor({ initial }: { initial?: Tour }) {
 
       {tab === "seo" && (
         <section className="space-y-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-sand-line">
-          <div className="flex flex-wrap items-end gap-4">
-            <Field label="Idioma del SEO">
-              <select
-                className={adminInput}
-                value={lang}
-                onChange={(e) => setLang(e.target.value as LangKey)}
-              >
-                <option value="es">Español</option>
-                <option value="en">Inglés</option>
-                <option value="de">Alemán</option>
-                <option value="fr">Francés</option>
-              </select>
-            </Field>
-            <h2 className="pb-2 text-lg font-bold">
-              SEO ({adminLangLabel(lang)})
-            </h2>
-          </div>
+          <AdminLangTabs value={lang} onChange={setLang} />
+          <h2 className="text-lg font-bold">SEO ({adminLangLabel(lang)})</h2>
           <div className="rounded-lg bg-sky-soft/60 px-4 py-3 text-sm text-ink-muted ring-1 ring-sand-line">
             <p className="font-semibold text-ink">Cómo rellenar el SEO</p>
             <ol className="mt-2 list-decimal space-y-1 pl-5">

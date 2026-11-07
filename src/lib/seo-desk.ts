@@ -136,6 +136,7 @@ export type FichaCopy = {
   es: LocaleCopyView;
   en: LocaleCopyView;
   de: LocaleCopyView;
+  fr: LocaleCopyView;
 };
 
 const STOP = new Set(
@@ -233,7 +234,10 @@ function contentBigrams(text: string): string[] {
   return out;
 }
 
-function copyOf(tour: Tour | undefined, locale: "es" | "en" | "de"): LocaleCopyView {
+function copyOf(
+  tour: Tour | undefined,
+  locale: "es" | "en" | "de" | "fr"
+): LocaleCopyView {
   if (!tour) return { h1: "", seoTitle: "", seoDescription: "" };
   if (locale === "es") {
     return {
@@ -271,6 +275,7 @@ export function fichaCopy(ficha: Ficha, tour: Tour | undefined): FichaCopy | nul
     es: copyOf(tour, "es"),
     en: copyOf(tour, "en"),
     de: copyOf(tour, "de"),
+    fr: copyOf(tour, "fr"),
   };
 }
 
@@ -291,6 +296,11 @@ function ownHeadline(tour: Tour): string {
     tour.translations?.de?.summary,
     tour.translations?.de?.seo?.title,
     tour.translations?.de?.seo?.description,
+    tour.translations?.fr?.title,
+    tour.translations?.fr?.shortTitle,
+    tour.translations?.fr?.summary,
+    tour.translations?.fr?.seo?.title,
+    tour.translations?.fr?.seo?.description,
   ]
     .filter(Boolean)
     .join(" ");
