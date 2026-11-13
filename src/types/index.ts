@@ -1,3 +1,5 @@
+import type { Locale } from "@/i18n/config";
+
 export type GroupSize = "small" | "large";
 export type TourCategory = "excursion" | "private" | "minibus" | "transfer";
 export type PaymentMethod =
@@ -157,12 +159,17 @@ export interface BlogPost {
   imageAlt?: string;
   /** Meta SEO en español. */
   seo?: BlogSeo;
-  /** Traducciones EN/DE del mismo artículo. */
+  /** Traducciones EN/DE/FR del mismo artículo. */
   translations?: {
     en?: BlogPostTranslation;
     de?: BlogPostTranslation;
     fr?: BlogPostTranslation;
   };
+  /**
+   * Idiomas en los que el artículo se publica.
+   * Si falta, se muestra en español, inglés, alemán y francés.
+   */
+  locales?: Locale[];
 }
 
 export interface VacationHouseTranslation {

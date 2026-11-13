@@ -11,6 +11,7 @@ import { getBlogPosts, getFeaturedTours, getPostBySlug, getPublicTours } from "@
 import {
   filterBlogPostsByLocale,
   blogCoverAlt,
+  getBlogPublicLocales,
   getBlogTopicTags,
   isBlogPostVisibleInLocale,
 } from "@/lib/blog-locale";
@@ -96,7 +97,7 @@ export default async function BlogPostPage({ params }: Props) {
     : "";
 
   return (
-    <article>
+    <article data-blog-locales={getBlogPublicLocales(base).join(",")}>
       <div className="relative flex min-h-[560px] flex-col justify-end bg-bg-deep md:min-h-[640px] lg:min-h-[680px]">
         <Image
           src={post.image}

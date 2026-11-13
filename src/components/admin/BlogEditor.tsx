@@ -7,6 +7,7 @@ import type { Locale } from "@/i18n/config";
 import type { BlogPost, BlogPostTranslation, BlogSeo } from "@/types";
 import {
   getBlogLanguageTag,
+  getBlogPublicLocales,
   getBlogTopicTags,
 } from "@/lib/blog-locale";
 import { Field, adminInput } from "@/components/admin/Field";
@@ -218,6 +219,9 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
     hydrated.fr.title ||
     ""
   );
+  const [publicLocales, setPublicLocales] = useState<Locale[]>(() =>
+    initial ? getBlogPublicLocales(initial) : ["es", "en", "de", "fr"]
+  );
   const [saving, setSaving] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState("");
@@ -301,8 +305,11 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
     try {
       if (!es.title.trim() || !es.excerpt.trim() || !es.content.trim()) {
         throw new Error(
-          "Complete título, extracto y contenido en español (pestaña ES). Las traducciones EN, DE y FR van en el mismo artículo."
+          "Complete título, extracto y contenido en español (pestaña ES). Las traducciones van en el mismo artículo."
         );
+      }
+      if (publicLocales.length === 0) {
+        throw new Error("Elija al menos un idioma para mostrar el artículo.");
       }
       const esSeo = fieldsToSeo(es);
       const baseSlug = (es.slug.trim() || es.title).trim();
@@ -319,6 +326,7 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
         ...(initial?.published === false ? { published: false } : {}),
         ...(es.imageAlt.trim() ? { imageAlt: es.imageAlt.trim() } : {}),
         ...(esSeo ? { seo: esSeo } : {}),
+        locales: publicLocales,
         translations: {
           en: fieldsToBlock(en),
           de: fieldsToBlock(de),
@@ -349,8 +357,8 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
       <div className="rounded-lg bg-sky-soft p-4 ring-1 ring-sand-line">
         <p className="text-sm font-bold text-ink">Generar con IA</p>
         <p className="mt-1 text-xs text-ink-muted">
-          Genera el borrador en el idioma de la pestaña activa. Complete ES, EN,
-          DE y FR en el mismo artículo.
+          Genera el borrador en el idioma de la pestaña activa. Cada idioma se
+          guarda en el mismo artículo; abajo elige en cuáles se publica.
         </p>
         <div className="mt-3 flex flex-col gap-2 sm:flex-row">
           <input
@@ -402,9 +410,48 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
           );
         })}
       </div>
+      <fieldset className="rounded-lg bg-bg/70 p-3 ring-1 ring-sand-line">
+        <legend className="px-1 text-sm font-bold text-ink">
+          Idiomas en la web
+        </legend>
+        <p className="mb-2 text-xs text-ink-muted">
+          Desmarque un idioma para que este artículo no aparezca en esa versión
+          de la web. El texto se conserva por si vuelve a marcarlo.
+        </p>
+        <div className="flex flex-wrap gap-3">
+          {LANG_TABS.map((tab) => {
+            const checked = publicLocales.includes(tab.id);
+            return (
+              <label
+                key={tab.id}
+                className="inline-flex items-center gap-2 text-sm font-semibold text-ink"
+              >
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 accent-ocean"
+                  checked={checked}
+                  onChange={() => {
+                    setPublicLocales((prev) => {
+                      if (prev.includes(tab.id)) {
+                        if (prev.length === 1) return prev;
+                        return prev.filter((locale) => locale !== tab.id);
+                      }
+                      return LANG_TABS.map((item) => item.id).filter(
+                        (locale) => locale === tab.id || prev.includes(locale)
+                      );
+                    });
+                  }}
+                />
+                {tab.label}
+              </label>
+            );
+          })}
+        </div>
+      </fieldset>
       <p className="text-xs text-ink-muted">
-        Un solo artículo con las cuatro versiones. Puede definir una URL (slug)
-        distinta en cada idioma; si EN, DE o FR están vacíos, se usa el slug en español.
+        Un solo artículo con las versiones que necesite. Puede definir una URL
+        (slug) distinta en cada idioma; si EN, DE o FR están vacíos, se usa el
+        slug en español.
       </p>
 
       <Field
@@ -460,8 +507,9 @@ export function BlogEditor({ initial }: { initial?: BlogPost }) {
           }
         />
         <p className="mt-1 text-xs text-ink-muted">
-          Ruta pública: /{editLocale}/blog/
-          {(active.slug || es.slug || "…").trim() || "…"}
+          {publicLocales.includes(editLocale)
+            ? `Ruta pública: /${editLocale}/blog/${(active.slug || es.slug || "…").trim() || "…"}`
+            : "Este idioma no se muestra en la web. El texto queda guardado."}
         </p>
       </Field>
       <Field

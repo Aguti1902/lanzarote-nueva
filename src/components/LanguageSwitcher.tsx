@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { locales, localeLabels, type Locale } from "@/i18n/config";
-import { switchLocalePath } from "@/i18n/path";
+import { localePath, switchLocalePath } from "@/i18n/path";
 import { useLocale } from "@/components/LocaleProvider";
 import { useAppLoadingOptional } from "@/components/AppLoadingProvider";
 
@@ -16,7 +16,19 @@ export function LanguageSwitcher() {
     if (next === locale) return;
     const search =
       typeof window !== "undefined" ? window.location.search : "";
-    const target = switchLocalePath(pathname, next, search);
+    let target = switchLocalePath(pathname, next, search);
+    const allowed = document
+      .querySelector("[data-blog-locales]")
+      ?.getAttribute("data-blog-locales");
+    if (allowed) {
+      const published = allowed
+        .split(",")
+        .map((code) => code.trim())
+        .filter(Boolean);
+      if (published.length > 0 && !published.includes(next)) {
+        target = localePath(next, "/blog") + search;
+      }
+    }
     document.cookie = `NEXT_LOCALE=${next}; path=/; max-age=31536000`;
     loading?.startLanguageSwitch(next, locale);
     router.prefetch(target);
