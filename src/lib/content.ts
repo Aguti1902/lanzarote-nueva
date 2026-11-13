@@ -28,6 +28,7 @@ import {
 } from "@/lib/supabase/cms-store";
 import {
   getBlogTopicTags,
+  normalizeBlogLocales,
   normalizeBlogSeo,
   normalizeBlogTranslations,
 } from "@/lib/blog-locale";
@@ -383,11 +384,15 @@ export async function upsertBlogPost(
       : existing
         ? existing.published !== false
         : true;
+  const locales = normalizeBlogLocales(
+    post.locales !== undefined ? post.locales : existing?.locales
+  );
   const normalized: BlogPost = {
     ...post,
     slug: nextSlug,
     tags: getBlogTopicTags(post.tags),
     ...(published ? {} : { published: false }),
+    ...(locales ? { locales } : {}),
     ...(post.imageAlt?.trim()
       ? { imageAlt: post.imageAlt.trim() }
       : { imageAlt: undefined }),
@@ -395,6 +400,7 @@ export async function upsertBlogPost(
     ...(translations ? { translations } : { translations: undefined }),
   };
   if (published) delete normalized.published;
+  if (!locales) delete normalized.locales;
   if (!normalized.imageAlt) delete normalized.imageAlt;
   if (!seo) delete normalized.seo;
   if (!translations) delete normalized.translations;
@@ -419,6 +425,7 @@ export async function createBlogPost(
   }
   const translations = normalizeBlogTranslations(input.translations);
   const seo = normalizeBlogSeo(input.seo);
+  const locales = normalizeBlogLocales(input.locales);
   const post: BlogPost = {
     slug,
     title: input.title,
@@ -429,6 +436,7 @@ export async function createBlogPost(
     author: input.author || "Equipo Lanzarote Experience Tours",
     tags: getBlogTopicTags(input.tags || []),
     ...(input.published === false ? { published: false } : {}),
+    ...(locales ? { locales } : {}),
     ...(input.imageAlt?.trim() ? { imageAlt: input.imageAlt.trim() } : {}),
     ...(seo ? { seo } : {}),
     ...(translations ? { translations } : {}),

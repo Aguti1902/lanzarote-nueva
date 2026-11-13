@@ -75,12 +75,34 @@ export function isBlogPostPublished(
   return post.published !== false;
 }
 
+const BLOG_PUBLIC_LOCALES: Locale[] = ["es", "en", "de", "fr"];
+
+/**
+ * Idiomas en los que el artículo sale en la web.
+ * Sin `locales`, o con los cuatro, se publica en todos.
+ */
+export function normalizeBlogLocales(value: unknown): Locale[] | undefined {
+  if (!Array.isArray(value)) return undefined;
+  const picked = BLOG_PUBLIC_LOCALES.filter((locale) => value.includes(locale));
+  if (picked.length === 0 || picked.length === BLOG_PUBLIC_LOCALES.length) {
+    return undefined;
+  }
+  return picked;
+}
+
+export function getBlogPublicLocales(
+  post: Pick<BlogPost, "locales"> | null | undefined
+): Locale[] {
+  return normalizeBlogLocales(post?.locales) ?? [...BLOG_PUBLIC_LOCALES];
+}
+
 /** ¿Se muestra este post en el listado/detalle del locale? */
 export function isBlogPostVisibleInLocale(
-  post: Pick<BlogPost, "tags" | "translations" | "published">,
+  post: Pick<BlogPost, "tags" | "translations" | "published" | "locales">,
   locale: Locale
 ): boolean {
   if (!isBlogPostPublished(post)) return false;
+  if (!getBlogPublicLocales(post).includes(locale)) return false;
   if (isPrimaryBlogPost(post)) return true;
   return getBlogPostLocale(post) === locale;
 }

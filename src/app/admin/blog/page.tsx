@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Eye, EyeOff, Pencil, Plus, Trash2 } from "lucide-react";
 import type { BlogPost } from "@/types";
 import {
-  getBlogPostLanguageCoverage,
+  getBlogPublicLocales,
   isBlogPostPublished,
 } from "@/lib/blog-locale";
 import { formatDate } from "@/lib/format";
@@ -63,8 +63,8 @@ export default function AdminBlogPage() {
         <div>
           <h1 className="font-display text-3xl text-ink">Blog</h1>
           <p className="mt-1 text-sm text-ink-muted">
-            Un artículo = ES + EN + DE + FR. Use el ojo para ocultar o mostrar en la
-            web sin eliminar.
+            Elija en cada artículo los idiomas en los que se publica. Use el ojo
+            para ocultarlo por completo sin eliminarlo.
           </p>
         </div>
         <Link
@@ -115,21 +115,18 @@ export default function AdminBlogPage() {
                         )}
                       </div>
                       <p className="text-xs text-ink-muted">
-                        ES /blog/{p.slug}
-                        {p.translations?.en?.slug
-                          ? ` · EN /blog/${p.translations.en.slug}`
-                          : ""}
-                        {p.translations?.de?.slug
-                          ? ` · DE /blog/${p.translations.de.slug}`
-                          : ""}
-                        {p.translations?.fr?.slug
-                          ? ` · FR /blog/${p.translations.fr.slug}`
-                          : ""}
+                        {getBlogPublicLocales(p).map((lang) => {
+                          const slug =
+                            lang === "es"
+                              ? p.slug
+                              : p.translations?.[lang]?.slug || p.slug;
+                          return `${lang.toUpperCase()} /blog/${slug}`;
+                        }).join(" · ")}
                       </p>
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap gap-1">
-                        {getBlogPostLanguageCoverage(p).map((lang) => (
+                        {getBlogPublicLocales(p).map((lang) => (
                           <span
                             key={lang}
                             className="rounded bg-sky-soft px-1.5 py-0.5 text-[10px] font-bold uppercase text-ocean"

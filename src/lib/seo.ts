@@ -3,6 +3,7 @@ import { locales, type Locale } from "@/i18n/config";
 import { localePath } from "@/i18n/path";
 import { tourSlugForLocale, type TourSlugSource } from "@/i18n/tour-slugs";
 import { blogSlugForLocale } from "@/i18n/blog-slugs";
+import { getBlogPublicLocales } from "@/lib/blog-locale";
 import type { BlogPost } from "@/types";
 import { resolvePublicOrigin } from "@/lib/voucher";
 
@@ -66,20 +67,22 @@ export function tourLocaleAlternates(
 
 /** Alternates de artículo de blog (slug distinto por idioma). */
 export function blogLocaleAlternates(
-  post: Pick<BlogPost, "slug" | "translations">,
+  post: Pick<BlogPost, "slug" | "translations" | "locales">,
   locale: Locale
 ): NonNullable<Metadata["alternates"]> {
   const origin = resolvePublicOrigin();
   const languages: Record<string, string> = {};
-  for (const loc of locales) {
+  const visible = getBlogPublicLocales(post);
+  for (const loc of visible) {
     languages[loc] = `${origin}${localePath(
       loc,
       `/blog/${blogSlugForLocale(post, loc)}`
     )}`;
   }
-  languages["x-default"] = languages.es;
+  const fallback = languages.es || languages[visible[0]] || "";
+  if (fallback) languages["x-default"] = fallback;
   return {
-    canonical: languages[locale] || languages.es,
+    canonical: languages[locale] || fallback,
     languages,
   };
 }
