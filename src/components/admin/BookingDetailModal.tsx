@@ -895,8 +895,8 @@ export function BookingDetailModal({
         title="Confirmar refund Stripe"
         body={
           booking.status === "cancelled"
-            ? `Se enviará un refund a Stripe según la política de cancelación para ${booking.id}.\n\nEsto devolverá el dinero a la tarjeta del cliente.`
-            : `Se enviará un refund a Stripe del importe cobrado con tarjeta para ${booking.id}.\n\nEsto devolverá el dinero a la tarjeta del cliente.`
+            ? `Se enviará un refund a Stripe según la política de cancelación para ${booking.id}.\n\nEsto devolverá el dinero a la tarjeta del cliente. Si Stripe ya lo devolvió, solo se anota en la reserva: no se hace una segunda devolución.`
+            : `Se enviará un refund a Stripe del importe cobrado con tarjeta para ${booking.id}.\n\nEsto devolverá el dinero a la tarjeta del cliente. Si Stripe ya lo devolvió, solo se anota en la reserva: no se hace una segunda devolución.`
         }
         confirmLabel="Sí, devolver"
         cancelLabel="Cancelar"

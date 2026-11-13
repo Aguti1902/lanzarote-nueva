@@ -6,7 +6,9 @@ import { createCreditNoteForBooking } from "@/lib/invoices";
 import {
   createStripeRefund,
   isStripeConfigured,
+  listStripeRefunds,
   resolvePaymentIntentId,
+  type RecordedStripeRefund,
 } from "@/lib/stripe";
 import { requireAdmin } from "@/lib/admin-auth";
 
@@ -118,20 +120,52 @@ export async function POST(request: Request) {
       );
     }
 
-    const refund = await createStripeRefund({
-      paymentIntentId,
-      amountEuros: amount,
-      reason: "requested_by_customer",
-      metadata: {
-        bookingId: booking.id,
-        source: "admin-refund-button",
-      },
-    });
+    const prior = await listStripeRefunds(paymentIntentId);
+    let alreadyEuros = roundMoney(
+      prior.reduce((sum, item) => sum + item.amountEuros, 0)
+    );
+    const remainder = roundMoney(amount - alreadyEuros);
+    let refund: RecordedStripeRefund;
+    let alreadyRecorded = false;
+
+    if (remainder <= 0.009 && prior.length > 0) {
+      refund =
+        prior.find((item) => Math.abs(item.amountEuros - amount) < 0.02) ||
+        prior[0];
+      alreadyRecorded = true;
+    } else {
+      try {
+        refund = await createStripeRefund({
+          paymentIntentId,
+          amountEuros: remainder > 0.009 ? remainder : amount,
+          reason: "requested_by_customer",
+          metadata: {
+            bookingId: booking.id,
+            source: "admin-refund-button",
+          },
+        });
+      } catch (err) {
+        const again = await listStripeRefunds(paymentIntentId);
+        const againEuros = roundMoney(
+          again.reduce((sum, item) => sum + item.amountEuros, 0)
+        );
+        if (againEuros + 0.009 < amount || again.length === 0) throw err;
+        refund =
+          again.find((item) => Math.abs(item.amountEuros - amount) < 0.02) ||
+          again[0];
+        alreadyEuros = againEuros;
+        alreadyRecorded = true;
+      }
+    }
+
+    const recordedAmount = alreadyRecorded
+      ? Math.max(alreadyEuros, refund.amountEuros)
+      : roundMoney(alreadyEuros + refund.amountEuros);
 
     let creditNote = null;
     try {
       creditNote = await createCreditNoteForBooking(booking, {
-        refundAmount: amount,
+        refundAmount: recordedAmount,
       });
     } catch (err) {
       console.error("[refund] credit note failed", booking.id, err);
@@ -141,16 +175,19 @@ export async function POST(request: Request) {
       paymentStatus: "refunded",
       stripePaymentIntentId: paymentIntentId,
       stripeRefundId: refund.refundId,
-      stripeRefundedAt: new Date().toISOString(),
-      stripeRefundAmount: refund.amountEuros,
+      stripeRefundedAt: refund.createdAt,
+      stripeRefundAmount: recordedAmount,
     });
 
     return NextResponse.json({
       ok: true,
+      alreadyRecorded,
       booking: updated,
       refund,
       creditNote,
-      message: `Refund de ${refund.amountEuros.toFixed(2)} € enviado a Stripe (${refund.refundId}).`,
+      message: alreadyRecorded
+        ? `El reembolso de ${recordedAmount.toFixed(2)} € ya estaba en Stripe (${refund.refundId}). Queda registrado en la reserva, sin una segunda devolución.`
+        : `Refund de ${refund.amountEuros.toFixed(2)} € enviado a Stripe (${refund.refundId}).`,
     });
   } catch (err) {
     const message =

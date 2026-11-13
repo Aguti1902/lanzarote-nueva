@@ -217,6 +217,49 @@ export async function createStripeCheckoutForPayment(
   };
 }
 
+export type RecordedStripeRefund = {
+  refundId: string;
+  amountEuros: number;
+  status: string;
+  paymentIntentId: string;
+  createdAt: string;
+};
+
+function recordedRefund(
+  refund: Stripe.Refund,
+  paymentIntentId: string
+): RecordedStripeRefund {
+  return {
+    refundId: refund.id,
+    amountEuros: Math.round((refund.amount || 0)) / 100,
+    status: refund.status || "unknown",
+    paymentIntentId,
+    createdAt: refund.created
+      ? new Date(refund.created * 1000).toISOString()
+      : new Date().toISOString(),
+  };
+}
+
+/**
+ * Reembolsos ya emitidos de un cobro (succeeded o pending).
+ * Sirve para anotar en el panel una devolución que Stripe hizo y el
+ * navegador no llegó a guardar.
+ */
+export async function listStripeRefunds(
+  paymentIntentId: string
+): Promise<RecordedStripeRefund[]> {
+  const stripe = getStripe();
+  const piId = paymentIntentId.trim();
+  if (!stripe || !piId.startsWith("pi_")) return [];
+  const list = await stripe.refunds.list({
+    payment_intent: piId,
+    limit: 20,
+  });
+  return list.data
+    .filter((refund) => refund.status === "succeeded" || refund.status === "pending")
+    .map((refund) => recordedRefund(refund, piId));
+}
+
 /**
  * Devuelve a la tarjeta el importe indicado vía PaymentIntent de Stripe.
  * `amountEuros` es opcional: si se omite, Stripe reembolsa el total cobrado.
@@ -226,12 +269,7 @@ export async function createStripeRefund(input: {
   amountEuros?: number;
   reason?: "duplicate" | "fraudulent" | "requested_by_customer";
   metadata?: Record<string, string>;
-}): Promise<{
-  refundId: string;
-  amountEuros: number;
-  status: string;
-  paymentIntentId: string;
-}> {
+}): Promise<RecordedStripeRefund> {
   const stripe = getStripe();
   if (!stripe) {
     throw new Error("Stripe no está configurado");
@@ -257,12 +295,7 @@ export async function createStripeRefund(input: {
   }
 
   const refund = await stripe.refunds.create(payload);
-  return {
-    refundId: refund.id,
-    amountEuros: Math.round((refund.amount || 0)) / 100,
-    status: refund.status || "unknown",
-    paymentIntentId: piId,
-  };
+  return recordedRefund(refund, piId);
 }
 
 /** Obtiene el PaymentIntent desde un Checkout Session si hace falta. */
