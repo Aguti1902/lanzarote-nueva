@@ -352,6 +352,11 @@ function AdminReservasCrucerosPage() {
                 message: data.error || "No se pudo hacer el refund",
               };
             }
+            if (data.booking) {
+              setBookings((prev) =>
+                prev.map((b) => (b.id === id ? data.booking : b))
+              );
+            }
             await load();
             return {
               ok: true,
