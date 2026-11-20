@@ -18,6 +18,7 @@ import {
   BookingStatusBadge,
   PaymentStatusBadge,
   bookingRowClassName,
+  needsRefundConfirmation,
 } from "@/components/admin/BookingStatusBadge";
 
 function AdminReservasCrucerosPage() {
@@ -30,6 +31,7 @@ function AdminReservasCrucerosPage() {
   const [range, setRange] = useState<DateRange>(emptyDateRange);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [modalView, setModalView] = useState<"details" | "cancel">("details");
+  const [confirmRefund, setConfirmRefund] = useState(false);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState(() => searchParams.get("q") || "");
 
@@ -266,6 +268,7 @@ function AdminReservasCrucerosPage() {
                 className={`cursor-pointer border-b border-sand-line ${bookingRowClassName(b.status)}`}
                 onClick={() => {
                   setModalView("details");
+                  setConfirmRefund(false);
                   setSelectedId(b.id);
                 }}
               >
@@ -295,7 +298,23 @@ function AdminReservasCrucerosPage() {
                       bookingStatus={b.status}
                       amountPaidCard={b.amountPaidCard}
                       stripeRefundId={b.stripeRefundId}
+                      manualRefundAt={b.manualRefundAt}
+                      manualRefundAmount={b.manualRefundAmount}
                     />
+                    {needsRefundConfirmation(b) && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setModalView("details");
+                          setConfirmRefund(true);
+                          setSelectedId(b.id);
+                        }}
+                        className="mt-1 rounded bg-amber-500 px-2 py-0.5 text-[10px] font-bold uppercase text-amber-950 hover:bg-amber-400"
+                      >
+                        Confirmar devolución
+                      </button>
+                    )}
                   </div>
                 </td>
                 <td className="px-4 py-3 text-ocean">
@@ -326,7 +345,9 @@ function AdminReservasCrucerosPage() {
           onClose={() => {
             setSelectedId(null);
             setModalView("details");
+            setConfirmRefund(false);
           }}
+          openManualRefund={confirmRefund}
           onCancel={async (id, reason) => {
             await setStatus(id, "cancelled", reason);
             setSelectedId(null);
@@ -356,6 +377,30 @@ function AdminReservasCrucerosPage() {
             return {
               ok: true,
               message: data.message || "Refund enviado a Stripe",
+            };
+          }}
+          onConfirmManualRefund={async (id, amount) => {
+            const res = await fetch("/api/bookings/confirm-refund", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id, amount }),
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+              return {
+                ok: false,
+                message: data.error || "No se pudo anotar la devolución",
+              };
+            }
+            if (data.booking) {
+              setBookings((prev) =>
+                prev.map((b) => (b.id === id ? data.booking : b))
+              );
+            }
+            await load();
+            return {
+              ok: true,
+              message: data.message || "Devolución anotada",
             };
           }}
         />

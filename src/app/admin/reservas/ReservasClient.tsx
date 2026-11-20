@@ -18,6 +18,7 @@ import {
   BookingStatusBadge,
   PaymentStatusBadge,
   bookingRowClassName,
+  needsRefundConfirmation,
 } from "@/components/admin/BookingStatusBadge";
 
 type ReservasTab =
@@ -90,6 +91,7 @@ export default function AdminReservasPage() {
   const [range, setRange] = useState<DateRange>(emptyDateRange);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [modalView, setModalView] = useState<"details" | "cancel">("details");
+  const [confirmRefund, setConfirmRefund] = useState(false);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState(() => searchParams.get("q") || "");
   const [page, setPage] = useState(1);
@@ -417,6 +419,7 @@ export default function AdminReservasPage() {
                       type="button"
                       onClick={() => {
                         setModalView("details");
+                        setConfirmRefund(false);
                         setSelectedId(b.id);
                       }}
                       className="font-bold text-ocean hover:underline"
@@ -471,7 +474,22 @@ export default function AdminReservasPage() {
                         bookingStatus={b.status}
                         amountPaidCard={b.amountPaidCard}
                         stripeRefundId={b.stripeRefundId}
+                        manualRefundAt={b.manualRefundAt}
+                        manualRefundAmount={b.manualRefundAmount}
                       />
+                      {needsRefundConfirmation(b) && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setModalView("details");
+                            setConfirmRefund(true);
+                            setSelectedId(b.id);
+                          }}
+                          className="mt-1 rounded bg-amber-500 px-2 py-0.5 text-[10px] font-bold uppercase text-amber-950 hover:bg-amber-400"
+                        >
+                          Confirmar devolución
+                        </button>
+                      )}
                     </div>
                     {b.invoiceId && (
                       <Link
@@ -508,6 +526,7 @@ export default function AdminReservasPage() {
                         type="button"
                         onClick={() => {
                           setModalView("details");
+                          setConfirmRefund(false);
                           setSelectedId(b.id);
                         }}
                         className="text-left text-xs font-bold text-ocean hover:underline"
@@ -608,9 +627,11 @@ export default function AdminReservasPage() {
         <BookingDetailModal
           booking={selected}
           initialView={modalView}
+          openManualRefund={confirmRefund}
           onClose={() => {
             setSelectedId(null);
             setModalView("details");
+            setConfirmRefund(false);
           }}
           onCancel={async (id, reason) => {
             await setStatus(id, "cancelled", reason);
@@ -677,6 +698,29 @@ export default function AdminReservasPage() {
             return {
               ok: true,
               message: data.message || "Refund enviado a Stripe",
+            };
+          }}
+          onConfirmManualRefund={async (id, amount) => {
+            const res = await fetch("/api/bookings/confirm-refund", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id, amount }),
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+              return {
+                ok: false,
+                message: data.error || "No se pudo anotar la devolución",
+              };
+            }
+            if (data.booking) {
+              setBookings((prev) =>
+                prev.map((b) => (b.id === id ? data.booking : b))
+              );
+            }
+            return {
+              ok: true,
+              message: data.message || "Devolución anotada",
             };
           }}
         />
