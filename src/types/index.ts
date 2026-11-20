@@ -580,6 +580,12 @@ export interface Booking {
   stripeRefundId?: string;
   stripeRefundedAt?: string;
   stripeRefundAmount?: number;
+  /**
+   * Devolución hecha a mano (Stripe Dashboard u otro medio) y confirmada
+   * en el panel. El importe puede ser menor que lo cobrado si hay gastos.
+   */
+  manualRefundAt?: string;
+  manualRefundAmount?: number;
   cancellationReason?: string;
   cancelledAt?: string;
   cancellationFee?: number;

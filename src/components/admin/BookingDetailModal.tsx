@@ -30,6 +30,8 @@ import {
 import {
   BookingStatusBadge,
   PaymentStatusBadge,
+  needsRefundConfirmation,
+  suggestedManualRefund,
 } from "@/components/admin/BookingStatusBadge";
 import { customerFacingNotes } from "@/lib/customer-notes";
 
@@ -96,6 +98,8 @@ export function BookingDetailModal({
   onSaveAmount,
   onResendEmail,
   onRefund,
+  onConfirmManualRefund,
+  openManualRefund = false,
   initialView = "details",
 }: {
   booking: Booking;
@@ -114,6 +118,12 @@ export function BookingDetailModal({
   onRefund?: (
     id: string
   ) => Promise<{ ok: boolean; message: string } | void> | { ok: boolean; message: string } | void;
+  onConfirmManualRefund?: (
+    id: string,
+    amount: number
+  ) => Promise<{ ok: boolean; message: string } | void> | { ok: boolean; message: string } | void;
+  /** Abre el formulario de confirmar devolución al entrar. */
+  openManualRefund?: boolean;
   initialView?: "details" | "cancel";
 }) {
   const [view, setView] = useState<"details" | "cancel">(
@@ -121,6 +131,8 @@ export function BookingDetailModal({
   );
   const [submitting, setSubmitting] = useState(false);
   const [refundConfirmOpen, setRefundConfirmOpen] = useState(false);
+  const [manualOpen, setManualOpen] = useState(false);
+  const [manualAmount, setManualAmount] = useState("");
   const [notice, setNotice] = useState<{
     type: "success" | "error" | "info";
     message: string;
@@ -158,7 +170,9 @@ export function BookingDetailModal({
       hotel: booking.customer.hotel || "",
       notes: booking.customer.notes || "",
     });
-  }, [booking.id, booking.status, booking.customer, booking.amountTotal, booking.totalPrice, initialView]);
+    setManualOpen(Boolean(openManualRefund) && needsRefundConfirmation(booking));
+    setManualAmount(suggestedManualRefund(booking).toFixed(2));
+  }, [booking.id, booking.status, booking.customer, booking.amountTotal, booking.totalPrice, booking.amountPaidCard, booking.cancellationFee, booking.stripeRefundId, booking.manualRefundAt, initialView, openManualRefund]);
 
   async function saveAmount() {
     if (!onSaveAmount) return;
@@ -403,8 +417,7 @@ export function BookingDetailModal({
                 </button>
               )}
               {onRefund &&
-                !booking.stripeRefundId &&
-                (booking.amountPaidCard || 0) > 0 && (
+                needsRefundConfirmation(booking) && (
                   <button
                     type="button"
                     disabled={submitting}
@@ -536,14 +549,120 @@ export function BookingDetailModal({
                         bookingStatus={booking.status}
                         amountPaidCard={booking.amountPaidCard}
                         stripeRefundId={booking.stripeRefundId}
+                        manualRefundAt={booking.manualRefundAt}
+                        manualRefundAmount={booking.manualRefundAmount}
                       />
-                      {booking.status === "cancelled" &&
-                        (booking.amountPaidCard || 0) > 0 &&
-                        !booking.stripeRefundId && (
+                      {needsRefundConfirmation(booking) && (
+                        <div className="space-y-2">
                           <p className="text-xs text-amber-800">
-                            El dinero aún no se ha devuelto. Pulse «Refund Stripe».
+                            El panel no tiene anotada la devolución. Si ya la
+                            hiciste en Stripe, o el cliente corre con gastos,
+                            confirma el importe devuelto. Puede ser menos del
+                            100 % o 0 €. No se envía otra devolución a Stripe.
                           </p>
-                        )}
+                          {onConfirmManualRefund && !manualOpen && (
+                            <button
+                              type="button"
+                              disabled={submitting}
+                              onClick={() => {
+                                setManualAmount(
+                                  suggestedManualRefund(booking).toFixed(2)
+                                );
+                                setManualOpen(true);
+                              }}
+                              className="rounded bg-amber-500 px-2.5 py-1 text-xs font-bold text-amber-950 hover:bg-amber-400 disabled:opacity-60"
+                            >
+                              Confirmar devolución
+                            </button>
+                          )}
+                          {onConfirmManualRefund && manualOpen && (
+                            <form
+                              className="space-y-2 rounded-md bg-amber-50 p-2 ring-1 ring-amber-200"
+                              onSubmit={async (e) => {
+                                e.preventDefault();
+                                const value = Number(
+                                  String(manualAmount).replace(",", ".")
+                                );
+                                if (!Number.isFinite(value) || value < 0) {
+                                  setNotice({
+                                    type: "error",
+                                    message: "Importe inválido",
+                                  });
+                                  return;
+                                }
+                                setSubmitting(true);
+                                try {
+                                  const result = await onConfirmManualRefund(
+                                    booking.id,
+                                    Math.round(value * 100) / 100
+                                  );
+                                  setManualOpen(false);
+                                  if (result) {
+                                    setNotice({
+                                      type: result.ok ? "success" : "error",
+                                      message: result.message,
+                                    });
+                                  }
+                                } catch (err) {
+                                  setNotice({
+                                    type: "error",
+                                    message:
+                                      err instanceof Error
+                                        ? err.message
+                                        : "No se pudo anotar la devolución",
+                                  });
+                                } finally {
+                                  setSubmitting(false);
+                                }
+                              }}
+                            >
+                              <label className="block text-xs font-bold text-ink">
+                                Importe devuelto (€)
+                                <input
+                                  type="number"
+                                  min="0"
+                                  max={booking.amountPaidCard || 0}
+                                  step="0.01"
+                                  value={manualAmount}
+                                  onChange={(e) =>
+                                    setManualAmount(e.target.value)
+                                  }
+                                  className="mt-1 w-full rounded border border-sand-line bg-white px-2 py-1.5 text-sm"
+                                />
+                              </label>
+                              <p className="text-[11px] text-ink-muted">
+                                Cobrado con tarjeta:{" "}
+                                {money(booking.amountPaidCard || 0)}. Si hay
+                                gastos, pon solo lo que devolviste.
+                              </p>
+                              <div className="flex gap-2">
+                                <button
+                                  type="submit"
+                                  disabled={submitting}
+                                  className="rounded bg-amber-500 px-2.5 py-1 text-xs font-bold text-amber-950 hover:bg-amber-400 disabled:opacity-60"
+                                >
+                                  {submitting ? "Guardando…" : "Anotar"}
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={submitting}
+                                  onClick={() => setManualOpen(false)}
+                                  className="rounded px-2.5 py-1 text-xs text-ink-muted"
+                                >
+                                  Cancelar
+                                </button>
+                              </div>
+                            </form>
+                          )}
+                        </div>
+                      )}
+                      {booking.manualRefundAt && !booking.stripeRefundId && (
+                        <p className="text-xs font-semibold text-violet-800">
+                          {(booking.manualRefundAmount || 0) > 0
+                            ? `Devolución anotada · ${money(booking.manualRefundAmount || 0)}`
+                            : "Sin devolución · el cliente corre con los gastos"}
+                        </p>
+                      )}
                     </dd>
                   </div>
                   <Row

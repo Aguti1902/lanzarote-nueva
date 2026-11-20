@@ -56,15 +56,45 @@ const paymentConfig: Record<
   },
 };
 
+/** Cancelada, con tarjeta cobrada, y sin devolución anotada en el panel. */
+export function needsRefundConfirmation(input: {
+  status?: BookingStatus;
+  amountPaidCard?: number;
+  stripeRefundId?: string;
+  manualRefundAt?: string;
+}): boolean {
+  return (
+    input.status === "cancelled" &&
+    (input.amountPaidCard || 0) > 0 &&
+    !input.stripeRefundId &&
+    !input.manualRefundAt
+  );
+}
+
 /**
- * Solo se considera "devuelto" si existe stripeRefundId (refund real en Stripe).
- * Cancelada + tarjeta cobrada sin refund → pendiente.
+ * Importe sugerido al confirmar una devolución ya hecha: lo cobrado
+ * con tarjeta menos el cargo de cancelación guardado en la reserva.
+ */
+export function suggestedManualRefund(input: {
+  amountPaidCard?: number;
+  cancellationFee?: number;
+}): number {
+  const paid = Math.round((input.amountPaidCard || 0) * 100) / 100;
+  const fee = Math.min(Math.max(input.cancellationFee || 0, 0), paid);
+  return Math.round((paid - fee) * 100) / 100;
+}
+
+/**
+ * "Devuelto" si hay refund de Stripe o una confirmación manual.
+ * Cancelada + tarjeta cobrada sin ninguna de las dos → pendiente.
  */
 export function resolvePaymentDisplay(input: {
   paymentStatus: PaymentStatus;
   status?: BookingStatus;
   amountPaidCard?: number;
   stripeRefundId?: string;
+  manualRefundAt?: string;
+  manualRefundAmount?: number;
 }): {
   label: string;
   className: string;
@@ -73,6 +103,22 @@ export function resolvePaymentDisplay(input: {
   if (input.stripeRefundId) {
     return {
       label: "Devuelto (Stripe)",
+      className: paymentConfig.refunded.className,
+      kind: "refunded",
+    };
+  }
+
+  if (input.manualRefundAt) {
+    const amount = input.manualRefundAmount || 0;
+    if (amount <= 0) {
+      return {
+        label: "Sin devolución",
+        className: "bg-stone-100 text-stone-800 ring-stone-300",
+        kind: "refunded",
+      };
+    }
+    return {
+      label: "Devuelto (manual)",
       className: paymentConfig.refunded.className,
       kind: "refunded",
     };
@@ -133,18 +179,24 @@ export function PaymentStatusBadge({
   bookingStatus,
   amountPaidCard,
   stripeRefundId,
+  manualRefundAt,
+  manualRefundAmount,
 }: {
   status: PaymentStatus;
   size?: "sm" | "md";
   bookingStatus?: BookingStatus;
   amountPaidCard?: number;
   stripeRefundId?: string;
+  manualRefundAt?: string;
+  manualRefundAmount?: number;
 }) {
   const display = resolvePaymentDisplay({
     paymentStatus: status,
     status: bookingStatus,
     amountPaidCard,
     stripeRefundId,
+    manualRefundAt,
+    manualRefundAmount,
   });
   const sizing =
     size === "sm"
